@@ -1,11 +1,17 @@
-import { RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { NotfoundComponent } from './demo/components/notfound/notfound.component';
-import { AppLayoutComponent } from "./layout/app.layout.component";
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {NotfoundComponent} from './demo/components/notfound/notfound.component';
+import {AppLayoutComponent} from "./layout/app.layout.component";
 
 @NgModule({
     imports: [
         RouterModule.forRoot([
+            {
+              path: 'huex',
+              children: [
+                { path: '', loadChildren: () => import('./huex/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
+              ]
+            },
             {
                 path: '', component: AppLayoutComponent,
                 children: [
