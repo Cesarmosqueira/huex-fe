@@ -40,6 +40,7 @@
     },
     "APPLICATIONS": {
       "TITLE": "Aplicaciones",
+      "VEHICLES": "Vehículos",
       "ECOMMERCE": "Comercio electrónico",
       "CALENDAR": "Calendario",
       "EMAIL": "Correo electrónico",
@@ -108,6 +109,12 @@
     "FILEMANAGER": {
       "TEXT": "Administradora de archivos",
       "BADGE": "Nueva"
+    },
+    "VEHICLES": {
+      "TEXT": "Vehículos",
+      "LIST": {
+        "TRUCKFLEET": "Flota de camiones"
+      }
     },
     "ECOMMERCE": {
       "TEXT": "Comercio electrónico",

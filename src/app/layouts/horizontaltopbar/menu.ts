@@ -246,6 +246,19 @@ export const MENU: MenuItem[] = [
                 ]
             },
             {
+                id: 200,
+                label: 'MENUITEMS.VEHICLES.TEXT',
+                icon: 'bx-store',
+                subItems: [
+                    {
+                        id: 201,
+                        label: 'MENUITEMS.VEHICLES.LIST.TRUCKFLEET',
+                        link: '/vehicles/truck-fleet',
+                        parentId: 200
+                    }
+                ]
+            },
+            {
                 id: 41,
                 label: 'MENUITEMS.ECOMMERCE.TEXT',
                 subItems: [

@@ -3,6 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  server: 'http://localhost:8080',
   production: false,
   defaultauth: 'fackbackend',
   firebaseConfig: {
@@ -14,6 +15,14 @@ export const environment = {
     messagingSenderId: '',
     appId: '',
     measurementId: ''
+  },
+  vehicles:{
+    truckfleet:{
+      list: '/api-huex/v1/vehicle/truckFleet',
+      retrieve: '/api-huex/v1/vehicle/truckFleet/',
+      register: '/api-huex/v1/vehicle/truckFleet',
+      update: '/api-huex/v1/vehicle/truckFleet'
+    }
   }
 };
 

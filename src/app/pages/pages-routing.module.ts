@@ -33,6 +33,7 @@ const routes: Routes = [
   { path: 'charts', loadChildren: () => import('./chart/chart.module').then(m => m.ChartModule) },
   { path: 'maps', loadChildren: () => import('./maps/maps.module').then(m => m.MapsModule) },
   { path: 'jobs', loadChildren: () => import('./jobs/jobs.module').then(m => m.JobsModule) },
+  { path: 'vehicles', loadChildren: () => import('./vehicles/vehicles.module').then(m => m.VehiclesModule) },
 ];
 
 @NgModule({
