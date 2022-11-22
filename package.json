@@ -35,6 +35,7 @@
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "@nicky-lenaers/ngx-scroll-to": "^9.0.0",
+    "@popperjs/core": "^2.11.6",
     "@types/chartist": "^0.11.0",
     "angular-archwizard": "^7.0.0",
     "angularx-flatpickr": "^6.6.0",
