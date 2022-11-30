@@ -21,7 +21,17 @@ export const environment = {
       list: '/api-huex/v1/vehicle/truckFleet',
       retrieve: '/api-huex/v1/vehicle/truckFleet/',
       register: '/api-huex/v1/vehicle/truckFleet',
-      update: '/api-huex/v1/vehicle/truckFleet'
+      update: '/api-huex/v1/vehicle/truckFleet',
+      delete: '/api-huex/v1/vehicle/truckFleet/'
+    }
+  },
+  providers:{
+    provider:{
+      list: '/api-huex/v1/provider',
+      retrieve: '/api-huex/v1/provider/',
+      register: '/api-huex/v1/provider',
+      update: '/api-huex/v1/provider',
+      delete: '/api-huex/v1/provider/'
     }
   }
 };

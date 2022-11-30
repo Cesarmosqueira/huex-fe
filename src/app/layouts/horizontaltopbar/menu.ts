@@ -3,39 +3,15 @@ import { MenuItem } from './menu.model';
 export const MENU: MenuItem[] = [
     {
         id: 1,
-        label: 'MENUITEMS.DASHBOARDS.TEXT',
-        icon: 'bx-home-circle',
+        label: 'MENUITEMS.VEHICLES.TEXT',
+        icon: 'bx-store',
         subItems: [
             {
                 id: 2,
-                label: 'MENUITEMS.DASHBOARDS.LIST.DEFAULT',
-                link: '/dashboard',
+                label: 'MENUITEMS.VEHICLES.LIST.TRUCKFLEET',
+                link: '/vehicles/truck-fleet',
                 parentId: 1
-            },
-            {
-                id: 3,
-                label: 'MENUITEMS.DASHBOARDS.LIST.SAAS',
-                link: '/dashboards/saas',
-                parentId: 1
-            },
-            {
-                id: 4,
-                label: 'MENUITEMS.DASHBOARDS.LIST.CRYPTO',
-                link: '/dashboards/crypto',
-                parentId: 1
-            },
-            {
-                id: 5,
-                label: 'MENUITEMS.DASHBOARDS.LIST.BLOG',
-                link: '/dashboards/blog',
-                parentId: 1
-            },
-            {
-                id: 6,
-                label: 'MENUITEMS.DASHBOARDS.LIST.JOBS',
-                link: '/dashboards/jobs',
-                parentId: 1,
-            },
+            }
         ]
     },
     {
@@ -242,19 +218,6 @@ export const MENU: MenuItem[] = [
                                 parentId:37
                             }
                         ]
-                    }
-                ]
-            },
-            {
-                id: 200,
-                label: 'MENUITEMS.VEHICLES.TEXT',
-                icon: 'bx-store',
-                subItems: [
-                    {
-                        id: 201,
-                        label: 'MENUITEMS.VEHICLES.LIST.TRUCKFLEET',
-                        link: '/vehicles/truck-fleet',
-                        parentId: 200
                     }
                 ]
             },
