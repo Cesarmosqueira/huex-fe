@@ -1,1 +1,141 @@
-<h1>Datos de empleado</h1>
+<div class="container-fluid">
+  <app-page-title title="Orders" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-4">
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Buscar por placa..." [(ngModel)]="service.searchTerm">
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="text-sm-end">
+                <button type="button" class="btn btn-success btn-rounded mb-2 me-2" (click)="openModal(content)"><i
+                    class="mdi mdi-plus mr-1"></i>
+                  Nuevo</button>
+              </div>
+            </div><!-- end col-->
+          </div>
+
+          <!-- Table data -->
+          <div class="table-responsive mb-0">
+            <table class="table table-centered table-nowrap">
+              <thead class="table-light">
+                <tr>
+                  <th class="align-middle">ID</th>
+                  <th class="align-middle">Nombre Completo</th>
+                  <th class="align-middle">Tipo de Documento</th>
+                  <th class="align-middle">DNI</th>
+                  <th class="align-middle">Estado</th>
+                  <th class="align-middle">Ubigeo</th>
+                  <th class="align-middle">Nacimiento</th>
+                  <th class="align-middle">Direccion</th>
+                  <th class="align-middle">Telefono</th>
+                  <th class="align-middle">Correo</th>
+                  <th class="align-middle">Fecha de Ingreso</th>
+                  <th class="align-middle">Fecha de Cese</th>
+                  <th class="align-middle">Cuenta Bancaria</th>
+                  <th class="align-middle">Tipo de Contrato</th>
+                  <th class="align-middle">Estado Civil</th>
+                  <th class="align-middle">Pension</th>
+                  <th class="align-middle">Hijos</th>
+                  <th class="align-middle">Grado Academico</th>
+                  <th class="align-middle">Antecedentes Policiales</th>
+                  <th class="align-middle">Sueldo</th>
+                  <th class="align-middle">Puesto</th>
+                  <th class="align-middle">Licencia</th>
+                  <th class="align-middle">Expriacion de Licencia</th>
+                  <th class="align-middle">Expiracion de DNI</th>
+
+                  <!-- "id": 1,     -->
+                  <!--"fullName": "Frank Huarcaya",     -->
+                  <!--"documentType": "DNI",     -->
+                  <!--"dni": "72919231",     -->
+                  <!--"currentState": "ACTIVE",     -->
+                  <!--"placeOfBirth": "Lima",     -->
+                  <!--"birthDate": "2002-10-02T00:00:00.000+00:00",     -->
+                  <!--"address": "abcd",     -->
+                  <!--"phoneNumber": "987654321",     -->
+                  <!--"email": "abc@dfg.hij",     -->
+                  <!--"joinDate": "2021-03-10T00:00:00.000+00:00",     -->
+                  <!--"ceaseDate": null,     -->
+                  <!--"bankAccount": "823124324325",     -->
+                  <!--"contractType": "INTERN",     -->
+                  <!--"maritalStatus": "None",     -->
+                  <!--"pensionSystem": "AFP",     -->
+                  <!--"childrens": 1,     -->
+                  <!--"academicQualification": "undergrad",     -->
+                  <!--"criminalRecords": "",     -->
+                  <!--"kinhood": "father",     -->
+                  <!--"kinFullName": "John Doe",     -->
+                  <!--"kinPhoneNumber": "987654123",     -->
+                  <!--"salary": 1500.0,     -->
+                  <!--"role": "Developer",     -->
+                  <!--"licenseCategory": "AI",     -->
+                  <!--"licenseExpirationDate": "2023-10-02T00:00:00.000+00:00",     -->
+                  <!--"dniExpirationDate": "1970-01-01T00:00:01.500+00:00",     -->
+                  <!--"photoUrl": "https://rotulosmatesanz.com/wp-content/uploads/2017/09/2000px-Google_G_Logo.svg_.png"     -->
+                  <!--</tr>     -->
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of employees" id="o_{{data.id}}">
+                  <td>
+                    <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
+                  </td>
+                  <td>{{data.fullName}}</td>
+                  <td>{{data.documentType}}</td>
+                  <td>{{data.dni}}</td>
+                  <td>{{data.currentState}}</td>
+                  <td>{{data.placeOfBirth}}</td>
+                  <td>{{data.birthDate}}</td>
+                  <td>{{data.address}}</td>
+                  <td>{{data.phoneNumber}}</td>
+                  <td>{{data.email}}</td>
+                  <td>{{data.joinDate}}</td>
+                  <td>{{data.ceaseDate}}</td>
+                  <td>{{data.bankAccount}}</td>
+                  <td>{{data.contractType}}</td>
+                  <td>{{data.maritalStatus}}</td>
+                  <td>{{data.pensionSystem}}</td>
+                  <td>{{data.childrens}}</td>
+                  <td>{{data.academicQualification}}</td>
+                  <td>{{data.criminalRecords}}</td>
+                  <td>{{data.salary}</td>
+                  <td>{{data.role}}</td>
+                  <td>{{data.licenseCategory}}</td>
+                  <td>{{data.licenseExpirationDate}}</td>
+                  <td>{{data.dniExpirationDate}}</td>
+                  <td>
+                    <div class="d-flex gap-3">
+                      <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
+                          class="mdi mdi-pencil font-size-18"></i></a>
+                      <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
+                          class="mdi mdi-delete font-size-18"></i></a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+
+          </div>
+          <!-- end table -->
+          <ul class="pagination pagination-rounded justify-content-end mb-2">
+            <ngb-pagination [collectionSize]="(total | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+            </ngb-pagination>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Order Create Model -->
+
+<!--End Modal -->

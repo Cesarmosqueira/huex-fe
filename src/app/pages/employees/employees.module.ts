@@ -1,17 +1,40 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DecimalPipe} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {ReactiveFormsModule} from '@angular/forms';
+import {EmployeeComponent} from './employee/component/employee.component';
+import {EmployeeRoutingModule} from './employees-routing.module';
 
-import { VehiclesRoutingModule } from './vehicles-routing.module';
-import { TruckFleetComponent } from './truck-fleet/component/truck-fleet.component';
+import {NgSelectModule} from '@ng-select/ng-select';
+import {Ng2SearchPipeModule} from 'ng2-search-filter';
+import {UIModule} from '../../shared/ui/ui.module';
+
+import {NgbDatepickerModule, NgbModalModule, NgbNavModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+
+import {FormsModule} from '@angular/forms';
+
 
 
 @NgModule({
   declarations: [
-    TruckFleetComponent
+    EmployeeComponent
   ],
   imports: [
     CommonModule,
-    VehiclesRoutingModule
+    EmployeeRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbNavModule,
+    NgbModalModule,
+    NgbPaginationModule,
+    UIModule,
+    Ng2SearchPipeModule,
+    NgbDatepickerModule,
+    NgSelectModule
+  ],
+  providers: [DecimalPipe],
+  exports: [
+    EmployeeComponent
   ]
 })
-export class VehiclesModule { }
+export class EmployeeModule { }

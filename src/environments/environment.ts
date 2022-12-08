@@ -16,6 +16,15 @@ export const environment = {
     appId: '',
     measurementId: ''
   },
+  employees:{
+    employee:{
+      list: '/api-huex/v1/employees',
+      retrieve: '/api-huex/v1/employees/',
+      register: '/api-huex/v1/employees',
+      update: '/api-huex/v1/employees',
+      delete: '/api-huex/v1/employees/'
+    }
+  },
   vehicles:{
     truckfleet:{
       list: '/api-huex/v1/vehicle/truckFleet',
