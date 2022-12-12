@@ -40,6 +40,8 @@ import { ChatComponent } from './chat/chat.component';
 
 import { FilemanagerComponent } from './filemanager/filemanager.component';
 import { VehiclesModule } from './vehicles/vehicles.module';
+import { RouteComponent } from './customers/route/component/route.component';
+import {RouteModule} from "./customers/route.module";
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -82,7 +84,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     SimplebarAngularModule,
     LightboxModule,
     PickerModule,
-    VehiclesModule
+    VehiclesModule,
+    RouteModule
   ],
 })
 export class PagesModule { }

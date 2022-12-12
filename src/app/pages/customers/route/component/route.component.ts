@@ -1,0 +1,325 @@
+import { Component, OnInit } from '@angular/core';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
+import {Observable} from "rxjs";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import Swal from "sweetalert2";
+import {DatePipe} from "@angular/common";
+import {first} from "rxjs/operators";
+import {config} from "../../../../shared/shared.config";
+import {Route} from "../models/route.model";
+import {RouteService} from "../services/route.service";
+
+@Component({
+  selector: 'app-route',
+  templateUrl: './route.component.html',
+  styleUrls: ['./route.component.scss']
+})
+export class RouteComponent implements OnInit {
+
+
+  // bread crumb items
+  breadCrumbItems: Array<{}>;
+  term: any;
+
+  routeForm!: UntypedFormGroup;
+  submitted = false;
+  register = true;
+
+  transactions;
+
+  // Table data
+  content?: any;
+  routes?: any;
+  test: Route[] = [];
+  routesList!: Observable<Route[]>;
+  total: Observable<number>;
+  pipe: any;
+
+  constructor(public service: RouteService,
+              private modalService: NgbModal,
+              private formBuilder: UntypedFormBuilder) {
+    this.routesList = service.countries$;
+    this.total = service.total$;
+  }
+
+  ngOnInit(): void {
+    this.breadCrumbItems = [{ label: 'Cliente' }, { label: 'Rutas de clientes', active: true }];
+
+    /**
+     * Form Validation
+     */
+    this.routeForm = this.formBuilder.group({
+      id: ['0', [Validators.required]],
+      routeStart: ['', [Validators.required]],
+      routeEnd: ['', [Validators.required]],
+      zone: ['', [Validators.required]],
+      distanceKM: ['', [Validators.required]],
+      gallons: ['', [Validators.required]]
+    });
+
+    this.routesList.subscribe(x => {
+      this.content = this.routes;
+      this.routes = Object.assign([], x);
+    });
+
+    this.listRoutes();
+  }
+
+  /**
+   * Open modal
+   * @param content modal content
+   */
+  openViewModal(content: any) {
+    this.modalService.open(content, { centered: true });
+  }
+
+  // Delete Data
+  delete(id: any) {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger ms-2'
+      },
+      buttonsStyling: false
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: '¿Está seguro?',
+        text: '¡No podrás revertir esto!',
+        icon: 'warning',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+        showCancelButton: true
+      })
+      .then(result => {
+        if (result.value) {
+          this.deleteRoute(id);
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire(
+            'Cancelled',
+            'Your imaginary file is safe :)',
+            'error'
+          );
+        }
+      });
+  }
+
+  /**
+   * Open modal
+   * @param content modal content
+   */
+  openModal(content: any) {
+    this.submitted = false;
+    this.modalService.open(content, { size: 'md', centered: true });
+  }
+
+  /**
+   * Form data get
+   */
+  get form() {
+    return this.routeForm.controls;
+  }
+
+  /**
+   * Save user
+   */
+  saveUser() {
+    this.submitted = true
+    if (this.routeForm.valid) {
+      this.pipe = new DatePipe('en-US');
+      const routeStart = this.routeForm.get('routeStart')?.value;
+      const routeEnd = this.routeForm.get('routeEnd')?.value;
+      const zone = this.routeForm.get('zone')?.value;
+      const distanceKM = this.routeForm.get('distanceKM')?.value;
+      const gallons = this.routeForm.get('gallons')?.value;
+
+      let route = new Route();
+      route.routeStart = routeStart;
+      route.routeEnd = routeEnd;
+      route.zone = zone;
+      route.distanceKM = distanceKM;
+      route.gallons = gallons;
+      const id = this.routeForm.get('id')?.value;
+      console.log(route);
+      console.log(id);
+      if (id == '0') {
+        this.registerRoutes(route);
+      } else {
+        route.id = id;
+        this.updateRoutes(route);
+      }
+
+      this.modalService.dismissAll();
+      setTimeout(() => {
+        this.routeForm.reset();
+      }, 2000);
+
+    }
+  }
+
+  /**
+   * Open Edit modal
+   * @param content modal content
+   */
+  editDataGet(id: any, content: any) {
+    this.submitted = false;
+    this.pipe = new DatePipe('en-US');
+    this.modalService.open(content, { size: 'md', centered: true });
+    var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
+    modelTitle.innerHTML = 'Actualizar rutas';
+    var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
+    updateBtn.innerHTML = "Actualizar";
+    var listData = this.routes.filter((data: { id: any; }) => data.id === id);
+    const fabricationDate = listData[0].fabricationDate.substring(0, 10);
+    const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
+    this.routeForm.controls['id'].setValue(listData[0].id);
+    this.routeForm.controls['routeStart'].setValue(listData[0].routeStart);
+    this.routeForm.controls['routeEnd'].setValue(listData[0].routeEnd);
+    this.routeForm.controls['zone'].setValue(listData[0].zone);
+    this.routeForm.controls['distanceKM'].setValue(listData[0].distanceKM);
+    this.routeForm.controls['gallons'].setValue(listData[0].gallons);
+  }
+
+  listRoutes() {
+    this.service.listRoutes()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.test = response.datos.truckFleetDtoList;
+              this.service.paginationTable(this.test);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          } else {
+            Swal.fire({
+              icon: config.ERROR,
+              title: "Ocurrio un error, comuniquese con el Encargado",
+              showConfirmButton: false,
+            });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  registerRoutes(routes) {
+    this.service.registerRoute(routes)
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              Swal.fire(
+                '¡Registrado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
+              this.routes();
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          } else {
+            Swal.fire({
+              icon: config.ERROR,
+              title: "Ocurrio un error, comuniquese con el encargado",
+              showConfirmButton: false,
+            });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  updateRoutes(routes) {
+    this.service.updateRoute(routes)
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.listRoutes();
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          } else {
+            Swal.fire({
+              icon: config.ERROR,
+              title: "Ocurrio un error, comuniquese con el encargado",
+              showConfirmButton: false,
+            });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  deleteRoute(id) {
+    this.service.deleteRoute(id)
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.meta.mensajes[0].codigo == '0') {
+              Swal.fire(
+                '¡Eliminado!',
+                'Su archivo ha sido eliminado.',
+                'success'
+              );
+              this.listRoutes();
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          } else {
+            Swal.fire({
+              icon: config.ERROR,
+              title: "Ocurrio un error, comuniquese con el encargado",
+              showConfirmButton: false,
+            });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+}

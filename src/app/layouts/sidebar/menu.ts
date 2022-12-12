@@ -13,6 +13,19 @@ export const MENU: MenuItem[] = [
                 parentId: 1
             }
         ]
+    },
+    {
+          id: 2,
+          label: 'MENUITEMS.CUSTOMERS.TEXT',
+          icon: 'bx-store',
+          subItems: [
+            {
+              id: 2,
+              label: 'MENUITEMS.CUSTOMERS.LIST.ROUTES',
+              link: '/customers/route',
+              parentId: 1
+            }
+          ]
     }
 ];
 

@@ -25,6 +25,15 @@ export const environment = {
       delete: '/api-huex/v1/employees/'
     }
   },
+  customers:{
+    route:{
+      list: '/api-huex/v1/routes',
+      retrieve: '/api-huex/v1/routes/',
+      register: '/api-huex/v1/routes',
+      update: '/api-huex/v1/routes',
+      delete: '/api-huex/v1/routes/'
+    }
+  },
   vehicles:{
     truckfleet:{
       list: '/api-huex/v1/vehicle/truckFleet',
