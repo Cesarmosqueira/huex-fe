@@ -32,6 +32,13 @@ export const environment = {
       register: '/api-huex/v1/routes',
       update: '/api-huex/v1/routes',
       delete: '/api-huex/v1/routes/'
+    },
+    rate:{
+      list: '/api-huex/v1/rates',
+      retrieve: '/api-huex/v1/rates/',
+      register: '/api-huex/v1/rates',
+      update: '/api-huex/v1/rates',
+      delete: '/api-huex/v1/rates/'
     }
   },
   vehicles:{

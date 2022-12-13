@@ -6,22 +6,21 @@ import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
-import {Route} from "../models/route.model";
-import {RouteService} from "../services/route.service";
+import {Rate} from "../models/rate.model";
+import {RateService} from "../services/rate.service";
 
 @Component({
-  selector: 'app-route',
-  templateUrl: './route.component.html',
-  styleUrls: ['./route.component.scss']
+  selector: 'app-rate',
+  templateUrl: './rate.component.html',
+  styleUrls: ['./rate.component.scss']
 })
-export class RouteComponent implements OnInit {
-
+export class RateComponent implements OnInit {
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
   term: any;
 
-  routeForm!: UntypedFormGroup;
+  rateForm!: UntypedFormGroup;
   submitted = false;
   register = true;
 
@@ -29,40 +28,41 @@ export class RouteComponent implements OnInit {
 
   // Table data
   content?: any;
-  routes?: any;
-  test: Route[] = [];
-  routesList!: Observable<Route[]>;
+  rates?: any;
+  test: Rate[] = [];
+  ratesList!: Observable<Rate[]>;
   total: Observable<number>;
   pipe: any;
 
-  constructor(public service: RouteService,
+  constructor(public service: RateService,
               private modalService: NgbModal,
               private formBuilder: UntypedFormBuilder) {
-    this.routesList = service.countries$;
+    this.ratesList = service.countries$;
     this.total = service.total$;
   }
 
   ngOnInit(): void {
-    this.breadCrumbItems = [{ label: 'Cliente' }, { label: 'Rutas de clientes', active: true }];
+    this.breadCrumbItems = [{ label: 'Cliente' }, { label: 'Tarifas clientes', active: true }];
 
     /**
      * Form Validation
      */
-    this.routeForm = this.formBuilder.group({
+    this.rateForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
-      routeStart: ['', [Validators.required]],
-      routeEnd: ['', [Validators.required]],
-      zone: ['', [Validators.required]],
-      distanceKM: ['', [Validators.required]],
-      gallons: ['', [Validators.required]]
+      customerId: ['', [Validators.required]],
+      routeId: ['', [Validators.required]],
+      leadTime: ['', [Validators.required]],
+      volume: ['', [Validators.required]],
+      cost: ['', [Validators.required]],
+      observationRate: ['', [Validators.required]]
     });
 
-    this.routesList.subscribe(x => {
-      this.content = this.routes;
-      this.routes = Object.assign([], x);
+    this.ratesList.subscribe(x => {
+      this.content = this.rates;
+      this.rates = Object.assign([], x);
     });
 
-    this.listRoutes();
+    this.listRates();
   }
 
   /**
@@ -94,7 +94,7 @@ export class RouteComponent implements OnInit {
       })
       .then(result => {
         if (result.value) {
-          this.deleteRoute(id);
+          this.deleteRates(id);
         } else if (
           /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel
@@ -121,7 +121,7 @@ export class RouteComponent implements OnInit {
    * Form data get
    */
   get form() {
-    return this.routeForm.controls;
+    return this.rateForm.controls;
   }
 
   /**
@@ -129,35 +129,37 @@ export class RouteComponent implements OnInit {
    */
   saveUser() {
     this.submitted = true
-    if (this.routeForm.valid) {
+    if (this.rateForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const routeStart = this.routeForm.get('routeStart')?.value;
-      const routeEnd = this.routeForm.get('routeEnd')?.value;
-      const zone = this.routeForm.get('zone')?.value;
-      const distanceKM = this.routeForm.get('distanceKM')?.value;
-      const gallons = this.routeForm.get('gallons')?.value;
+      const customerId = 7;//this.rateForm.get('customerId')?.value;
+      const routeId = 1;//this.rateForm.get('routeId')?.value;
+      const leadTime = this.rateForm.get('leadTime')?.value;
+      const volume = this.rateForm.get('volume')?.value;
+      const cost = this.rateForm.get('cost')?.value;
+      const observationRate = this.rateForm.get('observationRate')?.value;
 
-      let route = new Route();
-      route.routeStart = routeStart;
-      route.routeEnd = routeEnd;
-      route.zone = zone;
-      route.distanceKM = distanceKM;
-      route.gallons = gallons;
-      const id = this.routeForm.get('id')?.value;
-      console.log(route);
+      let rate = new Rate();
+      rate.customerId = customerId;
+      rate.routeId = routeId;
+      rate.leadTime = leadTime;
+      rate.volume = volume;
+      rate.cost = cost;
+      rate.observationRate = observationRate;
+
+      const id = this.rateForm.get('id')?.value;
+      console.log(rate);
       console.log(id);
       if (id == '0') {
-        this.registerRoutes(route);
+        this.registerRates(rate);
       } else {
-        route.id = id;
-        this.updateRoutes(route);
+        rate.id = id;
+        this.updateRates(rate);
       }
 
       this.modalService.dismissAll();
       setTimeout(() => {
-        this.routeForm.reset();
+        this.rateForm.reset();
       }, 2000);
-
     }
   }
 
@@ -170,28 +172,29 @@ export class RouteComponent implements OnInit {
     this.pipe = new DatePipe('en-US');
     this.modalService.open(content, { size: 'md', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-    modelTitle.innerHTML = 'Actualizar rutas';
+    modelTitle.innerHTML = 'Actualizar tarifas';
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
-    var listData = this.routes.filter((data: { id: any; }) => data.id === id);
+    var listData = this.rates.filter((data: { id: any; }) => data.id === id);
     const fabricationDate = listData[0].fabricationDate.substring(0, 10);
     const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
-    this.routeForm.controls['id'].setValue(listData[0].id);
-    this.routeForm.controls['routeStart'].setValue(listData[0].routeStart);
-    this.routeForm.controls['routeEnd'].setValue(listData[0].routeEnd);
-    this.routeForm.controls['zone'].setValue(listData[0].zone);
-    this.routeForm.controls['distanceKM'].setValue(listData[0].distanceKM);
-    this.routeForm.controls['gallons'].setValue(listData[0].gallons);
+    this.rateForm.controls['id'].setValue(listData[0].id);
+    this.rateForm.controls['customerId'].setValue(listData[0].customerId);
+    this.rateForm.controls['routeId'].setValue(listData[0].routeId);
+    this.rateForm.controls['leadTime'].setValue(listData[0].leadTime);
+    this.rateForm.controls['volume'].setValue(listData[0].volume);
+    this.rateForm.controls['cost'].setValue(listData[0].cost);
+    this.rateForm.controls['observationRate'].setValue(listData[0].observationRate);
   }
 
-  listRoutes() {
-    this.service.listRoutes()
+  listRates() {
+    this.service.listRates()
       .pipe(first())
       .subscribe(
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.routeDtoList;
+              this.test = response.datos.ratesDtoList;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
@@ -217,8 +220,8 @@ export class RouteComponent implements OnInit {
         });
   }
 
-  registerRoutes(routes) {
-    this.service.registerRoute(routes)
+  registerRates(rates) {
+    this.service.registerRate(rates)
       .pipe(first())
       .subscribe(
         response => {
@@ -229,7 +232,7 @@ export class RouteComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.routes();
+              this.rates();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -254,14 +257,14 @@ export class RouteComponent implements OnInit {
         });
   }
 
-  updateRoutes(routes) {
-    this.service.updateRoute(routes)
+  updateRates(rates) {
+    this.service.updateRate(rates)
       .pipe(first())
       .subscribe(
         response => {
           if (response) {
             if (response.datos) {
-              this.listRoutes();
+              this.listRates();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -286,8 +289,8 @@ export class RouteComponent implements OnInit {
         });
   }
 
-  deleteRoute(id) {
-    this.service.deleteRoute(id)
+  deleteRates(id) {
+    this.service.deleteRate(id)
       .pipe(first())
       .subscribe(
         response => {
@@ -298,7 +301,7 @@ export class RouteComponent implements OnInit {
                 'Su archivo ha sido eliminado.',
                 'success'
               );
-              this.listRoutes();
+              this.listRates();
             } else {
               Swal.fire({
                 icon: config.WARNING,

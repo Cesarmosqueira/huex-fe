@@ -41,7 +41,7 @@
     "APPLICATIONS": {
       "TITLE": "Aplicaciones",
       "VEHICLES": "Vehículos",
-      "CUSTOMERS":"Clientes"
+      "CUSTOMERS":"Clientes",
       "ECOMMERCE": "Comercio electrónico",
       "CALENDAR": "Calendario",
       "EMAIL": "Correo electrónico",
@@ -120,7 +120,8 @@
     "CUSTOMERS": {
       "TEXT": "Rutas",
       "LIST": {
-        "ROUTES": "Rutas clientes"
+        "ROUTES": "Rutas clientes",
+        "RATES": "Tarifas clientes"
       }
     },
     "ECOMMERCE": {
