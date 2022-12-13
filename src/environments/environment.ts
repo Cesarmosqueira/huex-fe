@@ -41,6 +41,16 @@ export const environment = {
       delete: '/api-huex/v1/rates/'
     }
   },
+  services:{
+    expenseType:{
+      list: '/api-huex/v1/expenseType',
+      retrieve: '/api-huex/v1/expenseType/',
+      register: '/api-huex/v1/expenseType',
+      update: '/api-huex/v1/expenseType',
+      delete: '/api-huex/v1/expenseType/'
+    }
+  },
+
   vehicles:{
     truckfleet:{
       list: '/api-huex/v1/vehicle/truckFleet',

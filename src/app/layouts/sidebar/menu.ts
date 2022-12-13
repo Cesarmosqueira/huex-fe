@@ -32,6 +32,19 @@ export const MENU: MenuItem[] = [
               parentId: 1
             }
           ]
+    },
+    {
+      id: 1,
+      label: 'MENUITEMS.SERVICES.TEXT',
+      icon: 'bx-store',
+      subItems: [
+        {
+          id: 2,
+          label: 'MENUITEMS.SERVICES.LIST.EXPENSETYPE',
+          link: '/services/expenseType',
+          parentId: 1
+        }
+      ]
     }
 ];
 
