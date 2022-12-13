@@ -43,6 +43,12 @@ export const MENU: MenuItem[] = [
           label: 'MENUITEMS.SERVICES.LIST.EXPENSETYPE',
           link: '/services/expenseType',
           parentId: 1
+        },
+        {
+          id: 2,
+          label: 'MENUITEMS.SERVICES.LIST.SERVICEINCIDENTS',
+          link: '/services/serviceIncidents',
+          parentId: 1
         }
       ]
     }

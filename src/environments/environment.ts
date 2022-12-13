@@ -48,6 +48,13 @@ export const environment = {
       register: '/api-huex/v1/expenseType',
       update: '/api-huex/v1/expenseType',
       delete: '/api-huex/v1/expenseType/'
+    },
+    serviceIncidents:{
+      list: '/api-huex/v1/serviceIncidents',
+      retrieve: '/api-huex/v1/serviceIncidents/',
+      register: '/api-huex/v1/serviceIncidents',
+      update: '/api-huex/v1/serviceIncidents',
+      delete: '/api-huex/v1/serviceIncidents/'
     }
   },
 

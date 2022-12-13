@@ -129,6 +129,7 @@
       "TEXT": "Servicios",
       "LIST": {
         "EXPENSETYPE": "Tipo gasto",
+        "SERVICEINCIDENTS": "Incidente servicio"
       }
     },
     "ECOMMERCE": {

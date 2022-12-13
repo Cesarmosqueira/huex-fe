@@ -7,12 +7,14 @@ import {NgbDatepickerModule, NgbModalModule, NgbNavModule, NgbPaginationModule} 
 import {UIModule} from "../../shared/ui/ui.module";
 import {Ng2SearchPipeModule} from "ng2-search-filter";
 import {NgSelectModule} from "@ng-select/ng-select";
+import { ServiceIncidentsComponent } from './service-incidents/component/service-incidents.component';
 
 
 
 @NgModule({
   declarations: [
-    ExpenseTypeComponent
+    ExpenseTypeComponent,
+    ServiceIncidentsComponent
   ],
   imports: [
     CommonModule,
