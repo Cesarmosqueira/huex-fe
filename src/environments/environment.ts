@@ -55,6 +55,13 @@ export const environment = {
       register: '/api-huex/v1/serviceIncidents',
       update: '/api-huex/v1/serviceIncidents',
       delete: '/api-huex/v1/serviceIncidents/'
+    },
+    settlementSummary:{
+      list: '/api-huex/v1/settlementSummary',
+      retrieve: '/api-huex/v1/settlementSummary/',
+      register: '/api-huex/v1/settlementSummary',
+      update: '/api-huex/v1/settlementSummary',
+      delete: '/api-huex/v1/settlementSummary/'
     }
   },
 

@@ -49,6 +49,12 @@ export const MENU: MenuItem[] = [
           label: 'MENUITEMS.SERVICES.LIST.SERVICEINCIDENTS',
           link: '/services/serviceIncidents',
           parentId: 1
+        },
+        {
+          id: 2,
+          label: 'MENUITEMS.SERVICES.LIST.SETTLEMENTSUMMARY',
+          link: '/services/settlementSummary',
+          parentId: 1
         }
       ]
     }

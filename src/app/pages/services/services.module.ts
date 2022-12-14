@@ -8,13 +8,15 @@ import {UIModule} from "../../shared/ui/ui.module";
 import {Ng2SearchPipeModule} from "ng2-search-filter";
 import {NgSelectModule} from "@ng-select/ng-select";
 import { ServiceIncidentsComponent } from './service-incidents/component/service-incidents.component';
+import { SettlementSummaryComponent } from './settlement-summary/component/settlement-summary.component';
 
 
 
 @NgModule({
   declarations: [
     ExpenseTypeComponent,
-    ServiceIncidentsComponent
+    ServiceIncidentsComponent,
+    SettlementSummaryComponent
   ],
   imports: [
     CommonModule,
