@@ -30,8 +30,6 @@ import { SettlementSummaryComponent } from './settlement-summary/component/settl
     Ng2SearchPipeModule,
     NgbDatepickerModule,
     NgSelectModule
-
-
   ]
 })
 export class ServicesModule { }

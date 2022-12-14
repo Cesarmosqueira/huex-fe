@@ -43,6 +43,7 @@
       "VEHICLES": "Vehículos",
       "CUSTOMERS":"Clientes",
       "SERVICES": "Servicios",
+      "PROVIDERS": "Proveedores",
       "ECOMMERCE": "Comercio electrónico",
       "CALENDAR": "Calendario",
       "EMAIL": "Correo electrónico",
@@ -119,7 +120,7 @@
       }
     },
     "CUSTOMERS": {
-      "TEXT": "Rutas",
+      "TEXT": "Clientes",
       "LIST": {
         "ROUTES": "Rutas clientes",
         "RATES": "Tarifas clientes"
@@ -130,7 +131,13 @@
       "LIST": {
         "EXPENSETYPE": "Tipo gasto",
         "SERVICEINCIDENTS": "Incidente servicio",
-        "SETTLEMENTSUMMARY": "Incidente servicio"
+        "SETTLEMENTSUMMARY": "Liquidacion servicio"
+      }
+    },
+    "PROVIDERS": {
+      "TEXT": "Proveedores",
+      "LIST": {
+        "PROVINCEESTIVATORS": "Proveedor estivador"
       }
     },
     "ECOMMERCE": {

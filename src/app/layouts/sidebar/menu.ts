@@ -57,6 +57,19 @@ export const MENU: MenuItem[] = [
           parentId: 1
         }
       ]
-    }
+    },
+  {
+    id: 1,
+    label: 'MENUITEMS.PROVIDERS.TEXT',
+    icon: 'bx-store',
+    subItems: [
+      {
+        id: 2,
+        label: 'MENUITEMS.PROVIDERS.LIST.PROVINCEESTIVATORS',
+        link: '/providers/provinceEstivators',
+        parentId: 1
+      }
+    ]
+  }
 ];
 

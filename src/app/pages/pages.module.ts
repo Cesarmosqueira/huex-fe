@@ -44,6 +44,7 @@ import { RouteComponent } from './customers/route/component/route.component';
 import {RouteModule} from "./customers/route.module";
 import { ExpenseTypeComponent } from './services/expense-type/component/expense-type.component';
 import {ServicesModule} from "./services/services.module";
+import {ProvidersModule} from "./providers/providers.module";
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -88,7 +89,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     PickerModule,
     VehiclesModule,
     RouteModule,
-    ServicesModule
+    ServicesModule,
+    ProvidersModule
   ],
 })
 export class PagesModule { }

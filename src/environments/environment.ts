@@ -81,6 +81,13 @@ export const environment = {
       register: '/api-huex/v1/provider',
       update: '/api-huex/v1/provider',
       delete: '/api-huex/v1/provider/'
+    },
+    provinceEstivators:{
+      list: '/api-huex/v1/provinceEstivators',
+      retrieve: '/api-huex/v1/provinceEstivators/',
+      register: '/api-huex/v1/provinceEstivators',
+      update: '/api-huex/v1/provinceEstivators',
+      delete: '/api-huex/v1/provinceEstivators/'
     }
   }
 };
