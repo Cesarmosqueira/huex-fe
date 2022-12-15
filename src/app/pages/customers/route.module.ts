@@ -8,13 +8,15 @@ import {Ng2SearchPipeModule} from "ng2-search-filter";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {RouteRoutingModule} from "./route-routing.module";
 import { RateComponent } from './rate/component/rate.component';
+import { CustomerComponent } from './customer/component/customer.component';
 
 
 
 @NgModule({
   declarations: [
     RouteComponent,
-    RateComponent
+    RateComponent,
+    CustomerComponent
   ],
   imports: [
     CommonModule,

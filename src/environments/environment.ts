@@ -26,6 +26,13 @@ export const environment = {
     }
   },
   customers:{
+    customers:{
+      list: '/api-huex/v1/customers',
+      retrieve: '/api-huex/v1/customers/',
+      register: '/api-huex/v1/customers',
+      update: '/api-huex/v1/customers',
+      delete: '/api-huex/v1/customers/'
+    },
     route:{
       list: '/api-huex/v1/routes',
       retrieve: '/api-huex/v1/routes/',

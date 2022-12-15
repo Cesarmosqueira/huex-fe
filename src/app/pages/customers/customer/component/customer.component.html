@@ -1,0 +1,127 @@
+<div class="container-fluid">
+  <app-page-title title="Orders" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-4">
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Buscar por cliente..." [(ngModel)]="service.searchTerm">
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="text-sm-end">
+                <button type="button" class="btn btn-success btn-rounded mb-2 me-2" (click)="openModal(content)"><i
+                  class="mdi mdi-plus mr-1"></i>
+                  Nuevo</button>
+              </div>
+            </div><!-- end col-->
+          </div>
+
+          <!-- Table data -->
+          <div class="table-responsive mb-0">
+            <table class="table table-centered table-nowrap">
+              <thead class="table-light">
+              <tr>
+                <th class="align-middle">ID</th>
+                <th class="align-middle">Ruc</th>
+                <th class="align-middle">Razon social</th>
+                <th class="align-middle">Cuenta bancaria</th>
+                <th class="align-middle">Fecha registro</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of customers" id="o_{{data.id}}">
+                <td>
+                  <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
+                </td>
+                <td>{{data.ruc}}</td>
+                <td>{{data.socialReason}}</td>
+                <td>{{data.bankAccount}}</td>
+                <td>{{data.registerDate}}</td>
+                <td>
+                  <div class="d-flex gap-3">
+                    <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
+                      class="mdi mdi-pencil font-size-18"></i></a>
+                    <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
+                      class="mdi mdi-delete font-size-18"></i></a>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+
+          </div>
+          <!-- end table -->
+          <ul class="pagination pagination-rounded justify-content-end mb-2">
+            <ngb-pagination [collectionSize]="(total | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+            </ngb-pagination>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Order Create Model -->
+<ng-template #content role="document" let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Nuevo cliente</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+            (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form (ngSubmit)="saveUser()" [formGroup]="customerForm">
+    <div class="modal-body">
+      <input type="text" hidden formControlName="id" value="0" />
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Cliente</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="ruc"
+               [ngClass]="{ 'is-invalid': submitted && form['ruc'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['ruc'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['ruc'].errors['required']">Cliente es requerido</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Razon social</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="socialReason"
+               [ngClass]="{ 'is-invalid': submitted && form['socialReason'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['socialReason'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['socialReason'].errors['required']">Razon social es requerido</div>
+        </div>
+      </div>
+
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Cuenta bancaria</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="bankAccount"
+               [ngClass]="{ 'is-invalid': submitted && form['bankAccount'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['bankAccount'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['bankAccount'].errors['required']">Cuenta bancaria es requerido</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label>Fecha registro</label>
+        <div class="input-group clockpicker">
+          <input class="form-control" type="date" id="example-date-input" formControlName="registerDate" autocomplete="disabled">
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                (click)="modal.close('Close click')">Cancelar</button>
+        <button type="submit" class="btn btn-success" id="add-btn">Registrar</button>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<!--End Modal -->
