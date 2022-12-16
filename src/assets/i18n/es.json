@@ -119,6 +119,12 @@
         "TRUCKFLEET": "Flota de camiones"
       }
     },
+    "EMPLOYEES": {
+      "TEXT": "Trabajadores",
+      "LIST": {
+        "EMPLOYEE": "Trabajadores"
+      }
+    },
     "CUSTOMERS": {
       "TEXT": "Clientes",
       "LIST": {
