@@ -13,6 +13,7 @@ import {NgbDatepickerModule, NgbModalModule, NgbNavModule, NgbPaginationModule} 
 import {FormsModule} from '@angular/forms';
 import { ImplementComponent } from './implement/component/implement.component';
 import { EmployeeImplementComponent } from './employee-implement/component/employee-implement.component';
+import { EmployeeAttendanceComponent } from './employee-attendance/component/employee-attendance.component';
 
 
 
@@ -20,7 +21,8 @@ import { EmployeeImplementComponent } from './employee-implement/component/emplo
   declarations: [
     EmployeeComponent,
     ImplementComponent,
-    EmployeeImplementComponent
+    EmployeeImplementComponent,
+    EmployeeAttendanceComponent
   ],
   imports: [
     CommonModule,

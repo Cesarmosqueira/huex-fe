@@ -124,7 +124,8 @@
       "LIST": {
         "EMPLOYEE": "Trabajadores",
         "IMPLEMENT": "Implementos",
-        "EMPLOYEEIMPLEMENT": "Entrega Implementos"
+        "EMPLOYEEIMPLEMENT": "Entrega Implementos",
+        "EMPLOYEEATTENDANCE": "Asistencia trabajador"
 
       }
     },

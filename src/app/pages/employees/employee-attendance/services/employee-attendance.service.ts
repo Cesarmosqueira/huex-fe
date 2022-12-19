@@ -1,26 +1,28 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable, of, Subject} from "rxjs";
-import {State} from "../../employee-implement/interfaces/state";
+import {EmployeeImplement} from "../../employee-implement/models/employee-implement.model";
+import {State} from "../../employee-attendance/interfaces/state";
 import {HttpClient} from "@angular/common/http";
 import {DecimalPipe} from "@angular/common";
 import {ResponseModel} from "../../../../shared/utils/response-model";
 import {environment} from "../../../../../environments/environment";
 import {catchError, debounceTime, delay, map, switchMap, tap} from "rxjs/operators";
-import {matches, sort, SortColumn, SortDirection} from "../../employee-implement/utils/utils";
-import {SearchResult} from "../../employee-implement/interfaces/search-result.interface";
-import {EmployeeImplement} from "../models/employee-implement.model";
+import {matches, sort, SortColumn, SortDirection} from "../../employee-attendance/utils/utils";
+import {SearchResult} from "../../employee-attendance/interfaces/search-result.interface";
 import {BaseService} from "../../../../shared/utils/base-service";
+import {EmployeeAttendance} from "../models/employee-attendance.model";
 
 @Injectable({
   providedIn: 'root'
 })
-export class EmployeeImplementService extends BaseService{
+export class EmployeeAttendanceService extends BaseService{
+
 
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _employeeImplement$ = new BehaviorSubject<EmployeeImplement[]>([]);
+  private _employeeAttendance$ = new BehaviorSubject<EmployeeAttendance[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
-  private employeeImplement: any;
+  private employeeAttendance: any;
 
   content?: any;
   products?: any;
@@ -44,38 +46,40 @@ export class EmployeeImplementService extends BaseService{
   }
 
 
+
+
   //consume APIS
 
-  public listEmployeeImplements(): Observable<ResponseModel<any>> {
-    return this.httpClient.get(environment.server + environment.employees.employeeImplement.list)
+  public listEmployeeAttendance(): Observable<ResponseModel<any>> {
+    return this.httpClient.get(environment.server + environment.employees.employeeAttendance.list)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
-  public retrieveEmployeeImplement(id: number): Observable<ResponseModel<EmployeeImplement>> {
-    return this.httpClient.get(environment.server + environment.employees.employeeImplement.retrieve + id)
-      .pipe(map((responseModel: ResponseModel<EmployeeImplement>) => {
+  public retrieveEmployeeAttendance(id: number): Observable<ResponseModel<EmployeeAttendance>> {
+    return this.httpClient.get(environment.server + environment.employees.employeeAttendance.retrieve + id)
+      .pipe(map((responseModel: ResponseModel<EmployeeAttendance>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
-  public registerEmployeeImplement(employeeImplement: EmployeeImplement): Observable<ResponseModel<any>> {
-    return this.httpClient.post(environment.server + environment.employees.employeeImplement.register, employeeImplement)
+  public registerEmployeeAttendance(employeeAttendance: EmployeeAttendance): Observable<ResponseModel<any>> {
+    return this.httpClient.post(environment.server + environment.employees.employeeAttendance.register, employeeAttendance)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
-  public updateEmployeeImplement(employeeImplement: EmployeeImplement): Observable<ResponseModel<any>> {
-    return this.httpClient.put(environment.server + environment.employees.employeeImplement.update, employeeImplement)
+  public updateEmployeeAttendance(employeeAttendance: EmployeeAttendance): Observable<ResponseModel<any>> {
+    return this.httpClient.put(environment.server + environment.employees.employeeAttendance.update, employeeAttendance)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
-  public deleteEmployeeImplement(id: number): Observable<ResponseModel<any>> {
-    return this.httpClient.delete(environment.server + environment.employees.employeeImplement.delete + id)
+  public deleteEmployeeAttendance(id: number): Observable<ResponseModel<any>> {
+    return this.httpClient.delete(environment.server + environment.employees.employeeAttendance.delete + id)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
@@ -83,8 +87,8 @@ export class EmployeeImplementService extends BaseService{
 
   //Pagination
 
-  public paginationTable(employeeImplements: EmployeeImplement[]) {
-    this.employeeImplement = employeeImplements;
+  public paginationTable(employeeAttendances: EmployeeAttendance[]) {
+    this.employeeAttendance = employeeAttendances;
     this._search$.pipe(
       tap(() => this._loading$.next(true)),
       debounceTime(200),
@@ -92,14 +96,14 @@ export class EmployeeImplementService extends BaseService{
       delay(200),
       tap(() => this._loading$.next(false))
     ).subscribe(result => {
-      this._employeeImplement$.next(result.employeeImplement);
+      this._employeeAttendance$.next(result.employeeAttendance);
       this._total$.next(result.total);
     });
 
     this._search$.next();
   }
 
-  get countries$() { return this._employeeImplement$.asObservable(); }
+  get countries$() { return this._employeeAttendance$.asObservable(); }
   get product() { return this.products; }
   get total$() { return this._total$.asObservable(); }
   get loading$() { return this._loading$.asObservable(); }
@@ -127,21 +131,21 @@ export class EmployeeImplementService extends BaseService{
   private _search(): Observable<SearchResult> {
     const {sortColumn, sortDirection, page, searchTerm} = this._state;
     // 1. sort
-    let employeeImplement = sort(this.employeeImplement, sortColumn, sortDirection);
+    let employeeAttendance = sort(this.employeeAttendance, sortColumn, sortDirection);
 
     // 2. filter
-    employeeImplement = employeeImplement.filter(country => matches(country, searchTerm, this.pipe));
-    const total = employeeImplement.length;
+    employeeAttendance = employeeAttendance.filter(country => matches(country, searchTerm, this.pipe));
+    const total = employeeAttendance.length;
 
     // 3. paginate
-    this.totalRecords = employeeImplement.length;
+    this.totalRecords = employeeAttendance.length;
     this._state.startIndex = (page - 1) * this.pageSize + 1;
     this._state.endIndex = (page - 1) * this.pageSize + this.pageSize;
     if (this.endIndex > this.totalRecords) {
       this.endIndex = this.totalRecords;
     }
-    employeeImplement = employeeImplement.slice(this._state.startIndex - 1, this._state.endIndex);
-    return of({employeeImplement: employeeImplement, total});
+    employeeAttendance = employeeAttendance.slice(this._state.startIndex - 1, this._state.endIndex);
+    return of({employeeAttendance: employeeAttendance, total});
   }
 
 }

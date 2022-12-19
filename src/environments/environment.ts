@@ -31,12 +31,19 @@ export const environment = {
       update: '/api-huex/v1/implements',
       delete: '/api-huex/v1/implements/'
     },
-    emploimplement:{
-      list: '/api-huex/v1/emploimplements',
-      retrieve: '/api-huex/v1/emploimplements/',
-      register: '/api-huex/v1/emploimplements',
-      update: '/api-huex/v1/emploimplements',
-      delete: '/api-huex/v1/emploimplements/'
+    employeeImplement:{
+      list: '/api-huex/v1/employeeImplements',
+      retrieve: '/api-huex/v1/employeeImplements/',
+      register: '/api-huex/v1/employeeImplements',
+      update: '/api-huex/v1/employeeImplements',
+      delete: '/api-huex/v1/employeeImplements/'
+    },
+    employeeAttendance:{
+      list: '/api-huex/v1/employeeAttendances',
+      retrieve: '/api-huex/v1/employeeAttendances/',
+      register: '/api-huex/v1/employeeAttendances',
+      update: '/api-huex/v1/employeeAttendances',
+      delete: '/api-huex/v1/employeeAttendances/'
     }
   },
   customers:{
