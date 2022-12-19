@@ -125,8 +125,8 @@
         "EMPLOYEE": "Trabajadores",
         "IMPLEMENT": "Implementos",
         "EMPLOYEEIMPLEMENT": "Entrega Implementos",
-        "EMPLOYEEATTENDANCE": "Asistencia trabajador"
-
+        "EMPLOYEEATTENDANCE": "Asistencia trabajador",
+        "EMPLOYEEDISCOUNT": "Descuento trabajador"
       }
     },
     "CUSTOMERS": {

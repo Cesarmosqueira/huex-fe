@@ -1,27 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
+import {EmployeeAttendance} from "../../employee-attendance/models/employee-attendance.model";
 import {Observable} from "rxjs";
+import {EmployeeAttendanceService} from "../../employee-attendance/services/employee-attendance.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
-import {EmployeeAttendance} from "../models/employee-attendance.model";
-import {EmployeeAttendanceService} from "../services/employee-attendance.service";
+import {EmployeeDiscount} from "../models/employee-discount.model";
+import {EmployeeDiscountService} from "../services/employee-discount.service";
 
 @Component({
-  selector: 'app-employee-attendance',
-  templateUrl: './employee-attendance.component.html',
-  styleUrls: ['./employee-attendance.component.scss']
+  selector: 'app-employee-discount',
+  templateUrl: './employee-discount.component.html',
+  styleUrls: ['./employee-discount.component.scss']
 })
-export class EmployeeAttendanceComponent implements OnInit {
+export class EmployeeDiscountComponent implements OnInit {
 
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
   term: any;
 
-  employeeAttendanceForm!: UntypedFormGroup;
+  employeeDiscountForm!: UntypedFormGroup;
   submitted = false;
   register = true;
 
@@ -29,38 +31,39 @@ export class EmployeeAttendanceComponent implements OnInit {
 
   // Table data
   content?: any;
-  employeeAttendance?: any;
-  test: EmployeeAttendance[] = [];
-  employeeAttendanceList!: Observable<EmployeeAttendance[]>;
+  employeeDiscount?: any;
+  test: EmployeeDiscount[] = [];
+  employeeDiscountList!: Observable<EmployeeDiscount[]>;
   total: Observable<number>;
   pipe: any;
 
-  constructor(public service: EmployeeAttendanceService,
+  constructor(public service: EmployeeDiscountService,
               private modalService: NgbModal,
               private formBuilder: UntypedFormBuilder) {
-    this.employeeAttendanceList = service.countries$;
+    this.employeeDiscountList = service.countries$;
     this.total = service.total$;
   }
 
   ngOnInit(): void {
-    this.breadCrumbItems = [{ label: 'Empleados' }, { label: 'Asistencia', active: true }];
+    this.breadCrumbItems = [{ label: 'Empleados' }, { label: 'Descuentos', active: true }];
 
     /**
      * Form Validation
      */
-    this.employeeAttendanceForm = this.formBuilder.group({
+    this.employeeDiscountForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
+      employeeId: ['', [Validators.required]],
       date: ['', [Validators.required]],
-      state: ['', [Validators.required]],
-      employee_id: ['', [Validators.required]],
+      observations: ['', [Validators.required]],
+      charge: ['', [Validators.required]],
     });
 
-    this.employeeAttendanceList.subscribe(x => {
-      this.content = this.employeeAttendanceList;
-      this.employeeAttendance = Object.assign([], x);
+    this.employeeDiscountList.subscribe(x => {
+      this.content = this.employeeDiscountList;
+      this.employeeDiscount = Object.assign([], x);
     });
 
-    this.listEmployeeAttendance();
+    this.listEmployeeDiscount();
   }
 
   /**
@@ -92,7 +95,7 @@ export class EmployeeAttendanceComponent implements OnInit {
       })
       .then(result => {
         if (result.value) {
-          this.deleteEmployeeAttendance(id);
+          this.deleteEmployeeDiscount(id);
         } else if (
           /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel
@@ -119,7 +122,7 @@ export class EmployeeAttendanceComponent implements OnInit {
    * Form data get
    */
   get form() {
-    return this.employeeAttendanceForm.controls;
+    return this.employeeDiscountForm.controls;
   }
 
   /**
@@ -127,29 +130,33 @@ export class EmployeeAttendanceComponent implements OnInit {
    */
   saveUser() {
     this.submitted = true
-    if (this.employeeAttendanceForm.valid) {
+    if (this.employeeDiscountForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const date = this.employeeAttendanceForm.get('date')?.value;
-      const state = this.employeeAttendanceForm.get('state')?.value;
-      const employee_id = this.employeeAttendanceForm.get('employee_id')?.value;
+      const employeeId = this.employeeDiscountForm.get('employeeId')?.value;
+      const date = this.employeeDiscountForm.get('date')?.value;
+      const observations = this.employeeDiscountForm.get('observations')?.value;
+      const charge = this.employeeDiscountForm.get('charge')?.value;
 
-      let employeeAttendance = new EmployeeAttendance();
-      employeeAttendance.date = date;
-      employeeAttendance.state = state;
-      employeeAttendance.employee_id = employee_id;
-      const id = this.employeeAttendanceForm.get('id')?.value;
-      console.log(employeeAttendance);
+
+      let employeeDiscount = new EmployeeDiscount();
+      employeeDiscount.employeeId = employeeId;
+      employeeDiscount.date = date;
+      employeeDiscount.observations = observations;
+      employeeDiscount.charge = charge;
+
+      const id = this.employeeDiscountForm.get('id')?.value;
+      console.log(employeeDiscount);
       console.log(id);
       if (id == '0') {
-        this.registerEmployeeAttendance(employeeAttendance);
+        this.registerEmployeeDiscount(employeeDiscount);
       } else {
-        employeeAttendance.id = id;
-        this.updateEmployeeAttendance(employeeAttendance);
+        employeeDiscount.id = id;
+        this.updateEmployeeDiscount(employeeDiscount);
       }
 
       this.modalService.dismissAll();
       setTimeout(() => {
-        this.employeeAttendanceForm.reset();
+        this.employeeDiscountForm.reset();
       }, 2000);
     }
   }
@@ -163,26 +170,27 @@ export class EmployeeAttendanceComponent implements OnInit {
     this.pipe = new DatePipe('en-US');
     this.modalService.open(content, { size: 'md', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-    modelTitle.innerHTML = 'Actualizar Asistencia trabajador';
+    modelTitle.innerHTML = 'Actualizar Descuento trabajador';
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
-    var listData = this.employeeAttendance.filter((data: { id: any; }) => data.id === id);
+    var listData = this.employeeDiscount.filter((data: { id: any; }) => data.id === id);
     const fabricationDate = listData[0].fabricationDate.substring(0, 10);
     const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
-    this.employeeAttendanceForm.controls['id'].setValue(listData[0].id);
-    this.employeeAttendanceForm.controls['date'].setValue(fortmatFabricationDate);
-    this.employeeAttendanceForm.controls['state'].setValue(listData[0].state);
-    this.employeeAttendanceForm.controls['employee_id'].setValue(listData[0].employee_id);
+    this.employeeDiscountForm.controls['id'].setValue(listData[0].id);
+    this.employeeDiscountForm.controls['employeeId'].setValue(listData[0].employeeId);
+    this.employeeDiscountForm.controls['date'].setValue(fortmatFabricationDate);
+    this.employeeDiscountForm.controls['observations'].setValue(listData[0].observations);
+    this.employeeDiscountForm.controls['charge'].setValue(listData[0].charge);
   }
 
-  listEmployeeAttendance() {
-    this.service.listEmployeeAttendance()
+  listEmployeeDiscount() {
+    this.service.listEmployeeDiscount()
       .pipe(first())
       .subscribe(
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.employeeAttendanceDtoList;
+              this.test = response.datos.employeeDiscountDtoList;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
@@ -208,8 +216,8 @@ export class EmployeeAttendanceComponent implements OnInit {
         });
   }
 
-  registerEmployeeAttendance(employeeAttendance) {
-    this.service.registerEmployeeAttendance(employeeAttendance)
+  registerEmployeeDiscount(employeeDiscount) {
+    this.service.registerEmployeeDiscount(employeeDiscount)
       .pipe(first())
       .subscribe(
         response => {
@@ -220,7 +228,7 @@ export class EmployeeAttendanceComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.listEmployeeAttendance();
+              this.listEmployeeDiscount();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -245,14 +253,14 @@ export class EmployeeAttendanceComponent implements OnInit {
         });
   }
 
-  updateEmployeeAttendance(employeeAttendance) {
-    this.service.updateEmployeeAttendance(employeeAttendance)
+  updateEmployeeDiscount(employeeDiscount) {
+    this.service.updateEmployeeDiscount(employeeDiscount)
       .pipe(first())
       .subscribe(
         response => {
           if (response) {
             if (response.datos) {
-              this.listEmployeeAttendance();
+              this.listEmployeeDiscount();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -277,8 +285,8 @@ export class EmployeeAttendanceComponent implements OnInit {
         });
   }
 
-  deleteEmployeeAttendance(id) {
-    this.service.deleteEmployeeAttendance(id)
+  deleteEmployeeDiscount(id) {
+    this.service.deleteEmployeeDiscount(id)
       .pipe(first())
       .subscribe(
         response => {
@@ -289,7 +297,7 @@ export class EmployeeAttendanceComponent implements OnInit {
                 'Su archivo ha sido eliminado.',
                 'success'
               );
-              this.listEmployeeAttendance();
+              this.listEmployeeDiscount();
             } else {
               Swal.fire({
                 icon: config.WARNING,

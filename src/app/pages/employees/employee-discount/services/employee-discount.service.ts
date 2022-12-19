@@ -1,27 +1,27 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable, of, Subject} from "rxjs";
-import {State} from "../../employee-attendance/interfaces/state";
+import {State} from "../../employee-discount/interfaces/state";
 import {HttpClient} from "@angular/common/http";
 import {DecimalPipe} from "@angular/common";
 import {ResponseModel} from "../../../../shared/utils/response-model";
 import {environment} from "../../../../../environments/environment";
 import {catchError, debounceTime, delay, map, switchMap, tap} from "rxjs/operators";
-import {matches, sort, SortColumn, SortDirection} from "../../employee-attendance/utils/utils";
-import {SearchResult} from "../../employee-attendance/interfaces/search-result.interface";
+import {matches, sort, SortColumn, SortDirection} from "../../employee-discount/utils/utils";
+import {SearchResult} from "../../employee-discount/interfaces/search-result.interface";
 import {BaseService} from "../../../../shared/utils/base-service";
-import {EmployeeAttendance} from "../models/employee-attendance.model";
+import {EmployeeDiscount} from "../models/employee-discount.model";
 
 @Injectable({
   providedIn: 'root'
 })
-export class EmployeeAttendanceService extends BaseService{
+export class EmployeeDiscountService extends BaseService{
 
 
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _employeeAttendance$ = new BehaviorSubject<EmployeeAttendance[]>([]);
+  private _employeeDiscount$ = new BehaviorSubject<EmployeeDiscount[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
-  private employeeAttendance: any;
+  private employeeDiscount: any;
 
   content?: any;
   products?: any;
@@ -49,36 +49,36 @@ export class EmployeeAttendanceService extends BaseService{
 
   //consume APIS
 
-  public listEmployeeAttendance(): Observable<ResponseModel<any>> {
-    return this.httpClient.get(environment.server + environment.employees.employeeAttendance.list)
+  public listEmployeeDiscount(): Observable<ResponseModel<any>> {
+    return this.httpClient.get(environment.server + environment.employees.employeeDiscount.list)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
-  public retrieveEmployeeAttendance(id: number): Observable<ResponseModel<EmployeeAttendance>> {
-    return this.httpClient.get(environment.server + environment.employees.employeeAttendance.retrieve + id)
-      .pipe(map((responseModel: ResponseModel<EmployeeAttendance>) => {
+  public retrieveEmployeeDiscount(id: number): Observable<ResponseModel<EmployeeDiscount>> {
+    return this.httpClient.get(environment.server + environment.employees.employeeDiscount.retrieve + id)
+      .pipe(map((responseModel: ResponseModel<EmployeeDiscount>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
-  public registerEmployeeAttendance(employeeAttendance: EmployeeAttendance): Observable<ResponseModel<any>> {
-    return this.httpClient.post(environment.server + environment.employees.employeeAttendance.register, employeeAttendance)
+  public registerEmployeeDiscount(employeeDiscount: EmployeeDiscount): Observable<ResponseModel<any>> {
+    return this.httpClient.post(environment.server + environment.employees.employeeDiscount.register, employeeDiscount)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
-  public updateEmployeeAttendance(employeeAttendance: EmployeeAttendance): Observable<ResponseModel<any>> {
-    return this.httpClient.put(environment.server + environment.employees.employeeAttendance.update, employeeAttendance)
+  public updateEmployeeDiscount(employeeDiscount: EmployeeDiscount): Observable<ResponseModel<any>> {
+    return this.httpClient.put(environment.server + environment.employees.employeeDiscount.update, employeeDiscount)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
-  public deleteEmployeeAttendance(id: number): Observable<ResponseModel<any>> {
-    return this.httpClient.delete(environment.server + environment.employees.employeeAttendance.delete + id)
+  public deleteEmployeeDiscount(id: number): Observable<ResponseModel<any>> {
+    return this.httpClient.delete(environment.server + environment.employees.employeeDiscount.delete + id)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
@@ -86,8 +86,8 @@ export class EmployeeAttendanceService extends BaseService{
 
   //Pagination
 
-  public paginationTable(employeeAttendances: EmployeeAttendance[]) {
-    this.employeeAttendance = employeeAttendances;
+  public paginationTable(employeeDiscounts: EmployeeDiscount[]) {
+    this.employeeDiscount = employeeDiscounts;
     this._search$.pipe(
       tap(() => this._loading$.next(true)),
       debounceTime(200),
@@ -95,14 +95,14 @@ export class EmployeeAttendanceService extends BaseService{
       delay(200),
       tap(() => this._loading$.next(false))
     ).subscribe(result => {
-      this._employeeAttendance$.next(result.employeeAttendance);
+      this._employeeDiscount$.next(result.employeeDiscount);
       this._total$.next(result.total);
     });
 
     this._search$.next();
   }
 
-  get countries$() { return this._employeeAttendance$.asObservable(); }
+  get countries$() { return this._employeeDiscount$.asObservable(); }
   get product() { return this.products; }
   get total$() { return this._total$.asObservable(); }
   get loading$() { return this._loading$.asObservable(); }
@@ -130,21 +130,20 @@ export class EmployeeAttendanceService extends BaseService{
   private _search(): Observable<SearchResult> {
     const {sortColumn, sortDirection, page, searchTerm} = this._state;
     // 1. sort
-    let employeeAttendance = sort(this.employeeAttendance, sortColumn, sortDirection);
+    let employeeDiscount = sort(this.employeeDiscount, sortColumn, sortDirection);
 
     // 2. filter
-    employeeAttendance = employeeAttendance.filter(country => matches(country, searchTerm, this.pipe));
-    const total = employeeAttendance.length;
+    employeeDiscount = employeeDiscount.filter(country => matches(country, searchTerm, this.pipe));
+    const total = employeeDiscount.length;
 
     // 3. paginate
-    this.totalRecords = employeeAttendance.length;
+    this.totalRecords = employeeDiscount.length;
     this._state.startIndex = (page - 1) * this.pageSize + 1;
     this._state.endIndex = (page - 1) * this.pageSize + this.pageSize;
     if (this.endIndex > this.totalRecords) {
       this.endIndex = this.totalRecords;
     }
-    employeeAttendance = employeeAttendance.slice(this._state.startIndex - 1, this._state.endIndex);
-    return of({employeeAttendance: employeeAttendance, total});
+    employeeDiscount = employeeDiscount.slice(this._state.startIndex - 1, this._state.endIndex);
+    return of({employeeDiscount: employeeDiscount, total});
   }
-
 }
