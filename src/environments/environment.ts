@@ -30,6 +30,27 @@ export const environment = {
       register: '/api-huex/v1/implements',
       update: '/api-huex/v1/implements',
       delete: '/api-huex/v1/implements/'
+    },
+    employeeImplement:{
+      list: '/api-huex/v1/employeeImplements',
+      retrieve: '/api-huex/v1/employeeImplements/',
+      register: '/api-huex/v1/employeeImplements',
+      update: '/api-huex/v1/employeeImplements',
+      delete: '/api-huex/v1/employeeImplements/'
+    },
+    employeeAttendance:{
+      list: '/api-huex/v1/employeeAttendances',
+      retrieve: '/api-huex/v1/employeeAttendances/',
+      register: '/api-huex/v1/employeeAttendances',
+      update: '/api-huex/v1/employeeAttendances',
+      delete: '/api-huex/v1/employeeAttendances/'
+    },
+    employeeDiscount:{
+      list: '/api-huex/v1/employeeDiscounts',
+      retrieve: '/api-huex/v1/employeeDiscounts/',
+      register: '/api-huex/v1/employeeDiscounts',
+      update: '/api-huex/v1/employeeDiscounts',
+      delete: '/api-huex/v1/employeeDiscounts/'
     }
   },
   customers:{

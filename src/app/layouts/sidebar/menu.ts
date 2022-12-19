@@ -18,6 +18,24 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.EMPLOYEES.LIST.IMPLEMENT',
         link: '/employees/implement',
         parentId: 1
+      },
+      {
+        id: 2,
+        label: 'MENUITEMS.EMPLOYEES.LIST.EMPLOYEEIMPLEMENT',
+        link: '/employees/employee-implement',
+        parentId: 1
+      },
+      {
+        id: 2,
+        label: 'MENUITEMS.EMPLOYEES.LIST.EMPLOYEEATTENDANCE',
+        link: '/employees/employee-attendance',
+        parentId: 1
+      },
+      {
+        id: 2,
+        label: 'MENUITEMS.EMPLOYEES.LIST.EMPLOYEEDISCOUNT',
+        link: '/employees/employee-discount',
+        parentId: 1
       }
     ]
   },
