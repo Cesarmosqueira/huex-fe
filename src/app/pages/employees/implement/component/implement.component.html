@@ -1,0 +1,138 @@
+<div class="container-fluid">
+  <app-page-title title="Orders" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-4">
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Buscar por implemento..." [(ngModel)]="service.searchTerm">
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="text-sm-end">
+                <button type="button" class="btn btn-success btn-rounded mb-2 me-2" (click)="openModal(content)"><i
+                  class="mdi mdi-plus mr-1"></i>
+                  Nuevo</button>
+              </div>
+            </div><!-- end col-->
+          </div>
+
+          <!-- Table data -->
+          <div class="table-responsive mb-0">
+            <table class="table table-centered table-nowrap">
+              <thead class="table-light">
+              <tr>
+                <th class="align-middle">ID</th>
+                <th class="align-middle">Nombre implemento</th>
+                <th class="align-middle">Descripcion</th>
+                <th class="align-middle">Disposicion</th>
+                <th class="align-middle">Stock</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of implement" id="o_{{data.id}}">
+                <td>
+                  <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
+                </td>
+                <td>{{data.name}}</td>
+                <td>{{data.description}}</td>
+                <td>{{data.available}}</td>
+                <td>{{data.stock}}</td>
+                <td>
+                  <div class="d-flex gap-3">
+                    <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
+                      class="mdi mdi-pencil font-size-18"></i></a>
+                    <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
+                      class="mdi mdi-delete font-size-18"></i></a>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+
+          </div>
+          <!-- end table -->
+          <ul class="pagination pagination-rounded justify-content-end mb-2">
+            <ngb-pagination [collectionSize]="(total | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+            </ngb-pagination>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Order Create Model -->
+<ng-template #content role="document" let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Nuevo Implemento</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+            (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form (ngSubmit)="saveUser()" [formGroup]="implementForm">
+    <div class="modal-body">
+      <input type="text" hidden formControlName="id" value="0" />
+
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Implemento</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="name"
+               [ngClass]="{ 'is-invalid': submitted && form['name'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['name'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['name'].errors['required']">Nombre de implemento es requerido</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Descripcion</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="description"
+               [ngClass]="{ 'is-invalid': submitted && form['description'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['description'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['description'].errors['required']">Descripcion es requerido</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Placa Furgon</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="zone"
+               [ngClass]="{ 'is-invalid': submitted && form['zone'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['zone'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['zone'].errors['required']">zona es requerido</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Disposicion</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="available"
+               [ngClass]="{ 'is-invalid': submitted && form['available'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['available'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['available'].errors['required']">Disposicion es requerido</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Stock</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="stock"
+               [ngClass]="{ 'is-invalid': submitted && form['stock'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['stock'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['stock'].errors['required']">Stock es requerido</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                (click)="modal.close('Close click')">Cancelar</button>
+        <button type="submit" class="btn btn-success" id="add-btn">Registrar</button>
+      </div>
+    </div>
+  </form>
+</ng-template>
