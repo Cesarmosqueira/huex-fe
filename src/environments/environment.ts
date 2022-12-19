@@ -30,6 +30,13 @@ export const environment = {
       register: '/api-huex/v1/implements',
       update: '/api-huex/v1/implements',
       delete: '/api-huex/v1/implements/'
+    },
+    emploimplement:{
+      list: '/api-huex/v1/emploimplements',
+      retrieve: '/api-huex/v1/emploimplements/',
+      register: '/api-huex/v1/emploimplements',
+      update: '/api-huex/v1/emploimplements',
+      delete: '/api-huex/v1/emploimplements/'
     }
   },
   customers:{

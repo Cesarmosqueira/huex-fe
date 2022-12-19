@@ -12,13 +12,15 @@ import {NgbDatepickerModule, NgbModalModule, NgbNavModule, NgbPaginationModule} 
 
 import {FormsModule} from '@angular/forms';
 import { ImplementComponent } from './implement/component/implement.component';
+import { EmployeeImplementComponent } from './employee-implement/component/employee-implement.component';
 
 
 
 @NgModule({
   declarations: [
     EmployeeComponent,
-    ImplementComponent
+    ImplementComponent,
+    EmployeeImplementComponent
   ],
   imports: [
     CommonModule,
