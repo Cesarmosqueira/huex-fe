@@ -11,12 +11,14 @@ import {UIModule} from '../../shared/ui/ui.module';
 import {NgbDatepickerModule, NgbModalModule, NgbNavModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {FormsModule} from '@angular/forms';
+import { ImplementComponent } from './implement/component/implement.component';
 
 
 
 @NgModule({
   declarations: [
-    EmployeeComponent
+    EmployeeComponent,
+    ImplementComponent
   ],
   imports: [
     CommonModule,

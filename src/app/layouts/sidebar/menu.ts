@@ -12,6 +12,12 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.EMPLOYEES.LIST.EMPLOYEE',
         link: '/employees/employee',
         parentId: 1
+      },
+      {
+        id: 2,
+        label: 'MENUITEMS.EMPLOYEES.LIST.IMPLEMENT',
+        link: '/employees/implement',
+        parentId: 1
       }
     ]
   },

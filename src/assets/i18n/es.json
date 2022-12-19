@@ -122,7 +122,8 @@
     "EMPLOYEES": {
       "TEXT": "Trabajadores",
       "LIST": {
-        "EMPLOYEE": "Trabajadores"
+        "EMPLOYEE": "Trabajadores",
+        "IMPLEMENT": "Implementos"
       }
     },
     "CUSTOMERS": {
