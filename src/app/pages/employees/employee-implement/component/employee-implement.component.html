@@ -40,7 +40,7 @@
                   <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                 </td>
                 <td>{{data.employee}}</td>
-                <td>{{data.date}}</td>
+                <td>{{data.date.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                 <td>{{data.observations}}</td>
                 <td>
                   <div class="d-flex gap-3">

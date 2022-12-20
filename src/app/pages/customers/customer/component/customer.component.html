@@ -42,7 +42,7 @@
                 <td>{{data.ruc}}</td>
                 <td>{{data.socialReason}}</td>
                 <td>{{data.bankAccount}}</td>
-                <td>{{data.registerDate}}</td>
+                <td>{{data.registerDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                 <td>
                   <div class="d-flex gap-3">
                     <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i

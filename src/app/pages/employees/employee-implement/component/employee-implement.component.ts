@@ -222,7 +222,7 @@ export class EmployeeImplementComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.employeeImplement();
+              this.listEmployeeImplements();
             } else {
               Swal.fire({
                 icon: config.WARNING,
