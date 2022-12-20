@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable, of, Subject} from "rxjs";
-import {State} from "../../../providers/province-estivators/interfaces/state";
+import {State} from "../../province-estivators/interfaces/state";
 import {HttpClient} from "@angular/common/http";
 import {DecimalPipe} from "@angular/common";
 import {ResponseModel} from "../../../../shared/utils/response-model";
 import {environment} from "../../../../../environments/environment";
 import {catchError, debounceTime, delay, map, switchMap, tap} from "rxjs/operators";
-import {matches, sort, SortColumn, SortDirection} from "../../../providers/province-estivators/utils/utils";
-import {SearchResult} from "../../../providers/province-estivators/interfaces/search-result.interface";
+import {matches, sort, SortColumn, SortDirection} from "../../province-estivators/utils/utils";
+import {SearchResult} from "../../province-estivators/interfaces/search-result.interface";
 import {BaseService} from "../../../../shared/utils/base-service";
 import {ProvinceEstivators} from "../models/province-estivators.model";
 

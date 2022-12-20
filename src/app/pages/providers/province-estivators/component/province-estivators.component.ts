@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
-import {Route} from "../../../customers/route/models/route.model";
+import {ProvinceEstivators} from "../../../providers/province-estivators/models/province-estivators.model";
 import {Observable} from "rxjs";
-import {RouteService} from "../../../customers/route/services/route.service";
+import {ProvinceEstivatorsService} from "../../../providers/province-estivators/services/province-estivators.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
-import {ProvinceEstivators} from "../models/province-estivators.model";
-import {ProvinceEstivatorsService} from "../services/province-estivators.service";
 
 @Component({
   selector: 'app-province-estivators',
@@ -17,6 +15,7 @@ import {ProvinceEstivatorsService} from "../services/province-estivators.service
   styleUrls: ['./province-estivators.component.scss']
 })
 export class ProvinceEstivatorsComponent implements OnInit {
+
 
   // bread crumb items
   breadCrumbItems: Array<{}>;

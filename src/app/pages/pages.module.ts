@@ -40,12 +40,10 @@ import { ChatComponent } from './chat/chat.component';
 
 import { FilemanagerComponent } from './filemanager/filemanager.component';
 import { VehiclesModule } from './vehicles/vehicles.module';
-import { RouteComponent } from './customers/route/component/route.component';
 import {RouteModule} from "./customers/route.module";
-import { ExpenseTypeComponent } from './services/expense-type/component/expense-type.component';
 import {ServicesModule} from "./services/services.module";
-import {ProvidersModule} from "./providers/providers.module";
 import {EmployeeModule} from "./employees/employees.module";
+import {ProvidersModule} from "./providers/providers.module";
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -91,8 +89,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     VehiclesModule,
     RouteModule,
     ServicesModule,
-    ProvidersModule,
-    EmployeeModule
+    EmployeeModule,
+    ProvidersModule
   ],
 })
 export class PagesModule { }

@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import {ProvinceEstivators} from "./province-estivators/models/province-estivators.model";
+import {RouterModule, Routes} from "@angular/router";
+import {ProvinceEstivatorsComponent} from "./province-estivators/component/province-estivators.component";
+
 
 const routes: Routes = [
-  {path:"provinceEstivators",component:ProvinceEstivators}
+
+  {path:"province-estivators", component: ProvinceEstivatorsComponent}
 ];
 
 @NgModule({
