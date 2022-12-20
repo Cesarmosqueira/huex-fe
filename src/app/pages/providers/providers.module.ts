@@ -9,13 +9,15 @@ import {ProvinceEstivatorsComponent} from "./province-estivators/component/provi
 import {ProvidersRoutingModule} from "./providers-routing.module";
 import { ProviderComponent } from './provider/component/provider.component';
 import { TireReplacementComponent } from './tire-replacement/component/tire-replacement.component';
+import { FuelSupplyComponent } from './fuel-supply/component/fuel-supply.component';
 
 
 @NgModule({
   declarations: [
     ProvinceEstivatorsComponent,
     ProviderComponent,
-    TireReplacementComponent
+    TireReplacementComponent,
+    FuelSupplyComponent
   ],
   imports: [
     CommonModule,

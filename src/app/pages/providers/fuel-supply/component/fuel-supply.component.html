@@ -1,0 +1,152 @@
+<div class="container-fluid">
+  <app-page-title title="Orders" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-4">
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Buscar por proveedor..." [(ngModel)]="service.searchTerm">
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="text-sm-end">
+                <button type="button" class="btn btn-success btn-rounded mb-2 me-2" (click)="openModal(content)"><i
+                  class="mdi mdi-plus mr-1"></i>
+                  Nuevo</button>
+              </div>
+            </div><!-- end col-->
+          </div>
+
+          <!-- Table data -->
+          <div class="table-responsive mb-0">
+            <table class="table table-centered table-nowrap">
+              <thead class="table-light">
+              <tr>
+                <th class="align-middle">ID</th>
+                <th class="align-middle">Proveedor</th>
+                <th class="align-middle">Fecha abastecimiento</th>
+                <th class="align-middle">Cantidad combustible</th>
+                <th class="align-middle">Precio galon</th>
+                <th class="align-middle">Costo total</th>
+                <th class="align-middle">Observaciones</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of fuelSupply" id="o_{{data.id}}">
+                <td>
+                  <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
+                </td>
+                <td>{{data.providerId}}</td>
+                <td>{{data.dateFuel.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                <td>{{data.fuelQuantity}}</td>
+                <td>{{data.gallonPrice}}</td>
+                <td>{{data.totalPrice}}</td>
+                <td>{{data.observation}}</td>
+                <td>
+                  <div class="d-flex gap-3">
+                    <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
+                      class="mdi mdi-pencil font-size-18"></i></a>
+                    <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
+                      class="mdi mdi-delete font-size-18"></i></a>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+
+          </div>
+          <!-- end table -->
+          <ul class="pagination pagination-rounded justify-content-end mb-2">
+            <ngb-pagination [collectionSize]="(total | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+            </ngb-pagination>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Order Create Model -->
+<ng-template #content role="document" let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Nuevo proveedor</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+            (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form (ngSubmit)="saveUser()" [formGroup]="fuelSupplyForm">
+    <div class="modal-body">
+      <input type="text" hidden formControlName="id" value="0" />
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Proveedor</label>
+        <ng-select [items]="['proveedor1','proveedor2']" id="customername-field" required formControlName="providerId"
+                   [ngClass]="{ 'is-invalid': submitted && form['providerId'].errors }"></ng-select>
+        <div *ngIf="submitted && form['providerId'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['providerId'].errors['required']">Proveedor es requerido</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label>Fecha abastecimiento</label>
+        <div class="input-group clockpicker">
+          <input class="form-control" type="date" id="example-date-input" formControlName="dateFuel" autocomplete="disabled">
+        </div>
+      </div>
+
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Cantidad combustible</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="fuelQuantity"
+               [ngClass]="{ 'is-invalid': submitted && form['fuelQuantity'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['fuelQuantity'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['fuelQuantity'].errors['required']">Cantidad combustible es requerido</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Galon precio</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="gallonPrice"
+               [ngClass]="{ 'is-invalid': submitted && form['gallonPrice'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['gallonPrice'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['gallonPrice'].errors['required']">Galon precio es requerido</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Precio total</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="totalPrice"
+               [ngClass]="{ 'is-invalid': submitted && form['totalPrice'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['totalPrice'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['totalPrice'].errors['required']">Precio total es requerido</div>
+        </div>
+      </div>
+
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Observaciones</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="observation"
+               [ngClass]="{ 'is-invalid': submitted && form['observation'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['observation'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['observation'].errors['required']">Observaciones es requerido</div>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                (click)="modal.close('Close click')">Cancelar</button>
+        <button type="submit" class="btn btn-success" id="add-btn">Registrar</button>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<!--End Modal -->

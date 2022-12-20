@@ -151,7 +151,9 @@
       "LIST": {
         "PROVIDER": "Proveedor",
         "PROVINCEESTIVATORS": "Proveedor estivador",
-        "TIREREPLACEMENT": "Proveedor llanta"
+        "TIREREPLACEMENT": "Proveedor llanta",
+        "FUELSUPPLY": "Proveedor combustible"
+
 
       }
     },

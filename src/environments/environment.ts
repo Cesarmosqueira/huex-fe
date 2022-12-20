@@ -137,6 +137,13 @@ export const environment = {
       register: '/api-huex/v1/tireReplacements',
       update: '/api-huex/v1/tireReplacements',
       delete: '/api-huex/v1/tireReplacements/'
+    },
+    fuelSupply:{
+      list: '/api-huex/v1/fuelSupply',
+      retrieve: '/api-huex/v1/fuelSupply/',
+      register: '/api-huex/v1/fuelSupply',
+      update: '/api-huex/v1/fuelSupply',
+      delete: '/api-huex/v1/fuelSupply/'
     }
   }
 };

@@ -131,6 +131,12 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.PROVIDERS.LIST.TIREREPLACEMENT',
         link: '/providers/tire-replacement',
         parentId: 1
+      },
+      {
+        id: 2,
+        label: 'MENUITEMS.PROVIDERS.LIST.FUELSUPPLY',
+        link: '/providers/fuel-supply',
+        parentId: 1
       }
     ]
   }
