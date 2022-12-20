@@ -130,11 +130,12 @@ export class EmployeeAttendanceComponent implements OnInit {
     if (this.employeeAttendanceForm.valid) {
       this.pipe = new DatePipe('en-US');
       const date = this.employeeAttendanceForm.get('date')?.value;
+      const fortmatDate = this.pipe.transform(date, 'yyyy-MM-dd');
       const state = this.employeeAttendanceForm.get('state')?.value;
       const employee_id = this.employeeAttendanceForm.get('employee_id')?.value;
 
       let employeeAttendance = new EmployeeAttendance();
-      employeeAttendance.date = date;
+      employeeAttendance.date = fortmatDate;
       employeeAttendance.state = state;
       employeeAttendance.employee_id = employee_id;
       const id = this.employeeAttendanceForm.get('id')?.value;

@@ -134,13 +134,14 @@ export class EmployeeDiscountComponent implements OnInit {
       this.pipe = new DatePipe('en-US');
       const employeeId = this.employeeDiscountForm.get('employeeId')?.value;
       const date = this.employeeDiscountForm.get('date')?.value;
+      const fortmatdate = this.pipe.transform(date, 'yyyy-MM-dd');
       const observations = this.employeeDiscountForm.get('observations')?.value;
       const charge = this.employeeDiscountForm.get('charge')?.value;
 
 
       let employeeDiscount = new EmployeeDiscount();
       employeeDiscount.employeeId = employeeId;
-      employeeDiscount.date = date;
+      employeeDiscount.date = fortmatdate;
       employeeDiscount.observations = observations;
       employeeDiscount.charge = charge;
 

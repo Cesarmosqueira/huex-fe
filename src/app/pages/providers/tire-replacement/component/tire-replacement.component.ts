@@ -137,6 +137,7 @@ export class TireReplacementComponent implements OnInit {
       this.pipe = new DatePipe('en-US');
       const providerId = 5;//this.tireReplacementForm.get('providerId')?.value;
       const replacementDate = this.tireReplacementForm.get('replacementDate')?.value;
+      const fortmatreplacementDate = this.pipe.transform(replacementDate, 'yyyy-MM-dd');
       const tireQuantity = this.tireReplacementForm.get('tireQuantity')?.value;
       const unitPrice = this.tireReplacementForm.get('unitPrice')?.value;
       const totalPrice = this.tireReplacementForm.get('totalPrice')?.value;
@@ -147,7 +148,7 @@ export class TireReplacementComponent implements OnInit {
 
       let tireReplacement = new TireReplacement();
       tireReplacement.providerId = providerId;
-      tireReplacement.replacementDate = replacementDate;
+      tireReplacement.replacementDate = fortmatreplacementDate;
       tireReplacement.tireQuantity = tireQuantity;
       tireReplacement.unitPrice = unitPrice;
       tireReplacement.totalPrice = totalPrice;

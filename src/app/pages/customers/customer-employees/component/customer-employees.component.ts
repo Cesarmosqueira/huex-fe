@@ -133,14 +133,15 @@ export class CustomerEmployeesComponent implements OnInit {
     if (this.customerEmployeesForm.valid) {
       this.pipe = new DatePipe('en-US');
       const status = this.customerEmployeesForm.get('status')?.value;
-      const registerDate =this.customerEmployeesForm.get('registerDate')?.value;
+      const registerDate = this.customerEmployeesForm.get('registerDate')?.value;
+      const fortmatregisterDate = this.pipe.transform(registerDate, 'yyyy-MM-dd');
       const observations = this.customerEmployeesForm.get('observations')?.value;
       const customer = 1;//this.customerEmployeesForm.get('customer')?.value;
       const employee = 3;//this.customerEmployeesForm.get('employee')?.value;
 
       let customerEmployees = new CustomerEmployees();
       customerEmployees.status = status;
-      customerEmployees.registerDate = registerDate;
+      customerEmployees.registerDate = fortmatregisterDate;
       customerEmployees.observations = observations;
       customerEmployees.customer = customer;
       customerEmployees.employee = employee;

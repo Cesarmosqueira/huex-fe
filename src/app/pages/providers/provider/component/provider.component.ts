@@ -142,6 +142,7 @@ export class ProviderComponent implements OnInit {
       const phoneNumber = this.providersForm.get('phoneNumber')?.value;
       const address = this.providersForm.get('address')?.value;
       const admissionDate = this.providersForm.get('admissionDate')?.value;
+      const fortmatadmissionDate = this.pipe.transform(admissionDate, 'yyyy-MM-dd');
       const bankAccount = this.providersForm.get('bankAccount')?.value;
       const observation = this.providersForm.get('observation')?.value;
 
@@ -154,7 +155,7 @@ export class ProviderComponent implements OnInit {
       providers.email = email;
       providers.phoneNumber = phoneNumber;
       providers.address = address;
-      providers.admissionDate = admissionDate;
+      providers.admissionDate = fortmatadmissionDate;
       providers.bankAccount = bankAccount;
       providers.observation = observation;
 

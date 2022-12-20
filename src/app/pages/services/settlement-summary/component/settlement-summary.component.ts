@@ -135,13 +135,14 @@ export class SettlementSummaryComponent implements OnInit {
       const trackingServiceId = 7;//this.settlementSummaryForm.get('trackingServiceId')?.value;
       const expenseTypeId = this.settlementSummaryForm.get('expenseTypeId')?.value;
       const settlementDate = this.settlementSummaryForm.get('settlementDate')?.value;
+      const fortmatSettlementDate = this.pipe.transform(settlementDate, 'yyyy-MM-dd');
       const detail = this.settlementSummaryForm.get('detail')?.value;
       const totalExpense = this.settlementSummaryForm.get('totalExpense')?.value;
 
       let settlementSummary = new SettlementSummary();
       settlementSummary.trackingServiceId = trackingServiceId;
       settlementSummary.expenseTypeId = expenseTypeId;
-      settlementSummary.settlementDate = settlementDate;
+      settlementSummary.settlementDate = fortmatSettlementDate;
       settlementSummary.detail = detail;
       settlementSummary.totalExpense = totalExpense;
 

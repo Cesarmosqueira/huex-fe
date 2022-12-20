@@ -42,7 +42,7 @@
                 </td>
                 <td>{{data.trackingServiceId}}</td>
                 <td>{{data.expenseTypeId}}</td>
-                <td>{{data.settlementDate}}</td>
+                <td>{{data.settlementDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                 <td>{{data.detail}}</td>
                 <td>{{data.totalExpense}}</td>
                 <td>

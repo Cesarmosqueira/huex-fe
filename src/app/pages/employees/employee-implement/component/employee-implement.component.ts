@@ -133,11 +133,12 @@ export class EmployeeImplementComponent implements OnInit {
       this.pipe = new DatePipe('en-US');
       const employee = this.employeeImplementForm.get('employee')?.value;
       const date = this.employeeImplementForm.get('date')?.value;
+      const fortmatDate = this.pipe.transform(date, 'yyyy-MM-dd');
       const observations = this.employeeImplementForm.get('observations')?.value;
 
       let employeeImplement = new EmployeeImplement();
       employeeImplement.employee = employee;
-      employeeImplement.date = date;
+      employeeImplement.date = fortmatDate;
       employeeImplement.observations = observations;
       const id = this.employeeImplementForm.get('id')?.value;
       console.log(employeeImplement);
