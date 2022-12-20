@@ -150,7 +150,9 @@
       "TEXT": "Proveedores",
       "LIST": {
         "PROVIDER": "Proveedor",
-        "PROVINCEESTIVATORS": "Proveedor estivador"
+        "PROVINCEESTIVATORS": "Proveedor estivador",
+        "TIREREPLACEMENT": "Proveedor llanta"
+
       }
     },
     "ECOMMERCE": {

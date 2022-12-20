@@ -130,6 +130,13 @@ export const environment = {
       register: '/api-huex/v1/provinceEstivators',
       update: '/api-huex/v1/provinceEstivators',
       delete: '/api-huex/v1/provinceEstivators/'
+    },
+    tireReplacement:{
+      list: '/api-huex/v1/tireReplacements',
+      retrieve: '/api-huex/v1/tireReplacements/',
+      register: '/api-huex/v1/tireReplacements',
+      update: '/api-huex/v1/tireReplacements',
+      delete: '/api-huex/v1/tireReplacements/'
     }
   }
 };

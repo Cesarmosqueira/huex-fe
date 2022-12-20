@@ -125,6 +125,12 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.PROVIDERS.LIST.PROVINCEESTIVATORS',
         link: '/providers/province-estivators',
         parentId: 1
+      },
+      {
+        id: 2,
+        label: 'MENUITEMS.PROVIDERS.LIST.TIREREPLACEMENT',
+        link: '/providers/tire-replacement',
+        parentId: 1
       }
     ]
   }

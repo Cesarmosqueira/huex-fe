@@ -8,12 +8,14 @@ import {NgSelectModule} from "@ng-select/ng-select";
 import {ProvinceEstivatorsComponent} from "./province-estivators/component/province-estivators.component";
 import {ProvidersRoutingModule} from "./providers-routing.module";
 import { ProviderComponent } from './provider/component/provider.component';
+import { TireReplacementComponent } from './tire-replacement/component/tire-replacement.component';
 
 
 @NgModule({
   declarations: [
     ProvinceEstivatorsComponent,
-    ProviderComponent
+    ProviderComponent,
+    TireReplacementComponent
   ],
   imports: [
     CommonModule,
