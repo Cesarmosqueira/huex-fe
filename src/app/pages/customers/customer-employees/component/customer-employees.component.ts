@@ -1,26 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
+import {Rate} from "../../rate/models/rate.model";
 import {Observable} from "rxjs";
+import {RateService} from "../../rate/services/rate.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
-import {Rate} from "../models/rate.model";
-import {RateService} from "../services/rate.service";
+import {CustomerEmployees} from "../models/customer-employees.model";
+import {CustomerEmployeesService} from "../services/customer-employees.service";
 
 @Component({
-  selector: 'app-rate',
-  templateUrl: './rate.component.html',
-  styleUrls: ['./rate.component.scss']
+  selector: 'app-customer-employees',
+  templateUrl: './customer-employees.component.html',
+  styleUrls: ['./customer-employees.component.scss']
 })
-export class RateComponent implements OnInit {
+export class CustomerEmployeesComponent implements OnInit {
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
   term: any;
 
-  rateForm!: UntypedFormGroup;
+  customerEmployeesForm!: UntypedFormGroup;
   submitted = false;
   register = true;
 
@@ -28,41 +30,40 @@ export class RateComponent implements OnInit {
 
   // Table data
   content?: any;
-  rates?: any;
-  test: Rate[] = [];
-  ratesList!: Observable<Rate[]>;
+  customerEmployees?: any;
+  test: CustomerEmployees[] = [];
+  customerEmployeesList!: Observable<CustomerEmployees[]>;
   total: Observable<number>;
   pipe: any;
 
-  constructor(public service: RateService,
+  constructor(public service: CustomerEmployeesService,
               private modalService: NgbModal,
               private formBuilder: UntypedFormBuilder) {
-    this.ratesList = service.countries$;
+    this.customerEmployeesList = service.countries$;
     this.total = service.total$;
   }
 
   ngOnInit(): void {
-    this.breadCrumbItems = [{ label: 'Cliente' }, { label: 'Tarifas clientes', active: true }];
+    this.breadCrumbItems = [{ label: 'Cliente' }, { label: 'Choferes Aptos', active: true }];
 
     /**
      * Form Validation
      */
-    this.rateForm = this.formBuilder.group({
+    this.customerEmployeesForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
-      customerId: ['', [Validators.required]],
-      routeId: ['', [Validators.required]],
-      leadTime: ['', [Validators.required]],
-      volume: ['', [Validators.required]],
-      cost: ['', [Validators.required]],
-      observationRate: ['', [Validators.required]]
+      status: ['', [Validators.required]],
+      registerDate: ['', [Validators.required]],
+      observations: ['', [Validators.required]],
+      customer: ['', [Validators.required]],
+      employee: ['', [Validators.required]],
     });
 
-    this.ratesList.subscribe(x => {
-      this.content = this.rates;
-      this.rates = Object.assign([], x);
+    this.customerEmployeesList.subscribe(x => {
+      this.content = this.customerEmployees;
+      this.customerEmployees = Object.assign([], x);
     });
 
-    this.listRates();
+    this.listCustomerEmployees();
   }
 
   /**
@@ -94,7 +95,7 @@ export class RateComponent implements OnInit {
       })
       .then(result => {
         if (result.value) {
-          this.deleteRates(id);
+          this.deleteCustomerEmployees(id);
         } else if (
           /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel
@@ -121,7 +122,7 @@ export class RateComponent implements OnInit {
    * Form data get
    */
   get form() {
-    return this.rateForm.controls;
+    return this.customerEmployeesForm.controls;
   }
 
   /**
@@ -129,36 +130,34 @@ export class RateComponent implements OnInit {
    */
   saveUser() {
     this.submitted = true
-    if (this.rateForm.valid) {
+    if (this.customerEmployeesForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const customerId = 7;//this.rateForm.get('customerId')?.value;
-      const routeId = 1;//this.rateForm.get('routeId')?.value;
-      const leadTime = this.rateForm.get('leadTime')?.value;
-      const volume = this.rateForm.get('volume')?.value;
-      const cost = this.rateForm.get('cost')?.value;
-      const observationRate = this.rateForm.get('observationRate')?.value;
+      const status = this.customerEmployeesForm.get('status')?.value;
+      const registerDate =this.customerEmployeesForm.get('registerDate')?.value;
+      const observations = this.customerEmployeesForm.get('observations')?.value;
+      const customer = 1;//this.customerEmployeesForm.get('customer')?.value;
+      const employee = 3;//this.customerEmployeesForm.get('employee')?.value;
 
-      let rate = new Rate();
-      rate.customerId = customerId;
-      rate.routeId = routeId;
-      rate.leadTime = leadTime;
-      rate.volume = volume;
-      rate.cost = cost;
-      rate.observationRate = observationRate;
+      let customerEmployees = new CustomerEmployees();
+      customerEmployees.status = status;
+      customerEmployees.registerDate = registerDate;
+      customerEmployees.observations = observations;
+      customerEmployees.customer = customer;
+      customerEmployees.employee = employee;
 
-      const id = this.rateForm.get('id')?.value;
-      console.log(rate);
+      const id = this.customerEmployees.get('id')?.value;
+      console.log(customerEmployees);
       console.log(id);
       if (id == '0') {
-        this.registerRates(rate);
+        this.registerCustomerEmployees(customerEmployees);
       } else {
-        rate.id = id;
-        this.updateRates(rate);
+        customerEmployees.id = id;
+        this.updateCustomerEmployees(customerEmployees);
       }
 
       this.modalService.dismissAll();
       setTimeout(() => {
-        this.rateForm.reset();
+        this.customerEmployeesForm.reset();
       }, 2000);
     }
   }
@@ -172,29 +171,28 @@ export class RateComponent implements OnInit {
     this.pipe = new DatePipe('en-US');
     this.modalService.open(content, { size: 'md', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-    modelTitle.innerHTML = 'Actualizar tarifas';
+    modelTitle.innerHTML = 'Actualizar Choferes aptos';
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
-    var listData = this.rates.filter((data: { id: any; }) => data.id === id);
+    var listData = this.customerEmployees.filter((data: { id: any; }) => data.id === id);
     const fabricationDate = listData[0].fabricationDate.substring(0, 10);
     const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
-    this.rateForm.controls['id'].setValue(listData[0].id);
-    this.rateForm.controls['customerId'].setValue(listData[0].customerId);
-    this.rateForm.controls['routeId'].setValue(listData[0].routeId);
-    this.rateForm.controls['leadTime'].setValue(listData[0].leadTime);
-    this.rateForm.controls['volume'].setValue(listData[0].volume);
-    this.rateForm.controls['cost'].setValue(listData[0].cost);
-    this.rateForm.controls['observationRate'].setValue(listData[0].observationRate);
+    this.customerEmployeesForm.controls['id'].setValue(listData[0].id);
+    this.customerEmployeesForm.controls['status'].setValue(listData[0].status);
+    this.customerEmployeesForm.controls['registerDate'].setValue(fortmatFabricationDate);
+    this.customerEmployeesForm.controls['observations'].setValue(listData[0].observations);
+    this.customerEmployeesForm.controls['customer'].setValue(listData[0].customer);
+    this.customerEmployeesForm.controls['employee'].setValue(listData[0].employee);
   }
 
-  listRates() {
-    this.service.listRates()
+  listCustomerEmployees() {
+    this.service.listCustomerEmployees()
       .pipe(first())
       .subscribe(
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.ratesDtoList;
+              this.test = response.datos.customerEmployeesDtoList;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
@@ -220,8 +218,8 @@ export class RateComponent implements OnInit {
         });
   }
 
-  registerRates(rates) {
-    this.service.registerRate(rates)
+  registerCustomerEmployees(customerEmployees) {
+    this.service.registerCustomerEmployee(customerEmployees)
       .pipe(first())
       .subscribe(
         response => {
@@ -232,7 +230,7 @@ export class RateComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.listRates();
+              this.listCustomerEmployees();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -257,14 +255,14 @@ export class RateComponent implements OnInit {
         });
   }
 
-  updateRates(rates) {
-    this.service.updateRate(rates)
+  updateCustomerEmployees(customerEmployees) {
+    this.service.updateCustomerEmployee(customerEmployees)
       .pipe(first())
       .subscribe(
         response => {
           if (response) {
             if (response.datos) {
-              this.listRates();
+              this.listCustomerEmployees();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -289,8 +287,8 @@ export class RateComponent implements OnInit {
         });
   }
 
-  deleteRates(id) {
-    this.service.deleteRate(id)
+  deleteCustomerEmployees(id) {
+    this.service.deleteCustomerEmployee(id)
       .pipe(first())
       .subscribe(
         response => {
@@ -301,7 +299,7 @@ export class RateComponent implements OnInit {
                 'Su archivo ha sido eliminado.',
                 'success'
               );
-              this.listRates();
+              this.listCustomerEmployees();
             } else {
               Swal.fire({
                 icon: config.WARNING,

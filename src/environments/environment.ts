@@ -74,6 +74,13 @@ export const environment = {
       register: '/api-huex/v1/rates',
       update: '/api-huex/v1/rates',
       delete: '/api-huex/v1/rates/'
+    },
+    customerEmployees:{
+      list: '/api-huex/v1/customerEmployees',
+      retrieve: '/api-huex/v1/customerEmployees/',
+      register: '/api-huex/v1/customerEmployees',
+      update: '/api-huex/v1/customerEmployees',
+      delete: '/api-huex/v1/customerEmployees/'
     }
   },
   services:{

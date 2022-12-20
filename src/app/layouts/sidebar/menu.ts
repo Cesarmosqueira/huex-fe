@@ -74,6 +74,12 @@ export const MENU: MenuItem[] = [
               label: 'MENUITEMS.CUSTOMERS.LIST.CUSTOMERS',
               link: '/customers/customer',
               parentId: 1
+            },
+            {
+              id: 2,
+              label: 'MENUITEMS.CUSTOMERS.LIST.CUSTOMERSEMPLOYEES',
+              link: '/customers/customer-employees',
+              parentId: 1
             }
 
           ]

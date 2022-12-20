@@ -134,7 +134,8 @@
       "LIST": {
         "ROUTES": "Rutas clientes",
         "RATES": "Tarifas clientes",
-        "CUSTOMERS":"Clientes"
+        "CUSTOMERS":"Clientes",
+        "CUSTOMERSEMPLOYEES":"Choferes Aptos"
       }
     },
     "SERVICES": {

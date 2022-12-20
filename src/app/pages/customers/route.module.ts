@@ -9,6 +9,7 @@ import {NgSelectModule} from "@ng-select/ng-select";
 import {RouteRoutingModule} from "./route-routing.module";
 import { RateComponent } from './rate/component/rate.component';
 import { CustomerComponent } from './customer/component/customer.component';
+import { CustomerEmployeesComponent } from './customer-employees/component/customer-employees.component';
 
 
 
@@ -16,7 +17,8 @@ import { CustomerComponent } from './customer/component/customer.component';
   declarations: [
     RouteComponent,
     RateComponent,
-    CustomerComponent
+    CustomerComponent,
+    CustomerEmployeesComponent
   ],
   imports: [
     CommonModule,
