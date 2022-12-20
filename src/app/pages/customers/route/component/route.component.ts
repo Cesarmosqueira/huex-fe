@@ -229,7 +229,7 @@ export class RouteComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.routes();
+              this.listRoutes();
             } else {
               Swal.fire({
                 icon: config.WARNING,
