@@ -1,27 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
-import {ProvinceEstivators} from "../../../providers/province-estivators/models/province-estivators.model";
+import {ProvinceEstivators} from "../../province-estivators/models/province-estivators.model";
 import {Observable} from "rxjs";
-import {ProvinceEstivatorsService} from "../../../providers/province-estivators/services/province-estivators.service";
+import {ProvinceEstivatorsService} from "../../province-estivators/services/province-estivators.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
+import {Providers} from "../models/providers.model";
+import {ProviderService} from "../services/provider.service";
 
 @Component({
-  selector: 'app-province-estivators',
-  templateUrl: './province-estivators.component.html',
-  styleUrls: ['./province-estivators.component.scss']
+  selector: 'app-provider',
+  templateUrl: './provider.component.html',
+  styleUrls: ['./provider.component.scss']
 })
-export class ProvinceEstivatorsComponent implements OnInit {
-
+export class ProviderComponent implements OnInit {
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
   term: any;
 
-  provinceEstivatorForm!: UntypedFormGroup;
+  providersForm!: UntypedFormGroup;
   submitted = false;
   register = true;
 
@@ -29,41 +30,45 @@ export class ProvinceEstivatorsComponent implements OnInit {
 
   // Table data
   content?: any;
-  provinceEstivator?: any;
-  test: ProvinceEstivators[] = [];
-  provinceEstivatorsList!: Observable<ProvinceEstivators[]>;
+  providers?: any;
+  test: Providers[] = [];
+  providersList!: Observable<Providers[]>;
   total: Observable<number>;
   pipe: any;
 
-  constructor(public service: ProvinceEstivatorsService,
+  constructor(public service: ProviderService,
               private modalService: NgbModal,
               private formBuilder: UntypedFormBuilder) {
-    this.provinceEstivatorsList = service.countries$;
+    this.providersList = service.countries$;
     this.total = service.total$;
   }
 
   ngOnInit(): void {
-    this.breadCrumbItems = [{ label: 'Proveedores' }, { label: 'Proveedores estivadores', active: true }];
+    this.breadCrumbItems = [{ label: 'Proveedores' }, { label: 'Proveedores', active: true }];
 
     /**
      * Form Validation
      */
-    this.provinceEstivatorForm = this.formBuilder.group({
+    this.providersForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
-      routeId: ['', [Validators.required]],
-      providerId: ['', [Validators.required]],
-      costM3: ['', [Validators.required]],
+      ruc: ['', [Validators.required]],
+      businessName: ['', [Validators.required]],
+      contactName: ['', [Validators.required]],
+      email: ['', [Validators.required]],
+      phoneNumber: ['', [Validators.required]],
+      address: ['', [Validators.required]],
+      admissionDate: ['', [Validators.required]],
+      bankAccount: ['', [Validators.required]],
       observation: ['', [Validators.required]],
     });
 
-    this.provinceEstivatorsList.subscribe(x => {
-      this.content = this.provinceEstivator;
-      this.provinceEstivator = Object.assign([], x);
+    this.providersList.subscribe(x => {
+      this.content = this.providersForm;
+      this.providers = Object.assign([], x);
     });
 
-    this.listProvinceEstivators();
+    this.listProviders();
   }
-
   /**
    * Open modal
    * @param content modal content
@@ -93,7 +98,7 @@ export class ProvinceEstivatorsComponent implements OnInit {
       })
       .then(result => {
         if (result.value) {
-          this.deleteProvinceEstivators(id);
+          this.deleteProviders(id);
         } else if (
           /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel
@@ -120,7 +125,7 @@ export class ProvinceEstivatorsComponent implements OnInit {
    * Form data get
    */
   get form() {
-    return this.provinceEstivatorForm.controls;
+    return this.providersForm.controls;
   }
 
   /**
@@ -128,31 +133,44 @@ export class ProvinceEstivatorsComponent implements OnInit {
    */
   saveUser() {
     this.submitted = true
-    if (this.provinceEstivatorForm.valid) {
+    if (this.providersForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const routeId = 5;//this.provinceEstivatorForm.get('routeId')?.value;
-      const providerId =4; //this.provinceEstivatorForm.get('providerId')?.value;
-      const costM3 = this.provinceEstivatorForm.get('costM3')?.value;
-      const observation = this.provinceEstivatorForm.get('observation')?.value;
+      const ruc = this.providersForm.get('ruc')?.value;
+      const businessName = this.providersForm.get('businessName')?.value;
+      const contactName = this.providersForm.get('contactName')?.value;
+      const email = this.providersForm.get('email')?.value;
+      const phoneNumber = this.providersForm.get('phoneNumber')?.value;
+      const address = this.providersForm.get('address')?.value;
+      const admissionDate = this.providersForm.get('admissionDate')?.value;
+      const bankAccount = this.providersForm.get('bankAccount')?.value;
+      const observation = this.providersForm.get('observation')?.value;
 
-      let provinceEstivators = new ProvinceEstivators();
-      provinceEstivators.routeId = routeId;
-      provinceEstivators.providerId = providerId;
-      provinceEstivators.costM3 = costM3;
-      provinceEstivators.observation = observation;
-      const id = this.provinceEstivatorForm.get('id')?.value;
-      console.log(provinceEstivators);
+
+
+      let providers = new Providers();
+      providers.ruc = ruc;
+      providers.businessName = businessName;
+      providers.contactName = contactName;
+      providers.email = email;
+      providers.phoneNumber = phoneNumber;
+      providers.address = address;
+      providers.admissionDate = admissionDate;
+      providers.bankAccount = bankAccount;
+      providers.observation = observation;
+
+      const id = this.providersForm.get('id')?.value;
+      console.log(providers);
       console.log(id);
       if (id == '0') {
-        this.registerProvinceEstivators(provinceEstivators);
+        this.registerProviders(providers);
       } else {
-        provinceEstivators.id = id;
-        this.updateProvinceEstivators(provinceEstivators);
+        providers.id = id;
+        this.updateProviders(providers);
       }
 
       this.modalService.dismissAll();
       setTimeout(() => {
-        this.provinceEstivatorForm.reset();
+        this.providersForm.reset();
       }, 2000);
 
     }
@@ -167,27 +185,33 @@ export class ProvinceEstivatorsComponent implements OnInit {
     this.pipe = new DatePipe('en-US');
     this.modalService.open(content, { size: 'md', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-    modelTitle.innerHTML = 'Actualizar estivadores';
+    modelTitle.innerHTML = 'Actualizar proveedores';
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
-    var listData = this.provinceEstivator.filter((data: { id: any; }) => data.id === id);
+    var listData = this.providers.filter((data: { id: any; }) => data.id === id);
     const fabricationDate = listData[0].fabricationDate.substring(0, 10);
     const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
-    this.provinceEstivatorForm.controls['id'].setValue(listData[0].id);
-    this.provinceEstivatorForm.controls['routeId'].setValue(listData[0].routeId);
-    this.provinceEstivatorForm.controls['providerId'].setValue(listData[0].providerId);
-    this.provinceEstivatorForm.controls['costM3'].setValue(listData[0].costM3);
-    this.provinceEstivatorForm.controls['observation'].setValue(listData[0].observation);
+    this.providersForm.controls['id'].setValue(listData[0].id);
+    this.providersForm.controls['ruc'].setValue(listData[0].ruc);
+    this.providersForm.controls['businessName'].setValue(listData[0].businessName);
+    this.providersForm.controls['contactName'].setValue(listData[0].contactName);
+    this.providersForm.controls['email'].setValue(listData[0].email);
+    this.providersForm.controls['phoneNumber'].setValue(listData[0].phoneNumber);
+    this.providersForm.controls['address'].setValue(listData[0].address);
+    this.providersForm.controls['admissionDate'].setValue(fortmatFabricationDate);
+    this.providersForm.controls['bankAccount'].setValue(listData[0].bankAccount);
+    this.providersForm.controls['observation'].setValue(listData[0].observation);
+
   }
 
-  listProvinceEstivators() {
-    this.service.listProvinceEstivators()
+  listProviders() {
+    this.service.listProviders()
       .pipe(first())
       .subscribe(
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.provinceEstivatorsDtoList;
+              this.test = response.datos.providersDtoList;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
@@ -213,8 +237,8 @@ export class ProvinceEstivatorsComponent implements OnInit {
         });
   }
 
-  registerProvinceEstivators(provinceEstivators) {
-    this.service.registerProvinceEstivators(provinceEstivators)
+  registerProviders(providers) {
+    this.service.registerProviders(providers)
       .pipe(first())
       .subscribe(
         response => {
@@ -225,7 +249,7 @@ export class ProvinceEstivatorsComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.listProvinceEstivators();
+              this.listProviders();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -250,14 +274,14 @@ export class ProvinceEstivatorsComponent implements OnInit {
         });
   }
 
-  updateProvinceEstivators(provinceEstivators) {
-    this.service.updateProvinceEstivators(provinceEstivators)
+  updateProviders(providers) {
+    this.service.updateProviders(providers)
       .pipe(first())
       .subscribe(
         response => {
           if (response) {
             if (response.datos) {
-              this.listProvinceEstivators();
+              this.listProviders();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -282,8 +306,8 @@ export class ProvinceEstivatorsComponent implements OnInit {
         });
   }
 
-  deleteProvinceEstivators(id) {
-    this.service.deleteProvinceEstivators(id)
+  deleteProviders(id) {
+    this.service.deleteProviders(id)
       .pipe(first())
       .subscribe(
         response => {
@@ -294,7 +318,7 @@ export class ProvinceEstivatorsComponent implements OnInit {
                 'Su archivo ha sido eliminado.',
                 'success'
               );
-              this.listProvinceEstivators();
+              this.listProviders();
             } else {
               Swal.fire({
                 icon: config.WARNING,

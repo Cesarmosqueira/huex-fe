@@ -116,6 +116,12 @@ export const MENU: MenuItem[] = [
     subItems: [
       {
         id: 2,
+        label: 'MENUITEMS.PROVIDERS.LIST.PROVIDER',
+        link: '/providers/providers',
+        parentId: 1
+      },
+      {
+        id: 2,
         label: 'MENUITEMS.PROVIDERS.LIST.PROVINCEESTIVATORS',
         link: '/providers/province-estivators',
         parentId: 1

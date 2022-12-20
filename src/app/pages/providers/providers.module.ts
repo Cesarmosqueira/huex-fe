@@ -7,11 +7,13 @@ import {Ng2SearchPipeModule} from "ng2-search-filter";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {ProvinceEstivatorsComponent} from "./province-estivators/component/province-estivators.component";
 import {ProvidersRoutingModule} from "./providers-routing.module";
+import { ProviderComponent } from './provider/component/provider.component';
 
 
 @NgModule({
   declarations: [
-    ProvinceEstivatorsComponent
+    ProvinceEstivatorsComponent,
+    ProviderComponent
   ],
   imports: [
     CommonModule,

@@ -149,6 +149,7 @@
     "PROVIDERS": {
       "TEXT": "Proveedores",
       "LIST": {
+        "PROVIDER": "Proveedor",
         "PROVINCEESTIVATORS": "Proveedor estivador"
       }
     },
