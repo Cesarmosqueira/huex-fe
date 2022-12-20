@@ -1,0 +1,117 @@
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-2">
+                <form (ngSubmit)="saveKardexFuel()" [formGroup]="kardexFuelForm" *ngIf="new">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mt-3">
+                                <label for="example-date-input" class="col-md-12 col-form-label">Fecha</label>
+                                <div class="col-md-12">
+                                    <input class="form-control" type="date" formControlName="date"
+                                        id="example-date-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mt-3">
+                                <label for="example-date-input" class="col-md-12 col-form-label">Cantidad Combustible</label>
+                                <div class="col-md-12">
+                                    <input class="form-control" type="number" formControlName="amountFuel"
+                                        id="example-date-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mt-3">
+                                <label for="example-date-input" class="col-md-12 col-form-label">Kilometraje</label>
+                                <div class="col-md-12">
+                                    <input class="form-control" type="number" formControlName="mileage"
+                                        id="example-date-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mt-3">
+                                <label for="example-date-input" class="col-md-12 col-form-label">Encargado</label>
+                                <div class="col-md-12">
+                                    <input class="form-control" type="text" formControlName="dutyManager"
+                                        id="example-date-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                        </div>
+                        <div class="col-md-5">
+                        </div>
+                        <div class="col-md-2">
+                            <div class="mt-3">
+                                <div class="hstack gap-2 justify-content-end">
+                                    <button type="submit" class="btn btn-success" id="add-btn">{{textButton}}</button>
+                                    <button type="button" class="btn btn-light" (click)="cancel()">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row md-2">
+                <div class="row mb-2">
+                    <div class="col-sm-4">
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="text-sm-end">
+                            <button type="button" class="btn btn-success btn-rounded mb-2 me-2" *ngIf="!new"
+                                (click)="openModal(true) "><i class="mdi mdi-plus mr-1"></i>
+                                Nuevo</button>
+                        </div>
+                    </div><!-- end col-->
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="table-responsive mb-0">
+                    <table class="table table-centered table-nowrap">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="align-middle">ID</th>
+                                <th class="align-middle">Fecha</th>
+                                <th class="align-middle">Cantidad Combustible</th>
+                                <th class="align-middle">Kilometraje</th>
+                                <th class="align-middle">Encargado</th>
+                                <th class="align-middle">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of kardexFuels" id="o_{{data.id}}">
+                                <td>
+                                    <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
+                                </td>
+                                <td>{{data.date.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                                <td>{{data.amountFuel}}</td>
+                                <td>{{data.mileage}}</td>
+                                <td>{{data.dutyManager}}</td>
+                                <td>
+                                    <div class="d-flex gap-3">
+                                        <a href="javascript:void(0);" class="text-success"
+                                            (click)="editDataGet(data.id)"><i
+                                                class="mdi mdi-pencil font-size-18"></i></a>
+                                        <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
+                                                class="mdi mdi-delete font-size-18"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ul class="pagination pagination-rounded justify-content-end mb-2">
+                        <ngb-pagination [collectionSize]="(total | async)!" [(page)]="service.page"
+                            [pageSize]="service.pageSize">
+                        </ngb-pagination>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,279 @@
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-2">
+                <form (ngSubmit)="saveDocuments()" [formGroup]="documentUnitForm" *ngIf="new">
+                    <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-tabs nav-tabs-custom">
+                        <li [ngbNavItem]="1">
+                            <a ngbNavLink>Soat</a>
+                            <ng-template ngbNavContent>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mt-3">
+                                            <label for="example-date-input" class="col-md-12 col-form-label">Fecha
+                                                Vencimiento</label>
+                                            <div class="col-md-12">
+                                                <input class="form-control" type="date" formControlName="soatExpiration"
+                                                    id="example-date-input">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mt-3">
+                                            <label for="example-date-input"
+                                                class="col-md-12 col-form-label">Foto</label>
+                                            <div class="col-md-12">
+                                                <input class="form-control" formControlName="photoSoat"
+                                                    (change)="this.getDocument($event,2)" type="file" id="formFile">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="2">
+                            <a ngbNavLink>Póliza</a>
+                            <ng-template ngbNavContent>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mt-3">
+                                            <label for="example-date-input"
+                                                class="col-md-12 col-form-label">Documento</label>
+                                            <div class="col-md-12">
+                                                <input class="form-control" formControlName="policyDocument"
+                                                    (change)="this.getDocument($event,5)" type="file" id="formFile">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mt-3">
+                                            <label for="example-date-input" class="col-md-12 col-form-label">Fecha
+                                                Vencimiento</label>
+                                            <div class="col-md-12">
+                                                <input class="form-control" type="date"
+                                                    formControlName="expirationPolicy" id="example-date-input">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mt-3">
+                                            <label for="example-date-input"
+                                                class="col-md-12 col-form-label">Foto</label>
+                                            <div class="col-md-12">
+                                                <input class="form-control" formControlName="photoPolicy"
+                                                    (change)="this.getDocument($event,4)" type="file" id="formFile">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="3">
+                            <a ngbNavLink>MTC</a>
+                            <ng-template ngbNavContent>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mt-3">
+                                            <label for="example-date-input" class="col-md-12 col-form-label">Fecha
+                                                Vencimiento</label>
+                                            <div class="col-md-12">
+                                                <input class="form-control" type="date" formControlName="mtcExpiration"
+                                                    id="example-date-input">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mt-3">
+                                            <label for="example-date-input"
+                                                class="col-md-12 col-form-label">Foto</label>
+                                            <div class="col-md-12">
+                                                <input class="form-control" formControlName="photoMtc"
+                                                    (change)="this.getDocument($event,3)" type="file" id="formFile">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="4">
+                            <a ngbNavLink>Revisión Técnica</a>
+                            <ng-template ngbNavContent>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mt-3">
+                                            <label for="example-date-input" class="col-md-12 col-form-label">Fecha
+                                                Vencimiento</label>
+                                            <div class="col-md-12">
+                                                <input class="form-control" type="date"
+                                                    formControlName="technicalReviewExpiration" id="example-date-input">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mt-3">
+                                            <label for="example-date-input"
+                                                class="col-md-12 col-form-label">Foto</label>
+                                            <div class="col-md-12">
+                                                <input class="form-control" formControlName="photoTechnicalReview"
+                                                    (change)="this.getDocument($event,1)" type="file" id="formFile">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="5">
+                            <a ngbNavLink>Extintor/Botiquin</a>
+                            <ng-template ngbNavContent>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mt-3">
+                                            <label for="example-date-input" class="col-md-12 col-form-label">Fecha Venc.
+                                                Extintor</label>
+                                            <div class="col-md-12">
+                                                <input class="form-control" type="date"
+                                                    formControlName="fireExtinguisherExpiration"
+                                                    id="example-date-input">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mt-3">
+                                            <label for="example-date-input" class="col-md-12 col-form-label">Fecha Venc.
+                                                Botiquin</label>
+                                            <div class="col-md-12">
+                                                <input class="form-control" type="date"
+                                                    formControlName="firstAidKitExpiration" id="example-date-input">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                    </ul>
+
+                    <div [ngbNavOutlet]="nav" class="crypto-buy-sell-nav-content p-4"></div>
+
+                    <div class="row">
+                        <div class="col-md-5">
+                        </div>
+                        <div class="col-md-5">
+                        </div>
+                        <div class="col-md-2">
+                            <div class="mt-3">
+                                <div class="hstack gap-2 justify-content-end">
+                                    <button type="submit" class="btn btn-success" id="add-btn">{{textButton}}</button>
+                                    <button type="button" class="btn btn-light" (click)="cancel()">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row md-2">
+                <div class="row mb-2">
+                    <div class="col-sm-4">
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="text-sm-end">
+                            <button type="button" class="btn btn-success btn-rounded mb-2 me-2" *ngIf="!new"
+                                (click)="openModal(true) "><i class="mdi mdi-plus mr-1"></i>
+                                Nuevo</button>
+                        </div>
+                    </div><!-- end col-->
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="table-responsive mb-0">
+                    <table class="table table-centered table-nowrap">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="align-middle">ID</th>
+                                <th class="align-middle">Extintor Venc.</th>
+                                <th class="align-middle">Botiquin Venc.</th>
+                                <th class="align-middle">Rev. Tec. Venc.</th>
+                                <th class="align-middle">Foto</th>
+                                <th class="align-middle">Soat</th>
+                                <th class="align-middle">Foto</th>
+                                <th class="align-middle">MTC</th>
+                                <th class="align-middle">Foto</th>
+                                <th class="align-middle">Poliza</th>
+                                <th class="align-middle">Poliza Venc.</th>
+                                <th class="align-middle">Foto</th>
+                                <th class="align-middle">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of documentUnits" id="o_{{data.id}}">
+                                <td>
+                                    <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
+                                </td>
+                                <td>{{data.fireExtinguisherExpiration.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                                <td>{{data.firstAidKitExpiration.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                                <td>{{data.technicalReviewExpiration.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                                <td>
+                                    <a href="javascript:void(0);" class="text-success"
+                                        (click)="viewDocumentOption(data.id, 1)">Ver <i
+                                            class="mdi mdi-eye font-size-16 mt"></i>/</a>
+                                    <a href="javascript:void(0);" class="text-success"
+                                        (click)="saveDocumentOption(data.id, 1)">Descargar <i
+                                            class="mdi mdi-cloud-download font-size-16 mt"></i></a>
+                                </td>
+                                <td>{{data.soatExpiration.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                                <td>
+                                    <a href="javascript:void(0);" class="text-success"
+                                        (click)="viewDocumentOption(data.id, 2)">Ver <i
+                                            class="mdi mdi-eye font-size-16 mt"></i>/</a>
+                                    <a href="javascript:void(0);" class="text-success"
+                                        (click)="saveDocumentOption(data.id, 2)">Descargar <i
+                                            class="mdi mdi-cloud-download font-size-16 mt"></i></a>
+                                </td>
+                                <td>{{data.mtcExpiration.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                                <td>
+                                    <a href="javascript:void(0);" class="text-success"
+                                        (click)="viewDocumentOption(data.id, 3)">Ver <i
+                                            class="mdi mdi-eye font-size-16 mt"></i>/</a>
+                                    <a href="javascript:void(0);" class="text-success"
+                                        (click)="saveDocumentOption(data.id, 3)">Descargar <i
+                                            class="mdi mdi-cloud-download font-size-16 mt"></i></a>
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0);" class="text-success"
+                                        (click)="viewDocumentOption(data.id, 5)">Ver <i
+                                            class="mdi mdi-eye font-size-16 mt"></i>/</a>
+                                    <a href="javascript:void(0);" class="text-success"
+                                        (click)="saveDocumentOption(data.id, 5)">Descargar <i
+                                            class="mdi mdi-cloud-download font-size-16 mt"></i></a>
+                                </td>
+                                <td>{{data.expirationPolicy.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                                <td>
+                                    <a href="javascript:void(0);" class="text-success"
+                                        (click)="viewDocumentOption(data.id, 3)">Ver <i
+                                            class="mdi mdi-eye font-size-16 mt"></i>/</a>
+                                    <a href="javascript:void(0);" class="text-success"
+                                        (click)="saveDocumentOption(data.id, 3)">Descargar <i
+                                            class="mdi mdi-cloud-download font-size-16 mt"></i></a>
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-3">
+                                        <a href="javascript:void(0);" class="text-success"
+                                            (click)="editDataGet(data.id)"><i
+                                                class="mdi mdi-pencil font-size-18"></i></a>
+                                        <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
+                                                class="mdi mdi-delete font-size-18"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ul class="pagination pagination-rounded justify-content-end mb-2">
+                        <ngb-pagination [collectionSize]="(total | async)!" [(page)]="service.page"
+                            [pageSize]="service.pageSize">
+                        </ngb-pagination>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

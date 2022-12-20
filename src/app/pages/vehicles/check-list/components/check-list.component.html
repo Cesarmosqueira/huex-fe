@@ -1,0 +1,94 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body">
+      <div class="row mb-2">
+        <form (ngSubmit)="saveUser()" [formGroup]="checkListForm" *ngIf="new">
+          <div class="row">
+            <div class="col-md-5">
+              <div class="mt-3">
+                <label for="example-date-input" class="col-md-12 col-form-label">Fecha</label>
+                <div class="col-md-12">
+                  <input class="form-control" type="date" formControlName="documentDate" id="example-date-input">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="mt-3">
+                <label for="example-date-input" class="col-md-12 col-form-label">Documento</label>
+                <div class="col-md-12">
+                  <input class="form-control" formControlName="document" (change)="this.getDocument($event)" type="file"
+                    id="formFile">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="mt-3">
+                <label for="example-date-input" class="col-md-12 col-form-label">Acción</label>
+                <div class="hstack gap-2 justify-content-end">
+                  <button type="submit" class="btn btn-success" id="add-btn">{{textButton}}</button>
+                  <button type="button" class="btn btn-light" (click)="cancel()">Cancelar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="row md-2">
+        <div class="row mb-2">
+          <div class="col-sm-4">
+          </div>
+          <div class="col-sm-8">
+            <div class="text-sm-end">
+              <button type="button" class="btn btn-success btn-rounded mb-2 me-2" *ngIf="!new"
+                (click)="openModal(true) "><i class="mdi mdi-plus mr-1"></i>
+                Nuevo</button>
+            </div>
+          </div><!-- end col-->
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="table-responsive mb-0">
+          <table class="table table-centered table-nowrap">
+            <thead class="table-light">
+              <tr>
+                <th class="align-middle">ID</th>
+                <th class="align-middle">Fecha Registro</th>
+                <th class="align-middle">Nombre Archivo</th>
+                <th class="align-middle">Documento</th>
+                <th class="align-middle">Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of checkLists" id="o_{{data.id}}">
+                <td>
+                  <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
+                </td>
+                <td>{{data.date.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                <td>{{data.namePhoto}}</td>
+                <td>
+                  <a href="javascript:void(0);" class="text-success" (click)="viewDocument(data.id)">Ver <i
+                      class="mdi mdi-eye font-size-16 mt"></i>/</a>
+                  <a href="javascript:void(0);" class="text-success" (click)="saveByteArray(data.id)">Descargar <i
+                      class="mdi mdi-cloud-download font-size-16 mt"></i></a>
+                </td>
+                <td>
+                  <div class="d-flex gap-3">
+                    <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id)"><i
+                        class="mdi mdi-pencil font-size-18"></i></a>
+                    <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
+                        class="mdi mdi-delete font-size-18"></i></a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <ul class="pagination pagination-rounded justify-content-end mb-2">
+            <ngb-pagination [collectionSize]="(total | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+            </ngb-pagination>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

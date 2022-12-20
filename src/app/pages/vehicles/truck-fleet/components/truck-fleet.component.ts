@@ -1,9 +1,11 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { Providers } from 'src/app/pages/providers/provider/models/providers.model';
+import { ProviderService } from 'src/app/pages/providers/provider/services/provider.service';
 import { config } from 'src/app/shared/shared.config';
 import Swal from 'sweetalert2';
 import { TruckFleet } from '../models/truck-fleet.model';
@@ -17,7 +19,11 @@ import { TruckFleetService } from '../services/truck-fleet.service';
 })
 export class TruckFleetComponent implements OnInit {
 
-  // bread crumb items
+  idTruckFleetOuput: number = 0;
+  newTruck = false;
+  textButton = "Registrar";
+  action = 0;
+
   breadCrumbItems: Array<{}>;
   term: any;
 
@@ -34,10 +40,13 @@ export class TruckFleetComponent implements OnInit {
   truckFleetsList!: Observable<TruckFleet[]>;
   total: Observable<number>;
   pipe: any;
+  providers: Providers[] = [];
+  selectProvider = null;
 
   constructor(public service: TruckFleetService,
     private modalService: NgbModal,
-    private formBuilder: UntypedFormBuilder) {
+    private formBuilder: UntypedFormBuilder,
+    private serviceProvider: ProviderService) {
     this.truckFleetsList = service.countries$;
     this.total = service.total$;
   }
@@ -60,26 +69,24 @@ export class TruckFleetComponent implements OnInit {
       axes: ['', [Validators.required]],
       model: ['', [Validators.required]],
       highWideLong: ['', [Validators.required]],
-      fleetType: ['', [Validators.required]]
+      fleetType: ['', [Validators.required]],
+      btnSave: []
     });
 
     this.truckFleetsList.subscribe(x => {
       this.content = this.truckFleets;
       this.truckFleets = Object.assign([], x);
     });
-
+    this.idTruckFleetOuput = 0;
+    console.log(this.idTruckFleetOuput);
+    this.listProviders();
     this.listTruckFleets();
   }
 
-  /**
-     * Open modal
-     * @param content modal content
-     */
   openViewModal(content: any) {
     this.modalService.open(content, { centered: true });
   }
 
-  // Delete Data
   delete(id: any) {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -114,30 +121,25 @@ export class TruckFleetComponent implements OnInit {
       });
   }
 
-  /**
-   * Open modal
-   * @param content modal content
-   */
   openModal(content: any) {
+    this.action = 1;
+    this.clear();
     this.submitted = false;
-    this.modalService.open(content, { size: 'md', centered: true });
+    this.newTruck = false;
+    this.textButton = "Registrar";
+    this.enableInputs();
+    this.modalService.open(content, { size: 'xl', centered: true });
   }
 
-  /**
-   * Form data get
-   */
   get form() {
     return this.truckFleetForm.controls;
   }
 
-  /**
-  * Save user
-  */
-  saveUser() {
-    this.submitted = true
+  saveTruckFleet() {
+    this.submitted = true;
     if (this.truckFleetForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const idProvider = 7;//this.truckFleetForm.get('idProvider')?.value;
+      const idProvider = this.selectProvider.id;
       const tractPlate = this.truckFleetForm.get('tractPlate')?.value;
       const vanPlate = this.truckFleetForm.get('vanPlate')?.value;
       const brand = this.truckFleetForm.get('brand')?.value;
@@ -171,12 +173,6 @@ export class TruckFleetComponent implements OnInit {
         truckFleet.id = id;
         this.updateTruckFleet(truckFleet);
       }
-
-      this.modalService.dismissAll();
-      setTimeout(() => {
-        this.truckFleetForm.reset();
-      }, 2000);
-
     }
   }
 
@@ -187,11 +183,11 @@ export class TruckFleetComponent implements OnInit {
   editDataGet(id: any, content: any) {
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
-    this.modalService.open(content, { size: 'md', centered: true });
-    var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-    modelTitle.innerHTML = 'Actualizar Flota';
-    var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
-    updateBtn.innerHTML = "Actualizar";
+    this.enableInputs();
+    this.action = 2;
+    this.newTruck = true;
+    this.textButton = "Actualizar";
+    this.modalService.open(content, { size: 'xl', centered: true });
     var listData = this.truckFleets.filter((data: { id: any; }) => data.id === id);
     const fabricationDate = listData[0].fabricationDate.substring(0, 10);
     const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
@@ -206,6 +202,8 @@ export class TruckFleetComponent implements OnInit {
     this.truckFleetForm.controls['highWideLong'].setValue(listData[0].highWideLong);
     this.truckFleetForm.controls['fleetType'].setValue(listData[0].fleetType);
     this.truckFleetForm.controls['tonNumber'].setValue(listData[0].tonNumber);
+    this.selectProvider = this.providers.filter(c => c.id === listData[0].idProvider)[0];
+    this.idTruckFleetOuput = id;
   }
 
   listTruckFleets() {
@@ -217,19 +215,7 @@ export class TruckFleetComponent implements OnInit {
             if (response.datos) {
               this.test = response.datos.truckFleetDtoList;
               this.service.paginationTable(this.test);
-            } else {
-              Swal.fire({
-                icon: config.WARNING,
-                title: response.meta.mensajes[0].mensaje,
-                showConfirmButton: false,
-              });
             }
-          } else {
-            Swal.fire({
-              icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el Banco",
-              showConfirmButton: false,
-            });
           }
         },
         error => {
@@ -247,12 +233,18 @@ export class TruckFleetComponent implements OnInit {
       .subscribe(
         response => {
           if (response) {
+            console.log(response);
             if (response.datos) {
               Swal.fire(
                 '¡Registrado!',
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
+              this.newTruck = true;
+              this.action = 0;
+              this.disableInputs();
+              const truckFleetDto = response.datos.truckFleetDto;
+              this.idTruckFleetOuput = truckFleetDto.id;
               this.listTruckFleets();
             } else {
               Swal.fire({
@@ -264,7 +256,7 @@ export class TruckFleetComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el Banco",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -296,7 +288,7 @@ export class TruckFleetComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el Banco",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -308,6 +300,50 @@ export class TruckFleetComponent implements OnInit {
             showConfirmButton: false,
           });
         });
+  }
+
+  clear() {
+    this.truckFleetForm.controls['id'].setValue("0");
+    this.truckFleetForm.controls['idProvider'].setValue(null);
+    this.truckFleetForm.controls['tractPlate'].setValue("");
+    this.truckFleetForm.controls['vanPlate'].setValue("");
+    this.truckFleetForm.controls['brand'].setValue("");
+    this.truckFleetForm.controls['volume'].setValue("");
+    this.truckFleetForm.controls['fabricationDate'].setValue("");
+    this.truckFleetForm.controls['axes'].setValue("");
+    this.truckFleetForm.controls['model'].setValue("");
+    this.truckFleetForm.controls['highWideLong'].setValue("");
+    this.truckFleetForm.controls['fleetType'].setValue("");
+    this.truckFleetForm.controls['tonNumber'].setValue("");
+  }
+
+  enableInputs() {
+    this.truckFleetForm.controls['id'].enable();
+    this.truckFleetForm.controls['tractPlate'].enable();
+    this.truckFleetForm.controls['vanPlate'].enable();
+    this.truckFleetForm.controls['brand'].enable();
+    this.truckFleetForm.controls['volume'].enable();
+    this.truckFleetForm.controls['fabricationDate'].enable();
+    this.truckFleetForm.controls['axes'].enable();
+    this.truckFleetForm.controls['model'].enable();
+    this.truckFleetForm.controls['highWideLong'].enable();
+    this.truckFleetForm.controls['fleetType'].enable();
+    this.truckFleetForm.controls['tonNumber'].enable();
+  }
+
+  disableInputs() {
+    this.truckFleetForm.controls['id'].disable();
+    this.truckFleetForm.controls['idProvider'].disable();
+    this.truckFleetForm.controls['tractPlate'].disable();
+    this.truckFleetForm.controls['vanPlate'].disable();
+    this.truckFleetForm.controls['brand'].disable();
+    this.truckFleetForm.controls['volume'].disable();
+    this.truckFleetForm.controls['fabricationDate'].disable();
+    this.truckFleetForm.controls['axes'].disable();
+    this.truckFleetForm.controls['model'].disable();
+    this.truckFleetForm.controls['highWideLong'].disable();
+    this.truckFleetForm.controls['fleetType'].disable();
+    this.truckFleetForm.controls['tonNumber'].disable();
   }
 
   deleteTruckFleet(id) {
@@ -333,7 +369,40 @@ export class TruckFleetComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el Banco",
+              title: "Ocurrio un error",
+              showConfirmButton: false,
+            });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listProviders() {
+    this.serviceProvider.listProviders()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.providers = response.datos.providerDtoList;
+              console.log(this.providers);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          } else {
+            Swal.fire({
+              icon: config.ERROR,
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }

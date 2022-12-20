@@ -1,0 +1,360 @@
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
+import { config } from 'src/app/shared/shared.config';
+import Swal from 'sweetalert2';
+import { MaintenanceOil } from '../models/maintenance-oil.model';
+import { MaintenanceOilService } from '../services/maintenance-oil.service';
+
+@Component({
+  selector: 'app-maintenance-oil',
+  templateUrl: './maintenance-oil.component.html',
+  styleUrls: ['./maintenance-oil.component.scss'],
+  providers: [MaintenanceOilService, DecimalPipe]
+})
+export class MaintenanceOilComponent implements OnInit {
+
+  @Input () idTruckFleet: number;
+
+  // bread crumb items
+  breadCrumbItems: Array<{}>;
+  term: any;
+
+  maintenanceOilForm!: UntypedFormGroup;
+  submitted = false;
+  register = true;
+
+  transactions;
+
+  // Table data
+  content?: any;
+  maintenanceOils?: any;
+  maintenanceOilsResponse: MaintenanceOil[] = [];
+  maintenanceOilsList!: Observable<MaintenanceOil[]>;
+  total: Observable<number>;
+  pipe: any;
+  selectProvider = null;
+
+  image: any;
+  file: File = null;
+  new = false;
+  textButton = "Registrar";
+
+  constructor(public service: MaintenanceOilService,
+    private formBuilder: UntypedFormBuilder) {
+    this.maintenanceOilsList = service.countries$;
+    this.total = service.total$;
+  }
+
+  ngOnInit(): void {
+
+    this.maintenanceOilForm = this.formBuilder.group({
+      id: ['0', [Validators.required]],
+      changeType: ['', [Validators.required]],
+      place: ['', [Validators.required]],
+      dateChange: ['', [Validators.required]],
+      kmLast: ['', [Validators.required]],
+      kmNext: ['', [Validators.required]],
+      status: ['', [Validators.required]],
+      differences: ['', [Validators.required]]
+    });
+
+    this.maintenanceOilsList.subscribe(x => {
+      this.content = this.maintenanceOils;
+      this.maintenanceOils = Object.assign([], x);
+    });
+    this.listMaintenanceOilsByIdTruckFleet(this.idTruckFleet);
+  }
+
+  delete(id: any) {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger ms-2'
+      },
+      buttonsStyling: false
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: '¿Está seguro?',
+        text: '¡No podrás revertir esto!',
+        icon: 'warning',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+        showCancelButton: true
+      })
+      .then(result => {
+        if (result.value) {
+          this.deleteMaintenanceOil(id);
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire(
+            'Cancelled',
+            'Your imaginary file is safe :)',
+            'error'
+          );
+        }
+      });
+  }
+
+  cancel() {
+    this.clearControl();
+    this.new = false;
+    this.textButton = "Registrar";
+  }
+
+  openModal(value) {
+    this.new = value;
+  }
+
+  get form() {
+    return this.maintenanceOilForm.controls;
+  }
+
+  saveMaintenanceOil() {
+    this.submitted = true
+    if (this.maintenanceOilForm.valid) {
+      this.pipe = new DatePipe('en-US');
+      const id = this.maintenanceOilForm.get('id')?.value;
+      const idTruckFleet = this.idTruckFleet;
+      const changeType = this.maintenanceOilForm.get('changeType')?.value;
+      const place = this.maintenanceOilForm.get('place')?.value;
+      const dateChange = this.maintenanceOilForm.get('dateChange')?.value;
+      const kmLast = this.maintenanceOilForm.get('kmLast')?.value;
+      const kmNext = this.maintenanceOilForm.get('kmNext')?.value;
+      const status =  this.maintenanceOilForm.get('status')?.value;
+      const differences = this.maintenanceOilForm.get('differences')?.value;
+      const myDate = new Date();
+      let maintenanceOil = new MaintenanceOil();
+      maintenanceOil.idTruckFleet = idTruckFleet;
+      maintenanceOil.changeType = changeType;
+      maintenanceOil.place = place;
+      maintenanceOil.dateChange = this.pipe.transform(dateChange, 'yyyy-MM-dd');
+      maintenanceOil.kmLast = kmLast;
+      maintenanceOil.kmNext = kmNext;
+      maintenanceOil.status = Number(status);
+      maintenanceOil.differences = differences;
+      maintenanceOil.dateCurrent = this.pipe.transform(myDate, 'yyyy-MM-dd');
+
+      console.log(maintenanceOil);
+
+      if (id == '0') {
+        this.registerMaintenanceOil(maintenanceOil);
+      } else {
+        maintenanceOil.id = id;
+        this.updateMaintenanceOil(maintenanceOil);
+      }
+
+      this.new = false;
+      this.textButton = "Registrar";
+      this.clearControl();
+    }
+  }
+
+  clearControl() {
+    this.maintenanceOilForm.controls['changeType'].setValue("");
+    this.maintenanceOilForm.controls['place'].setValue("");
+    this.maintenanceOilForm.controls['dateChange'].setValue("");
+    this.maintenanceOilForm.controls['kmLast'].setValue("");
+    this.maintenanceOilForm.controls['kmNext'].setValue("");
+    this.maintenanceOilForm.controls['status'].setValue("");
+    this.maintenanceOilForm.controls['differences'].setValue("");
+    this.maintenanceOilForm.controls['id'].setValue("0");
+  }
+  /**
+   * Open Edit modal
+   * @param content modal content
+   */
+  editDataGet(id: any) {
+    this.new = true;
+    this.submitted = false;
+    this.pipe = new DatePipe('en-US');
+    var listData = this.maintenanceOils.filter((data: { id: any; }) => data.id === id);
+    this.maintenanceOilForm.controls['id'].setValue(listData[0].id);
+    this.maintenanceOilForm.controls['changeType'].setValue(listData[0].changeType);
+    this.maintenanceOilForm.controls['place'].setValue(listData[0].place);
+    this.maintenanceOilForm.controls['dateChange'].setValue(this.pipe.transform(listData[0].dateChange, 'yyyy-MM-dd'));
+    this.maintenanceOilForm.controls['kmLast'].setValue(listData[0].kmLast);
+    this.maintenanceOilForm.controls['kmNext'].setValue(listData[0].kmNext);
+    this.maintenanceOilForm.controls['status'].setValue(listData[0].status);
+    this.maintenanceOilForm.controls['differences'].setValue(listData[0].differences);
+    this.textButton = "Actualizar";
+  }
+
+  listMaintenanceOils() {
+    this.service.listMaintenanceOils()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.maintenanceOilsResponse = response.datos.maintenanceOilDtoList;
+              this.service.paginationTable(this.maintenanceOilsResponse);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+              this.service.paginationTable([]);
+            }
+          } else {
+            Swal.fire({
+              icon: config.ERROR,
+              title: "Ocurrio un error",
+              showConfirmButton: false,
+            });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listMaintenanceOilsByIdTruckFleet(id) {
+    this.service.listByIdTruckFleet(id)
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.maintenanceOilsResponse = response.datos.maintenanceOilDtoList;
+              this.service.paginationTable(this.maintenanceOilsResponse);
+            } else {
+              this.service.paginationTable([]);
+            }
+          } else {
+            Swal.fire({
+              icon: config.ERROR,
+              title: "Ocurrio un error",
+              showConfirmButton: false,
+            });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  registerMaintenanceOil(maintenanceOil) {
+    this.service.registerMaintenanceOil(maintenanceOil)
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              Swal.fire(
+                '¡Registrado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
+              this.listMaintenanceOilsByIdTruckFleet(this.idTruckFleet);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          } else {
+            Swal.fire({
+              icon: config.ERROR,
+              title: "Ocurrio un error",
+              showConfirmButton: false,
+            });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  updateMaintenanceOil(maintenanceOil) {
+    this.service.updateMaintenanceOil(maintenanceOil)
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.listMaintenanceOilsByIdTruckFleet(this.idTruckFleet);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          } else {
+            Swal.fire({
+              icon: config.ERROR,
+              title: "Ocurrio un error",
+              showConfirmButton: false,
+            });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  deleteMaintenanceOil(id) {
+    console.log(id);
+    this.service.deleteMaintenanceOil(id)
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.meta.mensajes[0].codigo == '0') {
+              Swal.fire(
+                '¡Eliminado!',
+                'Su archivo ha sido eliminado.',
+                'success'
+              );
+
+              this.listMaintenanceOilsByIdTruckFleet(this.idTruckFleet);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          } else {
+            Swal.fire({
+              icon: config.ERROR,
+              title: "Ocurrio un error",
+              showConfirmButton: false,
+            });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+}
