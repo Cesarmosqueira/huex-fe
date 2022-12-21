@@ -34,6 +34,8 @@
                 <th class="align-middle">Zona</th>
                 <th class="align-middle">Distancia en KM</th>
                 <th class="align-middle">Gallones</th>
+                <th class="align-middle">Acción</th>
+
               </tr>
               </thead>
               <tbody>
@@ -92,6 +94,7 @@
         </div>
       </div>
 
+
       <div class="mb-3">
         <label for="customername-field" class="form-label">Destino</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="routeEnd"
@@ -102,7 +105,7 @@
       </div>
 
       <div class="mb-3">
-        <label for="customername-field" class="form-label">Placa Furgon</label>
+        <label for="customername-field" class="form-label">Zona</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="zone"
                [ngClass]="{ 'is-invalid': submitted && form['zone'].errors }" autocomplete="disabled" />
         <div *ngIf="submitted && form['zone'].errors" class="invalid-feedback" align="left">
@@ -111,7 +114,7 @@
       </div>
 
       <div class="mb-3">
-        <label for="customername-field" class="form-label">Marca</label>
+        <label for="customername-field" class="form-label">Distancia</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="distanceKM"
                [ngClass]="{ 'is-invalid': submitted && form['distanceKM'].errors }" autocomplete="disabled" />
         <div *ngIf="submitted && form['distanceKM'].errors" class="invalid-feedback" align="left">
@@ -120,7 +123,7 @@
       </div>
 
       <div class="mb-3">
-        <label for="customername-field" class="form-label">Volumen</label>
+        <label for="customername-field" class="form-label">Galones</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="gallons"
                [ngClass]="{ 'is-invalid': submitted && form['gallons'].errors }" autocomplete="disabled" />
         <div *ngIf="submitted && form['gallons'].errors" class="invalid-feedback" align="left">
@@ -133,7 +136,8 @@
       <div class="hstack gap-2 justify-content-end">
         <button type="button" class="btn btn-light" data-bs-dismiss="modal"
                 (click)="modal.close('Close click')">Cancelar</button>
-        <button type="submit" class="btn btn-success" id="add-btn">Registrar</button>
+        <button type="submit" class="btn btn-success" id="add-btn" *ngIf="action===1">Registrar</button>
+        <button type="submit" class="btn btn-success" id="add-btn" *ngIf="action===2">Actualizar</button>
       </div>
     </div>
   </form>

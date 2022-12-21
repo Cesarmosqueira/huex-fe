@@ -8,6 +8,7 @@ import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
 import {Route} from "../models/route.model";
 import {RouteService} from "../services/route.service";
+import {Providers} from "../../../providers/provider/models/providers.model";
 
 @Component({
   selector: 'app-route',
@@ -15,6 +16,12 @@ import {RouteService} from "../services/route.service";
   styleUrls: ['./route.component.scss']
 })
 export class RouteComponent implements OnInit {
+
+
+  idRouteOuput: number = 0;
+  newRoute = false;
+  textButton = "Registrar";
+  action = 0;
 
 
   // bread crumb items
@@ -54,13 +61,16 @@ export class RouteComponent implements OnInit {
       routeEnd: ['', [Validators.required]],
       zone: ['', [Validators.required]],
       distanceKM: ['', [Validators.required]],
-      gallons: ['', [Validators.required]]
+      gallons: ['', [Validators.required]],
+      btnSave: []
     });
 
     this.routesList.subscribe(x => {
       this.content = this.routes;
       this.routes = Object.assign([], x);
     });
+    this.idRouteOuput = 0;
+    console.log(this.idRouteOuput);
 
     this.listRoutes();
   }
@@ -113,7 +123,12 @@ export class RouteComponent implements OnInit {
    * @param content modal content
    */
   openModal(content: any) {
+    this.action = 1;
+    this.clear();
     this.submitted = false;
+    this.newRoute = false;
+    this.textButton = "Registrar";
+    this.enableInputs();
     this.modalService.open(content, { size: 'md', centered: true });
   }
 
@@ -168,20 +183,24 @@ export class RouteComponent implements OnInit {
   editDataGet(id: any, content: any) {
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
+    this.enableInputs();
+    this.action = 2;
+    this.newRoute = true;
+    this.textButton = "Actualizar";
     this.modalService.open(content, { size: 'md', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
     modelTitle.innerHTML = 'Actualizar rutas';
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.routes.filter((data: { id: any; }) => data.id === id);
-    const fabricationDate = listData[0].fabricationDate.substring(0, 10);
-    const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
     this.routeForm.controls['id'].setValue(listData[0].id);
     this.routeForm.controls['routeStart'].setValue(listData[0].routeStart);
     this.routeForm.controls['routeEnd'].setValue(listData[0].routeEnd);
     this.routeForm.controls['zone'].setValue(listData[0].zone);
     this.routeForm.controls['distanceKM'].setValue(listData[0].distanceKM);
     this.routeForm.controls['gallons'].setValue(listData[0].gallons);
+    this.idRouteOuput = id;
+
   }
 
   listRoutes() {
@@ -200,12 +219,6 @@ export class RouteComponent implements OnInit {
                 showConfirmButton: false,
               });
             }
-          } else {
-            Swal.fire({
-              icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el Encargado",
-              showConfirmButton: false,
-            });
           }
         },
         error => {
@@ -223,12 +236,18 @@ export class RouteComponent implements OnInit {
       .subscribe(
         response => {
           if (response) {
+            console.log(response);
             if (response.datos) {
               Swal.fire(
                 '¡Registrado!',
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
+              this.newRoute=true;
+              this.action=0;
+              this.disableInputs();
+              const routeDto = response.datos.routeDto;
+              this.idRouteOuput = routeDto.id;
               this.listRoutes();
             } else {
               Swal.fire({
@@ -240,7 +259,7 @@ export class RouteComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -272,7 +291,7 @@ export class RouteComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -285,6 +304,34 @@ export class RouteComponent implements OnInit {
           });
         });
   }
+
+  clear() {
+    this.routeForm.controls['id'].setValue("0");
+    this.routeForm.controls['routeStart'].setValue(null);
+    this.routeForm.controls['routeEnd'].setValue("");
+    this.routeForm.controls['zone'].setValue("");
+    this.routeForm.controls['distanceKM'].setValue("");
+    this.routeForm.controls['gallons'].setValue("");
+
+  }
+
+  enableInputs() {
+    this.routeForm.controls['id'].enable();
+    this.routeForm.controls['routeStart'].enable();
+    this.routeForm.controls['routeEnd'].enable();
+    this.routeForm.controls['zone'].enable();
+    this.routeForm.controls['distanceKM'].enable();
+    this.routeForm.controls['gallons'].enable();
+  }
+  disableInputs() {
+    this.routeForm.controls['id'].disable();
+    this.routeForm.controls['routeStart'].disable();
+    this.routeForm.controls['routeEnd'].disable();
+    this.routeForm.controls['zone'].disable();
+    this.routeForm.controls['distanceKM'].disable();
+    this.routeForm.controls['gallons'].disable();
+  }
+
 
   deleteRoute(id) {
     this.service.deleteRoute(id)
@@ -309,7 +356,7 @@ export class RouteComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
