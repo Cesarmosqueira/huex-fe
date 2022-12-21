@@ -39,18 +39,18 @@ export const environment = {
       delete: '/api-huex/v1/employeeImplements/'
     },
     employeeAttendance: {
-      list: '/api-huex/v1/employeeAttendances',
-      retrieve: '/api-huex/v1/employeeAttendances/',
-      register: '/api-huex/v1/employeeAttendances',
-      update: '/api-huex/v1/employeeAttendances',
-      delete: '/api-huex/v1/employeeAttendances/'
+      list: '/api-huex/v1/attendances',
+      retrieve: '/api-huex/v1/attendances/',
+      register: '/api-huex/v1/attendances',
+      update: '/api-huex/v1/attendances',
+      delete: '/api-huex/v1/attendances/'
     },
     employeeDiscount: {
-      list: '/api-huex/v1/employeeDiscounts',
-      retrieve: '/api-huex/v1/employeeDiscounts/',
-      register: '/api-huex/v1/employeeDiscounts',
-      update: '/api-huex/v1/employeeDiscounts',
-      delete: '/api-huex/v1/employeeDiscounts/'
+      list: '/api-huex/v1/discounts',
+      retrieve: '/api-huex/v1/discounts/',
+      register: '/api-huex/v1/discounts',
+      update: '/api-huex/v1/discounts',
+      delete: '/api-huex/v1/discounts/'
     }
   },
   customers: {
@@ -85,25 +85,25 @@ export const environment = {
   },
   services: {
     expenseType: {
-      list: '/api-huex/v1/expenseType',
-      retrieve: '/api-huex/v1/expenseType/',
-      register: '/api-huex/v1/expenseType',
-      update: '/api-huex/v1/expenseType',
-      delete: '/api-huex/v1/expenseType/'
+      list: '/api-huex/v1/expense_type',
+      retrieve: '/api-huex/v1/expense_type/',
+      register: '/api-huex/v1/expense_type',
+      update: '/api-huex/v1/expense_type',
+      delete: '/api-huex/v1/expense_type/'
     },
     serviceIncidents: {
-      list: '/api-huex/v1/serviceIncidents',
-      retrieve: '/api-huex/v1/serviceIncidents/',
-      register: '/api-huex/v1/serviceIncidents',
-      update: '/api-huex/v1/serviceIncidents',
-      delete: '/api-huex/v1/serviceIncidents/'
+      list: '/api-huex/v1/service_incident',
+      retrieve: '/api-huex/v1/service_incident/',
+      register: '/api-huex/v1/service_incident',
+      update: '/api-huex/v1/service_incident',
+      delete: '/api-huex/v1/service_incident/'
     },
     settlementSummary: {
-      list: '/api-huex/v1/settlementSummary',
-      retrieve: '/api-huex/v1/settlementSummary/',
-      register: '/api-huex/v1/settlementSummary',
-      update: '/api-huex/v1/settlementSummary',
-      delete: '/api-huex/v1/settlementSummary/'
+      list: '/api-huex/v1/settlement_summary',
+      retrieve: '/api-huex/v1/settlement_summary/',
+      register: '/api-huex/v1/settlement_summary',
+      update: '/api-huex/v1/settlement_summary',
+      delete: '/api-huex/v1/settlement_summary/'
     }
   },
 
@@ -172,11 +172,11 @@ export const environment = {
       delete: '/api-huex/v1/provinceEstivators/'
     },
     tireReplacement: {
-      list: '/api-huex/v1/tireReplacements',
-      retrieve: '/api-huex/v1/tireReplacements/',
-      register: '/api-huex/v1/tireReplacements',
-      update: '/api-huex/v1/tireReplacements',
-      delete: '/api-huex/v1/tireReplacements/'
+      list: '/api-huex/v1/tireReplacement',
+      retrieve: '/api-huex/v1/tireReplacement/',
+      register: '/api-huex/v1/tireReplacement',
+      update: '/api-huex/v1/tireReplacement',
+      delete: '/api-huex/v1/tireReplacement/'
     },
     fuelSupply: {
       list: '/api-huex/v1/fuelSupply',
