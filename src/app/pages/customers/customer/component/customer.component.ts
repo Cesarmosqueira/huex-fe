@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
-import {Rate} from "../../rate/models/rate.model";
 import {Observable} from "rxjs";
-import {RateService} from "../../rate/services/rate.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
@@ -17,6 +15,11 @@ import {CustomerService} from "../services/customer.service";
   styleUrls: ['./customer.component.scss']
 })
 export class CustomerComponent implements OnInit {
+
+  idCustomerOuput: number = 0;
+  newCustomer = false;
+  textButton = "Registrar";
+  action = 0;
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
@@ -35,6 +38,7 @@ export class CustomerComponent implements OnInit {
   customersList!: Observable<Customer[]>;
   total: Observable<number>;
   pipe: any;
+
 
   constructor(public service: CustomerService,
               private modalService: NgbModal,
@@ -55,13 +59,15 @@ export class CustomerComponent implements OnInit {
       socialReason: ['', [Validators.required]],
       bankAccount: ['', [Validators.required]],
       registerDate: ['', [Validators.required]],
+      btnSave: [],
     });
 
-    this.customersList.subscribe(x => {
+      this.customersList.subscribe(x => {
       this.content = this.customers;
       this.customers = Object.assign([], x);
     });
-
+    this.idCustomerOuput = 0;
+    console.log(this.idCustomerOuput);
     this.listCustomers();
   }
 
@@ -113,7 +119,11 @@ export class CustomerComponent implements OnInit {
    * @param content modal content
    */
   openModal(content: any) {
+    this.action = 1;
+    this.clear();
     this.submitted = false;
+    this.newCustomer = false;
+    this.enableInputs();
     this.modalService.open(content, { size: 'md', centered: true });
   }
 
@@ -136,13 +146,14 @@ export class CustomerComponent implements OnInit {
       const bankAccount = this.customerForm.get('bankAccount')?.value;
       const registerDate = this.customerForm.get('registerDate')?.value;
       const fortmatregisterDate = this.pipe.transform(registerDate, 'yyyy-MM-dd');
+
       let customer = new Customer();
       customer.ruc = ruc;
       customer.socialReason = socialReason;
       customer.bankAccount = bankAccount;
       customer.registerDate = fortmatregisterDate;
-
       const id = this.customerForm.get('id')?.value;
+
       console.log(customer);
       console.log(id);
       if (id == '0') {
@@ -152,10 +163,6 @@ export class CustomerComponent implements OnInit {
         this.updateCustomers(customer);
       }
 
-      this.modalService.dismissAll();
-      setTimeout(() => {
-        this.customerForm.reset();
-      }, 2000);
     }
   }
 
@@ -166,6 +173,10 @@ export class CustomerComponent implements OnInit {
   editDataGet(id: any, content: any) {
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
+    this.enableInputs();
+    this.action = 2;
+    this.newCustomer = true;
+    this.textButton = "Actualizar";
     this.modalService.open(content, { size: 'md', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
     modelTitle.innerHTML = 'Actualizar Clientes';
@@ -179,6 +190,7 @@ export class CustomerComponent implements OnInit {
     this.customerForm.controls['socialReason'].setValue(listData[0].socialReason);
     this.customerForm.controls['bankAccount'].setValue(listData[0].bankAccount);
     this.customerForm.controls['registerDate'].setValue(fortmatFabricationDate);
+    this.idCustomerOuput = id;
 
   }
 
@@ -189,7 +201,7 @@ export class CustomerComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.customersDtoList;
+              this.test = response.datos.customerDtoList;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
@@ -198,12 +210,6 @@ export class CustomerComponent implements OnInit {
                 showConfirmButton: false,
               });
             }
-          } else {
-            Swal.fire({
-              icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el Encargado",
-              showConfirmButton: false,
-            });
           }
         },
         error => {
@@ -221,13 +227,18 @@ export class CustomerComponent implements OnInit {
       .subscribe(
         response => {
           if (response) {
+            console.log(response);
             if (response.datos) {
               Swal.fire(
                 '¡Registrado!',
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.customers();
+              this.newCustomer = true;
+              this.action = 0;
+              const customerDto = response.datos.customerDto;
+              this.idCustomerOuput = customerDto.id;
+              this.listCustomers();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -238,7 +249,7 @@ export class CustomerComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -270,7 +281,7 @@ export class CustomerComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -282,6 +293,22 @@ export class CustomerComponent implements OnInit {
             showConfirmButton: false,
           });
         });
+  }
+
+  clear() {
+    this.customerForm.controls['id'].setValue("0");
+    this.customerForm.controls['ruc'].setValue(null);
+    this.customerForm.controls['socialReason'].setValue("");
+    this.customerForm.controls['bankAccount'].setValue("");
+    this.customerForm.controls['registerDate'].setValue("");
+
+  }
+  enableInputs() {
+    this.customerForm.controls['id'].enable();
+    this.customerForm.controls['ruc'].enable();
+    this.customerForm.controls['socialReason'].enable();
+    this.customerForm.controls['bankAccount'].enable();
+    this.customerForm.controls['registerDate'].enable();
   }
 
   deleteCustomers(id) {
@@ -307,7 +334,7 @@ export class CustomerComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }

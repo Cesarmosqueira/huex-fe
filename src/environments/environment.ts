@@ -54,7 +54,7 @@ export const environment = {
     }
   },
   customers: {
-    customers: {
+    customer: {
       list: '/api-huex/v1/customers',
       retrieve: '/api-huex/v1/customers/',
       register: '/api-huex/v1/customers',

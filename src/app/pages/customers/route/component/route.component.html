@@ -84,7 +84,6 @@
     <div class="modal-body">
       <input type="text" hidden formControlName="id" value="0" />
 
-
       <div class="mb-3">
         <label for="customername-field" class="form-label">Ruta inicio</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="routeStart"
@@ -93,7 +92,6 @@
           <div *ngIf="form['routeStart'].errors['required']">ruta inicio es requerido</div>
         </div>
       </div>
-
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Destino</label>
@@ -104,12 +102,13 @@
         </div>
       </div>
 
+
       <div class="mb-3">
         <label for="customername-field" class="form-label">Zona</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="zone"
-               [ngClass]="{ 'is-invalid': submitted && form['zone'].errors }" autocomplete="disabled" />
+        <ng-select [items]="['CENTRO','SUR','NORTE']" id="customername-field" required formControlName="zone"
+                   [ngClass]="{ 'is-invalid': submitted && form['zone'].errors }"></ng-select>
         <div *ngIf="submitted && form['zone'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['zone'].errors['required']">zona es requerido</div>
+          <div *ngIf="form['zone'].errors['required']">Zona es requerido</div>
         </div>
       </div>
 
@@ -136,8 +135,7 @@
       <div class="hstack gap-2 justify-content-end">
         <button type="button" class="btn btn-light" data-bs-dismiss="modal"
                 (click)="modal.close('Close click')">Cancelar</button>
-        <button type="submit" class="btn btn-success" id="add-btn" *ngIf="action===1">Registrar</button>
-        <button type="submit" class="btn btn-success" id="add-btn" *ngIf="action===2">Actualizar</button>
+        <button type="submit" class="btn btn-success" id="add-btn">Registrar</button>
       </div>
     </div>
   </form>

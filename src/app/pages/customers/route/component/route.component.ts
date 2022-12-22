@@ -17,12 +17,7 @@ import {Providers} from "../../../providers/provider/models/providers.model";
 })
 export class RouteComponent implements OnInit {
 
-
   idRouteOuput: number = 0;
-  newRoute = false;
-  textButton = "Registrar";
-  action = 0;
-
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
@@ -123,12 +118,8 @@ export class RouteComponent implements OnInit {
    * @param content modal content
    */
   openModal(content: any) {
-    this.action = 1;
     this.clear();
     this.submitted = false;
-    this.newRoute = false;
-    this.textButton = "Registrar";
-    this.enableInputs();
     this.modalService.open(content, { size: 'md', centered: true });
   }
 
@@ -159,6 +150,7 @@ export class RouteComponent implements OnInit {
       route.distanceKM = distanceKM;
       route.gallons = gallons;
       const id = this.routeForm.get('id')?.value;
+
       console.log(route);
       console.log(id);
       if (id == '0') {
@@ -167,7 +159,6 @@ export class RouteComponent implements OnInit {
         route.id = id;
         this.updateRoutes(route);
       }
-
       this.modalService.dismissAll();
       setTimeout(() => {
         this.routeForm.reset();
@@ -184,9 +175,7 @@ export class RouteComponent implements OnInit {
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
     this.enableInputs();
-    this.action = 2;
-    this.newRoute = true;
-    this.textButton = "Actualizar";
+
     this.modalService.open(content, { size: 'md', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
     modelTitle.innerHTML = 'Actualizar rutas';
@@ -200,7 +189,6 @@ export class RouteComponent implements OnInit {
     this.routeForm.controls['distanceKM'].setValue(listData[0].distanceKM);
     this.routeForm.controls['gallons'].setValue(listData[0].gallons);
     this.idRouteOuput = id;
-
   }
 
   listRoutes() {
@@ -243,9 +231,6 @@ export class RouteComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.newRoute=true;
-              this.action=0;
-              this.disableInputs();
               const routeDto = response.datos.routeDto;
               this.idRouteOuput = routeDto.id;
               this.listRoutes();
@@ -280,6 +265,11 @@ export class RouteComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
+              Swal.fire(
+                '¡Actualizado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
               this.listRoutes();
             } else {
               Swal.fire({
@@ -312,7 +302,6 @@ export class RouteComponent implements OnInit {
     this.routeForm.controls['zone'].setValue("");
     this.routeForm.controls['distanceKM'].setValue("");
     this.routeForm.controls['gallons'].setValue("");
-
   }
 
   enableInputs() {
@@ -323,15 +312,6 @@ export class RouteComponent implements OnInit {
     this.routeForm.controls['distanceKM'].enable();
     this.routeForm.controls['gallons'].enable();
   }
-  disableInputs() {
-    this.routeForm.controls['id'].disable();
-    this.routeForm.controls['routeStart'].disable();
-    this.routeForm.controls['routeEnd'].disable();
-    this.routeForm.controls['zone'].disable();
-    this.routeForm.controls['distanceKM'].disable();
-    this.routeForm.controls['gallons'].disable();
-  }
-
 
   deleteRoute(id) {
     this.service.deleteRoute(id)

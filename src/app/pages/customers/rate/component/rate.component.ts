@@ -264,6 +264,11 @@ export class RateComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
+              Swal.fire(
+                '¡Actualizado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
               this.listRates();
             } else {
               Swal.fire({
