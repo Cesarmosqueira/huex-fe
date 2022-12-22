@@ -39,7 +39,7 @@
 // authentication full page
 
 .auth-full-bg{
-    background-color: rgba($primary, 0.25);
+    background-color: $huex-black;
     display: flex;
 
     @media (min-width: 1200px){
@@ -56,7 +56,7 @@
     }
 
     .bg-overlay{
-        background: url("../../../images/bg-auth-overlay.png");
+        background: url("../../../images/huex/bg-2-1.jpg");
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;

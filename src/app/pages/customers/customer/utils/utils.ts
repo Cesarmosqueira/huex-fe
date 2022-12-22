@@ -1,5 +1,4 @@
 import {PipeTransform} from "@angular/core";
-import {Customers} from "../../../ecommerce/customers/customers.model";
 import {Customer} from "../models/customer.model";
 
 export type SortColumn = keyof Customer | '';
