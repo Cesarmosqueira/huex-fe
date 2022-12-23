@@ -16,8 +16,6 @@ import {Customer} from "../models/customer.model";
 })
 export class CustomerService extends BaseService{
 
-
-
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
   private _customers$ = new BehaviorSubject<Customer[]>([]);
@@ -49,35 +47,35 @@ export class CustomerService extends BaseService{
   //consume APIS
 
   public listCustomers(): Observable<ResponseModel<any>> {
-    return this.httpClient.get(environment.server + environment.customers.customers.list)
+    return this.httpClient.get(environment.server + environment.customers.customer.list)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
   public retrieveCustomer(id: number): Observable<ResponseModel<Customer>> {
-    return this.httpClient.get(environment.server + environment.customers.customers.retrieve + id)
+    return this.httpClient.get(environment.server + environment.customers.customer.retrieve + id)
       .pipe(map((responseModel: ResponseModel<Customer>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
   public registerCustomer(customer: Customer): Observable<ResponseModel<any>> {
-    return this.httpClient.post(environment.server + environment.customers.customers.register, customer)
+    return this.httpClient.post(environment.server + environment.customers.customer.register, customer)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
   public updateCustomer(customer: Customer): Observable<ResponseModel<any>> {
-    return this.httpClient.put(environment.server + environment.customers.customers.update, customer)
+    return this.httpClient.put(environment.server + environment.customers.customer.update, customer)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
   public deleteCustomer(id: number): Observable<ResponseModel<any>> {
-    return this.httpClient.delete(environment.server + environment.customers.customers.delete + id)
+    return this.httpClient.delete(environment.server + environment.customers.customer.delete + id)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
