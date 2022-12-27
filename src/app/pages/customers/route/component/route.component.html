@@ -34,6 +34,8 @@
                 <th class="align-middle">Zona</th>
                 <th class="align-middle">Distancia en KM</th>
                 <th class="align-middle">Gallones</th>
+                <th class="align-middle">Acción</th>
+
               </tr>
               </thead>
               <tbody>
@@ -82,7 +84,6 @@
     <div class="modal-body">
       <input type="text" hidden formControlName="id" value="0" />
 
-
       <div class="mb-3">
         <label for="customername-field" class="form-label">Ruta inicio</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="routeStart"
@@ -101,17 +102,18 @@
         </div>
       </div>
 
+
       <div class="mb-3">
-        <label for="customername-field" class="form-label">Placa Furgon</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="zone"
-               [ngClass]="{ 'is-invalid': submitted && form['zone'].errors }" autocomplete="disabled" />
+        <label for="customername-field" class="form-label">Zona</label>
+        <ng-select [items]="['CENTRO','SUR','NORTE']" id="customername-field" required formControlName="zone"
+                   [ngClass]="{ 'is-invalid': submitted && form['zone'].errors }"></ng-select>
         <div *ngIf="submitted && form['zone'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['zone'].errors['required']">zona es requerido</div>
+          <div *ngIf="form['zone'].errors['required']">Zona es requerido</div>
         </div>
       </div>
 
       <div class="mb-3">
-        <label for="customername-field" class="form-label">Marca</label>
+        <label for="customername-field" class="form-label">Distancia</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="distanceKM"
                [ngClass]="{ 'is-invalid': submitted && form['distanceKM'].errors }" autocomplete="disabled" />
         <div *ngIf="submitted && form['distanceKM'].errors" class="invalid-feedback" align="left">
@@ -120,7 +122,7 @@
       </div>
 
       <div class="mb-3">
-        <label for="customername-field" class="form-label">Volumen</label>
+        <label for="customername-field" class="form-label">Galones</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="gallons"
                [ngClass]="{ 'is-invalid': submitted && form['gallons'].errors }" autocomplete="disabled" />
         <div *ngIf="submitted && form['gallons'].errors" class="invalid-feedback" align="left">
