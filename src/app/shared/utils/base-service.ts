@@ -19,7 +19,7 @@ export class BaseService {
             errorMessage = `Un error ha ocurrido: ${err.error.message}`;
         } else {
             // errorMessage = `Código retornado por el servidor: ${err.status}, el mensaje de error es: ${err.message}`;
-            errorMessage = err;
+            errorMessage = `Un error ha ocurrido: ${err.status}`;;
         }
         console.log(errorMessage);
         return throwError(errorMessage);

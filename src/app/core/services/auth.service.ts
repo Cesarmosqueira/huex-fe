@@ -1,31 +1,50 @@
+import { HttpBackend, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 import { getFirebaseBackend } from '../../authUtils';
 
 import { User } from '../models/auth.models';
 
 @Injectable({ providedIn: 'root' })
-
 export class AuthenticationService {
 
-    user: User;
+    private currentUserSubject: BehaviorSubject<User>;
+    public currentUser: Observable<User>;
+    private httpClient: HttpClient;
 
-    constructor() {
+    constructor(handler: HttpBackend) {
+        this.httpClient = new HttpClient(handler);
+        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+        this.currentUser = this.currentUserSubject.asObservable();
     }
 
-    /**
-     * Returns the current user
-     */
-    public currentUser(): User {
-        return getFirebaseBackend().getAuthenticatedUser();
+    public get currentUserValue(): User {
+        return this.currentUserSubject.value;
     }
 
-    /**
-     * Performs the auth
-     * @param email email of user
-     * @param password password of user
-     */
-    login(email: string, password: string) {
+    login(user) {
+        return this.httpClient.post(environment.server + environment.security.user.login, user)
+            .pipe(map((user: any) => {
+                // login successful if there's a jwt token in the response
+                if (user && user.accessToken) {
+                    // store user details and jwt token in local storage to keep user logged in between page refreshes
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    this.currentUserSubject.next(user);
+                }
+                return user;
+            }));
+    }
+
+    logout() {
+        // remove user from local storage to log user out
+        localStorage.removeItem('currentUser');
+        this.currentUserSubject.next(null);
+    }
+
+    loginUser1(email: string, password: string) {
         return getFirebaseBackend().loginUser(email, password).then((response: any) => {
             const user = response;
             return user;
@@ -53,14 +72,6 @@ export class AuthenticationService {
             const message = response.data;
             return message;
         });
-    }
-
-    /**
-     * Logout the user
-     */
-    logout() {
-        // logout the user
-        getFirebaseBackend().logout();
     }
 }
 

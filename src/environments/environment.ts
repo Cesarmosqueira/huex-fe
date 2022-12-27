@@ -107,6 +107,12 @@ export const environment = {
     }
   },
 
+  security:{
+    user:{
+      login: '/api-huex/v1/security/user/login',
+    }
+  },
+
   vehicles: {
     truckfleet: {
       list: '/api-huex/v1/vehicle/truckFleet',

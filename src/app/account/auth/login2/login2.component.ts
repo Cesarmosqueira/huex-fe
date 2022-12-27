@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { AuthenticationService } from '../../../core/services/auth.service';
-import { AuthfakeauthenticationService } from '../../../core/services/authfake.service';
 
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 
-import { environment } from '../../../../environments/environment';
+import { User } from 'src/app/core/models/auth.models';
+import Swal from 'sweetalert2';
+import { config } from 'src/app/shared/shared.config';
 
 @Component({
   selector: 'app-login2',
@@ -20,8 +21,8 @@ import { environment } from '../../../../environments/environment';
  */
 export class Login2Component implements OnInit {
 
-  constructor(private formBuilder: UntypedFormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService,
-    private authFackservice: AuthfakeauthenticationService) { }
+  constructor(private formBuilder: UntypedFormBuilder, private route: ActivatedRoute,
+    private router: Router, private authenticationService: AuthenticationService) { }
   loginForm: UntypedFormGroup;
   submitted = false;
   error = '';
@@ -33,8 +34,8 @@ export class Login2Component implements OnInit {
   ngOnInit(): void {
     document.body.classList.add('auth-body-bg')
     this.loginForm = this.formBuilder.group({
-      email: ['admin@themesbrand.com', [Validators.required, Validators.email]],
-      password: ['123456', [Validators.required]],
+      email: ['jgala', [Validators.required]],
+      password: ['jgala', [Validators.required]],
     });
 
     // reset login status
@@ -70,24 +71,27 @@ export class Login2Component implements OnInit {
     if (this.loginForm.invalid) {
       return;
     } else {
-      if (environment.defaultauth === 'firebase') {
-        this.authenticationService.login(this.f.email.value, this.f.password.value).then((res: any) => {
-          this.router.navigate(['/']);
-        })
-          .catch(error => {
-            this.error = error ? error : '';
-          });
-      } else {
-        this.authFackservice.login(this.f.email.value, this.f.password.value)
-          .pipe(first())
-          .subscribe(
-            data => {
-              this.router.navigate(['/']);
-            },
-            error => {
-              this.error = error ? error : '';
-            });
-      }
+      let user = new User();
+      user.userName = this.f.email.value;
+      user.password = this.f.password.value;
+      this.login(user);
     }
+  }
+
+  login(user) {
+    console.log(user);
+    this.authenticationService.login(user)
+      .pipe(first())
+      .subscribe(
+        () => {
+          this.router.navigate(['/']);
+        },
+        () => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: "Usuario o contraseña incorrecto",
+            showConfirmButton: false,
+          });
+        });
   }
 }
