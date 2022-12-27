@@ -16,6 +16,8 @@ import {config} from "../../../../shared/shared.config";
 })
 export class ProvinceEstivatorsComponent implements OnInit {
 
+  idProvinceEstivatorOuput: number = 0;
+
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
@@ -112,6 +114,7 @@ export class ProvinceEstivatorsComponent implements OnInit {
    * @param content modal content
    */
   openModal(content: any) {
+    this.clear();
     this.submitted = false;
     this.modalService.open(content, { size: 'md', centered: true });
   }
@@ -130,8 +133,8 @@ export class ProvinceEstivatorsComponent implements OnInit {
     this.submitted = true
     if (this.provinceEstivatorForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const routeId = 5;//this.provinceEstivatorForm.get('routeId')?.value;
-      const providerId =4; //this.provinceEstivatorForm.get('providerId')?.value;
+      const routeId = 1;//this.provinceEstivatorForm.get('routeId')?.value;
+      const providerId =1; //this.provinceEstivatorForm.get('providerId')?.value;
       const costM3 = this.provinceEstivatorForm.get('costM3')?.value;
       const observation = this.provinceEstivatorForm.get('observation')?.value;
 
@@ -171,13 +174,13 @@ export class ProvinceEstivatorsComponent implements OnInit {
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.provinceEstivator.filter((data: { id: any; }) => data.id === id);
-    const fabricationDate = listData[0].fabricationDate.substring(0, 10);
-    const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
     this.provinceEstivatorForm.controls['id'].setValue(listData[0].id);
     this.provinceEstivatorForm.controls['routeId'].setValue(listData[0].routeId);
     this.provinceEstivatorForm.controls['providerId'].setValue(listData[0].providerId);
     this.provinceEstivatorForm.controls['costM3'].setValue(listData[0].costM3);
     this.provinceEstivatorForm.controls['observation'].setValue(listData[0].observation);
+    this.idProvinceEstivatorOuput = id;
+
   }
 
   listProvinceEstivators() {
@@ -187,7 +190,7 @@ export class ProvinceEstivatorsComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.provinceEstivatorsDtoList;
+              this.test = response.datos.provinceEstivatorDtoList;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
@@ -236,7 +239,7 @@ export class ProvinceEstivatorsComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -257,6 +260,11 @@ export class ProvinceEstivatorsComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
+              Swal.fire(
+                '¡Actualizado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
               this.listProvinceEstivators();
             } else {
               Swal.fire({
@@ -268,7 +276,7 @@ export class ProvinceEstivatorsComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -280,6 +288,21 @@ export class ProvinceEstivatorsComponent implements OnInit {
             showConfirmButton: false,
           });
         });
+  }
+  clear() {
+    this.provinceEstivatorForm.controls['id'].setValue("0");
+    this.provinceEstivatorForm.controls['routeId'].setValue("");
+    this.provinceEstivatorForm.controls['providerId'].setValue("");
+    this.provinceEstivatorForm.controls['costM3'].setValue("");
+    this.provinceEstivatorForm.controls['observation'].setValue("");
+  }
+
+  enableInputs() {
+    this.provinceEstivatorForm.controls['id'].enable();
+    this.provinceEstivatorForm.controls['routeId'].enable();
+    this.provinceEstivatorForm.controls['providerId'].enable();
+    this.provinceEstivatorForm.controls['costM3'].enable();
+    this.provinceEstivatorForm.controls['observation'].enable();
   }
 
   deleteProvinceEstivators(id) {
@@ -305,7 +328,7 @@ export class ProvinceEstivatorsComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
