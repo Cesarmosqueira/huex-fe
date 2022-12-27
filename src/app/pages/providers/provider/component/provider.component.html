@@ -38,6 +38,7 @@
                 <th class="align-middle">Fecha ingreso</th>
                 <th class="align-middle">Cuenta bancaria</th>
                 <th class="align-middle">Observacion</th>
+                <th class="align-middle">Acción</th>
               </tr>
               </thead>
               <tbody>
@@ -49,9 +50,9 @@
                 <td>{{data.businessName}}</td>
                 <td>{{data.contactName}}</td>
                 <td>{{data.email}}</td>
-                <td>{{data.phoneNumber.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                <td>{{data.phoneNumber}}</td>
                 <td>{{data.address}}</td>
-                <td>{{data.admissionDate}}</td>
+                <td>{{data.admissionDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                 <td>{{data.bankAccount}}</td>
                 <td>{{data.observation}}</td>
                 <td>
@@ -86,7 +87,7 @@
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
             (click)="modal.dismiss('Cross click')"></button>
   </div>
-  <form (ngSubmit)="saveUser()" [formGroup]="providersForm">
+  <form (ngSubmit)="saveUser()" [formGroup]="providerForm">
     <div class="modal-body">
       <input type="text" hidden formControlName="id" value="0" />
 

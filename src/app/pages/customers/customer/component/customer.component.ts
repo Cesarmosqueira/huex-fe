@@ -8,8 +8,7 @@ import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
 import {Customer} from "../models/customer.model";
 import {CustomerService} from "../services/customer.service";
-import {Route} from "../../route/models/route.model";
-import {RouteService} from "../../route/services/route.service";
+
 
 @Component({
   selector: 'app-customer',
@@ -232,8 +231,8 @@ export class CustomerComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              const routeDto = response.datos.customer;
-              this.idCustomerOuput = routeDto.id;
+              const customerDto = response.datos.customer;
+              this.idCustomerOuput = customerDto.id;
               this.listCustomers();
             } else {
               Swal.fire({
