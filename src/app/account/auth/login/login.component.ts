@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
       return;
     } else {
       if (environment.defaultauth === 'firebase') {
-        this.authenticationService.login(this.f.email.value, this.f.password.value).then((res: any) => {
+        this.authenticationService.loginUser1(this.f.email.value, this.f.password.value).then((res: any) => {
           this.router.navigate(['/dashboard']);
         })
           .catch(error => {
