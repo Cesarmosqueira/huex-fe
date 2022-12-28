@@ -9,6 +9,7 @@ import {config} from "../../../../shared/shared.config";
 import {Customer} from "../models/customer.model";
 import {CustomerService} from "../services/customer.service";
 
+
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
@@ -17,9 +18,6 @@ import {CustomerService} from "../services/customer.service";
 export class CustomerComponent implements OnInit {
 
   idCustomerOuput: number = 0;
-  newCustomer = false;
-  textButton = "Registrar";
-  action = 0;
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
@@ -39,7 +37,6 @@ export class CustomerComponent implements OnInit {
   total: Observable<number>;
   pipe: any;
 
-
   constructor(public service: CustomerService,
               private modalService: NgbModal,
               private formBuilder: UntypedFormBuilder) {
@@ -48,7 +45,7 @@ export class CustomerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.breadCrumbItems = [{ label: 'Cliente' }, { label: 'Clientes', active: true }];
+    this.breadCrumbItems = [{ label: 'Cliente' }, { label: 'clientes', active: true }];
 
     /**
      * Form Validation
@@ -59,15 +56,16 @@ export class CustomerComponent implements OnInit {
       socialReason: ['', [Validators.required]],
       bankAccount: ['', [Validators.required]],
       registerDate: ['', [Validators.required]],
-      btnSave: [],
+      btnSave: []
     });
 
-      this.customersList.subscribe(x => {
+    this.customersList.subscribe(x => {
       this.content = this.customers;
       this.customers = Object.assign([], x);
     });
     this.idCustomerOuput = 0;
     console.log(this.idCustomerOuput);
+
     this.listCustomers();
   }
 
@@ -100,7 +98,7 @@ export class CustomerComponent implements OnInit {
       })
       .then(result => {
         if (result.value) {
-          this.deleteCustomers(id);
+          this.deleteCustomer(id);
         } else if (
           /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel
@@ -119,10 +117,8 @@ export class CustomerComponent implements OnInit {
    * @param content modal content
    */
   openModal(content: any) {
-    this.action = 1;
     this.clear();
     this.submitted = false;
-    this.newCustomer = false;
     this.enableInputs();let ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
       keyboard: false,
@@ -159,14 +155,18 @@ export class CustomerComponent implements OnInit {
       customer.registerDate = fortmatregisterDate;
       const id = this.customerForm.get('id')?.value;
 
-      console.log(customer);
+      console.log(Customer);
       console.log(id);
       if (id == '0') {
-        this.registerCustomers(customer);
+        this.registerCustomer(customer);
       } else {
         customer.id = id;
-        this.updateCustomers(customer);
+        this.updateCustomer(customer);
       }
+      this.modalService.dismissAll();
+      setTimeout(() => {
+        this.customerForm.reset();
+      }, 2000);
 
     }
   }
@@ -179,24 +179,22 @@ export class CustomerComponent implements OnInit {
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
     this.enableInputs();
-    this.action = 2;
-    this.newCustomer = true;
-    this.textButton = "Actualizar";
+
     this.modalService.open(content, { size: 'md', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-    modelTitle.innerHTML = 'Actualizar Clientes';
+    modelTitle.innerHTML = 'Actualizar clientes';
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.customers.filter((data: { id: any; }) => data.id === id);
-    const fabricationDate = listData[0].fabricationDate.substring(0, 10);
-    const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
+    const registerDate = listData[0].registerDate.substring(0, 10);
+    const fortmatregisterDate = this.pipe.transform(registerDate, 'yyyy-MM-dd');
     this.customerForm.controls['id'].setValue(listData[0].id);
     this.customerForm.controls['ruc'].setValue(listData[0].ruc);
     this.customerForm.controls['socialReason'].setValue(listData[0].socialReason);
     this.customerForm.controls['bankAccount'].setValue(listData[0].bankAccount);
-    this.customerForm.controls['registerDate'].setValue(fortmatFabricationDate);
-    this.idCustomerOuput = id;
+    this.customerForm.controls['registerDate'].setValue(fortmatregisterDate);
 
+    this.idCustomerOuput = id;
   }
 
   listCustomers() {
@@ -226,7 +224,7 @@ export class CustomerComponent implements OnInit {
         });
   }
 
-  registerCustomers(customers) {
+  registerCustomer(customers) {
     this.service.registerCustomer(customers)
       .pipe(first())
       .subscribe(
@@ -239,9 +237,7 @@ export class CustomerComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.newCustomer = true;
-              this.action = 0;
-              const customerDto = response.datos.customerDto;
+              const customerDto = response.datos.customer;
               this.idCustomerOuput = customerDto.id;
               this.listCustomers();
             } else {
@@ -268,13 +264,18 @@ export class CustomerComponent implements OnInit {
         });
   }
 
-  updateCustomers(customers) {
+  updateCustomer(customers) {
     this.service.updateCustomer(customers)
       .pipe(first())
       .subscribe(
         response => {
           if (response) {
             if (response.datos) {
+              Swal.fire(
+                '¡Actualizado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
               this.listCustomers();
             } else {
               Swal.fire({
@@ -306,8 +307,8 @@ export class CustomerComponent implements OnInit {
     this.customerForm.controls['socialReason'].setValue("");
     this.customerForm.controls['bankAccount'].setValue("");
     this.customerForm.controls['registerDate'].setValue("");
-
   }
+
   enableInputs() {
     this.customerForm.controls['id'].enable();
     this.customerForm.controls['ruc'].enable();
@@ -316,7 +317,7 @@ export class CustomerComponent implements OnInit {
     this.customerForm.controls['registerDate'].enable();
   }
 
-  deleteCustomers(id) {
+  deleteCustomer(id) {
     this.service.deleteCustomer(id)
       .pipe(first())
       .subscribe(

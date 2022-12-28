@@ -8,6 +8,8 @@ import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
 import {Rate} from "../models/rate.model";
 import {RateService} from "../services/rate.service";
+import {Route} from "../../route/models/route.model";
+import {RouteService} from "../../route/services/route.service";
 
 @Component({
   selector: 'app-rate',
@@ -15,6 +17,8 @@ import {RateService} from "../services/rate.service";
   styleUrls: ['./rate.component.scss']
 })
 export class RateComponent implements OnInit {
+
+  idRateOuput: number = 0;
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
@@ -54,13 +58,16 @@ export class RateComponent implements OnInit {
       leadTime: ['', [Validators.required]],
       volume: ['', [Validators.required]],
       cost: ['', [Validators.required]],
-      observationRate: ['', [Validators.required]]
+      observationRate: ['', [Validators.required]],
+      btnSave: []
     });
 
     this.ratesList.subscribe(x => {
       this.content = this.rates;
       this.rates = Object.assign([], x);
     });
+    this.idRateOuput = 0;
+    console.log(this.idRateOuput);
 
     this.listRates();
   }
@@ -94,7 +101,7 @@ export class RateComponent implements OnInit {
       })
       .then(result => {
         if (result.value) {
-          this.deleteRates(id);
+          this.deleteRate(id);
         } else if (
           /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel
@@ -113,6 +120,7 @@ export class RateComponent implements OnInit {
    * @param content modal content
    */
   openModal(content: any) {
+    this.clear();
     this.submitted = false;
     let ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
@@ -137,12 +145,13 @@ export class RateComponent implements OnInit {
     this.submitted = true
     if (this.rateForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const customerId = 7;//this.rateForm.get('customerId')?.value;
-      const routeId = 1;//this.rateForm.get('routeId')?.value;
+      const customerId =3; //this.rateForm.get('customerId')?.value;
+      const routeId = 2;//this.rateForm.get('routeId')?.value;
       const leadTime = this.rateForm.get('leadTime')?.value;
       const volume = this.rateForm.get('volume')?.value;
       const cost = this.rateForm.get('cost')?.value;
       const observationRate = this.rateForm.get('observationRate')?.value;
+
 
       let rate = new Rate();
       rate.customerId = customerId;
@@ -153,6 +162,7 @@ export class RateComponent implements OnInit {
       rate.observationRate = observationRate;
 
       const id = this.rateForm.get('id')?.value;
+
       console.log(rate);
       console.log(id);
       if (id == '0') {
@@ -161,11 +171,11 @@ export class RateComponent implements OnInit {
         rate.id = id;
         this.updateRates(rate);
       }
-
       this.modalService.dismissAll();
       setTimeout(() => {
         this.rateForm.reset();
       }, 2000);
+
     }
   }
 
@@ -176,14 +186,14 @@ export class RateComponent implements OnInit {
   editDataGet(id: any, content: any) {
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
+    this.enableInputs();
+
     this.modalService.open(content, { size: 'md', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-    modelTitle.innerHTML = 'Actualizar tarifas';
+    modelTitle.innerHTML = 'Actualizar rutas';
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.rates.filter((data: { id: any; }) => data.id === id);
-    const fabricationDate = listData[0].fabricationDate.substring(0, 10);
-    const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
     this.rateForm.controls['id'].setValue(listData[0].id);
     this.rateForm.controls['customerId'].setValue(listData[0].customerId);
     this.rateForm.controls['routeId'].setValue(listData[0].routeId);
@@ -191,6 +201,7 @@ export class RateComponent implements OnInit {
     this.rateForm.controls['volume'].setValue(listData[0].volume);
     this.rateForm.controls['cost'].setValue(listData[0].cost);
     this.rateForm.controls['observationRate'].setValue(listData[0].observationRate);
+    this.idRateOuput = id;
   }
 
   listRates() {
@@ -209,12 +220,6 @@ export class RateComponent implements OnInit {
                 showConfirmButton: false,
               });
             }
-          } else {
-            Swal.fire({
-              icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el Encargado",
-              showConfirmButton: false,
-            });
           }
         },
         error => {
@@ -232,12 +237,15 @@ export class RateComponent implements OnInit {
       .subscribe(
         response => {
           if (response) {
+            console.log(response);
             if (response.datos) {
               Swal.fire(
                 '¡Registrado!',
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
+              const rateDto = response.datos.rateDto;
+              this.idRateOuput = rateDto.id;
               this.listRates();
             } else {
               Swal.fire({
@@ -249,7 +257,7 @@ export class RateComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -286,7 +294,7 @@ export class RateComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -300,7 +308,29 @@ export class RateComponent implements OnInit {
         });
   }
 
-  deleteRates(id) {
+  clear() {
+    this.rateForm.controls['id'].setValue("0");
+    this.rateForm.controls['customerId'].setValue("");
+    this.rateForm.controls['routeId'].setValue("");
+    this.rateForm.controls['leadTime'].setValue("");
+    this.rateForm.controls['volume'].setValue("");
+    this.rateForm.controls['cost'].setValue("");
+    this.rateForm.controls['observationRate'].setValue("");
+
+  }
+
+  enableInputs() {
+    this.rateForm.controls['id'].enable();
+    this.rateForm.controls['customerId'].enable();
+    this.rateForm.controls['routeId'].enable();
+    this.rateForm.controls['leadTime'].enable();
+    this.rateForm.controls['volume'].enable();
+    this.rateForm.controls['cost'].enable();
+    this.rateForm.controls['observationRate'].enable();
+
+  }
+
+  deleteRate(id) {
     this.service.deleteRate(id)
       .pipe(first())
       .subscribe(
@@ -323,7 +353,7 @@ export class RateComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }

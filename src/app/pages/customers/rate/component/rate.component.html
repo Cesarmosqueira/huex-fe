@@ -34,6 +34,8 @@
                 <th class="align-middle">Volumen</th>
                 <th class="align-middle">Costo</th>
                 <th class="align-middle">Observaciones</th>
+                <th class="align-middle">Acciones</th>
+
               </tr>
               </thead>
               <tbody>
@@ -43,11 +45,10 @@
                 </td>
                 <td>{{data.customerId}}</td>
                 <td>{{data.routeId}}</td>
-                <td>{{data.brand}}</td>
                 <td>{{data.leadTime}}</td>
                 <td>{{data.volume}}</td>
                 <td>{{data.cost}}</td>
-                <td>{{data.observation}}</td>
+                <td>{{data.observationRate}}</td>
                 <td>
                   <div class="d-flex gap-3">
                     <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
@@ -84,21 +85,23 @@
     <div class="modal-body">
       <input type="text" hidden formControlName="id" value="0" />
 
+
       <div class="mb-3">
         <label for="customername-field" class="form-label">Cliente</label>
-        <ng-select [items]="['Conecta','Saga']" id="customername-field" required formControlName="customerId"
-                   [ngClass]="{ 'is-invalid': submitted && form['customerId'].errors }"></ng-select>
+        <input type="text" id="customername-field" class="form-control" required formControlName="customerId"
+               [ngClass]="{ 'is-invalid': submitted && form['customerId'].errors }" autocomplete="disabled" />
         <div *ngIf="submitted && form['customerId'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['customerId'].errors['required']">Cliente es requerido</div>
         </div>
       </div>
 
+
       <div class="mb-3">
         <label for="customername-field" class="form-label">Ruta</label>
-        <ng-select [items]="['Conecta','Saga']" id="customername-field" required formControlName="routeId"
-                   [ngClass]="{ 'is-invalid': submitted && form['routeId'].errors }"></ng-select>
+        <input type="text" id="customername-field" class="form-control" required formControlName="routeId"
+               [ngClass]="{ 'is-invalid': submitted && form['routeId'].errors }" autocomplete="disabled" />
         <div *ngIf="submitted && form['routeId'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['customerId'].errors['required']">Ruta es requerido</div>
+          <div *ngIf="form['routeId'].errors['required']">Ruta es requerido</div>
         </div>
       </div>
 
