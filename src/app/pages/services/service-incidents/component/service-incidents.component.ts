@@ -197,7 +197,7 @@ export class ServiceIncidentsComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.serviceIncidentsDtoList;
+              this.test = response.datos.serviceIncidents;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({

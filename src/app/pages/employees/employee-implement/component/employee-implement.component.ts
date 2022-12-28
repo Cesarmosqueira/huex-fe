@@ -185,7 +185,7 @@ export class EmployeeImplementComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.employeeImplementDtoList;
+              this.test = response.datos.employeeImplements;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({

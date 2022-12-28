@@ -197,7 +197,7 @@ export class FuelSupplyComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.fuelSupplyDtoList;
+              this.test = response.datos.fuelsSupply;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({

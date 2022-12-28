@@ -61,7 +61,7 @@ export class MaintenanceTireComponent implements OnInit {
       this.maintenanceTires = Object.assign([], x);
     });
 
-    this.listMaintenanceTiresByIdTruckFleet(this.idTruckFleet);
+    this.listMaintenanceTires();
   }
 
   delete(id: any) {
@@ -171,7 +171,7 @@ export class MaintenanceTireComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.maintenanceTiresResponse = response.datos.maintenanceTireDtoList;
+              this.maintenanceTiresResponse = response.datos.maintenancesTire;
               this.service.paginationTable(this.maintenanceTiresResponse);
             } else {
               Swal.fire({
@@ -205,7 +205,7 @@ export class MaintenanceTireComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.maintenanceTiresResponse = response.datos.maintenanceTireDtoList;
+              this.maintenanceTiresResponse = response.datos.maintenancesTire;
               this.service.paginationTable(this.maintenanceTiresResponse);
             } else {
               this.service.paginationTable([]);

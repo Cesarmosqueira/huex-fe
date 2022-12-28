@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
@@ -114,7 +114,13 @@ export class RateComponent implements OnInit {
    */
   openModal(content: any) {
     this.submitted = false;
-    this.modalService.open(content, { size: 'md', centered: true });
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'md'
+    };
+    this.modalService.open(content, ngbModalOptions);
   }
 
   /**
@@ -194,7 +200,7 @@ export class RateComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.ratesDtoList;
+              this.test = response.datos.rates;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({

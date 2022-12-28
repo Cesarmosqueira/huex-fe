@@ -1,7 +1,7 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Providers } from 'src/app/pages/providers/provider/models/providers.model';
@@ -14,8 +14,7 @@ import { TruckFleetService } from '../services/truck-fleet.service';
 @Component({
   selector: 'app-truck-fleet',
   templateUrl: './truck-fleet.component.html',
-  styleUrls: ['./truck-fleet.component.scss'],
-  providers: [TruckFleetService, DecimalPipe]
+  styleUrls: ['./truck-fleet.component.scss']
 })
 export class TruckFleetComponent implements OnInit {
 
@@ -128,7 +127,14 @@ export class TruckFleetComponent implements OnInit {
     this.newTruck = false;
     this.textButton = "Registrar";
     this.enableInputs();
-    this.modalService.open(content, { size: 'xl', centered: true });
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'xl'
+    };
+    
+    this.modalService.open(content, ngbModalOptions);
   }
 
   get form() {
@@ -213,7 +219,7 @@ export class TruckFleetComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.truckFleetDtoList;
+              this.test = response.datos.truckFleets;
               this.service.paginationTable(this.test);
             }
           }
@@ -390,7 +396,7 @@ export class TruckFleetComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.providers = response.datos.providerDtoList;
+              this.providers = response.datos.providers;
               console.log(this.providers);
             } else {
               Swal.fire({

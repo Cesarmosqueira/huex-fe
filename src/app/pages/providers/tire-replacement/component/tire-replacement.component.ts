@@ -208,7 +208,7 @@ export class TireReplacementComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.tireReplacementsDtoList;
+              this.test = response.datos.tiresReplacement;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({

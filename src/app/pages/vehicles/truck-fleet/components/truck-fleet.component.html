@@ -120,33 +120,6 @@
             <ng-template [ngTemplateOutlet]="TabContent2"></ng-template>
           </ng-template>
         </li>
-        <li [ngbNavItem]="4" *ngIf="newTruck">
-          <a ngbNavLink>
-            <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
-            <span class="d-none d-sm-block">Mantenimiento llantas</span>
-          </a>
-          <ng-template ngbNavContent>
-            <ng-template [ngTemplateOutlet]="TabContent3"></ng-template>
-          </ng-template>
-        </li>
-        <li [ngbNavItem]="5" *ngIf="newTruck">
-          <a ngbNavLink>
-            <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
-            <span class="d-none d-sm-block">Mantenimiento de Aceite</span>
-          </a>
-          <ng-template ngbNavContent>
-            <ng-template [ngTemplateOutlet]="TabContent4"></ng-template>
-          </ng-template>
-        </li>
-        <li [ngbNavItem]="6" *ngIf="newTruck">
-          <a ngbNavLink>
-            <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
-            <span class="d-none d-sm-block">Kardex Combustible</span>
-          </a>
-          <ng-template ngbNavContent>
-            <ng-template [ngTemplateOutlet]="TabContent5"></ng-template>
-          </ng-template>
-        </li>
       </ul>
       <div [ngbNavOutlet]="nav"></div>
     </div><!-- End Default Tabs -->
@@ -317,16 +290,4 @@
 
 <ng-template #TabContent2>
   <app-check-list [idTruckFleet]="idTruckFleetOuput"></app-check-list>
-</ng-template>
-
-<ng-template #TabContent3>
-  <app-maintenance-tire [idTruckFleet]="idTruckFleetOuput"></app-maintenance-tire>
-</ng-template>
-
-<ng-template #TabContent4>
-  <app-maintenance-oil [idTruckFleet]="idTruckFleetOuput"></app-maintenance-oil>
-</ng-template>
-
-<ng-template #TabContent5>
-  <app-kardex-fuel [idTruckFleet]="idTruckFleetOuput"></app-kardex-fuel>
 </ng-template>

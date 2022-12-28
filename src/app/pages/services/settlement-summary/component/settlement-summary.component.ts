@@ -195,7 +195,7 @@ export class SettlementSummaryComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.settlementSummaryDtoList;
+              this.test = response.datos.settlementsSummary;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({

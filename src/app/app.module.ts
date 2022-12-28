@@ -25,6 +25,8 @@ import { ErrorInterceptor } from './core/helpers/error.interceptor';
 import { JwtInterceptor } from './core/helpers/jwt.interceptor';
 import { FakeBackendInterceptor } from './core/helpers/fake-backend';
 import {DecimalPipe} from '@angular/common';
+import { LoadingComponent } from './shared/ui/loading/loading.component';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 
 if (environment.defaultauth === 'firebase') {
   initFirebaseBackend(environment.firebaseConfig);
@@ -62,7 +64,8 @@ export function createTranslateLoader(http: HttpClient): any {
     NgbTooltipModule,
     SharedModule,
     ScrollToModule.forRoot(),
-    NgbModule
+    NgbModule,
+    NgHttpLoaderModule.forRoot()
   ],
   bootstrap: [AppComponent],
   providers: [
@@ -73,5 +76,8 @@ export function createTranslateLoader(http: HttpClient): any {
     // LoaderService,
     // { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptorService, multi: true },
   ],
+  entryComponents: [
+    LoadingComponent
+  ]
 })
 export class AppModule { }

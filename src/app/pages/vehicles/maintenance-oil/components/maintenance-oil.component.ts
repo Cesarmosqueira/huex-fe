@@ -11,8 +11,7 @@ import { MaintenanceOilService } from '../services/maintenance-oil.service';
 @Component({
   selector: 'app-maintenance-oil',
   templateUrl: './maintenance-oil.component.html',
-  styleUrls: ['./maintenance-oil.component.scss'],
-  providers: [MaintenanceOilService, DecimalPipe]
+  styleUrls: ['./maintenance-oil.component.scss']
 })
 export class MaintenanceOilComponent implements OnInit {
 
@@ -65,7 +64,8 @@ export class MaintenanceOilComponent implements OnInit {
       this.content = this.maintenanceOils;
       this.maintenanceOils = Object.assign([], x);
     });
-    this.listMaintenanceOilsByIdTruckFleet(this.idTruckFleet);
+
+    this.listMaintenanceOils();
   }
 
   delete(id: any) {
@@ -193,7 +193,7 @@ export class MaintenanceOilComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.maintenanceOilsResponse = response.datos.maintenanceOilDtoList;
+              this.maintenanceOilsResponse = response.datos.maintenancesOil;
               this.service.paginationTable(this.maintenanceOilsResponse);
             } else {
               Swal.fire({
@@ -227,7 +227,7 @@ export class MaintenanceOilComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.maintenanceOilsResponse = response.datos.maintenanceOilDtoList;
+              this.maintenanceOilsResponse = response.datos.maintenancesOil;
               this.service.paginationTable(this.maintenanceOilsResponse);
             } else {
               this.service.paginationTable([]);

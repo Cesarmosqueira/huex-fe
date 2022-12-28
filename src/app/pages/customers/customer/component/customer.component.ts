@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
@@ -123,8 +123,13 @@ export class CustomerComponent implements OnInit {
     this.clear();
     this.submitted = false;
     this.newCustomer = false;
-    this.enableInputs();
-    this.modalService.open(content, { size: 'md', centered: true });
+    this.enableInputs();let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'md'
+    };
+    this.modalService.open(content, ngbModalOptions);
   }
 
   /**
@@ -201,7 +206,7 @@ export class CustomerComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.customerDtoList;
+              this.test = response.datos.customers;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({

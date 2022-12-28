@@ -12,8 +12,7 @@ import { DocumentUnitService } from '../services/document-unit.service';
 @Component({
   selector: 'app-document-unit',
   templateUrl: './document-unit.component.html',
-  styleUrls: ['./document-unit.component.scss'],
-  providers: [DocumentUnitService, DecimalPipe]
+  styleUrls: ['./document-unit.component.scss']
 })
 export class DocumentUnitComponent implements OnInit {
 
@@ -288,7 +287,7 @@ export class DocumentUnitComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.documentUnitsResponse = response.datos.documentUnitDtoList;
+              this.documentUnitsResponse = response.datos.documentsUnit;
               console.log(this.documentUnitsResponse);
               this.service.paginationTable(this.documentUnitsResponse);
             } else {
