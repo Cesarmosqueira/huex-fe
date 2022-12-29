@@ -13,8 +13,7 @@ import { CheckListService } from '../services/check-list.service';
 @Component({
   selector: 'app-check-list',
   templateUrl: './check-list.component.html',
-  styleUrls: ['./check-list.component.scss'],
-  providers: [CheckListService, DecimalPipe]
+  styleUrls: ['./check-list.component.scss']
 })
 export class CheckListComponent implements OnInit {
   @Input () idTruckFleet: number;
@@ -205,7 +204,7 @@ export class CheckListComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.checkListsResponse = response.datos.checkListDtoList;
+              this.checkListsResponse = response.datos.checkLists;
               this.service.paginationTable(this.checkListsResponse);
             } else {
               this.service.paginationTable([]);

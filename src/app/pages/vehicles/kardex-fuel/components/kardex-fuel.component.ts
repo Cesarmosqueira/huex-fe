@@ -11,8 +11,7 @@ import { KardexFuelService } from '../services/kardex-fuel.service';
 @Component({
   selector: 'app-kardex-fuel',
   templateUrl: './kardex-fuel.component.html',
-  styleUrls: ['./kardex-fuel.component.scss'],
-  providers: [KardexFuelService, DecimalPipe]
+  styleUrls: ['./kardex-fuel.component.scss']
 })
 export class KardexFuelComponent implements OnInit {
 
@@ -62,7 +61,8 @@ export class KardexFuelComponent implements OnInit {
       this.content = this.kardexFuels;
       this.kardexFuels = Object.assign([], x);
     });
-    this.listKardexFuelsByIdTruckFleet(this.idTruckFleet);
+
+    this.listKardexFuels();
   }
 
   delete(id: any) {
@@ -177,7 +177,7 @@ export class KardexFuelComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.kardexFuelsResponse = response.datos.kardexFuelDtoList;
+              this.kardexFuelsResponse = response.datos.kardexFuels;
               this.service.paginationTable(this.kardexFuelsResponse);
             } else {
               Swal.fire({
@@ -211,7 +211,7 @@ export class KardexFuelComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.kardexFuelsResponse = response.datos.kardexFuelDtoList;
+              this.kardexFuelsResponse = response.datos.kardexFuels;
               this.service.paginationTable(this.kardexFuelsResponse);
             } else {
               this.service.paginationTable([]);

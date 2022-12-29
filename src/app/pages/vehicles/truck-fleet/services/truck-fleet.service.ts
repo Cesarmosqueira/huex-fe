@@ -1,16 +1,16 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { BaseService } from 'src/app/shared/utils/base-service';
-import { ResponseModel } from 'src/app/shared/utils/response-model';
-import { TruckFleet } from '../models/truck-fleet.model';
-import { environment } from '../../../../../environments/environment'
-import { catchError, debounceTime, delay, map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subject } from "rxjs";
 import { State } from '../interfaces/state.interface';
-import { DecimalPipe } from '@angular/common';
-import { matches, sort, SortColumn, SortDirection } from '../utils/utils';
-import { SearchResult } from '../interfaces/search-result.interface';
+import { HttpClient } from "@angular/common/http";
+import { DecimalPipe } from "@angular/common";
+import { ResponseModel } from "../../../../shared/utils/response-model";
+import { environment } from "../../../../../environments/environment";
+import { catchError, debounceTime, delay, map, switchMap, tap } from "rxjs/operators";
+import { matches, sort, SortColumn, SortDirection } from "../utils/utils";
+import { SearchResult } from "../interfaces/search-result.interface";
+import { BaseService } from "../../../../shared/utils/base-service";
+import { TruckFleet } from '../models/truck-fleet.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -112,11 +112,11 @@ export class TruckFleetService extends BaseService {
   get endIndex() { return this._state.endIndex; }
   get totalRecords() { return this._state.totalRecords; }
 
-  set page(page: number) { this._set({page}); }
-  set pageSize(pageSize: number) { this._set({pageSize}); }
-  set searchTerm(searchTerm: string) { this._set({searchTerm}); }
-  set sortColumn(sortColumn: SortColumn) { this._set({sortColumn}); }
-  set sortDirection(sortDirection: SortDirection) { this._set({sortDirection}); }
+  set page(page: number) { this._set({ page }); }
+  set pageSize(pageSize: number) { this._set({ pageSize }); }
+  set searchTerm(searchTerm: string) { this._set({ searchTerm }); }
+  set sortColumn(sortColumn: SortColumn) { this._set({ sortColumn }); }
+  set sortDirection(sortDirection: SortDirection) { this._set({ sortDirection }); }
   set startIndex(startIndex: number) { this._set({ startIndex }); }
   set endIndex(endIndex: number) { this._set({ endIndex }); }
   set totalRecords(totalRecords: number) { this._set({ totalRecords }); }
@@ -127,12 +127,12 @@ export class TruckFleetService extends BaseService {
   }
 
   private _search(): Observable<SearchResult> {
-    const {sortColumn, sortDirection, page, searchTerm} = this._state;
+    const { sortColumn, sortDirection, page, searchTerm } = this._state;
     // 1. sort
-    let truckFleets = sort(this.truckFleets, sortColumn, sortDirection);    
+    let truckFleets = sort(this.truckFleets, sortColumn, sortDirection);
 
     // 2. filter
-    truckFleets = truckFleets.filter(country => matches(country, searchTerm, this.pipe));        
+    truckFleets = truckFleets.filter(country => matches(country, searchTerm, this.pipe));
     const total = truckFleets.length;
 
     // 3. paginate
@@ -140,9 +140,9 @@ export class TruckFleetService extends BaseService {
     this._state.startIndex = (page - 1) * this.pageSize + 1;
     this._state.endIndex = (page - 1) * this.pageSize + this.pageSize;
     if (this.endIndex > this.totalRecords) {
-        this.endIndex = this.totalRecords;
+      this.endIndex = this.totalRecords;
     }
     truckFleets = truckFleets.slice(this._state.startIndex - 1, this._state.endIndex);
-    return of({truckFleets: truckFleets, total});
+    return of({ truckFleets: truckFleets, total });
   }
 }

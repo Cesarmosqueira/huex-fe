@@ -84,7 +84,7 @@ export class Login2Component implements OnInit {
       .pipe(first())
       .subscribe(
         () => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/dashboard']);
         },
         () => {
           Swal.fire({

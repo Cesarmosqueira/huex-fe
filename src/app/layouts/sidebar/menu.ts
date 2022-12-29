@@ -39,76 +39,94 @@ export const MENU: MenuItem[] = [
       }
     ]
   },
-    {
-        id: 1,
-        label: 'MENUITEMS.VEHICLES.TEXT',
-        icon: 'bx-store',
-        subItems: [
-            {
-                id: 2,
-                label: 'MENUITEMS.VEHICLES.LIST.TRUCKFLEET',
-                link: '/vehicles/truck-fleet',
-                parentId: 1
-            }
-        ]
-    },
-    {
-          id: 2,
-          label: 'MENUITEMS.CUSTOMERS.TEXT',
-          icon: 'bx-store',
-          subItems: [
-            {
-              id: 2,
-              label: 'MENUITEMS.CUSTOMERS.LIST.ROUTES',
-              link: '/customers/route',
-              parentId: 1
-            },
-            {
-              id: 2,
-              label: 'MENUITEMS.CUSTOMERS.LIST.RATES',
-              link: '/customers/rate',
-              parentId: 1
-            },
-            {
-              id: 2,
-              label: 'MENUITEMS.CUSTOMERS.LIST.CUSTOMERS',
-              link: '/customers/customer',
-              parentId: 1
-            },
-            {
-              id: 2,
-              label: 'MENUITEMS.CUSTOMERS.LIST.CUSTOMERSEMPLOYEES',
-              link: '/customers/customer-employees',
-              parentId: 1
-            }
+  {
+    id: 1,
+    label: 'MENUITEMS.VEHICLES.TEXT',
+    icon: 'bx-store',
+    subItems: [
+      {
+        id: 2,
+        label: 'MENUITEMS.VEHICLES.LIST.TRUCKFLEET',
+        link: '/vehicles/truck-fleet',
+        parentId: 1
+      },
+      {
+        id: 3,
+        label: 'MENUITEMS.VEHICLES.LIST.FUEL',
+        link: '/vehicles/kardex-fuel',
+        parentId: 1
+      },
+      {
+        id: 4,
+        label: 'MENUITEMS.VEHICLES.LIST.OIL',
+        link: '/vehicles/maintenance-oil',
+        parentId: 1
+      },
+      {
+        id: 5,
+        label: 'MENUITEMS.VEHICLES.LIST.TIRE',
+        link: '/vehicles/maintenance-tire',
+        parentId: 1
+      }
+    ]
+  },
+  {
+    id: 2,
+    label: 'MENUITEMS.CUSTOMERS.TEXT',
+    icon: 'bx-store',
+    subItems: [
+      {
+        id: 2,
+        label: 'MENUITEMS.CUSTOMERS.LIST.ROUTES',
+        link: '/customers/route',
+        parentId: 1
+      },
+      {
+        id: 2,
+        label: 'MENUITEMS.CUSTOMERS.LIST.RATES',
+        link: '/customers/rate',
+        parentId: 1
+      },
+      {
+        id: 2,
+        label: 'MENUITEMS.CUSTOMERS.LIST.CUSTOMERS',
+        link: '/customers/customer',
+        parentId: 1
+      },
+      {
+        id: 2,
+        label: 'MENUITEMS.CUSTOMERS.LIST.CUSTOMERSEMPLOYEES',
+        link: '/customers/customer-employees',
+        parentId: 1
+      }
 
-          ]
-    },
-    {
-      id: 1,
-      label: 'MENUITEMS.SERVICES.TEXT',
-      icon: 'bx-store',
-      subItems: [
-        {
-          id: 2,
-          label: 'MENUITEMS.SERVICES.LIST.EXPENSETYPE',
-          link: '/services/expenseType',
-          parentId: 1
-        },
-        {
-          id: 2,
-          label: 'MENUITEMS.SERVICES.LIST.SERVICEINCIDENTS',
-          link: '/services/serviceIncidents',
-          parentId: 1
-        },
-        {
-          id: 2,
-          label: 'MENUITEMS.SERVICES.LIST.SETTLEMENTSUMMARY',
-          link: '/services/settlementSummary',
-          parentId: 1
-        }
-      ]
-    },
+    ]
+  },
+  {
+    id: 1,
+    label: 'MENUITEMS.SERVICES.TEXT',
+    icon: 'bx-store',
+    subItems: [
+      {
+        id: 2,
+        label: 'MENUITEMS.SERVICES.LIST.EXPENSETYPE',
+        link: '/services/expenseType',
+        parentId: 1
+      },
+      {
+        id: 2,
+        label: 'MENUITEMS.SERVICES.LIST.SERVICEINCIDENTS',
+        link: '/services/serviceIncidents',
+        parentId: 1
+      },
+      {
+        id: 2,
+        label: 'MENUITEMS.SERVICES.LIST.SETTLEMENTSUMMARY',
+        link: '/services/settlementSummary',
+        parentId: 1
+      }
+    ]
+  },
   {
     id: 1,
     label: 'MENUITEMS.PROVIDERS.TEXT',

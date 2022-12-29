@@ -182,7 +182,7 @@ export class ExpenseTypeComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.expenseTypeDtoList;
+              this.test = response.datos.expenseTypes;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({

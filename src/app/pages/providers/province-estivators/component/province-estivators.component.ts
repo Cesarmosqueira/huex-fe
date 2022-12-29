@@ -190,7 +190,7 @@ export class ProvinceEstivatorsComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.provinceEstivatorDtoList;
+              this.test = response.datos.provinceEstivators;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({

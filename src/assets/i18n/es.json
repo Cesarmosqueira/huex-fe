@@ -116,7 +116,10 @@
     "VEHICLES": {
       "TEXT": "Vehículos",
       "LIST": {
-        "TRUCKFLEET": "Flota de camiones"
+        "TRUCKFLEET": "Flota de camiones",
+        "FUEL": "Kardex Combustible",
+        "OIL": "Mantenimiento Aceite",
+        "TIRE": "Mantenimiento LLantas"
       }
     },
     "EMPLOYEES": {

@@ -9,8 +9,6 @@ import { SimplebarAngularModule } from 'simplebar-angular';
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
 import interactionPlugin from '@fullcalendar/interaction'; // a plugin
 import { LightboxModule } from 'ngx-lightbox';
-
-import { WidgetModule } from '../shared/widget/widget.module';
 import { UIModule } from '../shared/ui/ui.module';
 
 // Emoji Picker
@@ -23,6 +21,7 @@ import {RouteModule} from "./customers/route.module";
 import {ServicesModule} from "./services/services.module";
 import {EmployeeModule} from "./employees/employees.module";
 import {ProvidersModule} from "./providers/providers.module";
+import { DashboardsModule } from './dashboards/dashboards.module';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -41,7 +40,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ReactiveFormsModule,
     HttpClientModule,
     UIModule,
-    WidgetModule,
     FullCalendarModule,
     NgbNavModule,
     NgbTooltipModule,
@@ -53,7 +51,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     RouteModule,
     ServicesModule,
     EmployeeModule,
-    ProvidersModule
+    ProvidersModule,
+    DashboardsModule
   ],
 })
 export class PagesModule { }

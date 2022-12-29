@@ -9,29 +9,29 @@ import { TruckFleetComponent } from './truck-fleet/components/truck-fleet.compon
 
 const routes: Routes = [
   {
-   path:"truck-fleet",
-   component: TruckFleetComponent
+    path: "truck-fleet",
+    component: TruckFleetComponent
   },
   {
-    path:"check-list",
+    path: "check-list",
     component: CheckListComponent
-   },
-   {
-     path:"documents",
-     component: DocumentUnitComponent
-    },
-    {
-      path:"maintenance-tire",
-      component: MaintenanceTireComponent
-     },
-     {
-       path:"maintenance-oil",
-       component: MaintenanceOilComponent
-      },
-      {
-        path:"kardex-fuel",
-        component: KardexFuelComponent
-       }
+  },
+  {
+    path: "documents",
+    component: DocumentUnitComponent
+  },
+  {
+    path: "maintenance-tire",
+    component: MaintenanceTireComponent
+  },
+  {
+    path: "maintenance-oil",
+    component: MaintenanceOilComponent
+  },
+  {
+    path: "kardex-fuel",
+    component: KardexFuelComponent
+  }
 ];
 
 @NgModule({

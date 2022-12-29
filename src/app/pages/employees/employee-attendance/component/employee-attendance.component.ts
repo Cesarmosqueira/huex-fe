@@ -183,7 +183,7 @@ export class EmployeeAttendanceComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.employeeAttendanceDtoList;
+              this.test = response.datos.attendances;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
