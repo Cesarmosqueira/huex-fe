@@ -169,6 +169,7 @@
         <form (ngSubmit)="saveTruckFleet()" [formGroup]="truckFleetForm">
           <div class="row">
             <div class="col-md-6">
+
               <div class="mb-3">
                 <input type="text" hidden formControlName="id" value="0" />
                 <label for="customername-field" class="form-label">Proveedor</label>
@@ -180,6 +181,7 @@
                   <div *ngIf="form['idProvider'].errors['required']">Proveedor es requerido</div>
                 </div>
               </div>
+
             </div>
             <div class="col-md-6">
               <div class="mb-3">

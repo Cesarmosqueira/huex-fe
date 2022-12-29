@@ -35,7 +35,6 @@
                 <th class="align-middle">Costo</th>
                 <th class="align-middle">Observaciones</th>
                 <th class="align-middle">Acciones</th>
-
               </tr>
               </thead>
               <tbody>
@@ -87,9 +86,12 @@
 
 
       <div class="mb-3">
+        <input type="text" hidden formControlName="id" value="0" />
         <label for="customername-field" class="form-label">Cliente</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="customerId"
-               [ngClass]="{ 'is-invalid': submitted && form['customerId'].errors }" autocomplete="disabled" />
+        <ng-select [items]="customers" bindLabel="socialReason" placeholder="Seleccione Cliente"
+                   [(ngModel)]="selectCustomer" id="customername-field" [clearable]="false" required
+                   formControlName="customerId" [ngClass]="{ 'is-invalid': submitted && form['customerId'].errors }">
+        </ng-select>
         <div *ngIf="submitted && form['customerId'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['customerId'].errors['required']">Cliente es requerido</div>
         </div>
@@ -97,9 +99,12 @@
 
 
       <div class="mb-3">
+        <input type="text" hidden formControlName="id" value="0" />
         <label for="customername-field" class="form-label">Ruta</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="routeId"
-               [ngClass]="{ 'is-invalid': submitted && form['routeId'].errors }" autocomplete="disabled" />
+        <ng-select [items]="routes" bindLabel="routeEnd" placeholder="Seleccione Cliente"
+                   [(ngModel)]="selectRoute" id="customername-field" [clearable]="false" required
+                   formControlName="routeId" [ngClass]="{ 'is-invalid': submitted && form['routeId'].errors }">
+        </ng-select>
         <div *ngIf="submitted && form['routeId'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['routeId'].errors['required']">Ruta es requerido</div>
         </div>

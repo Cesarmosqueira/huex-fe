@@ -81,11 +81,11 @@
       <input type="text" hidden formControlName="id" value="0" />
 
       <div class="mb-3">
-        <label for="customername-field" class="form-label">Cliente</label>
+        <label for="customername-field" class="form-label">Ruc</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="ruc"
                [ngClass]="{ 'is-invalid': submitted && form['ruc'].errors }" autocomplete="disabled" />
         <div *ngIf="submitted && form['ruc'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['ruc'].errors['required']">Cliente es requerido</div>
+          <div *ngIf="form['ruc'].errors['required']">Ruc es requerido</div>
         </div>
       </div>
 

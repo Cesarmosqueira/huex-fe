@@ -10,6 +10,8 @@ import {Rate} from "../models/rate.model";
 import {RateService} from "../services/rate.service";
 import {Route} from "../../route/models/route.model";
 import {RouteService} from "../../route/services/route.service";
+import {Customer} from "../../customer/models/customer.model";
+import {CustomerService} from "../../customer/services/customer.service";
 
 @Component({
   selector: 'app-rate',
@@ -38,8 +40,16 @@ export class RateComponent implements OnInit {
   total: Observable<number>;
   pipe: any;
 
+  customers:Customer[]=[];
+  selectCustomer=null;
+
+  routes:Route[]=[];
+  selectRoute=null;
+
   constructor(public service: RateService,
               private modalService: NgbModal,
+              private serviceRoute:RouteService,
+              private serviceCustomer:CustomerService,
               private formBuilder: UntypedFormBuilder) {
     this.ratesList = service.countries$;
     this.total = service.total$;
@@ -70,6 +80,8 @@ export class RateComponent implements OnInit {
     console.log(this.idRateOuput);
 
     this.listRates();
+    this.listCustomers();
+    this.listRoutes()
   }
 
   /**
@@ -139,8 +151,8 @@ export class RateComponent implements OnInit {
     this.submitted = true
     if (this.rateForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const customerId =3; //this.rateForm.get('customerId')?.value;
-      const routeId = 2;//this.rateForm.get('routeId')?.value;
+      const customerId =this.selectCustomer.id;
+      const routeId = this.selectRoute.id;
       const leadTime = this.rateForm.get('leadTime')?.value;
       const volume = this.rateForm.get('volume')?.value;
       const cost = this.rateForm.get('cost')?.value;
@@ -304,8 +316,8 @@ export class RateComponent implements OnInit {
 
   clear() {
     this.rateForm.controls['id'].setValue("0");
-    this.rateForm.controls['customerId'].setValue("");
-    this.rateForm.controls['routeId'].setValue("");
+    this.rateForm.controls['customerId'].setValue(null);
+    this.rateForm.controls['routeId'].setValue(null);
     this.rateForm.controls['leadTime'].setValue("");
     this.rateForm.controls['volume'].setValue("");
     this.rateForm.controls['cost'].setValue("");
@@ -360,4 +372,59 @@ export class RateComponent implements OnInit {
           });
         });
   }
+
+  listCustomers() {
+    this.serviceCustomer.listCustomers()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.customers = response.datos.customerList;
+              console.log(this.customers);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listRoutes() {
+    this.serviceRoute.listRoutes()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.routes = response.datos.routeDtoList;
+              console.log(this.routes);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
 }
