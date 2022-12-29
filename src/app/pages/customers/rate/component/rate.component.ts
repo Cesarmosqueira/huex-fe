@@ -223,7 +223,7 @@ export class RateComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.rates;
+              this.test = response.datos.rateDtoList;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
