@@ -1,7 +1,7 @@
 import {DatePipe} from '@angular/common';
 import {Component, OnInit} from "@angular/core";
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
 import {Observable} from "rxjs";
 import {first} from 'rxjs/operators';
 import {config} from 'src/app/shared/shared.config';
@@ -15,7 +15,7 @@ import {EmployeeService} from "../services/employee.service";
   styleUrls: ['./employee.component.scss']
 })
 export class EmployeeComponent implements OnInit {
-  //
+  idEmployeeOuput: number = 0;
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
@@ -34,57 +34,63 @@ export class EmployeeComponent implements OnInit {
   employeesList!: Observable<Employee[]>;
   total: Observable<number>;
   pipe: any;
-  //
 
   constructor(public service: EmployeeService,
-    private modalService: NgbModal,
-    private formBuilder: UntypedFormBuilder) {
-    this.employeesList = service.countries$
+              private modalService: NgbModal,
+              private formBuilder: UntypedFormBuilder) {
+    this.employeesList = service.countries$;
     this.total = service.total$;
   }
 
   ngOnInit(): void {
     this.breadCrumbItems = [{ label: 'Empleados' }, { label: 'Trabajadores', active: true }];
 
+    /**
+     * Form Validation
+     */
     this.employeeForm = this.formBuilder.group({
-      id:									    ['0', [Validators.required]],            
-      fullName:						    ['', [Validators.required]],
-      documentType:				    ['', [Validators.required]],
-      dni:								    ['', [Validators.required]],
-      currentState:				    ['', [Validators.required]],
-      placeOfBirth:				    ['', [Validators.required]],
-      birthDate:				      ['', [Validators.required]],
-      address:						    ['', [Validators.required]],
-      phoneNumber:				    ['', [Validators.required]],
-      email:							    ['', [Validators.required]],
-      joinDate:						    ['', [Validators.required]],
-      ceaseDate:					    ['', [Validators.required]],
-      bankAccount:				    ['', [Validators.required]],
-      contractType:				    ['', [Validators.required]],            
-      maritalStatus:			    ['', [Validators.required]],
-      pensionSystem:			    ['', [Validators.required]],
-      childrens:					    ['', [Validators.required]],
-      academicQualification:  ['', [Validators.required]],
-      criminalRecords:			  ['', [Validators.required]],
-      salary:								  ['', [Validators.required]],
-      role:									  ['', [Validators.required]],
-      licenseCategory:			  ['', [Validators.required]],
-      licenseExpirationDate:  ['', [Validators.required]],
-      dniExpirationDate:		  ['', [Validators.required]],
-  });                         
+      id: ['0', [Validators.required]],
+      fullName: ['', [Validators.required]],
+      documentType: ['', [Validators.required]],
+      dni: ['', [Validators.required]],
+      currentState: ['', [Validators.required]],
+      placeOfBirth: ['', [Validators.required]],
+      birthDate: ['', [Validators.required]],
+      address: ['', [Validators.required]],
+      phoneNumber: ['', [Validators.required]],
+      email: ['', [Validators.required]],
+      joinDate: ['', [Validators.required]],
+      ceaseDate: ['', [Validators.required]],
+      bankAccount: ['', [Validators.required]],
+      contractType: ['', [Validators.required]],
+      maritalStatus: ['', [Validators.required]],
+      pensionSystem: ['', [Validators.required]],
+      childrens: ['', [Validators.required]],
+      academicQualification: ['', [Validators.required]],
+      criminalRecords: ['', [Validators.required]],
+      kinhood: ['', [Validators.required]],
+      kinFullName: ['', [Validators.required]],
+      kinPhoneNumber: ['', [Validators.required]],
+      salary: ['', [Validators.required]],
+      role: ['', [Validators.required]],
+      licenseCategory: ['', [Validators.required]],
+      licenseExpirationDate: ['', [Validators.required]],
+      dniExpirationDate: ['', [Validators.required]],
+      photoUrl: ['', [Validators.required]],
+      btnSave: []
+    });
 
     this.employeesList.subscribe(x => {
       this.content = this.employees;
       this.employees = Object.assign([], x);
     });
+    this.idEmployeeOuput = 0;
+    console.log(this.idEmployeeOuput);
 
     this.listEmployees();
   }
 
-  /**
-     * Open modal
-     * @param content modal content
-     */
+
   openViewModal(content: any) {
     this.modalService.open(content, { centered: true });
   }
@@ -124,27 +130,109 @@ export class EmployeeComponent implements OnInit {
       });
   }
 
-  /**
-   * Open modal
-   * @param content modal content
-   */
+
   openModal(content: any) {
+    this.clear();
     this.submitted = false;
-    this.modalService.open(content, { size: 'md', centered: true });
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'md'
+    };
+    this.modalService.open(content, ngbModalOptions);
   }
 
-  /**
-   * Form data get
-   */
+
   get form() {
     return this.employeeForm.controls;
   }
 
   /**
-  * Save user
-  */
+   * Save user
+   */
   saveUser() {
+    this.submitted = true
+    if (this.employeeForm.valid) {
+      this.pipe = new DatePipe('en-US');
+      const fullName = this.employeeForm.get('fullName')?.value;
+      const documentType = this.employeeForm.get('documentType')?.value;
+      const dni = this.employeeForm.get('dni')?.value;
+      const currentState = this.employeeForm.get('currentState')?.value;
+      const placeOfBirth = this.employeeForm.get('placeOfBirth')?.value;
+      const birthDate = this.employeeForm.get('birthDate')?.value;
+      const fortmatbirthDate = this.pipe.transform(birthDate, 'yyyy-MM-dd');
+      const address = this.employeeForm.get('address')?.value;
+      const phoneNumber = this.employeeForm.get('phoneNumber')?.value;
+      const email = this.employeeForm.get('email')?.value;
+      const joinDate = this.employeeForm.get('joinDate')?.value;
+      const fortmatjoinDate = this.pipe.transform(joinDate, 'yyyy-MM-dd');
+      const ceaseDate = this.employeeForm.get('ceaseDate')?.value;
+      const fortmatceaseDate = this.pipe.transform(ceaseDate, 'yyyy-MM-dd');
+      const bankAccount = this.employeeForm.get('bankAccount')?.value;
+      const contractType = this.employeeForm.get('contractType')?.value;
+      const maritalStatus = this.employeeForm.get('maritalStatus')?.value;
+      const pensionSystem = this.employeeForm.get('pensionSystem')?.value;
+      const childrens = this.employeeForm.get('childrens')?.value;
+      const academicQualification = this.employeeForm.get('academicQualification')?.value;
+      const criminalRecords = this.employeeForm.get('criminalRecords')?.value;
+      const kinhood = this.employeeForm.get('kinhood')?.value;
+      const kinFullName = this.employeeForm.get('kinFullName')?.value;
+      const kinPhoneNumber = this.employeeForm.get('kinPhoneNumber')?.value;
+      const salary = this.employeeForm.get('salary')?.value;
+      const role = this.employeeForm.get('role')?.value;
+      const licenseCategory = this.employeeForm.get('licenseCategory')?.value;
+      const licenseExpirationDate = this.employeeForm.get('licenseExpirationDate')?.value;
+      const fortmatlicenseExpirationDate = this.pipe.transform(licenseExpirationDate, 'yyyy-MM-dd');
+      const dniExpirationDate = this.employeeForm.get('dniExpirationDate')?.value;
+      const fortmatdniExpirationDate= this.pipe.transform(dniExpirationDate, 'yyyy-MM-dd');
+      const photoUrl = this.employeeForm.get('photoUrl')?.value;
 
+      let employee = new Employee();
+      employee.fullName = fullName;
+      employee.documentType = documentType;
+      employee.dni = dni;
+      employee.currentState = currentState;
+      employee.placeOfBirth = placeOfBirth;
+      employee.birthDate = fortmatbirthDate;
+      employee.address = address;
+      employee.phoneNumber = phoneNumber;
+      employee.email = email;
+      employee.joinDate = fortmatjoinDate;
+      employee.ceaseDate = fortmatceaseDate;
+      employee.bankAccount = bankAccount;
+      employee.contractType = contractType;
+      employee.maritalStatus = maritalStatus;
+      employee.pensionSystem = pensionSystem;
+      employee.childrens = childrens;
+      employee.academicQualification = academicQualification;
+      employee.criminalRecords = criminalRecords;
+      employee.kinhood = kinhood;
+      employee.kinFullName = kinFullName;
+      employee.kinPhoneNumber = kinPhoneNumber;
+      employee.salary = salary;
+      employee.role = role;
+      employee.licenseCategory = licenseCategory;
+      employee.licenseExpirationDate = fortmatlicenseExpirationDate;
+      employee.dniExpirationDate = fortmatdniExpirationDate;
+      employee.photoUrl = photoUrl;
+
+      const id = this.employeeForm.get('id')?.value;
+
+      console.log(employee);
+      console.log(id);
+      if (id == '0') {
+        this.registerEmployee(employee);
+      } else {
+        employee.id = id;
+        this.updateEmployee(employee);
+      }
+      this.modalService.dismissAll();
+      setTimeout(() => {
+        this.employeeForm.reset();
+      }, 2000);
+
+    }
   }
 
   /**
@@ -154,25 +242,54 @@ export class EmployeeComponent implements OnInit {
   editDataGet(id: any, content: any) {
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
+    this.enableInputs();
+
     this.modalService.open(content, { size: 'md', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-    modelTitle.innerHTML = 'Actualizar Flota';
+    modelTitle.innerHTML = 'Actualizar rutas';
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.employees.filter((data: { id: any; }) => data.id === id);
-    const fabricationDate = listData[0].fabricationDate.substring(0, 10);
-    const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
     this.employeeForm.controls['id'].setValue(listData[0].id);
-    this.employeeForm.controls['tractPlate'].setValue(listData[0].tractPlate);
-    this.employeeForm.controls['vanPlate'].setValue(listData[0].vanPlate);
-    this.employeeForm.controls['brand'].setValue(listData[0].brand);
-    this.employeeForm.controls['volume'].setValue(listData[0].volume);
-    this.employeeForm.controls['fabricationDate'].setValue(fortmatFabricationDate);
-    this.employeeForm.controls['axes'].setValue(listData[0].axes);
-    this.employeeForm.controls['model'].setValue(listData[0].model);
-    this.employeeForm.controls['highWideLong'].setValue(listData[0].highWideLong);
-    this.employeeForm.controls['fleetType'].setValue(listData[0].fleetType);
-    this.employeeForm.controls['tonNumber'].setValue(listData[0].tonNumber);
+    this.employeeForm.controls['fullName'].setValue(listData[0].fullName);
+    this.employeeForm.controls['documentType'].setValue(listData[0].documentType);
+    this.employeeForm.controls['dni'].setValue(listData[0].dni);
+    this.employeeForm.controls['currentState'].setValue(listData[0].currentState);
+    this.employeeForm.controls['placeOfBirth'].setValue(listData[0].placeOfBirth);
+    const birthDate = listData[0].birthDate.substring(0, 10);
+    const fortmatbirthDate = this.pipe.transform(birthDate, 'yyyy-MM-dd');
+    this.employeeForm.controls['birthDate'].setValue(fortmatbirthDate);
+    this.employeeForm.controls['address'].setValue(listData[0].address);
+    this.employeeForm.controls['phoneNumber'].setValue(listData[0].phoneNumber);
+    this.employeeForm.controls['email'].setValue(listData[0].email);
+    const joinDate = listData[0].joinDate.substring(0, 10);
+    const fortmatjoinDate = this.pipe.transform(joinDate, 'yyyy-MM-dd');
+    this.employeeForm.controls['joinDate'].setValue(fortmatjoinDate);
+    const ceaseDate = listData[0].ceaseDate.substring(0, 10);
+    const fortmatceaseDate = this.pipe.transform(ceaseDate, 'yyyy-MM-dd');
+    this.employeeForm.controls['ceaseDate'].setValue(fortmatceaseDate);
+    this.employeeForm.controls['bankAccount'].setValue(listData[0].bankAccount);
+    this.employeeForm.controls['contractType'].setValue(listData[0].contractType);
+    this.employeeForm.controls['maritalStatus'].setValue(listData[0].maritalStatus);
+    this.employeeForm.controls['pensionSystem'].setValue(listData[0].pensionSystem);
+    this.employeeForm.controls['childrens'].setValue(listData[0].childrens);
+    this.employeeForm.controls['academicQualification'].setValue(listData[0].academicQualification);
+    this.employeeForm.controls['criminalRecords'].setValue(listData[0].criminalRecords);
+    this.employeeForm.controls['kinhood'].setValue(listData[0].kinhood);
+    this.employeeForm.controls['kinFullName'].setValue(listData[0].kinFullName);
+    this.employeeForm.controls['kinPhoneNumber'].setValue(listData[0].kinPhoneNumber);
+    this.employeeForm.controls['salary'].setValue(listData[0].salary);
+    this.employeeForm.controls['role'].setValue(listData[0].role);
+    this.employeeForm.controls['licenseCategory'].setValue(listData[0].licenseCategory);
+    const licenseExpirationDate = listData[0].licenseExpirationDate.substring(0, 10);
+    const fortmatlicenseExpirationDate = this.pipe.transform(licenseExpirationDate, 'yyyy-MM-dd');
+    this.employeeForm.controls['licenseExpirationDate'].setValue(fortmatlicenseExpirationDate);
+    const dniExpirationDate = listData[0].dniExpirationDate.substring(0, 10);
+    const fortmatdniExpirationDate = this.pipe.transform(dniExpirationDate, 'yyyy-MM-dd');
+    this.employeeForm.controls['dniExpirationDate'].setValue(fortmatdniExpirationDate);
+    this.employeeForm.controls['photoUrl'].setValue(listData[0].photoUrl);
+
+    this.idEmployeeOuput = id;
   }
 
   listEmployees() {
@@ -182,9 +299,42 @@ export class EmployeeComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.employees;
-              console.log(this.test );
+              this.test = response.datos.employeeList;
               this.service.paginationTable(this.test);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  registerEmployee(employees) {
+    this.service.registerEmployee(employees)
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            console.log(response);
+            if (response.datos) {
+              Swal.fire(
+                '¡Registrado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
+              const employeesDto = response.datos.employee;
+              this.idEmployeeOuput = employeesDto.id;
+              this.listEmployees();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -195,7 +345,7 @@ export class EmployeeComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el Banco",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -209,15 +359,15 @@ export class EmployeeComponent implements OnInit {
         });
   }
 
-  registerEmployee(employee) {
-    this.service.registerEmployee(employee)
+  updateEmployee(employees) {
+    this.service.updateEmployee(employees)
       .pipe(first())
       .subscribe(
         response => {
           if (response) {
             if (response.datos) {
               Swal.fire(
-                '¡Registrado!',
+                '¡Actualizado!',
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
@@ -232,7 +382,7 @@ export class EmployeeComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el Banco",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -246,36 +396,68 @@ export class EmployeeComponent implements OnInit {
         });
   }
 
-  updateEmployee(employee) {
-    this.service.updateEmployee(employee)
-      .pipe(first())
-      .subscribe(
-        response => {
-          if (response) {
-            if (response.datos) {
-              this.listEmployees();
-            } else {
-              Swal.fire({
-                icon: config.WARNING,
-                title: response.meta.mensajes[0].mensaje,
-                showConfirmButton: false,
-              });
-            }
-          } else {
-            Swal.fire({
-              icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el Banco",
-              showConfirmButton: false,
-            });
-          }
-        },
-        error => {
-          Swal.fire({
-            icon: config.ERROR,
-            title: error,
-            showConfirmButton: false,
-          });
-        });
+  clear() {
+    this.employeeForm.controls['id'].setValue("0");
+    this.employeeForm.controls['fullName'].setValue("");
+    this.employeeForm.controls['documentType'].setValue("");
+    this.employeeForm.controls['dni'].setValue("");
+    this.employeeForm.controls['currentState'].setValue("");
+    this.employeeForm.controls['placeOfBirth'].setValue("");
+    this.employeeForm.controls['birthDate'].setValue("");
+    this.employeeForm.controls['address'].setValue("");
+    this.employeeForm.controls['phoneNumber'].setValue("");
+    this.employeeForm.controls['email'].setValue("");
+    this.employeeForm.controls['joinDate'].setValue("");
+    this.employeeForm.controls['ceaseDate'].setValue("");
+    this.employeeForm.controls['bankAccount'].setValue("");
+    this.employeeForm.controls['contractType'].setValue("");
+    this.employeeForm.controls['maritalStatus'].setValue("");
+    this.employeeForm.controls['pensionSystem'].setValue("");
+    this.employeeForm.controls['childrens'].setValue("");
+    this.employeeForm.controls['academicQualification'].setValue("");
+    this.employeeForm.controls['criminalRecords'].setValue("");
+    this.employeeForm.controls['kinhood'].setValue("");
+    this.employeeForm.controls['kinFullName'].setValue("");
+    this.employeeForm.controls['kinPhoneNumber'].setValue("");
+     this.employeeForm.controls['salary'].setValue("");
+    this.employeeForm.controls['role'].setValue("");
+    this.employeeForm.controls['licenseCategory'].setValue("");
+    this.employeeForm.controls['licenseExpirationDate'].setValue("");
+    this.employeeForm.controls['dniExpirationDate'].setValue("");
+    this.employeeForm.controls['photoUrl'].setValue("");
+
+  }
+
+  enableInputs() {
+    this.employeeForm.controls['id'].enable();
+    this.employeeForm.controls['id'].enable();
+    this.employeeForm.controls['fullName'].enable();
+    this.employeeForm.controls['documentType'].enable();
+    this.employeeForm.controls['dni'].setValue("");
+    this.employeeForm.controls['currentState'].enable();
+    this.employeeForm.controls['placeOfBirth'].enable();
+    this.employeeForm.controls['birthDate'].enable();
+    this.employeeForm.controls['address'].enable();
+    this.employeeForm.controls['phoneNumber'].enable();
+    this.employeeForm.controls['email'].enable();
+    this.employeeForm.controls['joinDate'].enable();
+    this.employeeForm.controls['ceaseDate'].enable();
+    this.employeeForm.controls['bankAccount'].enable();
+    this.employeeForm.controls['contractType'].enable();
+    this.employeeForm.controls['maritalStatus'].enable();
+    this.employeeForm.controls['pensionSystem'].enable();
+    this.employeeForm.controls['childrens'].enable();
+    this.employeeForm.controls['academicQualification'].enable();
+    this.employeeForm.controls['criminalRecords'].enable();
+    this.employeeForm.controls['kinhood'].enable();
+    this.employeeForm.controls['kinFullName'].enable();
+    this.employeeForm.controls['kinPhoneNumber'].enable();
+    this.employeeForm.controls['salary'].enable();
+    this.employeeForm.controls['role'].enable();
+    this.employeeForm.controls['licenseCategory'].enable();
+    this.employeeForm.controls['licenseExpirationDate'].enable();
+    this.employeeForm.controls['dniExpirationDate'].enable();
+    this.employeeForm.controls['photoUrl'].enable();
   }
 
   deleteEmployee(id) {
@@ -301,7 +483,7 @@ export class EmployeeComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el Banco",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -314,6 +496,5 @@ export class EmployeeComponent implements OnInit {
           });
         });
   }
-
 
 }
