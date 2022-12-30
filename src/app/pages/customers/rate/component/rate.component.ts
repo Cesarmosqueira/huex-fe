@@ -256,7 +256,7 @@ export class RateComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              const rateDto = response.datos.rates;
+              const rateDto = response.datos.rate;
               this.idRateOuput = rateDto.id;
               this.listRates();
             } else {
@@ -339,7 +339,6 @@ export class RateComponent implements OnInit {
     this.rateForm.controls['volume'].enable();
     this.rateForm.controls['cost'].enable();
     this.rateForm.controls['observationRate'].enable();
-
   }
 
   deleteRate(id) {

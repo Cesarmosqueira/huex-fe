@@ -237,8 +237,8 @@ export class CustomerComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              const customerDto = response.datos.customer;
-              this.idCustomerOuput = customerDto.id;
+              const customer = response.datos.customer;
+              this.idCustomerOuput = customer.id;
               this.listCustomers();
             } else {
               Swal.fire({

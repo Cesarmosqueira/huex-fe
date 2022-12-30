@@ -237,8 +237,8 @@ export class RouteComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              const routeDto = response.datos.routeDto;
-              this.idRouteOuput = routeDto.id;
+              const route = response.datos.route;
+              this.idRouteOuput = route.id;
               this.listRoutes();
             } else {
               Swal.fire({

@@ -34,6 +34,8 @@
                 <th class="align-middle">Estado</th>
                 <th class="align-middle">Fecha registro</th>
                 <th class="align-middle">Observaciones</th>
+                <th class="align-middle">Acciones</th>
+
 
               </tr>
               </thead>
@@ -42,8 +44,8 @@
                 <td>
                   <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                 </td>
-                <td>{{data.customer}}</td>
-                <td>{{data.employee}}</td>
+                <td>{{data.idCustomer}}</td>
+                <td>{{data.idEmployee}}</td>
                 <td>{{data.status}}</td>
                 <td>{{data.registerDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                 <td>{{data.observations}}</td>
@@ -83,21 +85,29 @@
     <div class="modal-body">
       <input type="text" hidden formControlName="id" value="0" />
 
+
       <div class="mb-3">
+        <input type="text" hidden formControlName="id" value="0" />
         <label for="customername-field" class="form-label">Cliente</label>
-        <ng-select [items]="['conecta','Saga']" id="customername-field" required formControlName="customer"
-                   [ngClass]="{ 'is-invalid': submitted && form['customer'].errors }"></ng-select>
-        <div *ngIf="submitted && form['customer'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['customer'].errors['required']">Cliente es requerido</div>
+        <ng-select [items]="customers" bindLabel="socialReason" placeholder="Seleccione Cliente"
+                   [(ngModel)]="selectCustomer" id="customername-field" [clearable]="false" required
+                   formControlName="idCustomer" [ngClass]="{ 'is-invalid': submitted && form['idCustomer'].errors }">
+        </ng-select>
+        <div *ngIf="submitted && form['idCustomer'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['idCustomer'].errors['required']">Cliente es requerido</div>
         </div>
       </div>
 
+
       <div class="mb-3">
-        <label for="customername-field" class="form-label">Trabajador</label>
-        <ng-select [items]="['Turpo','Frank']" id="customername-field" required formControlName="employee"
-                   [ngClass]="{ 'is-invalid': submitted && form['employee'].errors }"></ng-select>
-        <div *ngIf="submitted && form['employee'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['employee'].errors['required']">trabajador es requerido</div>
+        <input type="text" hidden formControlName="id" value="0" />
+        <label for="customername-field" class="form-label">Chofer</label>
+        <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Trabajador"
+                   [(ngModel)]="selectEmployee" id="customername-field" [clearable]="false" required
+                   formControlName="idEmployee" [ngClass]="{ 'is-invalid': submitted && form['idEmployee'].errors }">
+        </ng-select>
+        <div *ngIf="submitted && form['idEmployee'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['idEmployee'].errors['required']">Trabajador es requerido</div>
         </div>
       </div>
 
