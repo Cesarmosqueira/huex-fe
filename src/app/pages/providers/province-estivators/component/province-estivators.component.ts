@@ -3,11 +3,15 @@ import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {ProvinceEstivators} from "../../../providers/province-estivators/models/province-estivators.model";
 import {Observable} from "rxjs";
 import {ProvinceEstivatorsService} from "../../../providers/province-estivators/services/province-estivators.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
+import {Providers} from "../../provider/models/providers.model";
+import {Route} from "../../../customers/route/models/route.model";
+import {RouteService} from "../../../customers/route/services/route.service";
+import {ProviderService} from "../../provider/services/provider.service";
 
 @Component({
   selector: 'app-province-estivators',
@@ -37,8 +41,16 @@ export class ProvinceEstivatorsComponent implements OnInit {
   total: Observable<number>;
   pipe: any;
 
+  providers:Providers[]=[];
+  selectProvider=null;
+
+  routes:Route[]=[];
+  selectRoute=null;
+
   constructor(public service: ProvinceEstivatorsService,
               private modalService: NgbModal,
+              private serviceProvider:ProviderService,
+              private serviceRoute:RouteService,
               private formBuilder: UntypedFormBuilder) {
     this.provinceEstivatorsList = service.countries$;
     this.total = service.total$;
@@ -56,6 +68,8 @@ export class ProvinceEstivatorsComponent implements OnInit {
       providerId: ['', [Validators.required]],
       costM3: ['', [Validators.required]],
       observation: ['', [Validators.required]],
+      btnSave: []
+
     });
 
     this.provinceEstivatorsList.subscribe(x => {
@@ -63,6 +77,10 @@ export class ProvinceEstivatorsComponent implements OnInit {
       this.provinceEstivator = Object.assign([], x);
     });
 
+    this.idProvinceEstivatorOuput = 0;
+    console.log(this.idProvinceEstivatorOuput);
+    this.listProviders();
+    this.listRoutes();
     this.listProvinceEstivators();
   }
 
@@ -116,7 +134,13 @@ export class ProvinceEstivatorsComponent implements OnInit {
   openModal(content: any) {
     this.clear();
     this.submitted = false;
-    this.modalService.open(content, { size: 'md', centered: true });
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'md'
+    };
+    this.modalService.open(content, ngbModalOptions);
   }
 
   /**
@@ -133,8 +157,8 @@ export class ProvinceEstivatorsComponent implements OnInit {
     this.submitted = true
     if (this.provinceEstivatorForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const routeId = 1;//this.provinceEstivatorForm.get('routeId')?.value;
-      const providerId =1; //this.provinceEstivatorForm.get('providerId')?.value;
+      const routeId = this.selectRoute.id;
+      const providerId =this.selectProvider.id;
       const costM3 = this.provinceEstivatorForm.get('costM3')?.value;
       const observation = this.provinceEstivatorForm.get('observation')?.value;
 
@@ -144,6 +168,7 @@ export class ProvinceEstivatorsComponent implements OnInit {
       provinceEstivators.costM3 = costM3;
       provinceEstivators.observation = observation;
       const id = this.provinceEstivatorForm.get('id')?.value;
+
       console.log(provinceEstivators);
       console.log(id);
       if (id == '0') {
@@ -341,4 +366,59 @@ export class ProvinceEstivatorsComponent implements OnInit {
           });
         });
   }
+
+  listRoutes() {
+    this.serviceRoute.listRoutes()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.routes = response.datos.routes;
+              console.log(this.routes);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listProviders() {
+    this.serviceProvider.listProviders()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.providers = response.datos.providers;
+              console.log(this.providers);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
 }

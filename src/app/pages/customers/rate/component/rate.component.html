@@ -101,7 +101,7 @@
       <div class="mb-3">
         <input type="text" hidden formControlName="id" value="0" />
         <label for="customername-field" class="form-label">Ruta</label>
-        <ng-select [items]="routes" bindLabel="routeEnd" placeholder="Seleccione Cliente"
+        <ng-select [items]="routes" bindLabel="routeEnd" placeholder="Seleccione Ruta"
                    [(ngModel)]="selectRoute" id="customername-field" [clearable]="false" required
                    formControlName="routeId" [ngClass]="{ 'is-invalid': submitted && form['routeId'].errors }">
         </ng-select>

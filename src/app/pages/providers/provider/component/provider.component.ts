@@ -252,8 +252,8 @@ export class ProviderComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              const providersDto = response.datos.providerDto;
-              this.idProviderOuput = providersDto.id;
+              const providers = response.datos.provider;
+              this.idProviderOuput = providers.id;
               this.listProviders();
             } else {
               Swal.fire({
