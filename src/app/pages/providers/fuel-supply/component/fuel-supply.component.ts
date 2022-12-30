@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
 import {FuelSupply} from "../models/fuel-supply.model";
 import {FuelSupplyService} from "../services/fuel-supply.service";
+import {Providers} from "../../provider/models/providers.model";
+import {ProviderService} from "../../provider/services/provider.service";
 
 @Component({
   selector: 'app-fuel-supply',
@@ -15,6 +17,8 @@ import {FuelSupplyService} from "../services/fuel-supply.service";
   styleUrls: ['./fuel-supply.component.scss']
 })
 export class FuelSupplyComponent implements OnInit {
+
+  idFuelSupplyOuput: number = 0;
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
@@ -34,8 +38,12 @@ export class FuelSupplyComponent implements OnInit {
   total: Observable<number>;
   pipe: any;
 
+  providers:Providers[]=[];
+  selectProvider=null;
+
   constructor(public service: FuelSupplyService,
               private modalService: NgbModal,
+              private serviceProvider:ProviderService,
               private formBuilder: UntypedFormBuilder) {
     this.fuelSuplyList = service.countries$;
     this.total = service.total$;
@@ -61,7 +69,9 @@ export class FuelSupplyComponent implements OnInit {
       this.content = this.fuelSupply;
       this.fuelSupply = Object.assign([], x);
     });
-
+    this.idFuelSupplyOuput = 0;
+    console.log(this.idFuelSupplyOuput);
+    this.listProviders();
     this.listFuelSupply();
   }
 
@@ -113,8 +123,15 @@ export class FuelSupplyComponent implements OnInit {
    * @param content modal content
    */
   openModal(content: any) {
+    this.clear();
     this.submitted = false;
-    this.modalService.open(content, { size: 'md', centered: true });
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'md'
+    };
+    this.modalService.open(content, ngbModalOptions);
   }
 
   /**
@@ -131,7 +148,7 @@ export class FuelSupplyComponent implements OnInit {
     this.submitted = true
     if (this.fuelSupplyForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const providerId = 5;//this.fuelSupplyForm.get('providerId')?.value;
+      const providerId = this.selectProvider.id;
       const dateFuel = this.fuelSupplyForm.get('dateFuel')?.value;
       const fortmatdateFuel = this.pipe.transform(dateFuel, 'yyyy-MM-dd');
       const fuelQuantity = this.fuelSupplyForm.get('fuelQuantity')?.value;
@@ -179,15 +196,16 @@ export class FuelSupplyComponent implements OnInit {
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.fuelSupply.filter((data: { id: any; }) => data.id === id);
-    const fabricationDate = listData[0].fabricationDate.substring(0, 10);
-    const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
+    const dateFuel = listData[0].dateFuel.substring(0, 10);
+    const fortmatdateFuel = this.pipe.transform(dateFuel, 'yyyy-MM-dd');
     this.fuelSupplyForm.controls['id'].setValue(listData[0].id);
     this.fuelSupplyForm.controls['providerId'].setValue(listData[0].providerId);
-    this.fuelSupplyForm.controls['dateFuel'].setValue(fortmatFabricationDate);
+    this.fuelSupplyForm.controls['dateFuel'].setValue(fortmatdateFuel);
     this.fuelSupplyForm.controls['fuelQuantity'].setValue(listData[0].fuelQuantity);
     this.fuelSupplyForm.controls['gallonPrice'].setValue(listData[0].gallonPrice);
     this.fuelSupplyForm.controls['totalPrice'].setValue(listData[0].totalPrice);
     this.fuelSupplyForm.controls['observation'].setValue(listData[0].observation);
+    this.idFuelSupplyOuput = id;
   }
 
   listFuelSupply() {
@@ -209,7 +227,7 @@ export class FuelSupplyComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el Encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -267,6 +285,11 @@ export class FuelSupplyComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
+              Swal.fire(
+                '¡Actualizado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
               this.listFuelSupply();
             } else {
               Swal.fire({
@@ -292,6 +315,28 @@ export class FuelSupplyComponent implements OnInit {
         });
   }
 
+  clear() {
+    this.fuelSupplyForm.controls['id'].setValue("0");
+    this.fuelSupplyForm.controls['providerId'].setValue("");
+    this.fuelSupplyForm.controls['dateFuel'].setValue("");
+    this.fuelSupplyForm.controls['fuelQuantity'].setValue("");
+    this.fuelSupplyForm.controls['gallonPrice'].setValue("");
+    this.fuelSupplyForm.controls['totalPrice'].setValue("");
+    this.fuelSupplyForm.controls['observation'].setValue("");
+
+  }
+
+  enableInputs() {
+    this.fuelSupplyForm.controls['id'].enable();
+    this.fuelSupplyForm.controls['providerId'].enable();
+    this.fuelSupplyForm.controls['dateFuel'].enable();
+    this.fuelSupplyForm.controls['fuelQuantity'].enable();
+    this.fuelSupplyForm.controls['gallonPrice'].enable();
+    this.fuelSupplyForm.controls['totalPrice'].enable();
+    this.fuelSupplyForm.controls['observation'].enable();
+
+  }
+
   deleteFuelSupply(id) {
     this.service.deleteFuelSupply(id)
       .pipe(first())
@@ -315,9 +360,36 @@ export class FuelSupplyComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listProviders() {
+    this.serviceProvider.listProviders()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.providers = response.datos.providers;
+              console.log(this.providers);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
           }
         },
         error => {

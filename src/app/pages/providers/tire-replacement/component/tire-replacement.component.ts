@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
-import {ProvinceEstivators} from "../../province-estivators/models/province-estivators.model";
 import {Observable} from "rxjs";
-import {ProvinceEstivatorsService} from "../../province-estivators/services/province-estivators.service";
 import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
@@ -238,7 +236,7 @@ export class TireReplacementComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el Encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -336,8 +334,6 @@ export class TireReplacementComponent implements OnInit {
     this.tireReplacementForm.controls['brand'].setValue("");
     this.tireReplacementForm.controls['model'].setValue("");
     this.tireReplacementForm.controls['observation'].setValue("");
-
-
   }
 
   enableInputs() {
@@ -375,7 +371,7 @@ export class TireReplacementComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
