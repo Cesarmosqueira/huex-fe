@@ -4,7 +4,7 @@ export const MENU: MenuItem[] = [
     {
         id: 1,
         label: 'MENUITEMS.VEHICLES.TEXT',
-        icon: 'bx-store',
+        icon: 'bxs-truck',
         subItems: [
             {
                 id: 2,

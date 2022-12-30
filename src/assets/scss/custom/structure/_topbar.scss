@@ -8,7 +8,7 @@
     right: 0;
     left: 0;
     z-index: 1002;
-    background-color: $header-bg;
+    background-color: $huex-green-bg;
     box-shadow: $box-shadow;
 }
 
@@ -107,7 +107,7 @@
 .header-item {
     height: $header-height;
     box-shadow: none !important;
-    color: $header-item-color;
+    color: $white;
     border: 0;
     border-radius: 0px;
 
@@ -184,7 +184,7 @@
 
 body[data-topbar="dark"] {
     #page-topbar { 
-        background-color: $header-dark-bg;
+        background-color: $huex-green-bg;
     }
     .navbar-header {
         .dropdown .show {
@@ -199,7 +199,7 @@ body[data-topbar="dark"] {
     }
 
     .header-item {
-        color: $header-dark-item-color;
+        color: $white;
     
         &:hover {
             color: $header-dark-item-color;
@@ -239,7 +239,7 @@ body[data-topbar="dark"] {
 
 body[data-sidebar="dark"] {
     .navbar-brand-box {
-        background: $sidebar-dark-bg;
+        background: $huex-green-bg;
     }
 
     .logo-dark {

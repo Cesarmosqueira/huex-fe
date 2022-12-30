@@ -5,7 +5,7 @@ export const MENU: MenuItem[] = [
   {
     id: 1,
     label: 'MENUITEMS.EMPLOYEES.TEXT',
-    icon: 'bx-store',
+    icon: 'mdi-account-hard-hat',
     subItems: [
       {
         id: 2,
@@ -42,7 +42,7 @@ export const MENU: MenuItem[] = [
   {
     id: 1,
     label: 'MENUITEMS.VEHICLES.TEXT',
-    icon: 'bx-store',
+    icon: 'mdi-truck',
     subItems: [
       {
         id: 2,
@@ -73,7 +73,7 @@ export const MENU: MenuItem[] = [
   {
     id: 2,
     label: 'MENUITEMS.CUSTOMERS.TEXT',
-    icon: 'bx-store',
+    icon: 'mdi-account-group',
     subItems: [
       {
         id: 2,
@@ -105,7 +105,7 @@ export const MENU: MenuItem[] = [
   {
     id: 1,
     label: 'MENUITEMS.SERVICES.TEXT',
-    icon: 'bx-store',
+    icon: 'mdi-highway',
     subItems: [
       {
         id: 2,
@@ -130,7 +130,7 @@ export const MENU: MenuItem[] = [
   {
     id: 1,
     label: 'MENUITEMS.PROVIDERS.TEXT',
-    icon: 'bx-store',
+    icon: 'mdi-dolly',
     subItems: [
       {
         id: 2,
