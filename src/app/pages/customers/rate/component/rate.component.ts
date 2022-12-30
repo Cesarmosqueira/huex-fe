@@ -223,7 +223,7 @@ export class RateComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.rateDtoList;
+              this.test = response.datos.rates;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
@@ -256,7 +256,7 @@ export class RateComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              const rateDto = response.datos.rateDto;
+              const rateDto = response.datos.rates;
               this.idRateOuput = rateDto.id;
               this.listRates();
             } else {
@@ -386,7 +386,7 @@ export class RateComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.customers = response.datos.customerList;
+              this.customers = response.datos.customers;
               console.log(this.customers);
             } else {
               Swal.fire({
@@ -413,7 +413,7 @@ export class RateComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.routes = response.datos.routeDtoList;
+              this.routes = response.datos.routes;
               console.log(this.routes);
             } else {
               Swal.fire({

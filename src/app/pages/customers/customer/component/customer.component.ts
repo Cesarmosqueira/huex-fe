@@ -204,7 +204,7 @@ export class CustomerComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.customerList;
+              this.test = response.datos.customers;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({

@@ -299,7 +299,7 @@ export class EmployeeComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.employeeList;
+              this.test = response.datos.employees;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({

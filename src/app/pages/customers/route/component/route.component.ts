@@ -204,7 +204,7 @@ export class RouteComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.routeDtoList;
+              this.test = response.datos.routes;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
