@@ -37,6 +37,8 @@
                 <th class="align-middle">Marca</th>
                 <th class="align-middle">Modelo</th>
                 <th class="align-middle">Observacion</th>
+                <th class="align-middle">Acciones</th>
+
               </tr>
               </thead>
               <tbody>
@@ -88,10 +90,14 @@
     <div class="modal-body">
       <input type="text" hidden formControlName="id" value="0" />
 
+
       <div class="mb-3">
+        <input type="text" hidden formControlName="id" value="0" />
         <label for="customername-field" class="form-label">Proveedor</label>
-        <ng-select [items]="['proveedor1','proveedor2']" id="customername-field" required formControlName="providerId"
-                   [ngClass]="{ 'is-invalid': submitted && form['providerId'].errors }"></ng-select>
+        <ng-select [items]="providers" bindLabel="businessName" placeholder="Seleccione Proveedor"
+                   [(ngModel)]="selectProvider" id="customername-field" [clearable]="false" required
+                   formControlName="providerId" [ngClass]="{ 'is-invalid': submitted && form['providerId'].errors }">
+        </ng-select>
         <div *ngIf="submitted && form['providerId'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['providerId'].errors['required']">Proveedor es requerido</div>
         </div>

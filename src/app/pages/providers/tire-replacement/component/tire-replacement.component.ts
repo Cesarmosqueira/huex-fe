@@ -3,13 +3,15 @@ import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {ProvinceEstivators} from "../../province-estivators/models/province-estivators.model";
 import {Observable} from "rxjs";
 import {ProvinceEstivatorsService} from "../../province-estivators/services/province-estivators.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
 import {TireReplacement} from "../models/tire-replacement.model";
 import {TireReplacementService} from "../services/tire-replacement.service";
+import {Providers} from "../../provider/models/providers.model";
+import {ProviderService} from "../../provider/services/provider.service";
 
 @Component({
   selector: 'app-tire-replacement',
@@ -17,6 +19,8 @@ import {TireReplacementService} from "../services/tire-replacement.service";
   styleUrls: ['./tire-replacement.component.scss']
 })
 export class TireReplacementComponent implements OnInit {
+
+  idTireReplacementOuput: number = 0;
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
@@ -36,8 +40,12 @@ export class TireReplacementComponent implements OnInit {
   total: Observable<number>;
   pipe: any;
 
+  providers:Providers[]=[];
+  selectProvider=null;
+
   constructor(public service: TireReplacementService,
               private modalService: NgbModal,
+              private serviceProvider:ProviderService,
               private formBuilder: UntypedFormBuilder) {
     this.tireReplacementList = service.countries$;
     this.total = service.total$;
@@ -65,7 +73,10 @@ export class TireReplacementComponent implements OnInit {
       this.content = this.tireReplacement;
       this.tireReplacement = Object.assign([], x);
     });
+    this.idTireReplacementOuput = 0;
+    console.log(this.idTireReplacementOuput);
 
+    this.listProviders();
     this.listTireReplacement();
   }
 
@@ -117,8 +128,15 @@ export class TireReplacementComponent implements OnInit {
    * @param content modal content
    */
   openModal(content: any) {
+    this.clear();
     this.submitted = false;
-    this.modalService.open(content, { size: 'md', centered: true });
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'md'
+    };
+    this.modalService.open(content, ngbModalOptions);
   }
 
   /**
@@ -135,7 +153,7 @@ export class TireReplacementComponent implements OnInit {
     this.submitted = true
     if (this.tireReplacementForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const providerId = 5;//this.tireReplacementForm.get('providerId')?.value;
+      const providerId = this.selectProvider.id;
       const replacementDate = this.tireReplacementForm.get('replacementDate')?.value;
       const fortmatreplacementDate = this.pipe.transform(replacementDate, 'yyyy-MM-dd');
       const tireQuantity = this.tireReplacementForm.get('tireQuantity')?.value;
@@ -187,18 +205,18 @@ export class TireReplacementComponent implements OnInit {
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.tireReplacement.filter((data: { id: any; }) => data.id === id);
-    const fabricationDate = listData[0].fabricationDate.substring(0, 10);
-    const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
+    const replacementDate = listData[0].replacementDate.substring(0, 10);
+    const fortmatreplacementDate = this.pipe.transform(replacementDate, 'yyyy-MM-dd');
     this.tireReplacementForm.controls['id'].setValue(listData[0].id);
     this.tireReplacementForm.controls['providerId'].setValue(listData[0].providerId);
-    this.tireReplacementForm.controls['replacementDate'].setValue(fortmatFabricationDate);
+    this.tireReplacementForm.controls['replacementDate'].setValue(fortmatreplacementDate);
     this.tireReplacementForm.controls['tireQuantity'].setValue(listData[0].tireQuantity);
     this.tireReplacementForm.controls['unitPrice'].setValue(listData[0].unitPrice);
     this.tireReplacementForm.controls['totalPrice'].setValue(listData[0].totalPrice);
     this.tireReplacementForm.controls['brand'].setValue(listData[0].brand);
     this.tireReplacementForm.controls['model'].setValue(listData[0].model);
     this.tireReplacementForm.controls['observation'].setValue(listData[0].observation);
-
+    this.idTireReplacementOuput = id;
   }
 
   listTireReplacement() {
@@ -278,6 +296,11 @@ export class TireReplacementComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
+              Swal.fire(
+                '¡Actualizado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
               this.listTireReplacement();
             } else {
               Swal.fire({
@@ -301,6 +324,32 @@ export class TireReplacementComponent implements OnInit {
             showConfirmButton: false,
           });
         });
+  }
+
+  clear() {
+    this.tireReplacementForm.controls['id'].setValue("0");
+    this.tireReplacementForm.controls['providerId'].setValue("");
+    this.tireReplacementForm.controls['replacementDate'].setValue("");
+    this.tireReplacementForm.controls['tireQuantity'].setValue("");
+    this.tireReplacementForm.controls['unitPrice'].setValue("");
+    this.tireReplacementForm.controls['totalPrice'].setValue("");
+    this.tireReplacementForm.controls['brand'].setValue("");
+    this.tireReplacementForm.controls['model'].setValue("");
+    this.tireReplacementForm.controls['observation'].setValue("");
+
+
+  }
+
+  enableInputs() {
+    this.tireReplacementForm.controls['id'].enable();
+    this.tireReplacementForm.controls['providerId'].enable();
+    this.tireReplacementForm.controls['replacementDate'].enable();
+    this.tireReplacementForm.controls['tireQuantity'].enable();
+    this.tireReplacementForm.controls['unitPrice'].enable();
+    this.tireReplacementForm.controls['totalPrice'].enable();
+    this.tireReplacementForm.controls['brand'].enable();
+    this.tireReplacementForm.controls['model'].enable();
+    this.tireReplacementForm.controls['observation'].enable();
   }
 
   deleteTireReplacement(id) {
@@ -329,6 +378,34 @@ export class TireReplacementComponent implements OnInit {
               title: "Ocurrio un error, comuniquese con el encargado",
               showConfirmButton: false,
             });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+
+  listProviders() {
+    this.serviceProvider.listProviders()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.providers = response.datos.providers;
+              console.log(this.providers);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
           }
         },
         error => {
