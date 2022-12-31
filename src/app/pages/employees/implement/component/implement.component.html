@@ -29,10 +29,12 @@
               <thead class="table-light">
               <tr>
                 <th class="align-middle">ID</th>
-                <th class="align-middle">Nombre implemento</th>
+                <th class="align-middle">Implemento</th>
                 <th class="align-middle">Descripcion</th>
                 <th class="align-middle">Disposicion</th>
                 <th class="align-middle">Stock</th>
+                <th class="align-middle">Acciones</th>
+
               </tr>
               </thead>
               <tbody>
@@ -99,14 +101,6 @@
         </div>
       </div>
 
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Placa Furgon</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="zone"
-               [ngClass]="{ 'is-invalid': submitted && form['zone'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['zone'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['zone'].errors['required']">zona es requerido</div>
-        </div>
-      </div>
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Disposicion</label>

@@ -1,7 +1,7 @@
 export class EmployeeAttendance {
 
   id:any;
-  employee_id:any;
+  employeeId:any;
   date:any;
   state:string;
 

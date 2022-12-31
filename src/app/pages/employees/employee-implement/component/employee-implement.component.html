@@ -79,12 +79,29 @@
       <input type="text" hidden formControlName="id" value="0" />
 
 
+
+
       <div class="mb-3">
+        <input type="text" hidden formControlName="id" value="0" />
         <label for="customername-field" class="form-label">Trabajador</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="employee"
-               [ngClass]="{ 'is-invalid': submitted && form['employee'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['employee'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['employee'].errors['required']">Trabajador es requerido</div>
+        <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Trabajador"
+                   [(ngModel)]="selectEmployee" id="customername-field" [clearable]="false" required
+                   formControlName="employeeId" [ngClass]="{ 'is-invalid': submitted && form['employeeId'].errors }">
+        </ng-select>
+        <div *ngIf="submitted && form['employeeId'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['employeeId'].errors['required']">Trabajador es requerido</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <input type="text" hidden formControlName="id" value="0" />
+        <label for="customername-field" class="form-label">Implemento</label>
+        <ng-select [items]="employees" bindLabel="name" placeholder="Seleccione Implemento"
+                   [(ngModel)]="selectEmployee" id="customername-field" [clearable]="false" required
+                   formControlName="implementId" [ngClass]="{ 'is-invalid': submitted && form['implementId'].errors }">
+        </ng-select>
+        <div *ngIf="submitted && form['implementId'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['implementId'].errors['required']">Implemento es requerido</div>
         </div>
       </div>
 

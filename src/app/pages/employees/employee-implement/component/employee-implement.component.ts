@@ -3,13 +3,15 @@ import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {Implement} from "../../implement/models/implement.model";
 import {Observable} from "rxjs";
 import {ImplementService} from "../../implement/services/implement.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
 import {EmployeeImplement} from "../models/employee-implement.model";
 import {EmployeeImplementService} from "../services/employee-implement.service";
+import {Employee} from "../../employee/models/employee.model";
+import {EmployeeService} from "../../employee/services/employee.service";
 
 @Component({
   selector: 'app-employee-implement',
@@ -17,6 +19,8 @@ import {EmployeeImplementService} from "../services/employee-implement.service";
   styleUrls: ['./employee-implement.component.scss']
 })
 export class EmployeeImplementComponent implements OnInit {
+
+  idEmployeeImplemntOuput: number = 0;
 
 
   // bread crumb items
@@ -37,8 +41,16 @@ export class EmployeeImplementComponent implements OnInit {
   total: Observable<number>;
   pipe: any;
 
+  employees:Employee[]=[];
+  selectEmployee:null;
+
+  implementss:Implement[]=[];
+  selectImplement=null;
+
   constructor(public service: EmployeeImplementService,
               private modalService: NgbModal,
+              private serviceEmployee:EmployeeService,
+              private serviceImplement:ImplementService,
               private formBuilder: UntypedFormBuilder) {
     this.employeeImplementsList = service.countries$;
     this.total = service.total$;
@@ -52,7 +64,8 @@ export class EmployeeImplementComponent implements OnInit {
      */
     this.employeeImplementForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
-      employee: ['', [Validators.required]],
+      employeeId: ['', [Validators.required]],
+      implementId: ['', [Validators.required]],
       date: ['', [Validators.required]],
       observations: ['', [Validators.required]],
     });
@@ -61,7 +74,11 @@ export class EmployeeImplementComponent implements OnInit {
       this.content = this.employeeImplementsList;
       this.employeeImplement = Object.assign([], x);
     });
+    this.idEmployeeImplemntOuput = 0;
+    console.log(this.idEmployeeImplemntOuput);
 
+    this.listImplements();
+    this.listEmployees();
     this.listEmployeeImplements();
   }
 
@@ -113,8 +130,15 @@ export class EmployeeImplementComponent implements OnInit {
    * @param content modal content
    */
   openModal(content: any) {
+    this.clear();
     this.submitted = false;
-    this.modalService.open(content, { size: 'md', centered: true });
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'md'
+    };
+    this.modalService.open(content, ngbModalOptions);
   }
 
   /**
@@ -131,16 +155,20 @@ export class EmployeeImplementComponent implements OnInit {
     this.submitted = true
     if (this.employeeImplementForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const employee = this.employeeImplementForm.get('employee')?.value;
+      const employeeId = this.employeeImplementForm.get('employeeId')?.value;
+      const implementId = this.employeeImplementForm.get('implementId')?.value;
       const date = this.employeeImplementForm.get('date')?.value;
       const fortmatDate = this.pipe.transform(date, 'yyyy-MM-dd');
       const observations = this.employeeImplementForm.get('observations')?.value;
 
       let employeeImplement = new EmployeeImplement();
-      employeeImplement.employee = employee;
+      employeeImplement.employeeId = employeeId;
+      employeeImplement.implementId = implementId;
       employeeImplement.date = fortmatDate;
       employeeImplement.observations = observations;
+
       const id = this.employeeImplementForm.get('id')?.value;
+
       console.log(employeeImplement);
       console.log(id);
       if (id == '0') {
@@ -164,18 +192,22 @@ export class EmployeeImplementComponent implements OnInit {
   editDataGet(id: any, content: any) {
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
+    this.enableInputs();
+
     this.modalService.open(content, { size: 'md', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
     modelTitle.innerHTML = 'Actualizar implementos trabajadores';
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.employeeImplement.filter((data: { id: any; }) => data.id === id);
-    const fabricationDate = listData[0].fabricationDate.substring(0, 10);
-    const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
+    const date = listData[0].date.substring(0, 10);
+    const fortmatdate = this.pipe.transform(date, 'yyyy-MM-dd');
     this.employeeImplementForm.controls['id'].setValue(listData[0].id);
     this.employeeImplementForm.controls['employee'].setValue(listData[0].employee);
-    this.employeeImplementForm.controls['date'].setValue(fortmatFabricationDate);
+    this.employeeImplementForm.controls['date'].setValue(fortmatdate);
     this.employeeImplementForm.controls['observations'].setValue(listData[0].observations);
+    this.idEmployeeImplemntOuput = id;
+
   }
 
   listEmployeeImplements() {
@@ -194,12 +226,6 @@ export class EmployeeImplementComponent implements OnInit {
                 showConfirmButton: false,
               });
             }
-          } else {
-            Swal.fire({
-              icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el Encargado",
-              showConfirmButton: false,
-            });
           }
         },
         error => {
@@ -223,6 +249,8 @@ export class EmployeeImplementComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
+              const employeeImplementDto = response.datos.employeeImplementDto;
+              this.idEmployeeImplemntOuput = employeeImplementDto.id;
               this.listEmployeeImplements();
             } else {
               Swal.fire({
@@ -234,7 +262,7 @@ export class EmployeeImplementComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -255,6 +283,11 @@ export class EmployeeImplementComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
+              Swal.fire(
+                '¡Actualizado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
               this.listEmployeeImplements();
             } else {
               Swal.fire({
@@ -266,7 +299,7 @@ export class EmployeeImplementComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -278,6 +311,24 @@ export class EmployeeImplementComponent implements OnInit {
             showConfirmButton: false,
           });
         });
+  }
+
+  clear() {
+    this.employeeImplementForm.controls['id'].setValue("0");
+    this.employeeImplementForm.controls['employeeId'].setValue(null);
+    this.employeeImplementForm.controls['implementId'].setValue(null);
+    this.employeeImplementForm.controls['date'].setValue("");
+    this.employeeImplementForm.controls['observations'].setValue("");
+
+
+  }
+
+  enableInputs() {
+    this.employeeImplementForm.controls['id'].enable();
+    this.employeeImplementForm.controls['employeeId'].enable();
+    this.employeeImplementForm.controls['implementId'].enable();
+    this.employeeImplementForm.controls['date'].enable();
+    this.employeeImplementForm.controls['observations'].enable();
   }
 
   deleteEmployeeImplement(id) {
@@ -303,9 +354,62 @@ export class EmployeeImplementComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+  listEmployees() {
+    this.serviceEmployee.listEmployees()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.employees = response.datos.employees;
+              console.log(this.employees);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listImplements() {
+    this.serviceImplement.listImplements()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.implementss = response.datos.implementss;
+              console.log(this.implementss);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
           }
         },
         error => {

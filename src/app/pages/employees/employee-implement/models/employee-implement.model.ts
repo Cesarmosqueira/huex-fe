@@ -1,7 +1,8 @@
 export class EmployeeImplement {
 
   id:any;
-  employee:any;
+  employeeId:any;
+  implementId:any;
   date:any;
   observations:string;
 
