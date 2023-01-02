@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
@@ -15,6 +15,8 @@ import {ImplementService} from "../services/implement.service";
   styleUrls: ['./implement.component.scss']
 })
 export class ImplementComponent implements OnInit {
+
+  idImplementOuput: number = 0;
 
 
   // bread crumb items
@@ -52,15 +54,14 @@ export class ImplementComponent implements OnInit {
       id: ['0', [Validators.required]],
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      available: ['', [Validators.required]],
-      stock: ['', [Validators.required]],
     });
 
     this.implementsList.subscribe(x => {
       this.content = this.implement;
       this.implement = Object.assign([], x);
     });
-
+    this.idImplementOuput = 0;
+    console.log(this.idImplementOuput);
     this.listImplements();
   }
 
@@ -112,9 +113,15 @@ export class ImplementComponent implements OnInit {
    * @param content modal content
    */
   openModal(content: any) {
+    this.clear();
     this.submitted = false;
-    this.modalService.open(content, { size: 'md', centered: true });
-  }
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'md'
+    };
+    this.modalService.open(content, ngbModalOptions);  }
 
   /**
    * Form data get
@@ -132,15 +139,12 @@ export class ImplementComponent implements OnInit {
       this.pipe = new DatePipe('en-US');
       const name = this.implementForm.get('name')?.value;
       const description = this.implementForm.get('description')?.value;
-      const available = this.implementForm.get('available')?.value;
-      const stock = this.implementForm.get('stock')?.value;
 
       let implement = new Implement();
       implement.name = name;
       implement.description = description;
-      implement.available = available;
-      implement.stock = stock;
       const id = this.implementForm.get('id')?.value;
+
       console.log(implement);
       console.log(id);
       if (id == '0') {
@@ -165,19 +169,19 @@ export class ImplementComponent implements OnInit {
   editDataGet(id: any, content: any) {
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
+    this.enableInputs();
+
     this.modalService.open(content, { size: 'md', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
     modelTitle.innerHTML = 'Actualizar implementos';
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.implement.filter((data: { id: any; }) => data.id === id);
-    const fabricationDate = listData[0].fabricationDate.substring(0, 10);
-    const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
     this.implementForm.controls['id'].setValue(listData[0].id);
     this.implementForm.controls['name'].setValue(listData[0].name);
     this.implementForm.controls['description'].setValue(listData[0].description);
-    this.implementForm.controls['available'].setValue(listData[0].available);
-    this.implementForm.controls['stock'].setValue(listData[0].stock);
+    this.idImplementOuput = id;
+
   }
 
   listImplements() {
@@ -187,7 +191,7 @@ export class ImplementComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.implementDtoList;
+              this.test = response.datos.implementss;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
@@ -196,12 +200,6 @@ export class ImplementComponent implements OnInit {
                 showConfirmButton: false,
               });
             }
-          } else {
-            Swal.fire({
-              icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el Encargado",
-              showConfirmButton: false,
-            });
           }
         },
         error => {
@@ -225,7 +223,9 @@ export class ImplementComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.implement();
+              const implementDto = response.datos.implementDto;
+              this.idImplementOuput = implementDto.id;
+              this.listImplements();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -236,7 +236,7 @@ export class ImplementComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -257,6 +257,11 @@ export class ImplementComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
+              Swal.fire(
+                '¡Actualizado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
               this.listImplements();
             } else {
               Swal.fire({
@@ -268,7 +273,7 @@ export class ImplementComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -280,6 +285,20 @@ export class ImplementComponent implements OnInit {
             showConfirmButton: false,
           });
         });
+  }
+
+  clear() {
+    this.implementForm.controls['id'].setValue("0");
+    this.implementForm.controls['name'].setValue(null);
+    this.implementForm.controls['description'].setValue("");
+
+  }
+
+  enableInputs() {
+    this.implementForm.controls['id'].enable();
+    this.implementForm.controls['name'].enable();
+    this.implementForm.controls['description'].enable();
+
   }
 
   deleteImplement(id) {
@@ -305,7 +324,7 @@ export class ImplementComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }

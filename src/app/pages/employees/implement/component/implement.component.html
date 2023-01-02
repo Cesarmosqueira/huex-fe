@@ -31,8 +31,7 @@
                 <th class="align-middle">ID</th>
                 <th class="align-middle">Implemento</th>
                 <th class="align-middle">Descripcion</th>
-                <th class="align-middle">Disposicion</th>
-                <th class="align-middle">Stock</th>
+
                 <th class="align-middle">Acciones</th>
 
               </tr>
@@ -44,8 +43,7 @@
                 </td>
                 <td>{{data.name}}</td>
                 <td>{{data.description}}</td>
-                <td>{{data.available}}</td>
-                <td>{{data.stock}}</td>
+
                 <td>
                   <div class="d-flex gap-3">
                     <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
@@ -101,24 +99,6 @@
         </div>
       </div>
 
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Disposicion</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="available"
-               [ngClass]="{ 'is-invalid': submitted && form['available'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['available'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['available'].errors['required']">Disposicion es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Stock</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="stock"
-               [ngClass]="{ 'is-invalid': submitted && form['stock'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['stock'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['stock'].errors['required']">Stock es requerido</div>
-        </div>
-      </div>
 
     </div>
     <div class="modal-footer">

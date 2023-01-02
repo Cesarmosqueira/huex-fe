@@ -98,7 +98,6 @@ export class EmployeeAttendanceService extends BaseService{
       this._employeeAttendance$.next(result.employeeAttendance);
       this._total$.next(result.total);
     });
-
     this._search$.next();
   }
 
