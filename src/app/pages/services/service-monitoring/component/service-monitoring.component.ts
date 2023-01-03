@@ -1,29 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
+import {ServiceIncidents} from "../../service-incidents/models/service-incidents.model";
 import {Observable} from "rxjs";
-import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
+import {ServiceIncidentsService} from "../../service-incidents/services/service-incidents.service";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
-import {Implement} from "../models/implement.model";
-import {ImplementService} from "../services/implement.service";
+import {ServiceMonitoring} from "../models/service-monitoring.model";
+import {ServiceMonitoringService} from "../services/service-monitoring.service";
 
 @Component({
-  selector: 'app-implement',
-  templateUrl: './implement.component.html',
-  styleUrls: ['./implement.component.scss']
+  selector: 'app-service-monitoring',
+  templateUrl: './service-monitoring.component.html',
+  styleUrls: ['./service-monitoring.component.scss']
 })
-export class ImplementComponent implements OnInit {
-
-  idImplementOuput: number = 0;
+export class ServiceMonitoringComponent implements OnInit {
 
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
   term: any;
 
-  implementForm!: UntypedFormGroup;
+  serviceMonitoringForm!: UntypedFormGroup;
   submitted = false;
   register = true;
 
@@ -31,38 +31,40 @@ export class ImplementComponent implements OnInit {
 
   // Table data
   content?: any;
-  implement?: any;
-  test: Implement[] = [];
-  implementsList!: Observable<Implement[]>;
+  serviceMonitoring?: any;
+  test: ServiceMonitoring[] = [];
+  serviceMonitoringList!: Observable<ServiceMonitoring[]>;
   total: Observable<number>;
   pipe: any;
 
-  constructor(public service: ImplementService,
+  constructor(public service: ServiceMonitoringService,
               private modalService: NgbModal,
               private formBuilder: UntypedFormBuilder) {
-    this.implementsList = service.countries$;
+    this.serviceMonitoringList = service.countries$;
     this.total = service.total$;
   }
 
   ngOnInit(): void {
-    this.breadCrumbItems = [{ label: 'Empleados' }, { label: 'Implementos', active: true }];
+    this.breadCrumbItems = [{ label: 'Servicios' }, { label: 'Monitoreo servicios', active: true }];
 
     /**
      * Form Validation
      */
-    this.implementForm = this.formBuilder.group({
+    this.serviceMonitoringForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
-      name: ['', [Validators.required]],
-      description: ['', [Validators.required]],
+      idTrackingService: ['', [Validators.required]],
+      dateHour: ['', [Validators.required]],
+      status: ['', [Validators.required]],
+      observation: ['', [Validators.required]],
+      photoMonitoring: ['', [Validators.required]],
     });
 
-    this.implementsList.subscribe(x => {
-      this.content = this.implement;
-      this.implement = Object.assign([], x);
+    this.serviceMonitoringList.subscribe(x => {
+      this.content = this.serviceMonitoring;
+      this.serviceMonitoring = Object.assign([], x);
     });
-    this.idImplementOuput = 0;
-    console.log(this.idImplementOuput);
-    this.listImplements();
+
+    this.listServiceMonitoring();
   }
 
   /**
@@ -94,7 +96,7 @@ export class ImplementComponent implements OnInit {
       })
       .then(result => {
         if (result.value) {
-          this.deleteImplement(id);
+          this.deleteServiceMonitoring(id);
         } else if (
           /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel
@@ -113,21 +115,15 @@ export class ImplementComponent implements OnInit {
    * @param content modal content
    */
   openModal(content: any) {
-    this.clear();
     this.submitted = false;
-    let ngbModalOptions: NgbModalOptions = {
-      backdrop: 'static',
-      keyboard: false,
-      centered: true,
-      size: 'md'
-    };
-    this.modalService.open(content, ngbModalOptions);  }
+    this.modalService.open(content, { size: 'md', centered: true });
+  }
 
   /**
    * Form data get
    */
   get form() {
-    return this.implementForm.controls;
+    return this.serviceMonitoringForm.controls;
   }
 
   /**
@@ -135,28 +131,36 @@ export class ImplementComponent implements OnInit {
    */
   saveUser() {
     this.submitted = true
-    if (this.implementForm.valid) {
+    if (this.serviceMonitoringForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const name = this.implementForm.get('name')?.value;
-      const description = this.implementForm.get('description')?.value;
+      const idTrackingService = 2;//this.serviceIncidentsForm.get('trackingServiceId')?.value;
+      const dateHour = this.serviceMonitoringForm.get('dateHour')?.value;
+      const status = this.serviceMonitoringForm.get('status')?.value;
+      const observation = this.serviceMonitoringForm.get('observation')?.value;
+      const photoMonitoring = this.serviceMonitoringForm.get('photoMonitoring')?.value;
 
-      let implement = new Implement();
-      implement.name = name;
-      implement.description = description;
-      const id = this.implementForm.get('id')?.value;
 
-      console.log(implement);
+
+      let serviceMonitoring = new ServiceMonitoring();
+      serviceMonitoring.idTrackingService = idTrackingService;
+      serviceMonitoring.dateHour = dateHour;
+      serviceMonitoring.status = status;
+      serviceMonitoring.observation = observation;
+      serviceMonitoring.photoMonitoring = photoMonitoring;
+
+      const id = this.serviceMonitoringForm.get('id')?.value;
+      console.log(serviceMonitoring);
       console.log(id);
       if (id == '0') {
-        this.registerImplement(implement);
+        this.registerServiceMonitoring(serviceMonitoring);
       } else {
-        implement.id = id;
-        this.updateImplement(implement);
+        serviceMonitoring.id = id;
+        this.updateServiceMonitoring(serviceMonitoring);
       }
 
       this.modalService.dismissAll();
       setTimeout(() => {
-        this.implementForm.reset();
+        this.serviceMonitoringForm.reset();
       }, 2000);
 
     }
@@ -169,29 +173,30 @@ export class ImplementComponent implements OnInit {
   editDataGet(id: any, content: any) {
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
-    this.enableInputs();
-
     this.modalService.open(content, { size: 'md', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-    modelTitle.innerHTML = 'Actualizar implementos';
+    modelTitle.innerHTML = 'Actualizar Monitoreo servicio';
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
-    var listData = this.implement.filter((data: { id: any; }) => data.id === id);
-    this.implementForm.controls['id'].setValue(listData[0].id);
-    this.implementForm.controls['name'].setValue(listData[0].name);
-    this.implementForm.controls['description'].setValue(listData[0].description);
-    this.idImplementOuput = id;
-
+    var listData = this.serviceMonitoring.filter((data: { id: any; }) => data.id === id);
+    const dateHour = listData[0].dateHour.substring(0, 10);
+    const fortmatdateHour = this.pipe.transform(dateHour, 'yyyy-MM-dd');
+    this.serviceMonitoringForm.controls['id'].setValue(listData[0].id);
+    this.serviceMonitoringForm.controls['idTrackingService'].setValue(listData[0].idTrackingService);
+    this.serviceMonitoringForm.controls['dateHour'].setValue(fortmatdateHour);
+    this.serviceMonitoringForm.controls['status'].setValue(listData[0].status);
+    this.serviceMonitoringForm.controls['observation'].setValue(listData[0].observation);
+    this.serviceMonitoringForm.controls['photoMonitoring'].setValue(listData[0].photoMonitoring);
   }
 
-  listImplements() {
-    this.service.listImplements()
+  listServiceMonitoring() {
+    this.service.listServiceMonitoring()
       .pipe(first())
       .subscribe(
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.implementss;
+              this.test = response.datos.serviceMonitoring;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
@@ -200,6 +205,12 @@ export class ImplementComponent implements OnInit {
                 showConfirmButton: false,
               });
             }
+          } else {
+            Swal.fire({
+              icon: config.ERROR,
+              title: "Ocurrio un error",
+              showConfirmButton: false,
+            });
           }
         },
         error => {
@@ -211,8 +222,8 @@ export class ImplementComponent implements OnInit {
         });
   }
 
-  registerImplement(implement) {
-    this.service.registerImplement(implement)
+  registerServiceMonitoring(serviceMonitoring) {
+    this.service.registerServiceMonitoring(serviceMonitoring)
       .pipe(first())
       .subscribe(
         response => {
@@ -223,7 +234,7 @@ export class ImplementComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.listImplements();
+              this.listServiceMonitoring();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -248,19 +259,14 @@ export class ImplementComponent implements OnInit {
         });
   }
 
-  updateImplement(implement) {
-    this.service.updateImplement(implement)
+  updateServiceMonitoring(serviceMonitoring) {
+    this.service.updateServiceMonitoring(serviceMonitoring)
       .pipe(first())
       .subscribe(
         response => {
           if (response) {
             if (response.datos) {
-              Swal.fire(
-                '¡Actualizado!',
-                response.meta.mensajes[0].mensaje,
-                'success'
-              );
-              this.listImplements();
+              this.listServiceMonitoring();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -285,22 +291,8 @@ export class ImplementComponent implements OnInit {
         });
   }
 
-  clear() {
-    this.implementForm.controls['id'].setValue("0");
-    this.implementForm.controls['name'].setValue(null);
-    this.implementForm.controls['description'].setValue("");
-
-  }
-
-  enableInputs() {
-    this.implementForm.controls['id'].enable();
-    this.implementForm.controls['name'].enable();
-    this.implementForm.controls['description'].enable();
-
-  }
-
-  deleteImplement(id) {
-    this.service.deleteImplement(id)
+  deleteServiceMonitoring(id) {
+    this.service.deleteServiceMonitoring(id)
       .pipe(first())
       .subscribe(
         response => {
@@ -311,7 +303,7 @@ export class ImplementComponent implements OnInit {
                 'Su archivo ha sido eliminado.',
                 'success'
               );
-              this.listImplements();
+              this.listServiceMonitoring();
             } else {
               Swal.fire({
                 icon: config.WARNING,
