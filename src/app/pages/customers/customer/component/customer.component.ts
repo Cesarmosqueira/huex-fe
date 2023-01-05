@@ -119,7 +119,8 @@ export class CustomerComponent implements OnInit {
   openModal(content: any) {
     this.clear();
     this.submitted = false;
-    this.enableInputs();let ngbModalOptions: NgbModalOptions = {
+    this.enableInputs();
+    let ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
       keyboard: false,
       centered: true,

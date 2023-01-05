@@ -30,8 +30,12 @@
               <tr>
                 <th class="align-middle">ID</th>
                 <th class="align-middle">Trabajador</th>
+                <th class="align-middle">Trabajadores</th>
+                <th class="align-middle">Implemento</th>
                 <th class="align-middle">Fecha</th>
                 <th class="align-middle">Observaciones</th>
+                <th class="align-middle">Acciones</th>
+
               </tr>
               </thead>
               <tbody>
@@ -39,8 +43,9 @@
                 <td>
                   <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                 </td>
-                <td>{{data.employee}}</td>
-                <td>{{data.date.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                <td>{{data.employeeId}}</td>
+                <td>{{data.implementId}}</td>
+                <td>{{data.deliveryDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                 <td>{{data.observations}}</td>
                 <td>
                   <div class="d-flex gap-3">
@@ -108,7 +113,7 @@
       <div class="mb-3">
         <label>Fecha</label>
         <div class="input-group clockpicker">
-          <input class="form-control" type="date" id="example-date-input" formControlName="date" autocomplete="disabled">
+          <input class="form-control" type="date" id="example-date-input" formControlName="deliveryDate" autocomplete="disabled">
         </div>
       </div>
 

@@ -39,7 +39,7 @@ export class EmployeeAttendanceComponent implements OnInit {
   pipe: any;
 
   employees:Employee[]=[];
-  selectEmployee:null;
+  selectEmployee:any;
 
   constructor(public service: EmployeeAttendanceService,
               private modalService: NgbModal,
@@ -63,7 +63,7 @@ export class EmployeeAttendanceComponent implements OnInit {
     });
 
     this.employeeAttendanceList.subscribe(x => {
-      this.content = this.employeeAttendanceList;
+      this.content = this.employeeAttendance;
       this.employeeAttendance = Object.assign([], x);
     });
     this.idEmployeeAttendanceOuput = 0;
@@ -122,6 +122,8 @@ export class EmployeeAttendanceComponent implements OnInit {
    */
   openModal(content: any) {
     this.clear();
+    this.submitted = false;
+    this.enableInputs();
     let ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
       keyboard: false,
@@ -145,7 +147,7 @@ export class EmployeeAttendanceComponent implements OnInit {
     this.submitted = true
     if (this.employeeAttendanceForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const employeeId = this.employeeAttendanceForm.get('employeeId')?.value;
+      const employeeId = this.selectEmployee.id;
       const date = this.employeeAttendanceForm.get('date')?.value;
       const fortmatDate = this.pipe.transform(date, 'yyyy-MM-dd');
       const state = this.employeeAttendanceForm.get('state')?.value;
@@ -205,7 +207,7 @@ export class EmployeeAttendanceComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.attendances;
+              this.test = response.datos.attendanceList;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
