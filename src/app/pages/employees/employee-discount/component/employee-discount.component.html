@@ -33,6 +33,8 @@
                 <th class="align-middle">Fecha</th>
                 <th class="align-middle">Observaciones</th>
                 <th class="align-middle">Monto</th>
+                <th class="align-middle">Acciones</th>
+
               </tr>
               </thead>
               <tbody>
@@ -82,9 +84,12 @@
 
 
       <div class="mb-3">
+        <input type="text" hidden formControlName="id" value="0" />
         <label for="customername-field" class="form-label">Trabajador</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="employeeId"
-               [ngClass]="{ 'is-invalid': submitted && form['employeeId'].errors }" autocomplete="disabled" />
+        <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Trabajador"
+                   [(ngModel)]="selectEmployee" id="customername-field" [clearable]="false" required
+                   formControlName="employeeId" [ngClass]="{ 'is-invalid': submitted && form['employeeId'].errors }">
+        </ng-select>
         <div *ngIf="submitted && form['employeeId'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['employeeId'].errors['required']">Trabajador es requerido</div>
         </div>
@@ -107,11 +112,11 @@
       </div>
 
       <div class="mb-3">
-        <label for="customername-field" class="form-label">Tarifa</label>
+        <label for="customername-field" class="form-label">Monto</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="charge"
                [ngClass]="{ 'is-invalid': submitted && form['charge'].errors }" autocomplete="disabled" />
         <div *ngIf="submitted && form['charge'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['charge'].errors['required']">Tarifa es requerido</div>
+          <div *ngIf="form['charge'].errors['required']">Monto es requerido</div>
         </div>
       </div>
 

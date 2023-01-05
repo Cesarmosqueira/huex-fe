@@ -3,13 +3,15 @@ import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {EmployeeAttendance} from "../../employee-attendance/models/employee-attendance.model";
 import {Observable} from "rxjs";
 import {EmployeeAttendanceService} from "../../employee-attendance/services/employee-attendance.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
 import {EmployeeDiscount} from "../models/employee-discount.model";
 import {EmployeeDiscountService} from "../services/employee-discount.service";
+import {Employee} from "../../employee/models/employee.model";
+import {EmployeeService} from "../../employee/services/employee.service";
 
 @Component({
   selector: 'app-employee-discount',
@@ -18,6 +20,7 @@ import {EmployeeDiscountService} from "../services/employee-discount.service";
 })
 export class EmployeeDiscountComponent implements OnInit {
 
+  idEmployeeDiscountOuput: number = 0;
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
@@ -37,8 +40,14 @@ export class EmployeeDiscountComponent implements OnInit {
   total: Observable<number>;
   pipe: any;
 
+
+  employees:Employee[]=[];
+  selectEmployee:any;
+
+
   constructor(public service: EmployeeDiscountService,
               private modalService: NgbModal,
+              private serviceEmployee:EmployeeService,
               private formBuilder: UntypedFormBuilder) {
     this.employeeDiscountList = service.countries$;
     this.total = service.total$;
@@ -59,10 +68,10 @@ export class EmployeeDiscountComponent implements OnInit {
     });
 
     this.employeeDiscountList.subscribe(x => {
-      this.content = this.employeeDiscountList;
+      this.content = this.employeeDiscount;
       this.employeeDiscount = Object.assign([], x);
     });
-
+    this.listEmployees();
     this.listEmployeeDiscount();
   }
 
@@ -114,9 +123,16 @@ export class EmployeeDiscountComponent implements OnInit {
    * @param content modal content
    */
   openModal(content: any) {
+    this.clear();
     this.submitted = false;
-    this.modalService.open(content, { size: 'md', centered: true });
-  }
+    this.enableInputs();
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'md'
+    };
+    this.modalService.open(content, ngbModalOptions);  }
 
   /**
    * Form data get
@@ -132,7 +148,7 @@ export class EmployeeDiscountComponent implements OnInit {
     this.submitted = true
     if (this.employeeDiscountForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const employeeId = this.employeeDiscountForm.get('employeeId')?.value;
+      const employeeId = this.selectEmployee.id;
       const date = this.employeeDiscountForm.get('date')?.value;
       const fortmatdate = this.pipe.transform(date, 'yyyy-MM-dd');
       const observations = this.employeeDiscountForm.get('observations')?.value;
@@ -175,13 +191,14 @@ export class EmployeeDiscountComponent implements OnInit {
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.employeeDiscount.filter((data: { id: any; }) => data.id === id);
-    const fabricationDate = listData[0].fabricationDate.substring(0, 10);
-    const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
+    const date = listData[0].date.substring(0, 10);
+    const fortmatdate = this.pipe.transform(date, 'yyyy-MM-dd');
     this.employeeDiscountForm.controls['id'].setValue(listData[0].id);
     this.employeeDiscountForm.controls['employeeId'].setValue(listData[0].employeeId);
-    this.employeeDiscountForm.controls['date'].setValue(fortmatFabricationDate);
+    this.employeeDiscountForm.controls['date'].setValue(fortmatdate);
     this.employeeDiscountForm.controls['observations'].setValue(listData[0].observations);
     this.employeeDiscountForm.controls['charge'].setValue(listData[0].charge);
+    this.idEmployeeDiscountOuput = id;
   }
 
   listEmployeeDiscount() {
@@ -200,12 +217,6 @@ export class EmployeeDiscountComponent implements OnInit {
                 showConfirmButton: false,
               });
             }
-          } else {
-            Swal.fire({
-              icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el Encargado",
-              showConfirmButton: false,
-            });
           }
         },
         error => {
@@ -240,7 +251,7 @@ export class EmployeeDiscountComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -261,6 +272,11 @@ export class EmployeeDiscountComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
+              Swal.fire(
+                '¡Actualizado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
               this.listEmployeeDiscount();
             } else {
               Swal.fire({
@@ -272,7 +288,7 @@ export class EmployeeDiscountComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -284,6 +300,23 @@ export class EmployeeDiscountComponent implements OnInit {
             showConfirmButton: false,
           });
         });
+  }
+
+  clear() {
+    this.employeeDiscountForm.controls['id'].setValue("0");
+    this.employeeDiscountForm.controls['employeeId'].setValue("");
+    this.employeeDiscountForm.controls['date'].setValue("");
+    this.employeeDiscountForm.controls['observations'].setValue("");
+    this.employeeDiscountForm.controls['charge'].setValue("");
+
+  }
+
+  enableInputs() {
+    this.employeeDiscountForm.controls['id'].enable();
+    this.employeeDiscountForm.controls['employeeId'].enable();
+    this.employeeDiscountForm.controls['date'].enable();
+    this.employeeDiscountForm.controls['observations'].enable();
+    this.employeeDiscountForm.controls['charge'].enable();
   }
 
   deleteEmployeeDiscount(id) {
@@ -309,9 +342,36 @@ export class EmployeeDiscountComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listEmployees() {
+    this.serviceEmployee.listEmployees()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.employees = response.datos.employees;
+              console.log(this.employees);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
           }
         },
         error => {
