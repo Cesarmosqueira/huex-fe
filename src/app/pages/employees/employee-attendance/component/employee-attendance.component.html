@@ -32,6 +32,8 @@
                 <th class="align-middle">Trabajador</th>
                 <th class="align-middle">Fecha</th>
                 <th class="align-middle">Estado</th>
+                <th class="align-middle">Acciones</th>
+
               </tr>
               </thead>
               <tbody>
@@ -39,9 +41,9 @@
                 <td>
                   <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                 </td>
-                <td>{{data.employee_id}}</td>
-                <td>{{data.date.substring(0,10) | date:'dd/MM/YYYY'}}</td>
-                <td>{{data.state}}</td>
+                <td>{{data.employeeId}}</td>
+                <td>{{data.attendanceDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                <td>{{data.status}}</td>
                 <td>
                   <div class="d-flex gap-3">
                     <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
@@ -94,16 +96,16 @@
       <div class="mb-3">
         <label>Fecha</label>
         <div class="input-group clockpicker">
-          <input class="form-control" type="date" id="example-date-input" formControlName="date" autocomplete="disabled">
+          <input class="form-control" type="date" id="example-date-input" formControlName="attendanceDate" autocomplete="disabled">
         </div>
       </div>
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Estado</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="state"
-               [ngClass]="{ 'is-invalid': submitted && form['state'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['state'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['state'].errors['required']">Estado es requerido</div>
+        <input type="text" id="customername-field" class="form-control" required formControlName="status"
+               [ngClass]="{ 'is-invalid': submitted && form['status'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['status'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['status'].errors['required']">Estado es requerido</div>
         </div>
       </div>
 

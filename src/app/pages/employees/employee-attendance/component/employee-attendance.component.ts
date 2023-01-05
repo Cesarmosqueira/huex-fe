@@ -58,8 +58,8 @@ export class EmployeeAttendanceComponent implements OnInit {
     this.employeeAttendanceForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
       employeeId: ['', [Validators.required]],
-      date: ['', [Validators.required]],
-      state: ['', [Validators.required]],
+      attendanceDate: ['', [Validators.required]],
+      status: ['', [Validators.required]],
     });
 
     this.employeeAttendanceList.subscribe(x => {
@@ -148,14 +148,14 @@ export class EmployeeAttendanceComponent implements OnInit {
     if (this.employeeAttendanceForm.valid) {
       this.pipe = new DatePipe('en-US');
       const employeeId = this.selectEmployee.id;
-      const date = this.employeeAttendanceForm.get('date')?.value;
-      const fortmatDate = this.pipe.transform(date, 'yyyy-MM-dd');
-      const state = this.employeeAttendanceForm.get('state')?.value;
+      const attendanceDate = this.employeeAttendanceForm.get('attendanceDate')?.value;
+      const fortmatattendanceDate = this.pipe.transform(attendanceDate, 'yyyy-MM-dd');
+      const status = this.employeeAttendanceForm.get('status')?.value;
 
       let employeeAttendance = new EmployeeAttendance();
       employeeAttendance.employeeId = employeeId;
-      employeeAttendance.date = fortmatDate;
-      employeeAttendance.state = state;
+      employeeAttendance.attendanceDate = fortmatattendanceDate;
+      employeeAttendance.status = status;
 
       const id = this.employeeAttendanceForm.get('id')?.value;
 
@@ -190,12 +190,12 @@ export class EmployeeAttendanceComponent implements OnInit {
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.employeeAttendance.filter((data: { id: any; }) => data.id === id);
-    const date = listData[0].date.substring(0, 10);
-    const fortmatDate = this.pipe.transform(date, 'yyyy-MM-dd');
+    const attendanceDate = listData[0].attendanceDate.substring(0, 10);
+    const fortmatattendanceDate = this.pipe.transform(attendanceDate, 'yyyy-MM-dd');
     this.employeeAttendanceForm.controls['id'].setValue(listData[0].id);
     this.employeeAttendanceForm.controls['employeeId'].setValue(listData[0].employeeId);
-    this.employeeAttendanceForm.controls['date'].setValue(fortmatDate);
-    this.employeeAttendanceForm.controls['state'].setValue(listData[0].state);
+    this.employeeAttendanceForm.controls['attendanceDate'].setValue(fortmatattendanceDate);
+    this.employeeAttendanceForm.controls['status'].setValue(listData[0].status);
     this.idEmployeeAttendanceOuput = id;
 
   }
@@ -207,7 +207,7 @@ export class EmployeeAttendanceComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.attendanceList;
+              this.test = response.datos.attendances;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
@@ -239,8 +239,6 @@ export class EmployeeAttendanceComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              const attendances = response.datos.attendances;
-              this.idEmployeeAttendanceOuput = attendances.id;
               this.listEmployeeAttendance();
             } else {
               Swal.fire({
@@ -306,15 +304,15 @@ export class EmployeeAttendanceComponent implements OnInit {
   clear() {
     this.employeeAttendanceForm.controls['id'].setValue("0");
     this.employeeAttendanceForm.controls['employeeId'].setValue("");
-    this.employeeAttendanceForm.controls['date'].setValue("");
-    this.employeeAttendanceForm.controls['state'].setValue("");
+    this.employeeAttendanceForm.controls['attendanceDate'].setValue("");
+    this.employeeAttendanceForm.controls['status'].setValue("");
   }
 
   enableInputs() {
     this.employeeAttendanceForm.controls['id'].enable();
     this.employeeAttendanceForm.controls['employeeId'].enable();
-    this.employeeAttendanceForm.controls['date'].enable();
-    this.employeeAttendanceForm.controls['state'].enable();
+    this.employeeAttendanceForm.controls['attendanceDate'].enable();
+    this.employeeAttendanceForm.controls['status'].enable();
   }
 
   deleteEmployeeAttendance(id) {
