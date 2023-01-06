@@ -42,7 +42,7 @@ export class EmployeeImplementComponent implements OnInit {
   pipe: any;
 
   employees:Employee[]=[];
-  selectEmployee:null;
+  selectEmployee:any;
 
   implementss:Implement[]=[];
   selectImplement=null;
@@ -66,12 +66,12 @@ export class EmployeeImplementComponent implements OnInit {
       id: ['0', [Validators.required]],
       employeeId: ['', [Validators.required]],
       implementId: ['', [Validators.required]],
-      date: ['', [Validators.required]],
+      deliveryDate: ['', [Validators.required]],
       observations: ['', [Validators.required]],
     });
 
     this.employeeImplementsList.subscribe(x => {
-      this.content = this.employeeImplementsList;
+      this.content = this.employeeImplement;
       this.employeeImplement = Object.assign([], x);
     });
     this.idEmployeeImplemntOuput = 0;
@@ -132,6 +132,7 @@ export class EmployeeImplementComponent implements OnInit {
   openModal(content: any) {
     this.clear();
     this.submitted = false;
+    this.enableInputs();
     let ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
       keyboard: false,
@@ -155,16 +156,16 @@ export class EmployeeImplementComponent implements OnInit {
     this.submitted = true
     if (this.employeeImplementForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const employeeId = this.employeeImplementForm.get('employeeId')?.value;
-      const implementId = this.employeeImplementForm.get('implementId')?.value;
-      const date = this.employeeImplementForm.get('date')?.value;
-      const fortmatDate = this.pipe.transform(date, 'yyyy-MM-dd');
+      const employeeId = this.selectEmployee.id;
+      const implementId = this.selectImplement.id;
+      const deliveryDate = this.employeeImplementForm.get('deliveryDate')?.value;
+      const fortmatdeliveryDate = this.pipe.transform(deliveryDate, 'yyyy-MM-dd');
       const observations = this.employeeImplementForm.get('observations')?.value;
 
       let employeeImplement = new EmployeeImplement();
       employeeImplement.employeeId = employeeId;
       employeeImplement.implementId = implementId;
-      employeeImplement.date = fortmatDate;
+      employeeImplement.deliveryDate = fortmatdeliveryDate;
       employeeImplement.observations = observations;
 
       const id = this.employeeImplementForm.get('id')?.value;
@@ -200,11 +201,12 @@ export class EmployeeImplementComponent implements OnInit {
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.employeeImplement.filter((data: { id: any; }) => data.id === id);
-    const date = listData[0].date.substring(0, 10);
-    const fortmatdate = this.pipe.transform(date, 'yyyy-MM-dd');
+    const deliveryDate = listData[0].deliveryDate.substring(0, 10);
+    const fortmatdeliveryDate = this.pipe.transform(deliveryDate, 'yyyy-MM-dd');
     this.employeeImplementForm.controls['id'].setValue(listData[0].id);
-    this.employeeImplementForm.controls['employee'].setValue(listData[0].employee);
-    this.employeeImplementForm.controls['date'].setValue(fortmatdate);
+    this.employeeImplementForm.controls['employeeId'].setValue(listData[0].employeeId);
+    this.employeeImplementForm.controls['implementId'].setValue(listData[0].implementId);
+    this.employeeImplementForm.controls['deliveryDate'].setValue(fortmatdeliveryDate);
     this.employeeImplementForm.controls['observations'].setValue(listData[0].observations);
     this.idEmployeeImplemntOuput = id;
 
@@ -217,7 +219,7 @@ export class EmployeeImplementComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.employeeImplements;
+              this.test = response.datos.employeeImplement;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
@@ -243,14 +245,14 @@ export class EmployeeImplementComponent implements OnInit {
       .subscribe(
         response => {
           if (response) {
+            console.log(response);
             if (response.datos) {
               Swal.fire(
                 '¡Registrado!',
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              const employeeImplementDto = response.datos.employeeImplementDto;
-              this.idEmployeeImplemntOuput = employeeImplementDto.id;
+
               this.listEmployeeImplements();
             } else {
               Swal.fire({
@@ -315,9 +317,9 @@ export class EmployeeImplementComponent implements OnInit {
 
   clear() {
     this.employeeImplementForm.controls['id'].setValue("0");
-    this.employeeImplementForm.controls['employeeId'].setValue(null);
-    this.employeeImplementForm.controls['implementId'].setValue(null);
-    this.employeeImplementForm.controls['date'].setValue("");
+    this.employeeImplementForm.controls['employeeId'].setValue("");
+    this.employeeImplementForm.controls['implementId'].setValue("");
+    this.employeeImplementForm.controls['deliveryDate'].setValue("");
     this.employeeImplementForm.controls['observations'].setValue("");
 
 
@@ -327,7 +329,7 @@ export class EmployeeImplementComponent implements OnInit {
     this.employeeImplementForm.controls['id'].enable();
     this.employeeImplementForm.controls['employeeId'].enable();
     this.employeeImplementForm.controls['implementId'].enable();
-    this.employeeImplementForm.controls['date'].enable();
+    this.employeeImplementForm.controls['deliveryDate'].enable();
     this.employeeImplementForm.controls['observations'].enable();
   }
 

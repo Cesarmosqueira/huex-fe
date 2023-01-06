@@ -32,11 +32,11 @@ export const environment = {
       delete: '/api-huex/v1/implements/'
     },
     employeeImplement: {
-      list: '/api-huex/v1/employeeImplements',
-      retrieve: '/api-huex/v1/employeeImplements/',
-      register: '/api-huex/v1/employeeImplements',
-      update: '/api-huex/v1/employeeImplements',
-      delete: '/api-huex/v1/employeeImplements/'
+      list: '/api-huex/v1/employee_implements',
+      retrieve: '/api-huex/v1/employee_implements/',
+      register: '/api-huex/v1/employee_implements',
+      update: '/api-huex/v1/employee_implements',
+      delete: '/api-huex/v1/employee_implements/'
     },
     employeeAttendance: {
       list: '/api-huex/v1/attendances',
@@ -104,6 +104,13 @@ export const environment = {
       register: '/api-huex/v1/settlement_summary',
       update: '/api-huex/v1/settlement_summary',
       delete: '/api-huex/v1/settlement_summary/'
+    },
+    serviceMonitoring: {
+      list: '/api-huex/v1/serviceMonitoring',
+      retrieve: '/api-huex/v1/serviceMonitoring/',
+      register: '/api-huex/v1/serviceMonitoring',
+      update: '/api-huex/v1/serviceMonitoring',
+      delete: '/api-huex/v1/serviceMonitoring/'
     }
   },
 

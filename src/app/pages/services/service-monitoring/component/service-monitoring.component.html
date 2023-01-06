@@ -1,6 +1,5 @@
 <div class="container-fluid">
   <app-page-title title="Orders" [breadcrumbItems]="breadCrumbItems"></app-page-title>
-
   <div class="row">
     <div class="col-12">
       <div class="card">
@@ -9,7 +8,7 @@
             <div class="col-sm-4">
               <div class="search-box me-2 mb-2 d-inline-block">
                 <div class="position-relative">
-                  <input type="text" class="form-control" placeholder="Buscar por trabajador..." [(ngModel)]="service.searchTerm">
+                  <input type="text" class="form-control" placeholder="Buscar por servicio..." [(ngModel)]="service.searchTerm">
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
@@ -29,21 +28,25 @@
               <thead class="table-light">
               <tr>
                 <th class="align-middle">ID</th>
-                <th class="align-middle">Trabajador</th>
-                <th class="align-middle">Fecha</th>
+                <th class="align-middle">Servicio</th>
+                <th class="align-middle">Fecha y hora</th>
                 <th class="align-middle">Estado</th>
-                <th class="align-middle">Acciones</th>
-
+                <th class="align-middle">Observaciones</th>
+                <th class="align-middle">Foto</th>
+                <th class="align-middle">Acción</th>
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let data of employeeAttendance" id="o_{{data.id}}">
+              <tr *ngFor="let data of serviceMonitoring" id="o_{{data.id}}">
                 <td>
                   <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                 </td>
-                <td>{{data.employeeId}}</td>
-                <td>{{data.attendanceDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                <td>{{data.idTrackingService}}</td>
+                <td>{{data.dateHour.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                 <td>{{data.status}}</td>
+                <td>{{data.observation}}</td>
+                <td>{{data.photoMonitoring}}</td>
+
                 <td>
                   <div class="d-flex gap-3">
                     <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
@@ -72,45 +75,70 @@
 <!-- Order Create Model -->
 <ng-template #content role="document" let-modal>
   <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Nueva asistencia</h5>
+    <h5 class="modal-title" id="exampleModalLabel">Nuevo Reporte seguimiento</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
             (click)="modal.dismiss('Cross click')"></button>
   </div>
-  <form (ngSubmit)="saveUser()" [formGroup]="employeeAttendanceForm">
+  <form (ngSubmit)="saveUser()" [formGroup]="serviceMonitoringForm">
     <div class="modal-body">
       <input type="text" hidden formControlName="id" value="0" />
 
-
       <div class="mb-3">
-        <input type="text" hidden formControlName="id" value="0" />
-        <label for="customername-field" class="form-label">Trabajador</label>
-        <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Trabajador"
-                   [(ngModel)]="selectEmployee" id="customername-field" [clearable]="false" required
-                   formControlName="employeeId" [ngClass]="{ 'is-invalid': submitted && form['employeeId'].errors }">
-        </ng-select>
-        <div *ngIf="submitted && form['employeeId'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['employeeId'].errors['required']">Trabajador es requerido</div>
+        <label for="customername-field" class="form-label">Servicio</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="idTrackingService"
+               [ngClass]="{ 'is-invalid': submitted && form['idTrackingService'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['idTrackingService'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['idTrackingService'].errors['required']">Servicio es requerido</div>
         </div>
       </div>
 
       <div class="mb-3">
-        <label>Fecha</label>
+        <label>Fecha y hora</label>
         <div class="input-group clockpicker">
-          <input class="form-control" type="date" id="example-date-input" formControlName="attendanceDate" autocomplete="disabled">
+          <input class="form-control" type="date" id="example-date-input" formControlName="dateHour" autocomplete="disabled">
         </div>
       </div>
+
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Razon social</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="socialReason"
+               [ngClass]="{ 'is-invalid': submitted && form['socialReason'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['socialReason'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['socialReason'].errors['required']">Razon social es requerido</div>
+        </div>
+      </div>
+
+
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Estado</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="status"
-               [ngClass]="{ 'is-invalid': submitted && form['status'].errors }" autocomplete="disabled" />
+        <ng-select [items]="['EN DESCARGA','EN COCHERA','EN RUTA','RETORNANDO']" id="customername-field" required formControlName="status"
+                   [ngClass]="{ 'is-invalid': submitted && form['status'].errors }"></ng-select>
         <div *ngIf="submitted && form['status'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['status'].errors['required']">Estado es requerido</div>
         </div>
       </div>
 
-    </div>
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Observaciones</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="observation"
+               [ngClass]="{ 'is-invalid': submitted && form['observation'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['observation'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['observation'].errors['required']">Observaciones es requerido</div>
+        </div>
+      </div>
 
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Foto</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="photoMonitoring"
+               [ngClass]="{ 'is-invalid': submitted && form['photoMonitoring'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['photoMonitoring'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['photoMonitoring'].errors['required']">Foto es requerido</div>
+        </div>
+      </div>
+
+    </div>
     <div class="modal-footer">
       <div class="hstack gap-2 justify-content-end">
         <button type="button" class="btn btn-light" data-bs-dismiss="modal"
@@ -118,6 +146,6 @@
         <button type="submit" class="btn btn-success" id="add-btn">Registrar</button>
       </div>
     </div>
-
   </form>
 </ng-template>
+<!--End Modal -->
