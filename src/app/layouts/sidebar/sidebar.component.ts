@@ -139,14 +139,8 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
    * Initialize
    */
   initialize(): void {
-    this.menuItems = MENU;
+    this.menuItems = JSON.parse(localStorage.getItem('menuItems'));
+    console.log(this.menuItems);
   }
-
-  /**
-   * Returns true or false if given menu item has child or not
-   * @param item menuItem
-   */
-  hasItems(item: MenuItem) {
-    return item.subItems !== undefined ? item.subItems.length > 0 : false;
-  }
+  
 }

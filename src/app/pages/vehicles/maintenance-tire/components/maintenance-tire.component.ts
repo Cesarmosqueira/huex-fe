@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { config } from 'src/app/shared/shared.config';
@@ -42,7 +43,8 @@ export class MaintenanceTireComponent implements OnInit {
   textButton = "Registrar";
 
   constructor(public service: MaintenanceTireService,
-    private formBuilder: UntypedFormBuilder) {
+    private formBuilder: UntypedFormBuilder,
+    private modalService: NgbModal) {
     this.maintenanceTiresList = service.countries$;
     this.total = service.total$;
   }
@@ -104,8 +106,16 @@ export class MaintenanceTireComponent implements OnInit {
     this.textButton = "Registrar";
   }
 
-  openModal(value) {
-    this.new = value;
+  openModal(content: any) {
+    this.submitted = false;
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'md'
+    };
+    
+    this.modalService.open(content, ngbModalOptions);
   }
 
   get form() {
@@ -137,7 +147,7 @@ export class MaintenanceTireComponent implements OnInit {
       }
 
       this.new = false;
-      this.textButton = "Registrar";
+      this.textButton = "Nuevo";
       this.clearControl();
     }
   }
@@ -152,16 +162,26 @@ export class MaintenanceTireComponent implements OnInit {
    * Open Edit modal
    * @param content modal content
    */
-  editDataGet(id: any) {
-    this.new = true;
+  editDataGet(id: any, content) {
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'md'
+    };
+    
+    this.modalService.open(content, ngbModalOptions);
+    var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
+    modelTitle.innerHTML = 'Actualizar Mantenimiento Llantas';
+    var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
+    updateBtn.innerHTML = "Actualizar";
     var listData = this.maintenanceTires.filter((data: { id: any; }) => data.id === id);
     this.maintenanceTireForm.controls['id'].setValue(listData[0].id);
     this.maintenanceTireForm.controls['dateRenewal'].setValue(this.pipe.transform(listData[0].dateRenewal, 'yyyy-MM-dd'));
     this.maintenanceTireForm.controls['dateReview'].setValue(this.pipe.transform(listData[0].dateReview, 'yyyy-MM-dd'));
     this.maintenanceTireForm.controls['statusTire'].setValue(listData[0].statusTire);
-    this.textButton = "Actualizar";
   }
 
   listMaintenanceTires() {

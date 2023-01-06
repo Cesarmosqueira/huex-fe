@@ -2,24 +2,30 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { AuthenticationService } from '../../../core/services/auth.service';
-import { AuthfakeauthenticationService } from '../../../core/services/authfake.service';
 
+import { OwlOptions } from 'ngx-owl-carousel-o';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 
-import { environment } from '../../../../environments/environment';
+import { User } from 'src/app/core/models/auth.models';
+import Swal from 'sweetalert2';
+import { config } from 'src/app/shared/shared.config';
+import { MenuService } from 'src/app/core/services/menu.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-
 /**
- * Login component
+ * Login-2 component
  */
 export class LoginComponent implements OnInit {
 
+  menuItems = [];
+
+  constructor(private formBuilder: UntypedFormBuilder, private route: ActivatedRoute,
+    private router: Router, private authenticationService: AuthenticationService, private menuService: MenuService) { }
   loginForm: UntypedFormGroup;
   submitted = false;
   error = '';
@@ -28,14 +34,11 @@ export class LoginComponent implements OnInit {
   // set the currenr year
   year: number = new Date().getFullYear();
 
-  // tslint:disable-next-line: max-line-length
-  constructor(private formBuilder: UntypedFormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService,
-    private authFackservice: AuthfakeauthenticationService) { }
-
-  ngOnInit() {
+  ngOnInit(): void {
+    document.body.classList.add('auth-body-bg')
     this.loginForm = this.formBuilder.group({
-      email: ['admin@themesbrand.com', [Validators.required, Validators.email]],
-      password: ['123456', [Validators.required]],
+      email: ['jgala', [Validators.required]],
+      password: ['jgala', [Validators.required]],
     });
 
     // reset login status
@@ -43,6 +46,19 @@ export class LoginComponent implements OnInit {
     // get return url from route parameters or default to '/'
     // tslint:disable-next-line: no-string-literal
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  }
+
+  carouselOption: OwlOptions = {
+    items: 1,
+    loop: false,
+    margin: 0,
+    nav: false,
+    dots: true,
+    responsive: {
+      680: {
+        items: 1
+      },
+    }
   }
 
   // convenience getter for easy access to form fields
@@ -58,24 +74,66 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     } else {
-      if (environment.defaultauth === 'firebase') {
-        this.authenticationService.loginUser1(this.f.email.value, this.f.password.value).then((res: any) => {
-          this.router.navigate(['/dashboard']);
-        })
-          .catch(error => {
-            this.error = error ? error : '';
-          });
-      } else {
-        this.authFackservice.login(this.f.email.value, this.f.password.value)
-          .pipe(first())
-          .subscribe(
-            data => {
-              this.router.navigate(['/dashboard']);
-            },
-            error => {
-              this.error = error ? error : '';
-            });
-      }
+      let user = new User();
+      user.userName = this.f.email.value;
+      user.password = this.f.password.value;
+      this.login(user);
     }
+  }
+
+  login(user) {
+    console.log(user);
+    this.authenticationService.login(user)
+      .pipe(first())
+      .subscribe(
+        (response) => {
+          console.log(response);
+          this.listCheckLists(response.user.id);
+        },
+        () => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: "Usuario o contraseña incorrecto",
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listCheckLists(idUser) {
+    this.menuService.listMenusByIdUser(idUser)
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.menuItems = response.datos.menus;
+              localStorage.setItem('menuItems', JSON.stringify(this.menuItems));
+              console.log(this.menuItems);
+              this.router.navigate(['/dashboard']);
+            } else {
+              this.authenticationService.logout();
+              Swal.fire({
+                icon: config.WARNING,
+                title: "Debe configurar los permisos para el usuario",
+                showConfirmButton: false,
+              });
+            }
+          } else {
+            this.authenticationService.logout();
+            Swal.fire({
+              icon: config.ERROR,
+              title: "Ocurrio un error",
+              showConfirmButton: false,
+            });
+          }
+        },
+        error => {
+          this.authenticationService.logout();
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
   }
 }

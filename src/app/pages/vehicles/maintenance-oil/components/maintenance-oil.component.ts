@@ -1,6 +1,7 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { config } from 'src/app/shared/shared.config';
@@ -42,7 +43,8 @@ export class MaintenanceOilComponent implements OnInit {
   textButton = "Registrar";
 
   constructor(public service: MaintenanceOilService,
-    private formBuilder: UntypedFormBuilder) {
+    private formBuilder: UntypedFormBuilder,
+    private modalService: NgbModal) {
     this.maintenanceOilsList = service.countries$;
     this.total = service.total$;
   }
@@ -108,8 +110,16 @@ export class MaintenanceOilComponent implements OnInit {
     this.textButton = "Registrar";
   }
 
-  openModal(value) {
-    this.new = value;
+  openModal(content: any) {
+    this.submitted = false;
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'lg'
+    };
+    
+    this.modalService.open(content, ngbModalOptions);
   }
 
   get form() {
@@ -150,8 +160,6 @@ export class MaintenanceOilComponent implements OnInit {
         this.updateMaintenanceOil(maintenanceOil);
       }
 
-      this.new = false;
-      this.textButton = "Registrar";
       this.clearControl();
     }
   }
@@ -166,14 +174,22 @@ export class MaintenanceOilComponent implements OnInit {
     this.maintenanceOilForm.controls['differences'].setValue("");
     this.maintenanceOilForm.controls['id'].setValue("0");
   }
-  /**
-   * Open Edit modal
-   * @param content modal content
-   */
-  editDataGet(id: any) {
-    this.new = true;
+
+  editDataGet(id: any, content) {
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'lg'
+    };
+    
+    this.modalService.open(content, ngbModalOptions);
+    var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
+    modelTitle.innerHTML = 'Actualizar Mantenimiento Aceite';
+    var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
+    updateBtn.innerHTML = "Actualizar";
     var listData = this.maintenanceOils.filter((data: { id: any; }) => data.id === id);
     this.maintenanceOilForm.controls['id'].setValue(listData[0].id);
     this.maintenanceOilForm.controls['changeType'].setValue(listData[0].changeType);
@@ -183,7 +199,6 @@ export class MaintenanceOilComponent implements OnInit {
     this.maintenanceOilForm.controls['kmNext'].setValue(listData[0].kmNext);
     this.maintenanceOilForm.controls['status'].setValue(listData[0].status);
     this.maintenanceOilForm.controls['differences'].setValue(listData[0].differences);
-    this.textButton = "Actualizar";
   }
 
   listMaintenanceOils() {

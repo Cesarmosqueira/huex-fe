@@ -110,6 +110,12 @@ export const environment = {
   security:{
     user:{
       login: '/api-huex/v1/security/user/login',
+      register: '/api-huex/v1/security/user',
+      list: '/api-huex/v1/security/user',
+    },
+    menu:{
+      list: '/api-huex/v1/security/menu',
+      listByUserId: '/api-huex/v1/security/menu/'
     }
   },
 
