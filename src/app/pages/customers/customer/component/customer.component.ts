@@ -205,7 +205,7 @@ export class CustomerComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.customers;
+              this.test = response.datos.customer;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
@@ -238,8 +238,8 @@ export class CustomerComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              const customer = response.datos.customer;
-              this.idCustomerOuput = customer.id;
+              const customerDto = response.datos.customerDto;
+              this.idCustomerOuput = customerDto.id;
               this.listCustomers();
             } else {
               Swal.fire({
