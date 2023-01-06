@@ -1,5 +1,5 @@
 export class Employee {
-  id: any;
+	id: any;
 	fullName: string;
 	documentType: string;
 	dni?: string;

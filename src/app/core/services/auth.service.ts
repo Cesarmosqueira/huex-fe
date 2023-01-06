@@ -40,38 +40,10 @@ export class AuthenticationService {
 
     logout() {
         // remove user from local storage to log user out
+        localStorage.removeItem('menuItems');
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
     }
-
-    loginUser1(email: string, password: string) {
-        return getFirebaseBackend().loginUser(email, password).then((response: any) => {
-            const user = response;
-            return user;
-        });
-    }
-
-    /**
-     * Performs the register
-     * @param email email
-     * @param password password
-     */
-    register(email: string, password: string) {
-        return getFirebaseBackend().registerUser(email, password).then((response: any) => {
-            const user = response;
-            return user;
-        });
-    }
-
-    /**
-     * Reset password
-     * @param email email
-     */
-    resetPassword(email: string) {
-        return getFirebaseBackend().forgetPassword(email).then((response: any) => {
-            const message = response.data;
-            return message;
-        });
-    }
+    
 }
 
