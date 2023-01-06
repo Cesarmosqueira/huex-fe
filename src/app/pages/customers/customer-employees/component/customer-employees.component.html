@@ -111,10 +111,11 @@
         </div>
       </div>
 
+
       <div class="mb-3">
         <label for="customername-field" class="form-label">Estado</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="status"
-               [ngClass]="{ 'is-invalid': submitted && form['status'].errors }" autocomplete="disabled" />
+        <ng-select [items]="['APTO','NO APTO','EN PROCESO']" id="customername-field" required formControlName="status"
+                   [ngClass]="{ 'is-invalid': submitted && form['status'].errors }"></ng-select>
         <div *ngIf="submitted && form['status'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['status'].errors['required']">Estado es requerido</div>
         </div>

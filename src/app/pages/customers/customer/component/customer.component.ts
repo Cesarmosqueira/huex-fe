@@ -156,7 +156,7 @@ export class CustomerComponent implements OnInit {
       customer.registerDate = fortmatregisterDate;
       const id = this.customerForm.get('id')?.value;
 
-      console.log(Customer);
+      console.log(customer);
       console.log(id);
       if (id == '0') {
         this.registerCustomer(customer);

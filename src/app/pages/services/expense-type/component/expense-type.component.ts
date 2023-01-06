@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
-import {TruckFleet} from "../../../vehicles/truck-fleet/models/truck-fleet.model";
 import {Observable} from "rxjs";
-import {TruckFleetService} from "../../../vehicles/truck-fleet/services/truck-fleet.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
@@ -18,6 +16,7 @@ import {ExpenseTypeService} from "../services/expense-type.service";
 })
 export class ExpenseTypeComponent implements OnInit {
 
+  idExpenseTypeOuput: number = 0;
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
@@ -60,6 +59,8 @@ export class ExpenseTypeComponent implements OnInit {
       this.content = this.expenseTypes;
       this.expenseTypes = Object.assign([], x);
     });
+    this.idExpenseTypeOuput = 0;
+    console.log(this.idExpenseTypeOuput);
 
     this.listExpenseTypes();
   }
@@ -112,9 +113,16 @@ export class ExpenseTypeComponent implements OnInit {
    * @param content modal content
    */
   openModal(content: any) {
+    this.clear();
     this.submitted = false;
-    this.modalService.open(content, { size: 'md', centered: true });
-  }
+    this.enableInputs();
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'md'
+    };
+    this.modalService.open(content, ngbModalOptions);  }
 
   /**
    * Form data get
@@ -138,6 +146,7 @@ export class ExpenseTypeComponent implements OnInit {
       expenseType1.expenseType = expenseType;
       expenseType1.description = description;
       const id = this.expenseTypeForm.get('id')?.value;
+
       console.log(expenseType1);
       console.log(id);
       if (id == '0') {
@@ -168,8 +177,6 @@ export class ExpenseTypeComponent implements OnInit {
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.expenseTypes.filter((data: { id: any; }) => data.id === id);
-    const fabricationDate = listData[0].fabricationDate.substring(0, 10);
-    const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
     this.expenseTypeForm.controls['id'].setValue(listData[0].id);
     this.expenseTypeForm.controls['expenseType'].setValue(listData[0].expenseType);
     this.expenseTypeForm.controls['description'].setValue(listData[0].description);
@@ -191,12 +198,6 @@ export class ExpenseTypeComponent implements OnInit {
                 showConfirmButton: false,
               });
             }
-          } else {
-            Swal.fire({
-              icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
-              showConfirmButton: false,
-            });
           }
         },
         error => {
@@ -231,7 +232,7 @@ export class ExpenseTypeComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -252,6 +253,11 @@ export class ExpenseTypeComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
+              Swal.fire(
+                '¡Actualizado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
               this.listExpenseTypes();
             } else {
               Swal.fire({
@@ -263,7 +269,7 @@ export class ExpenseTypeComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -275,6 +281,18 @@ export class ExpenseTypeComponent implements OnInit {
             showConfirmButton: false,
           });
         });
+  }
+
+  clear() {
+    this.expenseTypeForm.controls['id'].setValue("0");
+    this.expenseTypeForm.controls['expenseType'].setValue("");
+    this.expenseTypeForm.controls['description'].setValue("");
+  }
+
+  enableInputs() {
+    this.expenseTypeForm.controls['id'].enable();
+    this.expenseTypeForm.controls['expenseType'].enable();
+    this.expenseTypeForm.controls['description'].enable();
   }
 
   deleteExpenseType(id) {
@@ -300,7 +318,7 @@ export class ExpenseTypeComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
