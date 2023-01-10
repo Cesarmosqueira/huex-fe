@@ -46,7 +46,7 @@
                 <td>
                   <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                 </td>
-                <td>{{data.providerId}}</td>
+                <td>{{data.provider.businessName}}</td>
                 <td>{{data.replacementDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                 <td>{{data.tireQuantity}}</td>
                 <td>{{data.unitPrice}}</td>
@@ -96,10 +96,10 @@
         <label for="customername-field" class="form-label">Proveedor</label>
         <ng-select [items]="providers" bindLabel="businessName" placeholder="Seleccione Proveedor"
                    [(ngModel)]="selectProvider" id="customername-field" [clearable]="false" required
-                   formControlName="providerId" [ngClass]="{ 'is-invalid': submitted && form['providerId'].errors }">
+                   formControlName="provider" [ngClass]="{ 'is-invalid': submitted && form['provider'].errors }">
         </ng-select>
-        <div *ngIf="submitted && form['providerId'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['providerId'].errors['required']">Proveedor es requerido</div>
+        <div *ngIf="submitted && form['provider'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['provider'].errors['required']">Proveedor es requerido</div>
         </div>
       </div>
 
