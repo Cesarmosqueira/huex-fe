@@ -41,8 +41,8 @@
                 <td>
                   <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                 </td>
-                <td>{{data.routeId}}</td>
-                <td>{{data.providerId}}</td>
+                <td>{{data.route.routeEnd}}</td>
+                <td>{{data.provider.businessName}}</td>
                 <td>{{data.costM3}}</td>
                 <td>{{data.observation}}</td>
                 <td>
@@ -87,10 +87,10 @@
         <label for="customername-field" class="form-label">Ruta</label>
         <ng-select [items]="routes" bindLabel="routeEnd" placeholder="Seleccione Ruta"
                    [(ngModel)]="selectRoute" id="customername-field" [clearable]="false" required
-                   formControlName="routeId" [ngClass]="{ 'is-invalid': submitted && form['routeId'].errors }">
+                   formControlName="route" [ngClass]="{ 'is-invalid': submitted && form['route'].errors }">
         </ng-select>
-        <div *ngIf="submitted && form['routeId'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['routeId'].errors['required']">Ruta es requerido</div>
+        <div *ngIf="submitted && form['route'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['route'].errors['required']">Ruta es requerido</div>
         </div>
       </div>
 
@@ -99,10 +99,10 @@
         <label for="customername-field" class="form-label">Proveedor</label>
         <ng-select [items]="providers" bindLabel="businessName" placeholder="Seleccione Proveedor"
                    [(ngModel)]="selectProvider" id="customername-field" [clearable]="false" required
-                   formControlName="providerId" [ngClass]="{ 'is-invalid': submitted && form['providerId'].errors }">
+                   formControlName="provider" [ngClass]="{ 'is-invalid': submitted && form['provider'].errors }">
         </ng-select>
-        <div *ngIf="submitted && form['providerId'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['providerId'].errors['required']">Proveedor es requerido</div>
+        <div *ngIf="submitted && form['provider'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['provider'].errors['required']">Proveedor es requerido</div>
         </div>
       </div>
 

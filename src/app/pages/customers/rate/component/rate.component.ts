@@ -167,10 +167,10 @@ export class RateComponent implements OnInit {
       let rate = new Rate();
       let customers=new Customer();
       let routes=new Route();
-
       customers.id=customerId;
-      rate.customer = customers;
       routes.id=routeId;
+
+      rate.customer = customers;
       rate.route = routes;
       rate.leadTime = leadTime;
       rate.volume = volume;
