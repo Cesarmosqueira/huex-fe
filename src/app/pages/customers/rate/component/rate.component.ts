@@ -63,8 +63,8 @@ export class RateComponent implements OnInit {
      */
     this.rateForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
-      customerId: ['', [Validators.required]],
-      routeId: ['', [Validators.required]],
+      customer: ['', [Validators.required]],
+      route: ['', [Validators.required]],
       leadTime: ['', [Validators.required]],
       volume: ['', [Validators.required]],
       cost: ['', [Validators.required]],
@@ -164,10 +164,14 @@ export class RateComponent implements OnInit {
       const cost = this.rateForm.get('cost')?.value;
       const observationRate = this.rateForm.get('observationRate')?.value;
 
-
       let rate = new Rate();
-      rate.customerId = customerId;
-      rate.routeId = routeId;
+      let customers=new Customer();
+      let routes=new Route();
+
+      customers.id=customerId;
+      rate.customer = customers;
+      routes.id=routeId;
+      rate.route = routes;
       rate.leadTime = leadTime;
       rate.volume = volume;
       rate.cost = cost;
@@ -207,8 +211,8 @@ export class RateComponent implements OnInit {
     updateBtn.innerHTML = "Actualizar";
     var listData = this.rates.filter((data: { id: any; }) => data.id === id);
     this.rateForm.controls['id'].setValue(listData[0].id);
-    this.rateForm.controls['customerId'].setValue(listData[0].customerId);
-    this.rateForm.controls['routeId'].setValue(listData[0].routeId);
+    this.rateForm.controls['customer'].setValue(listData[0].customer);
+    this.rateForm.controls['route'].setValue(listData[0].route);
     this.rateForm.controls['leadTime'].setValue(listData[0].leadTime);
     this.rateForm.controls['volume'].setValue(listData[0].volume);
     this.rateForm.controls['cost'].setValue(listData[0].cost);
@@ -322,19 +326,18 @@ export class RateComponent implements OnInit {
 
   clear() {
     this.rateForm.controls['id'].setValue("0");
-    this.rateForm.controls['customerId'].setValue(null);
-    this.rateForm.controls['routeId'].setValue(null);
+    this.rateForm.controls['customer'].setValue(null);
+    this.rateForm.controls['route'].setValue(null);
     this.rateForm.controls['leadTime'].setValue("");
     this.rateForm.controls['volume'].setValue("");
     this.rateForm.controls['cost'].setValue("");
     this.rateForm.controls['observationRate'].setValue("");
 
   }
-
   enableInputs() {
     this.rateForm.controls['id'].enable();
-    this.rateForm.controls['customerId'].enable();
-    this.rateForm.controls['routeId'].enable();
+    this.rateForm.controls['customer'].enable();
+    this.rateForm.controls['route'].enable();
     this.rateForm.controls['leadTime'].enable();
     this.rateForm.controls['volume'].enable();
     this.rateForm.controls['cost'].enable();
@@ -385,7 +388,7 @@ export class RateComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.customers = response.datos.customers;
+              this.customers = response.datos.customer;
               console.log(this.customers);
             } else {
               Swal.fire({

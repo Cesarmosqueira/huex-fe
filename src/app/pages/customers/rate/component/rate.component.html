@@ -42,8 +42,8 @@
                 <td>
                   <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                 </td>
-                <td>{{data.customerId}}</td>
-                <td>{{data.routeId}}</td>
+                <td>{{data.customer.socialReason}}</td>
+                <td>{{data.route.routeEnd}}</td>
                 <td>{{data.leadTime}}</td>
                 <td>{{data.volume}}</td>
                 <td>{{data.cost}}</td>
@@ -90,10 +90,10 @@
         <label for="customername-field" class="form-label">Cliente</label>
         <ng-select [items]="customers" bindLabel="socialReason" placeholder="Seleccione Cliente"
                    [(ngModel)]="selectCustomer" id="customername-field" [clearable]="false" required
-                   formControlName="customerId" [ngClass]="{ 'is-invalid': submitted && form['customerId'].errors }">
+                   formControlName="customer" [ngClass]="{ 'is-invalid': submitted && form['customer'].errors }">
         </ng-select>
-        <div *ngIf="submitted && form['customerId'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['customerId'].errors['required']">Cliente es requerido</div>
+        <div *ngIf="submitted && form['customer'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['customer'].errors['required']">Cliente es requerido</div>
         </div>
       </div>
 
@@ -103,10 +103,10 @@
         <label for="customername-field" class="form-label">Ruta</label>
         <ng-select [items]="routes" bindLabel="routeEnd" placeholder="Seleccione Ruta"
                    [(ngModel)]="selectRoute" id="customername-field" [clearable]="false" required
-                   formControlName="routeId" [ngClass]="{ 'is-invalid': submitted && form['routeId'].errors }">
+                   formControlName="route" [ngClass]="{ 'is-invalid': submitted && form['route'].errors }">
         </ng-select>
-        <div *ngIf="submitted && form['routeId'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['routeId'].errors['required']">Ruta es requerido</div>
+        <div *ngIf="submitted && form['route'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['route'].errors['required']">Ruta es requerido</div>
         </div>
       </div>
 
