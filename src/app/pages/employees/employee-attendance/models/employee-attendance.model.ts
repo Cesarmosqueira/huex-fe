@@ -1,7 +1,9 @@
+import {Employee} from "../../employee/models/employee.model";
+
 export class EmployeeAttendance {
 
   id:any;
-  employeeId:any;
+  employee:Employee;
   attendanceDate:any;
   status:string;
 }

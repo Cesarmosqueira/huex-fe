@@ -57,7 +57,7 @@ export class FuelSupplyComponent implements OnInit {
      */
     this.fuelSupplyForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
-      providerId: ['', [Validators.required]],
+      provider: ['', [Validators.required]],
       dateFuel: ['', [Validators.required]],
       fuelQuantity: ['', [Validators.required]],
       gallonPrice: ['', [Validators.required]],
@@ -157,7 +157,9 @@ export class FuelSupplyComponent implements OnInit {
       const observation = this.fuelSupplyForm.get('observation')?.value;
 
       let fuelSupply = new FuelSupply();
-      fuelSupply.providerId = providerId;
+      let providers=new Providers();
+      providers.id=providerId;
+      fuelSupply.provider = providers;
       fuelSupply.dateFuel = fortmatdateFuel;
       fuelSupply.fuelQuantity = fuelQuantity;
       fuelSupply.gallonPrice = gallonPrice;
@@ -199,7 +201,7 @@ export class FuelSupplyComponent implements OnInit {
     const dateFuel = listData[0].dateFuel.substring(0, 10);
     const fortmatdateFuel = this.pipe.transform(dateFuel, 'yyyy-MM-dd');
     this.fuelSupplyForm.controls['id'].setValue(listData[0].id);
-    this.fuelSupplyForm.controls['providerId'].setValue(listData[0].providerId);
+    this.fuelSupplyForm.controls['provider'].setValue(listData[0].provider);
     this.fuelSupplyForm.controls['dateFuel'].setValue(fortmatdateFuel);
     this.fuelSupplyForm.controls['fuelQuantity'].setValue(listData[0].fuelQuantity);
     this.fuelSupplyForm.controls['gallonPrice'].setValue(listData[0].gallonPrice);
@@ -317,7 +319,7 @@ export class FuelSupplyComponent implements OnInit {
 
   clear() {
     this.fuelSupplyForm.controls['id'].setValue("0");
-    this.fuelSupplyForm.controls['providerId'].setValue("");
+    this.fuelSupplyForm.controls['provider'].setValue("");
     this.fuelSupplyForm.controls['dateFuel'].setValue("");
     this.fuelSupplyForm.controls['fuelQuantity'].setValue("");
     this.fuelSupplyForm.controls['gallonPrice'].setValue("");
@@ -328,7 +330,7 @@ export class FuelSupplyComponent implements OnInit {
 
   enableInputs() {
     this.fuelSupplyForm.controls['id'].enable();
-    this.fuelSupplyForm.controls['providerId'].enable();
+    this.fuelSupplyForm.controls['provider'].enable();
     this.fuelSupplyForm.controls['dateFuel'].enable();
     this.fuelSupplyForm.controls['fuelQuantity'].enable();
     this.fuelSupplyForm.controls['gallonPrice'].enable();

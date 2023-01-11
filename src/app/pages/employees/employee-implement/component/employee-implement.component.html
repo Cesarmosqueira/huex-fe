@@ -42,8 +42,8 @@
                 <td>
                   <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                 </td>
-                <td>{{data.employeeId}}</td>
-                <td>{{data.implementId}}</td>
+                <td>{{data.employee.fullName}}</td>
+                <td>{{data.implement.name}}</td>
                 <td>{{data.deliveryDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                 <td>{{data.observations}}</td>
                 <td>
@@ -90,10 +90,10 @@
         <label for="customername-field" class="form-label">Trabajador</label>
         <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Trabajador"
                    [(ngModel)]="selectEmployee" id="customername-field" [clearable]="false" required
-                   formControlName="employeeId" [ngClass]="{ 'is-invalid': submitted && form['employeeId'].errors }">
+                   formControlName="employee" [ngClass]="{ 'is-invalid': submitted && form['employee'].errors }">
         </ng-select>
-        <div *ngIf="submitted && form['employeeId'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['employeeId'].errors['required']">Trabajador es requerido</div>
+        <div *ngIf="submitted && form['employee'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['employee'].errors['required']">Trabajador es requerido</div>
         </div>
       </div>
 
@@ -102,10 +102,10 @@
         <label for="customername-field" class="form-label">Implemento</label>
         <ng-select [items]="implementss" bindLabel="name" placeholder="Seleccione Implemento"
                    [(ngModel)]="selectImplement" id="customername-field" [clearable]="false" required
-                   formControlName="implementId" [ngClass]="{ 'is-invalid': submitted && form['implementId'].errors }">
+                   formControlName="implement" [ngClass]="{ 'is-invalid': submitted && form['implement'].errors }">
         </ng-select>
-        <div *ngIf="submitted && form['implementId'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['implementId'].errors['required']">Implemento es requerido</div>
+        <div *ngIf="submitted && form['implement'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['implement'].errors['required']">Implemento es requerido</div>
         </div>
       </div>
 

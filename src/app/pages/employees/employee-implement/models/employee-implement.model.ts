@@ -1,8 +1,11 @@
+import {Employee} from "../../employee/models/employee.model";
+import {Implement} from "../../implement/models/implement.model";
+
 export class EmployeeImplement {
 
   id:any;
-  employeeId:any;
-  implementId:any;
+  employee:Employee;
+  implement:Implement;
   deliveryDate:any;
   observations:string;
 

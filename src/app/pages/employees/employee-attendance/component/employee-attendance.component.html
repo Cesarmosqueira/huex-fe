@@ -41,7 +41,7 @@
                 <td>
                   <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                 </td>
-                <td>{{data.employeeId}}</td>
+                <td>{{data.employee.fullName}}</td>
                 <td>{{data.attendanceDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                 <td>{{data.status}}</td>
                 <td>
@@ -86,10 +86,10 @@
         <label for="customername-field" class="form-label">Trabajador</label>
         <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Trabajador"
                    [(ngModel)]="selectEmployee" id="customername-field" [clearable]="false" required
-                   formControlName="employeeId" [ngClass]="{ 'is-invalid': submitted && form['employeeId'].errors }">
+                   formControlName="employee" [ngClass]="{ 'is-invalid': submitted && form['employee'].errors }">
         </ng-select>
-        <div *ngIf="submitted && form['employeeId'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['employeeId'].errors['required']">Trabajador es requerido</div>
+        <div *ngIf="submitted && form['employee'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['employee'].errors['required']">Trabajador es requerido</div>
         </div>
       </div>
 

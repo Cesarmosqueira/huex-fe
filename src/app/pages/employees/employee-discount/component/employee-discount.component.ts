@@ -61,7 +61,7 @@ export class EmployeeDiscountComponent implements OnInit {
      */
     this.employeeDiscountForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
-      employeeId: ['', [Validators.required]],
+      employee: ['', [Validators.required]],
       date: ['', [Validators.required]],
       observations: ['', [Validators.required]],
       charge: ['', [Validators.required]],
@@ -156,7 +156,9 @@ export class EmployeeDiscountComponent implements OnInit {
 
 
       let employeeDiscount = new EmployeeDiscount();
-      employeeDiscount.employeeId = employeeId;
+      let employee=new Employee();
+      employee.id=employeeId;
+      employeeDiscount.employee = employee;
       employeeDiscount.date = fortmatdate;
       employeeDiscount.observations = observations;
       employeeDiscount.charge = charge;
@@ -194,7 +196,7 @@ export class EmployeeDiscountComponent implements OnInit {
     const date = listData[0].date.substring(0, 10);
     const fortmatdate = this.pipe.transform(date, 'yyyy-MM-dd');
     this.employeeDiscountForm.controls['id'].setValue(listData[0].id);
-    this.employeeDiscountForm.controls['employeeId'].setValue(listData[0].employeeId);
+    this.employeeDiscountForm.controls['employee'].setValue(listData[0].employee);
     this.employeeDiscountForm.controls['date'].setValue(fortmatdate);
     this.employeeDiscountForm.controls['observations'].setValue(listData[0].observations);
     this.employeeDiscountForm.controls['charge'].setValue(listData[0].charge);
@@ -304,7 +306,7 @@ export class EmployeeDiscountComponent implements OnInit {
 
   clear() {
     this.employeeDiscountForm.controls['id'].setValue("0");
-    this.employeeDiscountForm.controls['employeeId'].setValue("");
+    this.employeeDiscountForm.controls['employee'].setValue("");
     this.employeeDiscountForm.controls['date'].setValue("");
     this.employeeDiscountForm.controls['observations'].setValue("");
     this.employeeDiscountForm.controls['charge'].setValue("");
@@ -313,7 +315,7 @@ export class EmployeeDiscountComponent implements OnInit {
 
   enableInputs() {
     this.employeeDiscountForm.controls['id'].enable();
-    this.employeeDiscountForm.controls['employeeId'].enable();
+    this.employeeDiscountForm.controls['employee'].enable();
     this.employeeDiscountForm.controls['date'].enable();
     this.employeeDiscountForm.controls['observations'].enable();
     this.employeeDiscountForm.controls['charge'].enable();
