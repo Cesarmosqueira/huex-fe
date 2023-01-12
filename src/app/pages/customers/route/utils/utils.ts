@@ -19,5 +19,5 @@ export function sort(routes: Route[], column: SortColumn, direction: string): Ro
 }
 
 export function matches(route: Route, term: string, pipe: PipeTransform) {
-  return route.routeStart.toLowerCase().includes(term.toLowerCase());
+  return route.routeEnd.toLowerCase().includes(term.toLowerCase());
 }

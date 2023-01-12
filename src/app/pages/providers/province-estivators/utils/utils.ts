@@ -19,5 +19,5 @@ export function sort(provinceEstivators: ProvinceEstivators[], column: SortColum
 }
 
 export function matches(provinceEstivators: ProvinceEstivators, term: string, pipe: PipeTransform) {
-  return provinceEstivators.observation.toLowerCase().includes(term.toLowerCase());
+  return provinceEstivators.route.routeEnd.toLowerCase().includes(term.toLowerCase());
 }

@@ -19,5 +19,5 @@ export function sort(rates: Rate[], column: SortColumn, direction: string): Rate
 }
 
 export function matches(rate: Rate, term: string, pipe: PipeTransform) {
-  return rate.observationRate.toLowerCase().includes(term.toLowerCase());
+  return rate.customer.socialReason.toLowerCase().includes(term.toLowerCase());
 }

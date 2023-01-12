@@ -19,5 +19,5 @@ export function sort(tireReplacements: TireReplacement[], column: SortColumn, di
 }
 
 export function matches(tireReplacement: TireReplacement, term: string, pipe: PipeTransform) {
-  return tireReplacement.observation.toLowerCase().includes(term.toLowerCase());
+  return tireReplacement.provider.businessName.toLowerCase().includes(term.toLowerCase());
 }

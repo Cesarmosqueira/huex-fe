@@ -19,5 +19,5 @@ export function sort(fuelSupply: FuelSupply[], column: SortColumn, direction: st
 }
 
 export function matches(fuelSupply: FuelSupply, term: string, pipe: PipeTransform) {
-  return fuelSupply.observation.toLowerCase().includes(term.toLowerCase());
+  return fuelSupply.provider.businessName.toLowerCase().includes(term.toLowerCase());
 }
