@@ -1,32 +1,33 @@
 <div class="container-fluid">
-    <app-page-title [breadcrumbItems]="breadCrumbItems"></app-page-title>
-  
-    <div class="row">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="row mb-2">
-              <div class="col-sm-4">
-                <div class="search-box me-2 mb-2 d-inline-block">
-                  <div class="position-relative">
-                    <input type="text" class="form-control" placeholder="Buscar por usuario..." [(ngModel)]="service.searchTerm">
-                    <i class="bx bx-search-alt search-icon"></i>
-                  </div>
+  <app-page-title [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-4">
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Buscar por usuario..."
+                    [(ngModel)]="service.searchTerm">
+                  <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
-              <div class="col-sm-8">
-                <div class="text-sm-end">
-                  <button type="button" class="btn btn-success btn-rounded mb-2 me-2" (click)="openModal(content)"><i
-                    class="mdi mdi-plus mr-1"></i>
-                    Nuevo</button>
-                </div>
-              </div><!-- end col-->
             </div>
-  
-            <!-- Table data -->
-            <div class="table-responsive mb-0">
-              <table class="table table-centered table-nowrap">
-                <thead class="table-light">
+            <div class="col-sm-8">
+              <div class="text-sm-end">
+                <button type="button" class="btn btn-success btn-rounded mb-2 me-2" (click)="openModal(content)"><i
+                    class="mdi mdi-plus mr-1"></i>
+                  Nuevo</button>
+              </div>
+            </div><!-- end col-->
+          </div>
+
+          <!-- Table data -->
+          <div class="table-responsive mb-0">
+            <table class="table table-centered table-nowrap">
+              <thead class="table-light">
                 <tr>
                   <th class="align-middle">ID</th>
                   <th class="align-middle">Nombres</th>
@@ -35,108 +36,154 @@
                   <th class="align-middle">correo</th>
                   <th class="align-middle">Estado</th>
                   <th class="align-middle">Acción</th>
-  
+
                 </tr>
-                </thead>
-                <tbody>
+              </thead>
+              <tbody>
                 <tr *ngFor="let data of users" id="o_{{data.id}}">
                   <td>
                     <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                   </td>
                   <td>{{data.employee.fullName}}</td>
                   <td>{{data.userName}}</td>
-                  <td>{{data.role}}</td>
+                  <td>{{data.employee.role}}</td>
                   <td>{{data.employee.email}}</td>
                   <td> {{ data.active? 'Activo' : 'Inactivo' }}</td>
                   <td>
                     <div class="d-flex gap-3">
                       <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
-                        class="mdi mdi-pencil font-size-18"></i></a>
+                          class="mdi mdi-pencil font-size-18"></i></a>
                       <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
-                        class="mdi mdi-delete font-size-18"></i></a>
+                          class="mdi mdi-delete font-size-18"></i></a>
                     </div>
                   </td>
                 </tr>
-                </tbody>
-              </table>
-  
-  
-            </div>
-            <!-- end table -->
-            <ul class="pagination pagination-rounded justify-content-end mb-2">
-              <ngb-pagination [collectionSize]="(total | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
-              </ngb-pagination>
-            </ul>
+              </tbody>
+            </table>
+
+
           </div>
+          <!-- end table -->
+          <ul class="pagination pagination-rounded justify-content-end mb-2">
+            <ngb-pagination [collectionSize]="(total | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+            </ngb-pagination>
+          </ul>
         </div>
       </div>
     </div>
   </div>
-  
-  <!-- Order Create Model -->
-  <ng-template #content role="document" let-modal>
-    <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLabel">Nueva Ruta</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
-              (click)="modal.dismiss('Cross click')"></button>
+</div>
+
+<!-- Order Create Model -->
+<ng-template #content role="document" let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Nuevo Usuario</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+      (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form (ngSubmit)="saveUser()" [formGroup]="userForm">
+
+    <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-tabs">
+      <li [ngbNavItem]="1">
+        <a ngbNavLink>
+          <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
+          <span class="d-none d-sm-block">Datos Usuario</span>
+        </a>
+        <ng-template ngbNavContent>
+            <div class="modal-body">
+              <input type="text" hidden formControlName="id" value="0" />
+          
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Empleado</label>
+                <ng-select [items]="employees" [(ngModel)]="selectedEmployee" bindLabel="fullName" 
+                placeholder="Seleccione Empleado" id="customername-field" required formControlName="idEmployee"
+                  [ngClass]="{ 'is-invalid': submitted && form['idEmployee'].errors }"></ng-select>
+                <div *ngIf="submitted && form['idEmployee'].errors" class="invalid-feedback" align="left">
+                  <div *ngIf="form['idEmployee'].errors['required']">Empleado es requerido</div>
+                </div>
+              </div>
+          
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Usuario</label>
+                <input type="text" id="customername-field" class="form-control" required formControlName="userName"
+                  [ngClass]="{ 'is-invalid': submitted && form['userName'].errors }" autocomplete="off" />
+                <div *ngIf="submitted && form['userName'].errors" class="invalid-feedback" align="left">
+                  <div *ngIf="form['userName'].errors['required']">Usuario es requerido</div>
+                </div>
+              </div>
+          
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Contraseña</label>
+                <input type="text" id="customername-field" class="form-control" required formControlName="password"
+                  [ngClass]="{ 'is-invalid': submitted && form['password'].errors }" autocomplete="off" />
+                <div *ngIf="submitted && form['password'].errors" class="invalid-feedback" align="left">
+                  <div *ngIf="form['password'].errors['required']">Contraseña es requerido</div>
+                </div>
+              </div>
+          
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Estado</label>
+                <ng-select [items]="['ACTIVO','INACTIVO']" id="form-control" required formControlName="active"
+                   [ngClass]="{ 'is-invalid': submitted && form['active'].errors }"></ng-select>
+                <div *ngIf="submitted && form['active'].errors" class="invalid-feedback" align="left">
+                  <div *ngIf="form['active'].errors['required']">Estado es requerido</div>
+                </div>
+              </div>
+          
+            </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="2">
+        <a ngbNavLink>
+          <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+          <span class="d-none d-sm-block">Configuración Permisos</span>
+        </a>
+        <ng-template ngbNavContent>
+          <ng-template [ngTemplateOutlet]="TabContent1"></ng-template>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav"></div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+          (click)="modal.close('Close click')">Cancelar</button>
+        <button type="submit" class="btn btn-success" id="add-btn">Registrar</button>
+      </div>
     </div>
-    <form (ngSubmit)="saveUser()" [formGroup]="userForm">
-      <div class="modal-body">
-        <input type="text" hidden formControlName="id" value="0" />
-  
-        <div class="mb-3">
-          <label for="customername-field" class="form-label">Empleado</label>
-          <ng-select [items]="['1','2','3']" id="customername-field" required formControlName="idEmployee"
-                     [ngClass]="{ 'is-invalid': submitted && form['idEmployee'].errors }"></ng-select>
-          <div *ngIf="submitted && form['idEmployee'].errors" class="invalid-feedback" align="left">
-            <div *ngIf="form['idEmployee'].errors['required']">Empleado es requerido</div>
-          </div>
-        </div>
+  </form>
+</ng-template>
 
-        <div class="mb-3">
-          <label for="customername-field" class="form-label">Usuario</label>
-          <input type="text" id="customername-field" class="form-control" required formControlName="userName"
-                 [ngClass]="{ 'is-invalid': submitted && form['userName'].errors }" autocomplete="disabled" />
-          <div *ngIf="submitted && form['userName'].errors" class="invalid-feedback" align="left">
-            <div *ngIf="form['userName'].errors['required']">Usuario es requerido</div>
-          </div>
-        </div>
 
-        <div class="mb-3">
-          <label for="customername-field" class="form-label">Contraseña</label>
-          <input type="text" id="customername-field" class="form-control" required formControlName="password"
-                 [ngClass]="{ 'is-invalid': submitted && form['password'].errors }" autocomplete="disabled" />
-          <div *ngIf="submitted && form['password'].errors" class="invalid-feedback" align="left">
-            <div *ngIf="form['password'].errors['required']">Contraseña es requerido</div>
-          </div>
-        </div>
+
+<!-- Tab Content -->
+<ng-template #TabContent>
   
-        <div class="mb-3">
-          <label for="customername-field" class="form-label">Rol</label>
-          <input type="text" id="customername-field" class="form-control" required formControlName="role"
-                 [ngClass]="{ 'is-invalid': submitted && form['role'].errors }" autocomplete="disabled" />
-          <div *ngIf="submitted && form['role'].errors" class="invalid-feedback" align="left">
-            <div *ngIf="form['role'].errors['required']">Rol es requerido</div>
+</ng-template>
+
+<!-- Tab Content -->
+<ng-template #TabContent1>
+  <div class="modal-body overflow-scroll">
+    <ng-template #nodeTemplateRef let-node="node">
+      <div class="node">
+        <label class="node__label">
+          <input type="checkbox" [ngModel]="node.check" (ngModelChange)="selectNode(node, $event)" />
+          {{ node.label }}
+        </label>
+        <div class="node__children">
+          <div *ngFor="let subItem of node.subItems">
+            <input type="checkbox" value="{{subItem.idParent}},{{subItem.id}}" [ngModel]="subItem.check"
+              (ngModelChange)="selectParent(subItem, $event, node.subItems, node)" />
+            {{ subItem.label }}
           </div>
-        </div>
-  
-        <div class="mb-3">
-          <label for="customername-field" class="form-label">Estado</label>
-          <input type="text" id="customername-field" class="form-control" required formControlName="active"
-                 [ngClass]="{ 'is-invalid': submitted && form['active'].errors }" autocomplete="disabled" />
-          <div *ngIf="submitted && form['active'].errors" class="invalid-feedback" align="left">
-            <div *ngIf="form['active'].errors['required']">Estado es requerido</div>
-          </div>
-        </div>
-  
-      </div>
-      <div class="modal-footer">
-        <div class="hstack gap-2 justify-content-end">
-          <button type="button" class="btn btn-light" data-bs-dismiss="modal"
-                  (click)="modal.close('Close click')">Cancelar</button>
-          <button type="submit" class="btn btn-success" id="add-btn">Registrar</button>
         </div>
       </div>
-    </form>
-  </ng-template>
-  
+    </ng-template>
+
+    <!-- Initiate the recursive template rendering. -->
+    <div *ngFor="let dev of data; let j = index">
+      <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ node: dev }">
+      </ng-template>
+    </div>
+  </div>
+</ng-template>

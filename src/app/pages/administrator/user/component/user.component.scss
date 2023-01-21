@@ -1,0 +1,18 @@
+  :host {
+      display: block;
+  }
+
+  .node__label {
+      cursor: pointer;
+  }
+
+  .node__children {
+      margin: 5px 0px 5px 30px;
+      padding-left: 10px;
+  }
+
+  /* Important part */
+  .overflow-scroll {
+      height: 60vh;
+      overflow-y: auto;
+  }

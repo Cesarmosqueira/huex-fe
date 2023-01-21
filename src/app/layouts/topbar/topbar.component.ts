@@ -24,6 +24,7 @@ export class TopbarComponent implements OnInit {
   flagvalue;
   countryName;
   valueset;
+  user: any;
 
   constructor(@Inject(DOCUMENT) private document: any, private router: Router, private authService: AuthenticationService,
               private authFackservice: AuthfakeauthenticationService,
@@ -46,6 +47,10 @@ export class TopbarComponent implements OnInit {
   @Output() mobileMenuButtonClicked = new EventEmitter();
 
   ngOnInit() {
+    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = currentUser.user;
+    console.log("this.user");
+    console.log(this.user);
     this.openMobileMenu = false;
     this.element = document.documentElement;
 

@@ -1,27 +1,26 @@
-import { DecimalPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
+import { DecimalPipe } from '@angular/common';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, debounceTime, delay, map, switchMap, tap } from 'rxjs/operators';
 import { BaseService } from 'src/app/shared/utils/base-service';
 import { ResponseModel } from 'src/app/shared/utils/response-model';
-import { environment } from 'src/environments/environment';
-import { User } from '../models/user.model';
-import { matches, sort, SortColumn, SortDirection } from '../utils/utils';
+import { environment } from '../../../../../environments/environment';
 import { SearchResult } from '../interfaces/search-result.interface';
-import { State } from "../../user/interfaces/state";
+import { State } from '../interfaces/state.interface';
+import { Tracking } from '../models/tracking.model';
+import { matches, sort, SortColumn, SortDirection } from '../utils/utils';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService extends BaseService {
-
-
+export class TrackingService extends BaseService {
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _users$ = new BehaviorSubject<User[]>([]);
+  private _trackings$ = new BehaviorSubject<Tracking[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
-  private users: any;
+  private trackings: any;
 
   content?: any;
   products?: any;
@@ -44,34 +43,38 @@ export class UserService extends BaseService {
     super(httpClient);
   }
 
-
-
-
   //consume APIS
 
-  public listUsers(): Observable<ResponseModel<any>> {
-    return this.httpClient.get(environment.server + environment.security.user.list)
+  public listTrackings(): Observable<ResponseModel<any>> {
+    return this.httpClient.get(environment.server + environment.services.tracking.list)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
-  public registerUser(user: User): Observable<ResponseModel<any>> {
-    return this.httpClient.post(environment.server + environment.security.user.register, user)
+  public retrieveTracking(id: number): Observable<ResponseModel<Tracking>> {
+    return this.httpClient.get(environment.server + environment.services.tracking.retrieve + id)
+      .pipe(map((responseModel: ResponseModel<Tracking>) => {
+        return responseModel;
+      }), catchError(this.handleError));
+  }
+
+  public registerTracking(Tracking: Tracking): Observable<ResponseModel<any>> {
+    return this.httpClient.post(environment.server + environment.services.tracking.register, Tracking)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
-  public listMenus(): Observable<ResponseModel<any>> {
-    return this.httpClient.get(environment.server + environment.security.menu.list)
+  public updateTracking(Tracking: Tracking): Observable<ResponseModel<any>> {
+    return this.httpClient.put(environment.server + environment.services.tracking.update, Tracking)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
-  public deleteUser(id: number): Observable<ResponseModel<any>> {
-    return this.httpClient.delete(environment.server + environment.security.user.delete + id)
+  public deleteTracking(id: number): Observable<ResponseModel<any>> {
+    return this.httpClient.delete(environment.server + environment.services.tracking.delete + id)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
@@ -79,8 +82,8 @@ export class UserService extends BaseService {
 
   //Pagination
 
-  public paginationTable(users: User[]) {
-    this.users = users;
+  public paginationTable(trackings: Tracking[]) {
+    this.trackings = trackings;
     this._search$.pipe(
       tap(() => this._loading$.next(true)),
       debounceTime(200),
@@ -88,14 +91,14 @@ export class UserService extends BaseService {
       delay(200),
       tap(() => this._loading$.next(false))
     ).subscribe(result => {
-      this._users$.next(result.users);
+      this._trackings$.next(result.trackings);
       this._total$.next(result.total);
     });
 
     this._search$.next();
   }
 
-  get countries$() { return this._users$.asObservable(); }
+  get countries$() { return this._trackings$.asObservable(); }
   get product() { return this.products; }
   get total$() { return this._total$.asObservable(); }
   get loading$() { return this._loading$.asObservable(); }
@@ -106,11 +109,11 @@ export class UserService extends BaseService {
   get endIndex() { return this._state.endIndex; }
   get totalRecords() { return this._state.totalRecords; }
 
-  set page(page: number) { this._set({ page }); }
-  set pageSize(pageSize: number) { this._set({ pageSize }); }
-  set searchTerm(searchTerm: string) { this._set({ searchTerm }); }
-  set sortColumn(sortColumn: SortColumn) { this._set({ sortColumn }); }
-  set sortDirection(sortDirection: SortDirection) { this._set({ sortDirection }); }
+  set page(page: number) { this._set({page}); }
+  set pageSize(pageSize: number) { this._set({pageSize}); }
+  set searchTerm(searchTerm: string) { this._set({searchTerm}); }
+  set sortColumn(sortColumn: SortColumn) { this._set({sortColumn}); }
+  set sortDirection(sortDirection: SortDirection) { this._set({sortDirection}); }
   set startIndex(startIndex: number) { this._set({ startIndex }); }
   set endIndex(endIndex: number) { this._set({ endIndex }); }
   set totalRecords(totalRecords: number) { this._set({ totalRecords }); }
@@ -121,23 +124,22 @@ export class UserService extends BaseService {
   }
 
   private _search(): Observable<SearchResult> {
-    const { sortColumn, sortDirection, page, searchTerm } = this._state;
+    const {sortColumn, sortDirection, page, searchTerm} = this._state;
     // 1. sort
-    let users = sort(this.users, sortColumn, sortDirection);
+    let trackings = sort(this.trackings, sortColumn, sortDirection);    
 
     // 2. filter
-    users = users.filter(country => matches(country, searchTerm, this.pipe));
-    const total = users.length;
+    trackings = trackings.filter(country => matches(country, searchTerm, this.pipe));        
+    const total = trackings.length;
 
     // 3. paginate
-    this.totalRecords = users.length;
+    this.totalRecords = trackings.length;
     this._state.startIndex = (page - 1) * this.pageSize + 1;
     this._state.endIndex = (page - 1) * this.pageSize + this.pageSize;
     if (this.endIndex > this.totalRecords) {
-      this.endIndex = this.totalRecords;
+        this.endIndex = this.totalRecords;
     }
-    users = users.slice(this._state.startIndex - 1, this._state.endIndex);
-    return of({ users: users, total });
+    trackings = trackings.slice(this._state.startIndex - 1, this._state.endIndex);
+    return of({trackings: trackings, total});
   }
-
 }

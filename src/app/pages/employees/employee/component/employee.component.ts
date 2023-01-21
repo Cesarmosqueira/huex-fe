@@ -1,13 +1,13 @@
-import {DatePipe} from '@angular/common';
-import {Component, OnInit} from "@angular/core";
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
-import {Observable} from "rxjs";
-import {first} from 'rxjs/operators';
-import {config} from 'src/app/shared/shared.config';
+import { DatePipe } from '@angular/common';
+import { Component, OnInit } from "@angular/core";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { Observable } from "rxjs";
+import { first } from 'rxjs/operators';
+import { config } from 'src/app/shared/shared.config';
 import Swal from 'sweetalert2';
-import {Employee} from "../models/employee.model";
-import {EmployeeService} from "../services/employee.service";
+import { Employee } from "../models/employee.model";
+import { EmployeeService } from "../services/employee.service";
 
 @Component({
   selector: 'app-employee',
@@ -34,10 +34,14 @@ export class EmployeeComponent implements OnInit {
   employeesList!: Observable<Employee[]>;
   total: Observable<number>;
   pipe: any;
+  fileToUpload: any;
+  imageUrl: any;
+  fileList: FileList;
+  myImageBaseUrl:string='../../../../../assets/images/huex/profile.jpg';
 
   constructor(public service: EmployeeService,
-              private modalService: NgbModal,
-              private formBuilder: UntypedFormBuilder) {
+    private modalService: NgbModal,
+    private formBuilder: UntypedFormBuilder) {
     this.employeesList = service.countries$;
     this.total = service.total$;
   }
@@ -65,13 +69,13 @@ export class EmployeeComponent implements OnInit {
       contractType: ['', [Validators.required]],
       maritalStatus: ['', [Validators.required]],
       pensionSystem: ['', [Validators.required]],
-      childrens: ['', [Validators.required]],
+      childrens: [0, [Validators.required]],
       academicQualification: ['', [Validators.required]],
       criminalRecords: ['', [Validators.required]],
       kinhood: ['', [Validators.required]],
       kinFullName: ['', [Validators.required]],
       kinPhoneNumber: ['', [Validators.required]],
-      salary: ['', [Validators.required]],
+      salary: [0, [Validators.required]],
       role: ['', [Validators.required]],
       licenseCategory: ['', [Validators.required]],
       licenseExpirationDate: ['', [Validators.required]],
@@ -84,12 +88,28 @@ export class EmployeeComponent implements OnInit {
       this.content = this.employees;
       this.employees = Object.assign([], x);
     });
+
     this.idEmployeeOuput = 0;
     console.log(this.idEmployeeOuput);
 
     this.listEmployees();
   }
 
+  getImage(event) {
+    if (event.target.files && event.target.files.length) {
+      const file = (event.target.files[0] as File);
+      console.log(file);
+      this.employeeForm.get('photoUrl').setValue(file);
+      this.fileList = event.target.files;
+      this.fileToUpload = event.target.files.item(0);
+      let reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.imageUrl = event.target.result;
+        console.log(this.imageUrl);
+      }
+      reader.readAsDataURL(this.fileToUpload);
+    }
+  }
 
   openViewModal(content: any) {
     this.modalService.open(content, { centered: true });
@@ -138,7 +158,7 @@ export class EmployeeComponent implements OnInit {
       backdrop: 'static',
       keyboard: false,
       centered: true,
-      size: 'md'
+      size: 'xl'
     };
     this.modalService.open(content, ngbModalOptions);
   }
@@ -152,7 +172,7 @@ export class EmployeeComponent implements OnInit {
    * Save user
    */
   saveUser() {
-    this.submitted = true
+    this.submitted = true;
     if (this.employeeForm.valid) {
       this.pipe = new DatePipe('en-US');
       const fullName = this.employeeForm.get('fullName')?.value;
@@ -185,8 +205,8 @@ export class EmployeeComponent implements OnInit {
       const licenseExpirationDate = this.employeeForm.get('licenseExpirationDate')?.value;
       const fortmatlicenseExpirationDate = this.pipe.transform(licenseExpirationDate, 'yyyy-MM-dd');
       const dniExpirationDate = this.employeeForm.get('dniExpirationDate')?.value;
-      const fortmatdniExpirationDate= this.pipe.transform(dniExpirationDate, 'yyyy-MM-dd');
-      const photoUrl = this.employeeForm.get('photoUrl')?.value;
+      const fortmatdniExpirationDate = this.pipe.transform(dniExpirationDate, 'yyyy-MM-dd');
+      const photoUrl = this.imageUrl.replace("data:image/jpeg;base64,", "");
 
       let employee = new Employee();
       employee.fullName = fullName;
@@ -219,14 +239,15 @@ export class EmployeeComponent implements OnInit {
 
       const id = this.employeeForm.get('id')?.value;
 
-      console.log(employee);
-      console.log(id);
       if (id == '0') {
         this.registerEmployee(employee);
       } else {
         employee.id = id;
         this.updateEmployee(employee);
       }
+
+      this.imageUrl = null;
+
       this.modalService.dismissAll();
       setTimeout(() => {
         this.employeeForm.reset();
@@ -239,16 +260,25 @@ export class EmployeeComponent implements OnInit {
    * Open Edit modal
    * @param content modal content
    */
-  editDataGet(id: any, content: any) {
+  editDataGet(id: any, content: any, action: any) {
+    this.imageUrl = null;
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
-    this.enableInputs();
-
-    this.modalService.open(content, { size: 'md', centered: true });
-    var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-    modelTitle.innerHTML = 'Actualizar rutas';
-    var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
-    updateBtn.innerHTML = "Actualizar";
+    this.modalService.open(content, { size: 'xl', centered: true });
+    if(action){
+      var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
+      modelTitle.innerHTML = 'Detalle Empleados';
+      this.disableInputs();
+      document.getElementById('add-btn').setAttribute("disabled","disabled");
+    } else {
+      this.enableInputs();
+      document.getElementById('add-btn').removeAttribute("disabled");
+      var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
+      modelTitle.innerHTML = 'Actualizar Empleados';
+      var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
+      updateBtn.innerHTML = "Actualizar";
+    }
+    
     var listData = this.employees.filter((data: { id: any; }) => data.id === id);
     this.employeeForm.controls['id'].setValue(listData[0].id);
     this.employeeForm.controls['fullName'].setValue(listData[0].fullName);
@@ -287,9 +317,23 @@ export class EmployeeComponent implements OnInit {
     const dniExpirationDate = listData[0].dniExpirationDate.substring(0, 10);
     const fortmatdniExpirationDate = this.pipe.transform(dniExpirationDate, 'yyyy-MM-dd');
     this.employeeForm.controls['dniExpirationDate'].setValue(fortmatdniExpirationDate);
-    this.employeeForm.controls['photoUrl'].setValue(listData[0].photoUrl);
-
+    this.imageUrl = 'data:image/jpeg;base64,' + listData[0].photoUrl;
+    this.employeeForm.get('photoUrl').setValue(this.dataURLtoFile(this.imageUrl, 'foto.jpeg'));
     this.idEmployeeOuput = id;
+  }
+
+  dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: mime });
   }
 
   listEmployees() {
@@ -419,13 +463,44 @@ export class EmployeeComponent implements OnInit {
     this.employeeForm.controls['kinhood'].setValue("");
     this.employeeForm.controls['kinFullName'].setValue("");
     this.employeeForm.controls['kinPhoneNumber'].setValue("");
-     this.employeeForm.controls['salary'].setValue("");
+    this.employeeForm.controls['salary'].setValue("");
     this.employeeForm.controls['role'].setValue("");
     this.employeeForm.controls['licenseCategory'].setValue("");
     this.employeeForm.controls['licenseExpirationDate'].setValue("");
     this.employeeForm.controls['dniExpirationDate'].setValue("");
     this.employeeForm.controls['photoUrl'].setValue("");
+    this.imageUrl = null;
+  }
 
+  disableInputs() {
+    this.employeeForm.controls['id'].disable();
+    this.employeeForm.controls['fullName'].disable();
+    this.employeeForm.controls['documentType'].disable();
+    this.employeeForm.controls['dni'].disable();
+    this.employeeForm.controls['currentState'].disable();
+    this.employeeForm.controls['placeOfBirth'].disable();
+    this.employeeForm.controls['birthDate'].disable();
+    this.employeeForm.controls['address'].disable();
+    this.employeeForm.controls['phoneNumber'].disable();
+    this.employeeForm.controls['email'].disable();
+    this.employeeForm.controls['joinDate'].disable();
+    this.employeeForm.controls['ceaseDate'].disable();
+    this.employeeForm.controls['bankAccount'].disable();
+    this.employeeForm.controls['contractType'].disable();
+    this.employeeForm.controls['maritalStatus'].disable();
+    this.employeeForm.controls['pensionSystem'].disable();
+    this.employeeForm.controls['childrens'].disable();
+    this.employeeForm.controls['academicQualification'].disable();
+    this.employeeForm.controls['criminalRecords'].disable();
+    this.employeeForm.controls['kinhood'].disable();
+    this.employeeForm.controls['kinFullName'].disable();
+    this.employeeForm.controls['kinPhoneNumber'].disable();
+    this.employeeForm.controls['salary'].disable();
+    this.employeeForm.controls['role'].disable();
+    this.employeeForm.controls['licenseCategory'].disable();
+    this.employeeForm.controls['licenseExpirationDate'].disable();
+    this.employeeForm.controls['dniExpirationDate'].disable();
+    this.employeeForm.controls['photoUrl'].disable();
   }
 
   enableInputs() {
@@ -433,7 +508,7 @@ export class EmployeeComponent implements OnInit {
     this.employeeForm.controls['id'].enable();
     this.employeeForm.controls['fullName'].enable();
     this.employeeForm.controls['documentType'].enable();
-    this.employeeForm.controls['dni'].setValue("");
+    this.employeeForm.controls['dni'].enable();
     this.employeeForm.controls['currentState'].enable();
     this.employeeForm.controls['placeOfBirth'].enable();
     this.employeeForm.controls['birthDate'].enable();

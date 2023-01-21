@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  server: 'http://localhost:8080',
+  server: 'http://localhost:8082',
   production: false,
   defaultauth: 'fackbackend',
   firebaseConfig: {
@@ -84,6 +84,13 @@ export const environment = {
     }
   },
   services: {
+    tracking: {
+      list: '/api-huex/v1/service/tracking',
+      retrieve: '/api-huex/v1/service/tracking/',
+      register: '/api-huex/v1/service/tracking',
+      update: '/api-huex/v1/service/tracking',
+      delete: '/api-huex/v1/service/tracking/'
+    },
     expenseType: {
       list: '/api-huex/v1/expense_type',
       retrieve: '/api-huex/v1/expense_type/',
@@ -119,6 +126,7 @@ export const environment = {
       login: '/api-huex/v1/security/user/login',
       register: '/api-huex/v1/security/user',
       list: '/api-huex/v1/security/user',
+      delete: '/api-huex/v1/security/user/',
     },
     menu:{
       list: '/api-huex/v1/security/menu',

@@ -10,11 +10,13 @@ import {NgSelectModule} from "@ng-select/ng-select";
 import { ServiceIncidentsComponent } from './service-incidents/component/service-incidents.component';
 import { SettlementSummaryComponent } from './settlement-summary/component/settlement-summary.component';
 import { ServiceMonitoringComponent } from './service-monitoring/component/service-monitoring.component';
+import { TrackingComponent } from './tracking/component/tracking.component';
 
 
 
 @NgModule({
   declarations: [
+    TrackingComponent,
     ExpenseTypeComponent,
     ServiceIncidentsComponent,
     SettlementSummaryComponent,

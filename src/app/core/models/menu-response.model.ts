@@ -11,4 +11,5 @@ export class Menu {
     create?: boolean;
     subItems?: Menu[];
     badge?: any;
+    check?: boolean;
 }

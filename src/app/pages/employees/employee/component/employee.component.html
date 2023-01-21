@@ -9,7 +9,8 @@
             <div class="col-sm-4">
               <div class="search-box me-2 mb-2 d-inline-block">
                 <div class="position-relative">
-                  <input type="text" class="form-control" placeholder="Buscar por placa..." [(ngModel)]="service.searchTerm">
+                  <input type="text" class="form-control" placeholder="Buscar por Nombre..."
+                    [(ngModel)]="service.searchTerm">
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
@@ -30,63 +31,14 @@
                 <tr>
                   <th class="align-middle">ID</th>
                   <th class="align-middle">Nombre Completo</th>
-                  <th class="align-middle">Tipo de Documento</th>
-                  <th class="align-middle">DNI</th>
-                  <th class="align-middle">Estado</th>
-                  <th class="align-middle">Ubigeo</th>
+                  <th class="align-middle">Documento</th>
                   <th class="align-middle">Nacimiento</th>
-                  <th class="align-middle">Direccion</th>
-                  <th class="align-middle">Telefono</th>
-                  <th class="align-middle">Correo</th>
-                  <th class="align-middle">Fecha de Ingreso</th>
-                  <th class="align-middle">Fecha de Cese</th>
-                  <th class="align-middle">Cuenta Bancaria</th>
-                  <th class="align-middle">Tipo de Contrato</th>
-                  <th class="align-middle">Estado Civil</th>
-                  <th class="align-middle">Pension</th>
-                  <th class="align-middle">Hijos</th>
-                  <th class="align-middle">Grado Academico</th>
-                  <th class="align-middle">Antecedentes Policiales</th>
-                  <th class="align-middle">Pariente</th>
-                  <th class="align-middle">Nombre pariente</th>
-                  <th class="align-middle">Telefono pariente</th>
-                  <th class="align-middle">Sueldo</th>
-                  <th class="align-middle">Puesto</th>
+                  <th class="align-middle">Contacto</th>
+                  <th class="align-middle">Ingreso - Cese</th>
                   <th class="align-middle">Licencia</th>
-                  <th class="align-middle">Expriacion de Licencia</th>
-                  <th class="align-middle">Expiracion de DNI</th>
+                  <th class="align-middle">Puesto</th>
+                  <th class="align-middle">Estado</th>
                   <th class="align-middle">Acciones</th>
-
-
-                  <!-- "id": 1,     -->
-                  <!--"fullName": "Frank Huarcaya",     -->
-                  <!--"documentType": "DNI",     -->
-                  <!--"dni": "72919231",     -->
-                  <!--"currentState": "ACTIVE",     -->
-                  <!--"placeOfBirth": "Lima",     -->
-                  <!--"birthDate": "2002-10-02T00:00:00.000+00:00",     -->
-                  <!--"address": "abcd",     -->
-                  <!--"phoneNumber": "987654321",     -->
-                  <!--"email": "abc@dfg.hij",     -->
-                  <!--"joinDate": "2021-03-10T00:00:00.000+00:00",     -->
-                  <!--"ceaseDate": null,     -->
-                  <!--"bankAccount": "823124324325",     -->
-                  <!--"contractType": "INTERN",     -->
-                  <!--"maritalStatus": "None",     -->
-                  <!--"pensionSystem": "AFP",     -->
-                  <!--"childrens": 1,     -->
-                  <!--"academicQualification": "undergrad",     -->
-                  <!--"criminalRecords": "",     -->
-                  <!--"kinhood": "father",     -->
-                  <!--"kinFullName": "John Doe",     -->
-                  <!--"kinPhoneNumber": "987654123",     -->
-                  <!--"salary": 1500.0,     -->
-                  <!--"role": "Developer",     -->
-                  <!--"licenseCategory": "AI",     -->
-                  <!--"licenseExpirationDate": "2023-10-02T00:00:00.000+00:00",     -->
-                  <!--"dniExpirationDate": "1970-01-01T00:00:01.500+00:00",     -->
-                  <!--"photoUrl": "https://rotulosmatesanz.com/wp-content/uploads/2017/09/2000px-Google_G_Logo.svg_.png"     -->
-                  <!--</tr>     -->
               </thead>
               <tbody>
                 <tr *ngFor="let data of employees" id="o_{{data.id}}">
@@ -94,34 +46,33 @@
                     <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                   </td>
                   <td>{{data.fullName}}</td>
-                  <td>{{data.documentType}}</td>
-                  <td>{{data.dni}}</td>
-                  <td>{{data.currentState}}</td>
-                  <td>{{data.placeOfBirth}}</td>
-                  <td>{{data.birthDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
-                  <td>{{data.address}}</td>
-                  <td>{{data.phoneNumber}}</td>
-                  <td>{{data.email}}</td>
-                  <td>{{data.joinDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
-                  <td>{{data.ceaseDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
-                  <td>{{data.bankAccount}}</td>
-                  <td>{{data.contractType}}</td>
-                  <td>{{data.maritalStatus}}</td>
-                  <td>{{data.pensionSystem}}</td>
-                  <td>{{data.childrens}}</td>
-                  <td>{{data.academicQualification}}</td>
-                  <td>{{data.criminalRecords}}</td>
-                  <td>{{data.kinhood}}</td>
-                  <td>{{data.kinFullName}}</td>
-                  <td>{{data.kinPhoneNumber}}</td>
-                  <td>{{data.salary}}</td>
+                  <td>
+                    <p class="mb-1">{{data.documentType}}</p>
+                    <p class="mb-1">{{data.dni}}</p>
+                  </td>
+                  <td>
+                    <p class="mb-1">{{data.birthDate.substring(0,10) | date:'dd/MM/YYYY'}}</p>
+                    <p class="mb-1">{{data.placeOfBirth}}</p>
+                  </td>
+                  <td>
+                    <p class="mb-1">{{data.phoneNumber}}</p>
+                    <p class="mb-1">{{data.email}}</p>
+                  </td>
+                  <td>
+                    <p class="mb-1">{{data.joinDate.substring(0,10) | date:'dd/MM/YYYY'}}</p>
+                    <p class="mb-1">{{data.ceaseDate.substring(0,10) | date:'dd/MM/YYYY'}}</p>
+                  </td>
+                  <td>
+                    <p class="mb-1">{{data.licenseCategory}}</p>
+                    <p class="mb-1">{{data.licenseExpirationDate.substring(0,10) | date:'dd/MM/YYYY'}}</p>
+                  </td>
                   <td>{{data.role}}</td>
-                  <td>{{data.licenseCategory}}</td>
-                  <td>{{data.licenseExpirationDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
-                  <td>{{data.dniExpirationDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                  <td>{{data.currentState}}</td>
                   <td>
                     <div class="d-flex gap-3">
-                      <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
+                      <a href="javascript:void(0);" class="text-primary"
+                        (click)="editDataGet(data.id,content,true)"><i class="mdi mdi-eye font-size-18"></i></a>
+                      <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content, false)"><i
                           class="mdi mdi-pencil font-size-18"></i></a>
                       <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
                           class="mdi mdi-delete font-size-18"></i></a>
@@ -149,256 +100,344 @@
   <div class="modal-header">
     <h5 class="modal-title" id="exampleModalLabel">Nueva Empleado</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
-            (click)="modal.dismiss('Cross click')"></button>
+      (click)="modal.dismiss('Cross click')"></button>
   </div>
   <form (ngSubmit)="saveUser()" [formGroup]="employeeForm">
-    <div class="modal-body">
-      <input type="text" hidden formControlName="id" value="0" />
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Empleado</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="fullName"
-               [ngClass]="{ 'is-invalid': submitted && form['fullName'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['fullName'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['fullName'].errors['required']">empleado es requerido</div>
-        </div>
-      </div>
-
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Tipo documento</label>
-        <ng-select [items]="['DNI','CARMET','PASAPORTE','PTP','CEDULA']" id="customername-field" required formControlName="documentType"
-                   [ngClass]="{ 'is-invalid': submitted && form['documentType'].errors }"></ng-select>
-        <div *ngIf="submitted && form['documentType'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['documentType'].errors['required']">Tipo documento es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">DNI</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="dni"
-               [ngClass]="{ 'is-invalid': submitted && form['dni'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['dni'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['dni'].errors['required']">DNI es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Estado actual</label>
-        <ng-select [items]="['LABORANDO','RETIRADO','BLOQUEADO']" id="customername-field" required formControlName="currentState"
-                   [ngClass]="{ 'is-invalid': submitted && form['currentState'].errors }"></ng-select>
-        <div *ngIf="submitted && form['currentState'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['currentState'].errors['required']">Estado actual es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Lugar nacimiento</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="placeOfBirth"
-               [ngClass]="{ 'is-invalid': submitted && form['placeOfBirth'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['placeOfBirth'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['placeOfBirth'].errors['required']">Lugar nacimiento es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label>Fecha nacimiento</label>
-        <div class="input-group clockpicker">
-          <input class="form-control" type="date" id="example-date-input" formControlName="birthDate" autocomplete="disabled">
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Direcion</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="address"
-               [ngClass]="{ 'is-invalid': submitted && form['address'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['address'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['address'].errors['required']">Direcion es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Teleofono</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="phoneNumber"
-               [ngClass]="{ 'is-invalid': submitted && form['phoneNumber'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['phoneNumber'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['phoneNumber'].errors['required']">Telefono es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Correo</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="email"
-               [ngClass]="{ 'is-invalid': submitted && form['email'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['email'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['email'].errors['required']">Correo es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label>Fecha Ingreso</label>
-        <div class="input-group clockpicker">
-          <input class="form-control" type="date" id="example-date-input" formControlName="joinDate" autocomplete="disabled">
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label>Fecha cese</label>
-        <div class="input-group clockpicker">
-          <input class="form-control" type="date" id="example-date-input" formControlName="ceaseDate" autocomplete="disabled">
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Cuenta bancaria</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="bankAccount"
-               [ngClass]="{ 'is-invalid': submitted && form['bankAccount'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['bankAccount'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['bankAccount'].errors['required']">Cuenta bancaria requerido</div>
-        </div>
-      </div>
-
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Tipo contrato</label>
-        <ng-select [items]="['LOCADOR','PLANILLA']" id="customername-field" required formControlName="contractType"
-                   [ngClass]="{ 'is-invalid': submitted && form['contractType'].errors }"></ng-select>
-        <div *ngIf="submitted && form['contractType'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['contractType'].errors['required']">Tipo contrato es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Estado civil</label>
-        <ng-select [items]="['SOLTERO','CASADO','CONVIVIENTE']" id="customername-field" required formControlName="maritalStatus"
-                   [ngClass]="{ 'is-invalid': submitted && form['maritalStatus'].errors }"></ng-select>
-        <div *ngIf="submitted && form['maritalStatus'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['maritalStatus'].errors['required']"> Estado civil es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Sistema pension</label>
-        <ng-select [items]="['AFP','ONP']" id="customername-field" required formControlName="pensionSystem"
-                   [ngClass]="{ 'is-invalid': submitted && form['pensionSystem'].errors }"></ng-select>
-        <div *ngIf="submitted && form['pensionSystem'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['pensionSystem'].errors['required']">Sistema pension es requerido</div>
-        </div>
-      </div>
-
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Numero hijos</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="childrens"
-               [ngClass]="{ 'is-invalid': submitted && form['childrens'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['childrens'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['childrens'].errors['required']">Numeros de hijos es requerido</div>
-        </div>
-      </div>
-
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Nivel estudio</label>
-        <ng-select [items]="['PRIMARIA','SECUNDARIA','INSTITUTO','UNIVERSIDAD','NINGUNO']" id="customername-field" required formControlName="academicQualification"
-                   [ngClass]="{ 'is-invalid': submitted && form['academicQualification'].errors }"></ng-select>
-        <div *ngIf="submitted && form['academicQualification'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['academicQualification'].errors['required']">Nivel estudio es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Antecedentes penales</label>
-        <ng-select [items]="['REGISTRA','NO REGISTRA']" id="customername-field" required formControlName="criminalRecords"
-                   [ngClass]="{ 'is-invalid': submitted && form['criminalRecords'].errors }"></ng-select>
-        <div *ngIf="submitted && form['criminalRecords'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['criminalRecords'].errors['required']">Antecedentes penales es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Parentesco</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="kinhood"
-               [ngClass]="{ 'is-invalid': submitted && form['kinhood'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['kinhood'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['kinhood'].errors['required']">Parentesco es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Nombre parentesco</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="kinFullName"
-               [ngClass]="{ 'is-invalid': submitted && form['kinFullName'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['kinFullName'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['kinFullName'].errors['required']">Nombre parentesco es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Numero parentesco</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="kinPhoneNumber"
-               [ngClass]="{ 'is-invalid': submitted && form['kinPhoneNumber'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['kinPhoneNumber'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['kinPhoneNumber'].errors['required']">Numero parentesco es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Salario</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="salary"
-               [ngClass]="{ 'is-invalid': submitted && form['salary'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['salary'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['salary'].errors['required']">Salario es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Cargo</label>
-        <ng-select [items]="['ADMINISTRATIVO','CHOFER','COPILOTO','ESTIBADOR']" id="customername-field" required formControlName="role"
-                   [ngClass]="{ 'is-invalid': submitted && form['role'].errors }"></ng-select>
-        <div *ngIf="submitted && form['role'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['role'].errors['required']">Cargo es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Brevete</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="licenseCategory"
-               [ngClass]="{ 'is-invalid': submitted && form['licenseCategory'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['licenseCategory'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['licenseCategory'].errors['required']">Brevete es requerido</div>
-        </div>
-      </div>
-
-
-      <div class="mb-3">
-        <label>Vencimiento brevete</label>
-        <div class="input-group clockpicker">
-          <input class="form-control" type="date" id="example-date-input" formControlName="licenseExpirationDate" autocomplete="disabled">
-        </div>
-      </div>
-
-
-      <div class="mb-3">
-        <label>Vencimiento dni</label>
-        <div class="input-group clockpicker">
-          <input class="form-control" type="date" id="example-date-input" formControlName="dniExpirationDate" autocomplete="disabled">
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Foto</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="photoUrl"
-               [ngClass]="{ 'is-invalid': submitted && form['photoUrl'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['photoUrl'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['photoUrl'].errors['required']">Foto es requerido</div>
-        </div>
-      </div>
-
-    </div>
+    <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-tabs">
+      <li [ngbNavItem]="1">
+        <a ngbNavLink>
+          <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
+          <span class="d-none d-sm-block">Datos Principales</span>
+        </a>
+        <ng-template ngbNavContent>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-lg-2">
+                <div class="mb-3">
+                  <label for="customername-field" class="form-label">Foto</label>
+                  <img [src]="imageUrl != null ? imageUrl : myImageBaseUrl" class="image">
+                  <input type="file" id="customername-field" accept=".jpg" class="form-control"
+                    (change)="getImage($event)" autocomplete="off"
+                    [ngClass]="{ 'is-invalid': submitted && form['photoUrl'].errors }" />
+                  <div *ngIf="submitted && form['photoUrl'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['photoUrl'].errors['required']">Foto es requerido</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-10">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="mb-3">
+                      <label for="customername-field" class="form-label">Nombre Completo</label>
+                      <input type="text" id="customername-field" class="form-control" required
+                        formControlName="fullName" [ngClass]="{ 'is-invalid': submitted && form['fullName'].errors }"
+                        autocomplete="off" />
+                      <div *ngIf="submitted && form['fullName'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['fullName'].errors['required']">Nombre Completo</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="mb-3">
+                      <label for="customername-field" class="form-label">Tipo documento</label>
+                      <ng-select [items]="['DNI','CARMET','PASAPORTE','PTP','CEDULA']" id="customername-field" required
+                        formControlName="documentType"
+                        [ngClass]="{ 'is-invalid': submitted && form['documentType'].errors }"></ng-select>
+                      <div *ngIf="submitted && form['documentType'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['documentType'].errors['required']">Tipo documento es requerido</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="mb-3">
+                      <label for="customername-field" class="form-label">Número de documento</label>
+                      <input type="text" id="customername-field" class="form-control" required formControlName="dni"
+                        [ngClass]="{ 'is-invalid': submitted && form['dni'].errors }" autocomplete="off" />
+                      <div *ngIf="submitted && form['dni'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['dni'].errors['required']">DNI es requerido</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3">
+                    <div class="mb-3">
+                      <label>Venc. Documento</label>
+                      <div class="input-group clockpicker">
+                        <input class="form-control" type="date" id="example-date-input"
+                          formControlName="dniExpirationDate" autocomplete="off">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="mb-3">
+                      <label for="customername-field" class="form-label">Estado civil</label>
+                      <ng-select [items]="['SOLTERO','CASADO','CONVIVIENTE']" id="customername-field" required
+                        formControlName="maritalStatus"
+                        [ngClass]="{ 'is-invalid': submitted && form['maritalStatus'].errors }"></ng-select>
+                      <div *ngIf="submitted && form['maritalStatus'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['maritalStatus'].errors['required']"> Estado civil es requerido</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="mb-3">
+                      <label for="customername-field" class="form-label">Cargo</label>
+                      <ng-select [items]="['ADMINISTRATIVO','CHOFER','COPILOTO','ESTIBADOR']" id="customername-field"
+                        required formControlName="role"
+                        [ngClass]="{ 'is-invalid': submitted && form['role'].errors }"></ng-select>
+                      <div *ngIf="submitted && form['role'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['role'].errors['required']">Cargo es requerido</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="mb-3">
+                      <label for="customername-field" class="form-label">Nivel estudio</label>
+                      <ng-select [items]="['PRIMARIA','SECUNDARIA','INSTITUTO','UNIVERSIDAD','NINGUNO']"
+                        id="customername-field" required formControlName="academicQualification"
+                        [ngClass]="{ 'is-invalid': submitted && form['academicQualification'].errors }"></ng-select>
+                      <div *ngIf="submitted && form['academicQualification'].errors" class="invalid-feedback"
+                        align="left">
+                        <div *ngIf="form['academicQualification'].errors['required']">Nivel estudio es requerido</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3">
+                    <div class="mb-3">
+                      <label>Fecha nacimiento</label>
+                      <div class="input-group clockpicker">
+                        <input class="form-control" type="date" id="example-date-input" formControlName="birthDate"
+                          autocomplete="disabled">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="mb-3">
+                      <label for="customername-field" class="form-label">Lugar nacimiento</label>
+                      <input type="text" id="customername-field" class="form-control" required
+                        formControlName="placeOfBirth"
+                        [ngClass]="{ 'is-invalid': submitted && form['placeOfBirth'].errors }" autocomplete="off" />
+                      <div *ngIf="submitted && form['placeOfBirth'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['placeOfBirth'].errors['required']">Lugar nacimiento es requerido</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="mb-3">
+                      <label for="customername-field" class="form-label">Direcion</label>
+                      <input type="text" id="customername-field" class="form-control" required formControlName="address"
+                        [ngClass]="{ 'is-invalid': submitted && form['address'].errors }" autocomplete="off" />
+                      <div *ngIf="submitted && form['address'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['address'].errors['required']">Direcion es requerido</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="mb-3">
+                      <label for="customername-field" class="form-label">Correo</label>
+                      <input type="text" id="customername-field" class="form-control" required formControlName="email"
+                        [ngClass]="{ 'is-invalid': submitted && form['email'].errors }" autocomplete="off" />
+                      <div *ngIf="submitted && form['email'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['email'].errors['required']">Correo es requerido</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="mb-3">
+                      <label for="customername-field" class="form-label">Teléfono</label>
+                      <input type="text" id="customername-field" class="form-control" required
+                        formControlName="phoneNumber"
+                        [ngClass]="{ 'is-invalid': submitted && form['phoneNumber'].errors }" autocomplete="off" />
+                      <div *ngIf="submitted && form['phoneNumber'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['phoneNumber'].errors['required']">Teléfono es requerido</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="mb-3">
+                      <label for="customername-field" class="form-label">Estado actual</label>
+                      <ng-select [items]="['LABORANDO','RETIRADO','BLOQUEADO']" id="customername-field" required
+                        formControlName="currentState"
+                        [ngClass]="{ 'is-invalid': submitted && form['currentState'].errors }"></ng-select>
+                      <div *ngIf="submitted && form['currentState'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['currentState'].errors['required']">Estado actual es requerido</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3">
+                    <div class="mb-3">
+                      <label for="customername-field" class="form-label">Sueldo</label>
+                      <input type="number" id="customername-field" class="form-control" required
+                        formControlName="salary" [ngClass]="{ 'is-invalid': submitted && form['salary'].errors }"
+                        autocomplete="off" />
+                      <div *ngIf="submitted && form['salary'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['salary'].errors['required']">Sueldo es requerido</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="mb-3">
+                      <label for="customername-field" class="form-label">Numero hijos</label>
+                      <input type="number" id="customername-field" class="form-control" required
+                        formControlName="childrens" [ngClass]="{ 'is-invalid': submitted && form['childrens'].errors }"
+                        autocomplete="off" />
+                      <div *ngIf="submitted && form['childrens'].errors" class="invalid-feedback" align="left">
+                        <div *ngIf="form['childrens'].errors['required']">Numeros de hijos es requerido</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="2">
+        <a ngbNavLink>
+          <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+          <span class="d-none d-sm-block">Datos Adicionales</span>
+        </a>
+        <ng-template ngbNavContent>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label for="customername-field" class="form-label">Cuenta bancaria</label>
+                  <input type="text" id="customername-field" class="form-control" required formControlName="bankAccount"
+                    [ngClass]="{ 'is-invalid': submitted && form['bankAccount'].errors }" autocomplete="off" />
+                  <div *ngIf="submitted && form['bankAccount'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['bankAccount'].errors['required']">Cuenta bancaria requerido</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="mb-3">
+                  <label for="customername-field" class="form-label">Tipo contrato</label>
+                  <ng-select [items]="['LOCADOR','PLANILLA']" id="customername-field" required
+                    formControlName="contractType"
+                    [ngClass]="{ 'is-invalid': submitted && form['contractType'].errors }"></ng-select>
+                  <div *ngIf="submitted && form['contractType'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['contractType'].errors['required']">Tipo contrato es requerido</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="mb-3">
+                  <label for="customername-field" class="form-label">Sistema pension</label>
+                  <ng-select [items]="['AFP','ONP']" id="customername-field" required formControlName="pensionSystem"
+                    [ngClass]="{ 'is-invalid': submitted && form['pensionSystem'].errors }"></ng-select>
+                  <div *ngIf="submitted && form['pensionSystem'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['pensionSystem'].errors['required']">Sistema pension es requerido</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3">
+                <div class="mb-3">
+                  <label>Fecha Ingreso</label>
+                  <div class="input-group clockpicker">
+                    <input class="form-control" type="date" id="example-date-input" formControlName="joinDate"
+                      autocomplete="off">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="mb-3">
+                  <label>Fecha cese</label>
+                  <div class="input-group clockpicker">
+                    <input class="form-control" type="date" id="example-date-input" formControlName="ceaseDate"
+                      autocomplete="off">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="mb-3">
+                  <label for="customername-field" class="form-label">Antecedentes penales</label>
+                  <ng-select [items]="['REGISTRA','NO REGISTRA']" id="customername-field" required
+                    formControlName="criminalRecords"
+                    [ngClass]="{ 'is-invalid': submitted && form['criminalRecords'].errors }"></ng-select>
+                  <div *ngIf="submitted && form['criminalRecords'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['criminalRecords'].errors['required']">Antecedentes penales es requerido</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="mb-3">
+                  <label for="customername-field" class="form-label">Brevete</label>
+                  <input type="text" id="customername-field" class="form-control" required
+                    formControlName="licenseCategory"
+                    [ngClass]="{ 'is-invalid': submitted && form['licenseCategory'].errors }" autocomplete="off" />
+                  <div *ngIf="submitted && form['licenseCategory'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['licenseCategory'].errors['required']">Brevete es requerido</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3">
+                <div class="mb-3">
+                  <label>Vencimiento brevete</label>
+                  <div class="input-group clockpicker">
+                    <input class="form-control" type="date" id="example-date-input"
+                      formControlName="licenseExpirationDate" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="mb-3">
+                  <label for="customername-field" class="form-label">Parentesco</label>
+                  <input type="text" id="customername-field" class="form-control" required formControlName="kinhood"
+                    [ngClass]="{ 'is-invalid': submitted && form['kinhood'].errors }" autocomplete="off" />
+                  <div *ngIf="submitted && form['kinhood'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['kinhood'].errors['required']">Parentesco es requerido</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="mb-3">
+                  <label for="customername-field" class="form-label">Nombre parentesco</label>
+                  <input type="text" id="customername-field" class="form-control" required formControlName="kinFullName"
+                    [ngClass]="{ 'is-invalid': submitted && form['kinFullName'].errors }" autocomplete="off" />
+                  <div *ngIf="submitted && form['kinFullName'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['kinFullName'].errors['required']">Nombre parentesco es requerido</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="mb-3">
+                  <label for="customername-field" class="form-label">Numero parentesco</label>
+                  <input type="text" id="customername-field" class="form-control" required
+                    formControlName="kinPhoneNumber"
+                    [ngClass]="{ 'is-invalid': submitted && form['kinPhoneNumber'].errors }" autocomplete="off" />
+                  <div *ngIf="submitted && form['kinPhoneNumber'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['kinPhoneNumber'].errors['required']">Numero parentesco es requerido</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav"></div>
     <div class="modal-footer">
       <div class="hstack gap-2 justify-content-end">
         <button type="button" class="btn btn-light" data-bs-dismiss="modal"
-                (click)="modal.close('Close click')">Cancelar</button>
+          (click)="modal.close('Close click')">Cancelar</button>
         <button type="submit" class="btn btn-success" id="add-btn">Registrar</button>
       </div>
     </div>
