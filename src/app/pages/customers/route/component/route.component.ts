@@ -8,7 +8,6 @@ import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
 import {Route} from "../models/route.model";
 import {RouteService} from "../services/route.service";
-import {Providers} from "../../../providers/provider/models/providers.model";
 
 @Component({
   selector: 'app-route',
@@ -55,8 +54,8 @@ export class RouteComponent implements OnInit {
       routeStart: ['', [Validators.required]],
       routeEnd: ['', [Validators.required]],
       zone: ['', [Validators.required]],
-      distanceKM: ['', [Validators.required]],
-      gallons: ['', [Validators.required]],
+      distanceKM: [''],
+      gallons: [''],
       btnSave: []
     });
 
@@ -120,6 +119,7 @@ export class RouteComponent implements OnInit {
   openModal(content: any) {
     this.clear();
     this.submitted = false;
+    this.enableInputs();
     let ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
       keyboard: false,

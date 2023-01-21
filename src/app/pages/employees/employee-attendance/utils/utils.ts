@@ -19,5 +19,5 @@ export function sort(employeeAttendances: EmployeeAttendance[], column: SortColu
 }
 
 export function matches(employeeAttendance: EmployeeAttendance, term: string, pipe: PipeTransform) {
-    return employeeAttendance.status.toLowerCase().includes(term.toLowerCase());
+    return employeeAttendance.employee.fullName.toLowerCase().includes(term.toLowerCase());
 }

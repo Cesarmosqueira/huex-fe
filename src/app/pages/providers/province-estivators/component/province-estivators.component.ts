@@ -64,8 +64,8 @@ export class ProvinceEstivatorsComponent implements OnInit {
      */
     this.provinceEstivatorForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
-      routeId: ['', [Validators.required]],
-      providerId: ['', [Validators.required]],
+      route: ['', [Validators.required]],
+      provider: ['', [Validators.required]],
       costM3: ['', [Validators.required]],
       observation: ['', [Validators.required]],
       btnSave: []
@@ -163,10 +163,16 @@ export class ProvinceEstivatorsComponent implements OnInit {
       const observation = this.provinceEstivatorForm.get('observation')?.value;
 
       let provinceEstivators = new ProvinceEstivators();
-      provinceEstivators.routeId = routeId;
-      provinceEstivators.providerId = providerId;
+      let routes=new Route();
+      let providers=new Providers();
+      routes.id=routeId;
+      providers.id=providerId;
+
+      provinceEstivators.route = routes;
+      provinceEstivators.provider = providers;
       provinceEstivators.costM3 = costM3;
       provinceEstivators.observation = observation;
+
       const id = this.provinceEstivatorForm.get('id')?.value;
 
       console.log(provinceEstivators);
@@ -200,8 +206,8 @@ export class ProvinceEstivatorsComponent implements OnInit {
     updateBtn.innerHTML = "Actualizar";
     var listData = this.provinceEstivator.filter((data: { id: any; }) => data.id === id);
     this.provinceEstivatorForm.controls['id'].setValue(listData[0].id);
-    this.provinceEstivatorForm.controls['routeId'].setValue(listData[0].routeId);
-    this.provinceEstivatorForm.controls['providerId'].setValue(listData[0].providerId);
+    this.provinceEstivatorForm.controls['route'].setValue(listData[0].route);
+    this.provinceEstivatorForm.controls['provider'].setValue(listData[0].provider);
     this.provinceEstivatorForm.controls['costM3'].setValue(listData[0].costM3);
     this.provinceEstivatorForm.controls['observation'].setValue(listData[0].observation);
     this.idProvinceEstivatorOuput = id;
@@ -316,16 +322,16 @@ export class ProvinceEstivatorsComponent implements OnInit {
   }
   clear() {
     this.provinceEstivatorForm.controls['id'].setValue("0");
-    this.provinceEstivatorForm.controls['routeId'].setValue("");
-    this.provinceEstivatorForm.controls['providerId'].setValue("");
+    this.provinceEstivatorForm.controls['route'].setValue("");
+    this.provinceEstivatorForm.controls['provider'].setValue("");
     this.provinceEstivatorForm.controls['costM3'].setValue("");
     this.provinceEstivatorForm.controls['observation'].setValue("");
   }
 
   enableInputs() {
     this.provinceEstivatorForm.controls['id'].enable();
-    this.provinceEstivatorForm.controls['routeId'].enable();
-    this.provinceEstivatorForm.controls['providerId'].enable();
+    this.provinceEstivatorForm.controls['route'].enable();
+    this.provinceEstivatorForm.controls['provider'].enable();
     this.provinceEstivatorForm.controls['costM3'].enable();
     this.provinceEstivatorForm.controls['observation'].enable();
   }

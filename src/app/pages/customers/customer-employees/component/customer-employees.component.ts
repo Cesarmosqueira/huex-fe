@@ -67,9 +67,9 @@ export class CustomerEmployeesComponent implements OnInit {
       id: ['0', [Validators.required]],
       status: ['', [Validators.required]],
       registerDate: ['', [Validators.required]],
-      observations: ['', [Validators.required]],
-      idCustomer: ['', [Validators.required]],
-      idEmployee: ['', [Validators.required]],
+      observations: [''],
+      customer: ['', [Validators.required]],
+      employee: ['', [Validators.required]],
     });
 
     this.customerEmployeesList.subscribe(x => {
@@ -165,8 +165,12 @@ export class CustomerEmployeesComponent implements OnInit {
       const observations = this.customerEmployeesForm.get('observations')?.value;
 
       let customerEmployees = new CustomerEmployees();
-      customerEmployees.idCustomer = idCustomer;
-      customerEmployees.idEmployee = idEmployee;
+      let customers=new Customer();
+      let employees=new Employee();
+      employees.id=idEmployee;
+      customers.id=idCustomer;
+      customerEmployees.customer = customers;
+      customerEmployees.employee = employees;
       customerEmployees.status = status;
       customerEmployees.registerDate = fortmatregisterDate;
       customerEmployees.observations = observations;
@@ -210,8 +214,8 @@ export class CustomerEmployeesComponent implements OnInit {
     this.customerEmployeesForm.controls['status'].setValue(listData[0].status);
     this.customerEmployeesForm.controls['registerDate'].setValue(fortmatregisterDate);
     this.customerEmployeesForm.controls['observations'].setValue(listData[0].observations);
-    this.customerEmployeesForm.controls['idCustomer'].setValue(listData[0].idCustomer);
-    this.customerEmployeesForm.controls['idEmployee'].setValue(listData[0].idEmployee);
+    this.customerEmployeesForm.controls['customer'].setValue(listData[0].customer);
+    this.customerEmployeesForm.controls['employee'].setValue(listData[0].employee);
     this.idCustomerEmployeeOuput = id;
 
   }
@@ -327,8 +331,8 @@ export class CustomerEmployeesComponent implements OnInit {
 
   clear() {
     this.customerEmployeesForm.controls['id'].setValue("0");
-    this.customerEmployeesForm.controls['idCustomer'].setValue(null);
-    this.customerEmployeesForm.controls['idEmployee'].setValue(null);
+    this.customerEmployeesForm.controls['customer'].setValue(null);
+    this.customerEmployeesForm.controls['employee'].setValue(null);
     this.customerEmployeesForm.controls['status'].setValue("");
     this.customerEmployeesForm.controls['registerDate'].setValue("");
     this.customerEmployeesForm.controls['observations'].setValue("");
@@ -336,8 +340,8 @@ export class CustomerEmployeesComponent implements OnInit {
 
   enableInputs() {
     this.customerEmployeesForm.controls['id'].enable();
-    this.customerEmployeesForm.controls['idCustomer'].enable();
-    this.customerEmployeesForm.controls['idEmployee'].enable();
+    this.customerEmployeesForm.controls['customer'].enable();
+    this.customerEmployeesForm.controls['employee'].enable();
     this.customerEmployeesForm.controls['status'].enable();
     this.customerEmployeesForm.controls['registerDate'].enable();
     this.customerEmployeesForm.controls['observations'].enable();
@@ -387,7 +391,7 @@ export class CustomerEmployeesComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.customers = response.datos.customers;
+              this.customers = response.datos.customer;
               console.log(this.customers);
             } else {
               Swal.fire({

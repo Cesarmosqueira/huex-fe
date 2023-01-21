@@ -54,7 +54,7 @@ export class CustomerComponent implements OnInit {
       id: ['0', [Validators.required]],
       ruc: ['', [Validators.required]],
       socialReason: ['', [Validators.required]],
-      bankAccount: ['', [Validators.required]],
+      bankAccount: [''],
       registerDate: ['', [Validators.required]],
       btnSave: []
     });
@@ -156,7 +156,7 @@ export class CustomerComponent implements OnInit {
       customer.registerDate = fortmatregisterDate;
       const id = this.customerForm.get('id')?.value;
 
-      console.log(Customer);
+      console.log(customer);
       console.log(id);
       if (id == '0') {
         this.registerCustomer(customer);
@@ -205,7 +205,7 @@ export class CustomerComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.customers;
+              this.test = response.datos.customer;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
@@ -238,8 +238,8 @@ export class CustomerComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              const customer = response.datos.customer;
-              this.idCustomerOuput = customer.id;
+              const customerDto = response.datos.customerDto;
+              this.idCustomerOuput = customerDto.id;
               this.listCustomers();
             } else {
               Swal.fire({

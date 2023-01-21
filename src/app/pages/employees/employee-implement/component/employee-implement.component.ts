@@ -64,10 +64,10 @@ export class EmployeeImplementComponent implements OnInit {
      */
     this.employeeImplementForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
-      employeeId: ['', [Validators.required]],
-      implementId: ['', [Validators.required]],
+      employee: ['', [Validators.required]],
+      implement: ['', [Validators.required]],
       deliveryDate: ['', [Validators.required]],
-      observations: ['', [Validators.required]],
+      observations: [''],
     });
 
     this.employeeImplementsList.subscribe(x => {
@@ -163,8 +163,12 @@ export class EmployeeImplementComponent implements OnInit {
       const observations = this.employeeImplementForm.get('observations')?.value;
 
       let employeeImplement = new EmployeeImplement();
-      employeeImplement.employeeId = employeeId;
-      employeeImplement.implementId = implementId;
+      let employees=new Employee();
+      let implement=new  Implement();
+      employees.id=employeeId;
+      implement.id=implementId;
+      employeeImplement.employee = employees;
+      employeeImplement.implement = implement;
       employeeImplement.deliveryDate = fortmatdeliveryDate;
       employeeImplement.observations = observations;
 
@@ -204,8 +208,8 @@ export class EmployeeImplementComponent implements OnInit {
     const deliveryDate = listData[0].deliveryDate.substring(0, 10);
     const fortmatdeliveryDate = this.pipe.transform(deliveryDate, 'yyyy-MM-dd');
     this.employeeImplementForm.controls['id'].setValue(listData[0].id);
-    this.employeeImplementForm.controls['employeeId'].setValue(listData[0].employeeId);
-    this.employeeImplementForm.controls['implementId'].setValue(listData[0].implementId);
+    this.employeeImplementForm.controls['employee'].setValue(listData[0].employee);
+    this.employeeImplementForm.controls['implement'].setValue(listData[0].implement);
     this.employeeImplementForm.controls['deliveryDate'].setValue(fortmatdeliveryDate);
     this.employeeImplementForm.controls['observations'].setValue(listData[0].observations);
     this.idEmployeeImplemntOuput = id;
@@ -317,18 +321,16 @@ export class EmployeeImplementComponent implements OnInit {
 
   clear() {
     this.employeeImplementForm.controls['id'].setValue("0");
-    this.employeeImplementForm.controls['employeeId'].setValue("");
-    this.employeeImplementForm.controls['implementId'].setValue("");
+    this.employeeImplementForm.controls['employee'].setValue("");
+    this.employeeImplementForm.controls['implement'].setValue("");
     this.employeeImplementForm.controls['deliveryDate'].setValue("");
     this.employeeImplementForm.controls['observations'].setValue("");
-
-
   }
 
   enableInputs() {
     this.employeeImplementForm.controls['id'].enable();
-    this.employeeImplementForm.controls['employeeId'].enable();
-    this.employeeImplementForm.controls['implementId'].enable();
+    this.employeeImplementForm.controls['employee'].enable();
+    this.employeeImplementForm.controls['implement'].enable();
     this.employeeImplementForm.controls['deliveryDate'].enable();
     this.employeeImplementForm.controls['observations'].enable();
   }

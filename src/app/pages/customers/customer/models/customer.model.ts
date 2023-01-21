@@ -1,6 +1,6 @@
 export class Customer {
   id: any;
-  ruc: any;
+  ruc: string;
   socialReason: string;
   bankAccount: string;
   registerDate: any;

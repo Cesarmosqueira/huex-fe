@@ -57,7 +57,7 @@ export class TireReplacementComponent implements OnInit {
      */
     this.tireReplacementForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
-      providerId: ['', [Validators.required]],
+      provider: ['', [Validators.required]],
       replacementDate: ['', [Validators.required]],
       tireQuantity: ['', [Validators.required]],
       unitPrice: ['', [Validators.required]],
@@ -163,7 +163,11 @@ export class TireReplacementComponent implements OnInit {
 
 
       let tireReplacement = new TireReplacement();
-      tireReplacement.providerId = providerId;
+      let providers=new Providers();
+
+      providers.id=providerId;
+
+      tireReplacement.provider = providers;
       tireReplacement.replacementDate = fortmatreplacementDate;
       tireReplacement.tireQuantity = tireQuantity;
       tireReplacement.unitPrice = unitPrice;
@@ -206,7 +210,7 @@ export class TireReplacementComponent implements OnInit {
     const replacementDate = listData[0].replacementDate.substring(0, 10);
     const fortmatreplacementDate = this.pipe.transform(replacementDate, 'yyyy-MM-dd');
     this.tireReplacementForm.controls['id'].setValue(listData[0].id);
-    this.tireReplacementForm.controls['providerId'].setValue(listData[0].providerId);
+    this.tireReplacementForm.controls['provider'].setValue(listData[0].provider);
     this.tireReplacementForm.controls['replacementDate'].setValue(fortmatreplacementDate);
     this.tireReplacementForm.controls['tireQuantity'].setValue(listData[0].tireQuantity);
     this.tireReplacementForm.controls['unitPrice'].setValue(listData[0].unitPrice);
@@ -326,7 +330,7 @@ export class TireReplacementComponent implements OnInit {
 
   clear() {
     this.tireReplacementForm.controls['id'].setValue("0");
-    this.tireReplacementForm.controls['providerId'].setValue("");
+    this.tireReplacementForm.controls['provider'].setValue("");
     this.tireReplacementForm.controls['replacementDate'].setValue("");
     this.tireReplacementForm.controls['tireQuantity'].setValue("");
     this.tireReplacementForm.controls['unitPrice'].setValue("");
@@ -338,7 +342,7 @@ export class TireReplacementComponent implements OnInit {
 
   enableInputs() {
     this.tireReplacementForm.controls['id'].enable();
-    this.tireReplacementForm.controls['providerId'].enable();
+    this.tireReplacementForm.controls['provider'].enable();
     this.tireReplacementForm.controls['replacementDate'].enable();
     this.tireReplacementForm.controls['tireQuantity'].enable();
     this.tireReplacementForm.controls['unitPrice'].enable();

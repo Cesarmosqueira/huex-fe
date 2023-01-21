@@ -114,20 +114,14 @@
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Distancia</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="distanceKM"
+        <input type="text" id="customername-field" class="form-control"  formControlName="distanceKM"
                [ngClass]="{ 'is-invalid': submitted && form['distanceKM'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['distanceKM'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['distanceKM'].errors['required']">Distancia en KM es requerido</div>
-        </div>
       </div>
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Galones</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="gallons"
+        <input type="text" id="customername-field" class="form-control" formControlName="gallons"
                [ngClass]="{ 'is-invalid': submitted && form['gallons'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['gallons'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['gallons'].errors['required']">galones es requerido</div>
-        </div>
       </div>
 
     </div>
