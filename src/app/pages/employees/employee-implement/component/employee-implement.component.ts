@@ -67,7 +67,7 @@ export class EmployeeImplementComponent implements OnInit {
       employee: ['', [Validators.required]],
       implement: ['', [Validators.required]],
       deliveryDate: ['', [Validators.required]],
-      observations: ['', [Validators.required]],
+      observations: [''],
     });
 
     this.employeeImplementsList.subscribe(x => {

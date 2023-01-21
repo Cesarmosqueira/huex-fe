@@ -130,11 +130,8 @@
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Observaciones</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="observations"
+        <input type="text" id="customername-field" class="form-control"  formControlName="observations"
                [ngClass]="{ 'is-invalid': submitted && form['observations'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['observations'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['observations'].errors['required']">Observaciones es requerido</div>
-        </div>
       </div>
 
     </div>

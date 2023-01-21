@@ -112,20 +112,14 @@
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Lead time</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="leadTime"
+        <input type="text" id="customername-field" class="form-control"  formControlName="leadTime"
                [ngClass]="{ 'is-invalid': submitted && form['leadTime'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['leadTime'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['leadTime'].errors['required']">Lead time es requerido</div>
-        </div>
       </div>
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Volumen</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="volume"
+        <input type="text" id="customername-field" class="form-control"  formControlName="volume"
                [ngClass]="{ 'is-invalid': submitted && form['volume'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['volume'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['volume'].errors['required']">Volumen es requerido</div>
-        </div>
       </div>
 
       <div class="mb-3">

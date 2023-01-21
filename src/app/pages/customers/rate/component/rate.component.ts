@@ -65,10 +65,10 @@ export class RateComponent implements OnInit {
       id: ['0', [Validators.required]],
       customer: ['', [Validators.required]],
       route: ['', [Validators.required]],
-      leadTime: ['', [Validators.required]],
-      volume: ['', [Validators.required]],
+      leadTime: [''],
+      volume: [''],
       cost: ['', [Validators.required]],
-      observationRate: ['', [Validators.required]],
+      observationRate: [''],
       btnSave: []
     });
 

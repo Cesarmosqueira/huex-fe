@@ -101,11 +101,8 @@
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Cuenta bancaria</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="bankAccount"
+        <input type="text" id="customername-field" class="form-control"  formControlName="bankAccount"
                [ngClass]="{ 'is-invalid': submitted && form['bankAccount'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['bankAccount'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['bankAccount'].errors['required']">Cuenta bancaria es requerido</div>
-        </div>
       </div>
 
       <div class="mb-3">

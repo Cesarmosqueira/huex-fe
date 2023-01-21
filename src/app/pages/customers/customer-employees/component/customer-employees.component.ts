@@ -67,7 +67,7 @@ export class CustomerEmployeesComponent implements OnInit {
       id: ['0', [Validators.required]],
       status: ['', [Validators.required]],
       registerDate: ['', [Validators.required]],
-      observations: ['', [Validators.required]],
+      observations: [''],
       customer: ['', [Validators.required]],
       employee: ['', [Validators.required]],
     });

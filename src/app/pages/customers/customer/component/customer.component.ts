@@ -54,7 +54,7 @@ export class CustomerComponent implements OnInit {
       id: ['0', [Validators.required]],
       ruc: ['', [Validators.required]],
       socialReason: ['', [Validators.required]],
-      bankAccount: ['', [Validators.required]],
+      bankAccount: [''],
       registerDate: ['', [Validators.required]],
       btnSave: []
     });

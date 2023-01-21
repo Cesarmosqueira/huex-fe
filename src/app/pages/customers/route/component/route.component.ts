@@ -54,8 +54,8 @@ export class RouteComponent implements OnInit {
       routeStart: ['', [Validators.required]],
       routeEnd: ['', [Validators.required]],
       zone: ['', [Validators.required]],
-      distanceKM: ['', [Validators.required]],
-      gallons: ['', [Validators.required]],
+      distanceKM: [''],
+      gallons: [''],
       btnSave: []
     });
 

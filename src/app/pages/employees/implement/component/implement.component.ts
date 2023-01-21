@@ -53,7 +53,7 @@ export class ImplementComponent implements OnInit {
     this.implementForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
       name: ['', [Validators.required]],
-      description: ['', [Validators.required]],
+      description: [''],
     });
 
     this.implementsList.subscribe(x => {
