@@ -31,7 +31,8 @@
                 <th class="align-middle">ID</th>
                 <th class="align-middle">Ruta</th>
                 <th class="align-middle">Proveedor</th>
-                <th class="align-middle">Costo M3</th>
+                <th class="align-middle">Tipo costo</th>
+                <th class="align-middle">Costo</th>
                 <th class="align-middle">Observaciones</th>
                 <th class="align-middle">Acción</th>
               </tr>
@@ -43,7 +44,8 @@
                 </td>
                 <td>{{data.route.routeEnd}}</td>
                 <td>{{data.provider.businessName}}</td>
-                <td>{{data.costM3}}</td>
+                <td>{{data.costType}}</td>
+                <td>{{data.cost}}</td>
                 <td>{{data.observation}}</td>
                 <td>
                   <div class="d-flex gap-3">
@@ -106,12 +108,25 @@
         </div>
       </div>
 
+
+        <div class="mb-3">
+          <label for="customername-field" class="form-label">Tipo costo</label>
+          <ng-select [items]="['Costo Carro completo','Costo M3']" id="customername-field" required
+                     formControlName="costType"
+                     [ngClass]="{ 'is-invalid': submitted && form['costType'].errors }"></ng-select>
+          <div *ngIf="submitted && form['costType'].errors" class="invalid-feedback" align="left">
+            <div *ngIf="form['costType'].errors['required']">Tipo costo es requerido</div>
+          </div>
+        </div>
+
+
+
       <div class="mb-3">
-        <label for="customername-field" class="form-label">Costo M3</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="costM3"
-               [ngClass]="{ 'is-invalid': submitted && form['costM3'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['costM3'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['costM3'].errors['required']">Costo M3 es requerido</div>
+        <label for="customername-field" class="form-label">Costo</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="cost"
+               [ngClass]="{ 'is-invalid': submitted && form['cost'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['cost'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['cost'].errors['required']">Costo  es requerido</div>
         </div>
       </div>
 

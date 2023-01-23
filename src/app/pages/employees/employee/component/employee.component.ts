@@ -278,7 +278,7 @@ export class EmployeeComponent implements OnInit {
       var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
       updateBtn.innerHTML = "Actualizar";
     }
-    
+
     var listData = this.employees.filter((data: { id: any; }) => data.id === id);
     this.employeeForm.controls['id'].setValue(listData[0].id);
     this.employeeForm.controls['fullName'].setValue(listData[0].fullName);
