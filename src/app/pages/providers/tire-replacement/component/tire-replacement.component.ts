@@ -132,7 +132,7 @@ export class TireReplacementComponent implements OnInit {
       backdrop: 'static',
       keyboard: false,
       centered: true,
-      size: 'md'
+      size: 'lg'
     };
     this.modalService.open(content, ngbModalOptions);
   }

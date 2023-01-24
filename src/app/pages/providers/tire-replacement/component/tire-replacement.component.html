@@ -86,11 +86,12 @@
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
             (click)="modal.dismiss('Cross click')"></button>
   </div>
+  <div class="modal-body">
   <form (ngSubmit)="saveUser()" [formGroup]="tireReplacementForm">
     <div class="modal-body">
       <input type="text" hidden formControlName="id" value="0" />
-
-
+      <div class="row">
+      <div class="col-md-6">
       <div class="mb-3">
         <input type="text" hidden formControlName="id" value="0" />
         <label for="customername-field" class="form-label">Proveedor</label>
@@ -102,15 +103,20 @@
           <div *ngIf="form['provider'].errors['required']">Proveedor es requerido</div>
         </div>
       </div>
+      </div>
 
+      <div class="col-md-6">
       <div class="mb-3">
         <label>Fecha remplazo</label>
         <div class="input-group clockpicker">
           <input class="form-control" type="date" id="example-date-input" formControlName="replacementDate" autocomplete="disabled">
         </div>
       </div>
+      </div>
+      </div>
 
-
+      <div class="row">
+      <div class="col-md-6">
       <div class="mb-3">
         <label for="customername-field" class="form-label">Cantidad llantas</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="tireQuantity"
@@ -119,7 +125,9 @@
           <div *ngIf="form['tireQuantity'].errors['required']">Cantidad llantas es requerido</div>
         </div>
       </div>
+      </div>
 
+      <div class="col-md-6">
       <div class="mb-3">
         <label for="customername-field" class="form-label">Precio unidad</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="unitPrice"
@@ -128,7 +136,11 @@
           <div *ngIf="form['unitPrice'].errors['required']">Precio unidad es requerido</div>
         </div>
       </div>
+      </div>
+      </div>
 
+      <div class="row">
+      <div class="col-md-6">
       <div class="mb-3">
         <label for="customername-field" class="form-label">Precio total</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="totalPrice"
@@ -137,8 +149,9 @@
           <div *ngIf="form['totalPrice'].errors['required']">Precio total es requerido</div>
         </div>
       </div>
+      </div>
 
-
+      <div class="col-md-6">
       <div class="mb-3">
         <label for="customername-field" class="form-label">Marca</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="brand"
@@ -147,7 +160,11 @@
           <div *ngIf="form['brand'].errors['required']">Marca es requerido</div>
         </div>
       </div>
+      </div>
+      </div>
 
+      <div class="row">
+      <div class="col-md-6">
       <div class="mb-3">
         <label for="customername-field" class="form-label">Modelo</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="model"
@@ -156,7 +173,9 @@
           <div *ngIf="form['model'].errors['required']">Modelo es requerido</div>
         </div>
       </div>
+      </div>
 
+      <div class="col-md-6">
       <div class="mb-3">
         <label for="customername-field" class="form-label">Observaciones</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="observation"
@@ -164,6 +183,8 @@
         <div *ngIf="submitted && form['observation'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['observation'].errors['required']">Observaciones es requerido</div>
         </div>
+      </div>
+      </div>
       </div>
 
 
@@ -176,5 +197,6 @@
       </div>
     </div>
   </form>
+  </div>
 </ng-template>
 <!--End Modal -->
