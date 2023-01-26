@@ -198,7 +198,7 @@ export class ProviderComponent implements OnInit {
     this.pipe = new DatePipe('en-US');
     this.enableInputs();
 
-    this.modalService.open(content, { size: 'md', centered: true });
+    this.modalService.open(content, { size: 'lg', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
     modelTitle.innerHTML = 'Actualizar proveedores';
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;

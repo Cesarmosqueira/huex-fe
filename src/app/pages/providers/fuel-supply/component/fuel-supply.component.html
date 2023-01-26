@@ -48,7 +48,7 @@
                 <td>{{data.dateFuel.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                 <td>{{data.fuelQuantity}}</td>
                 <td>{{data.gallonPrice}}</td>
-                <td>{{data.totalPrice}}</td>
+                <td>{{data.fuelQuantity*data.gallonPrice}}</td>
                 <td>{{data.observation}}</td>
                 <td>
                   <div class="d-flex gap-3">
@@ -124,14 +124,6 @@
         </div>
       </div>
 
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Precio total</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="totalPrice"
-               [ngClass]="{ 'is-invalid': submitted && form['totalPrice'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['totalPrice'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['totalPrice'].errors['required']">Precio total es requerido</div>
-        </div>
-      </div>
 
 
       <div class="mb-3">

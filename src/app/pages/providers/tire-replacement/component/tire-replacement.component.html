@@ -31,11 +31,11 @@
                 <th class="align-middle">ID</th>
                 <th class="align-middle">Proveedor</th>
                 <th class="align-middle">Fecha remplazo</th>
+                <th class="align-middle">Marca</th>
+                <th class="align-middle">Modelo</th>
                 <th class="align-middle">Cantidad llanta</th>
                 <th class="align-middle">Precio unitario</th>
                 <th class="align-middle">Total</th>
-                <th class="align-middle">Marca</th>
-                <th class="align-middle">Modelo</th>
                 <th class="align-middle">Observacion</th>
                 <th class="align-middle">Acciones</th>
 
@@ -48,11 +48,11 @@
                 </td>
                 <td>{{data.provider.businessName}}</td>
                 <td>{{data.replacementDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
-                <td>{{data.tireQuantity}}</td>
-                <td>{{data.unitPrice}}</td>
-                <td>{{data.totalPrice}}</td>
                 <td>{{data.brand}}</td>
                 <td>{{data.model}}</td>
+                <td>{{data.tireQuantity}}</td>
+                <td>{{data.unitPrice}}</td>
+                <td>{{data.tireQuantity*data.unitPrice}}</td>
                 <td>{{data.observation}}</td>
                 <td>
                   <div class="d-flex gap-3">
@@ -107,7 +107,7 @@
 
       <div class="col-md-6">
       <div class="mb-3">
-        <label>Fecha remplazo</label>
+        <label>Fecha compra</label>
         <div class="input-group clockpicker">
           <input class="form-control" type="date" id="example-date-input" formControlName="replacementDate" autocomplete="disabled">
         </div>
@@ -140,16 +140,17 @@
       </div>
 
       <div class="row">
-      <div class="col-md-6">
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Precio total</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="totalPrice"
-               [ngClass]="{ 'is-invalid': submitted && form['totalPrice'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['totalPrice'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['totalPrice'].errors['required']">Precio total es requerido</div>
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Modelo</label>
+            <input type="text" id="customername-field" class="form-control" required formControlName="model"
+                   [ngClass]="{ 'is-invalid': submitted && form['model'].errors }" autocomplete="disabled" />
+            <div *ngIf="submitted && form['model'].errors" class="invalid-feedback" align="left">
+              <div *ngIf="form['model'].errors['required']">Modelo es requerido</div>
+            </div>
+          </div>
         </div>
-      </div>
-      </div>
 
       <div class="col-md-6">
       <div class="mb-3">
@@ -164,16 +165,6 @@
       </div>
 
       <div class="row">
-      <div class="col-md-6">
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Modelo</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="model"
-               [ngClass]="{ 'is-invalid': submitted && form['model'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['model'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['model'].errors['required']">Modelo es requerido</div>
-        </div>
-      </div>
-      </div>
 
       <div class="col-md-6">
       <div class="mb-3">
@@ -185,6 +176,7 @@
         </div>
       </div>
       </div>
+
       </div>
 
 
