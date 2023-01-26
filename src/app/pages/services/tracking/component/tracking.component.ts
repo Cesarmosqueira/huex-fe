@@ -49,7 +49,11 @@ export class TrackingComponent implements OnInit {
   selectRates=null;
 
   employees:Employee[]=[];
-  selectEmployee=null;
+  selectDriver=null;
+
+  selectCopilot=null;
+
+  selectStevedore=null;
 
   fileToUpload: any;
   imageUrl: any;
@@ -76,11 +80,9 @@ export class TrackingComponent implements OnInit {
       id: ['0', [Validators.required]],
       dateService: ['', [Validators.required]],
       idTruckFleet: [0, [Validators.required]],
-      volume: [0, [Validators.required]],
       requestedVolume: [0, [Validators.required]],
       bill: ['', [Validators.required]],
       destinationDetail: ['', [Validators.required]],
-      zone: ['', [Validators.required]],
       numberPoints: ['', [Validators.required]],
       serviceType: ['', [Validators.required]],
       additionalCost: ['', [Validators.required]],
@@ -200,11 +202,9 @@ export class TrackingComponent implements OnInit {
       const dateService = this.trackingForm.get('dateService')?.value;
       const fortmatDateService = this.pipe.transform(dateService, 'yyyy-MM-dd');
       const idTruckFleet = this.trackingForm.get('idTruckFleet')?.value;
-      const volume = this.trackingForm.get('volume')?.value;
       const requestedVolume = this.trackingForm.get('requestedVolume')?.value;
       const bill = this.trackingForm.get('bill')?.value;
       const destinationDetail = this.trackingForm.get('destinationDetail')?.value;
-      const zone = this.trackingForm.get('zone')?.value;
       const numberPoints = this.trackingForm.get('numberPoints')?.value;
       const serviceType = this.trackingForm.get('serviceType')?.value;
       const additionalCost = this.trackingForm.get('additionalCost')?.value;
@@ -233,11 +233,9 @@ export class TrackingComponent implements OnInit {
       let tracking = new Tracking();
       tracking.dateService = fortmatDateService;
       tracking.idTruckFleet = idTruckFleet;
-      tracking.volume = volume;
       tracking.requestedVolume = requestedVolume;
       tracking.bill = bill;
       tracking.destinationDetail = destinationDetail;
-      tracking.zone = zone;
       tracking.numberPoints = numberPoints;
       tracking.serviceType = serviceType;
       tracking.additionalCost = additionalCost;
@@ -305,11 +303,9 @@ export class TrackingComponent implements OnInit {
     const fortmatDateService = this.pipe.transform(dateService, 'yyyy-MM-dd');
     this.trackingForm.controls['dateService'].setValue(fortmatDateService);
     this.trackingForm.controls['idTruckFleet'].setValue(listData[0].idTruckFleet);
-    this.trackingForm.controls['volume'].setValue(listData[0].volume);
     this.trackingForm.controls['requestedVolume'].setValue(listData[0].requestedVolume);
     this.trackingForm.controls['bill'].setValue(listData[0].bill);
     this.trackingForm.controls['destinationDetail'].setValue(listData[0].destinationDetail);
-    this.trackingForm.controls['zone'].setValue(listData[0].zone);
     this.trackingForm.controls['numberPoints'].setValue(listData[0].numberPoints);
     this.trackingForm.controls['serviceType'].setValue(listData[0].serviceType);
     this.trackingForm.controls['additionalCost'].setValue(listData[0].additionalCost);
@@ -461,11 +457,9 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['id'].setValue("0");
     this.trackingForm.controls['dateService'].setValue("");
     this.trackingForm.controls['idTruckFleet'].setValue("");
-    this.trackingForm.controls['volume'].setValue("");
     this.trackingForm.controls['requestedVolume'].setValue("");
     this.trackingForm.controls['bill'].setValue("");
     this.trackingForm.controls['destinationDetail'].setValue("");
-    this.trackingForm.controls['zone'].setValue("");
     this.trackingForm.controls['numberPoints'].setValue("");
     this.trackingForm.controls['serviceType'].setValue("");
     this.trackingForm.controls['additionalCost'].setValue("");
@@ -493,11 +487,9 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['id'].disable();
     this.trackingForm.controls['dateService'].disable();
     this.trackingForm.controls['idTruckFleet'].disable();
-    this.trackingForm.controls['volume'].disable();
     this.trackingForm.controls['requestedVolume'].disable();
     this.trackingForm.controls['bill'].disable();
     this.trackingForm.controls['destinationDetail'].disable();
-    this.trackingForm.controls['zone'].disable();
     this.trackingForm.controls['numberPoints'].disable();
     this.trackingForm.controls['serviceType'].disable();
     this.trackingForm.controls['additionalCost'].disable();
@@ -524,11 +516,9 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['id'].setValue("0");
     this.trackingForm.controls['dateService'].enable();
     this.trackingForm.controls['idTruckFleet'].enable();
-    this.trackingForm.controls['volume'].enable();
     this.trackingForm.controls['requestedVolume'].enable();
     this.trackingForm.controls['bill'].enable();
     this.trackingForm.controls['destinationDetail'].enable();
-    this.trackingForm.controls['zone'].enable();
     this.trackingForm.controls['numberPoints'].enable();
     this.trackingForm.controls['serviceType'].enable();
     this.trackingForm.controls['additionalCost'].enable();
@@ -668,5 +658,4 @@ export class TrackingComponent implements OnInit {
           });
         });
   }
-
 }
