@@ -143,16 +143,20 @@
                   </div>
                 </div>
               </div>
+
               <div class="col-lg-3">
                 <div class="mb-3">
-                  <label for="customername-field" class="form-label">Flota Camion</label>
-                  <ng-select [items]="['DNI','CARMET','PASAPORTE','PTP','CEDULA']" id="customername-field" required
-                    formControlName="idTruckFleet"
-                    [ngClass]="{ 'is-invalid': submitted && form['idTruckFleet'].errors }"></ng-select>
+                  <input type="text" hidden formControlName="id" value="0" />
+                  <label for="customername-field" class="form-label">Camion</label>
+                  <ng-select [items]="truckFleets" bindLabel="tractPlate" placeholder="Seleccione Camion"
+                             [(ngModel)]="selectTruckFleet" id="customername-field" [clearable]="false" required
+                             formControlName="idTruckFleet" [ngClass]="{ 'is-invalid': submitted && form['idTruckFleet'].errors }">
+                  </ng-select>
                   <div *ngIf="submitted && form['idTruckFleet'].errors" class="invalid-feedback" align="left">
-                    <div *ngIf="form['idTruckFleet'].errors['required']">Flota Camion es requerido</div>
+                    <div *ngIf="form['idTruckFleet'].errors['required']">Ruta es requerido</div>
                   </div>
                 </div>
+
               </div>
               <div class="col-lg-3">
                 <div class="mb-3">
@@ -299,52 +303,72 @@
                   </div>
                 </div>
               </div>
+
               <div class="col-lg-3">
                 <div class="mb-3">
+                  <input type="text" hidden formControlName="id" value="0" />
                   <label for="customername-field" class="form-label">Tarifa</label>
-                  <ng-select [items]="['LABORANDO','RETIRADO','BLOQUEADO']" id="customername-field" required
-                    formControlName="idRates"
-                    [ngClass]="{ 'is-invalid': submitted && form['idRates'].errors }"></ng-select>
+
+                  <ng-select [items]="rates" bindLabel="customer.socialReason">
+                    <ng-template ng-label-tmp let-item="item">
+                      <span >{{ item.customer.socialReason + '/' + item.route.routeEnd }}</span>
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                      <span >{{ item.customer.socialReason + '/' + item.route.routeEnd }}</span>
+                    </ng-template>
+                  </ng-select>
+
                   <div *ngIf="submitted && form['idRates'].errors" class="invalid-feedback" align="left">
                     <div *ngIf="form['idRates'].errors['required']">Tarifa es requerido</div>
                   </div>
                 </div>
               </div>
+
               <div class="col-lg-3">
                 <div class="mb-3">
+                  <input type="text" hidden formControlName="id" value="0" />
                   <label for="customername-field" class="form-label">Chofer</label>
-                  <ng-select [items]="['LABORANDO','RETIRADO','BLOQUEADO']" id="customername-field" required
-                    formControlName="idDriver"
-                    [ngClass]="{ 'is-invalid': submitted && form['idDriver'].errors }"></ng-select>
+                  <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Chofer"
+                             [(ngModel)]="selectEmployee" id="customername-field" [clearable]="false" required
+                             formControlName="idDriver" [ngClass]="{ 'is-invalid': submitted && form['idDriver'].errors }">
+                  </ng-select>
                   <div *ngIf="submitted && form['idDriver'].errors" class="invalid-feedback" align="left">
                     <div *ngIf="form['idDriver'].errors['required']">Chofer es requerido</div>
                   </div>
                 </div>
+
               </div>
+
               <div class="col-lg-3">
                 <div class="mb-3">
+                  <input type="text" hidden formControlName="id" value="0" />
                   <label for="customername-field" class="form-label">Copiloto</label>
-                  <ng-select [items]="['LABORANDO','RETIRADO','BLOQUEADO']" id="customername-field" required
-                    formControlName="idCopilot"
-                    [ngClass]="{ 'is-invalid': submitted && form['idCopilot'].errors }"></ng-select>
+                  <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Chofer"
+                             [(ngModel)]="selectEmployee" id="customername-field" [clearable]="false" required
+                             formControlName="idCopilot" [ngClass]="{ 'is-invalid': submitted && form['idCopilot'].errors }">
+                  </ng-select>
                   <div *ngIf="submitted && form['idCopilot'].errors" class="invalid-feedback" align="left">
                     <div *ngIf="form['idCopilot'].errors['required']">Copiloto es requerido</div>
                   </div>
                 </div>
               </div>
+
             </div>
             <div class="row">
               <div class="col-lg-3">
                 <div class="mb-3">
+                  <input type="text" hidden formControlName="id" value="0" />
                   <label for="customername-field" class="form-label">Estibador</label>
-                  <ng-select [items]="['LABORANDO','RETIRADO','BLOQUEADO']" id="customername-field" required
-                    formControlName="idStevedore"
-                    [ngClass]="{ 'is-invalid': submitted && form['idStevedore'].errors }"></ng-select>
+                  <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Chofer"
+                             [(ngModel)]="selectEmployee" id="customername-field" [clearable]="false" required
+                             formControlName="idStevedore" [ngClass]="{ 'is-invalid': submitted && form['idStevedore'].errors }">
+                  </ng-select>
                   <div *ngIf="submitted && form['idStevedore'].errors" class="invalid-feedback" align="left">
                     <div *ngIf="form['idStevedore'].errors['required']">Estibador es requerido</div>
                   </div>
                 </div>
               </div>
+
               <div class="col-lg-3">
                 <div class="mb-3">
                   <label>Fecha hora Culminacion</label>
@@ -426,7 +450,7 @@
           </div>
           <div class="row">
             <div class="col-lg-3">
-              
+
             </div>
           </div>
         </ng-template>

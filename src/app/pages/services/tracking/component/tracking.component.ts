@@ -8,6 +8,13 @@ import { config } from 'src/app/shared/shared.config';
 import Swal from 'sweetalert2';
 import { Tracking } from "../models/tracking.model";
 import { TrackingService } from "../services/tracking.service";
+import {Customer} from "../../../customers/customer/models/customer.model";
+import {TruckFleet} from "../../../vehicles/truck-fleet/models/truck-fleet.model";
+import {Rate} from "../../../customers/rate/models/rate.model";
+import {Employee} from "../../../employees/employee/models/employee.model";
+import {TruckFleetService} from "../../../vehicles/truck-fleet/services/truck-fleet.service";
+import {RateService} from "../../../customers/rate/services/rate.service";
+import {EmployeeService} from "../../../employees/employee/services/employee.service";
 
 @Component({
   selector: 'app-tracking',
@@ -34,6 +41,16 @@ export class TrackingComponent implements OnInit {
   trackingsList!: Observable<Tracking[]>;
   total: Observable<number>;
   pipe: any;
+
+  truckFleets:TruckFleet[]=[];
+  selectTruckFleet=null;
+
+  rates:Rate[]=[];
+  selectRates=null;
+
+  employees:Employee[]=[];
+  selectEmployee=null;
+
   fileToUpload: any;
   imageUrl: any;
   fileList: FileList;
@@ -41,6 +58,9 @@ export class TrackingComponent implements OnInit {
 
   constructor(public service: TrackingService,
     private modalService: NgbModal,
+    private serviceTruckFlett:TruckFleetService,
+    private servicesRate:RateService,
+    private serviceEmployee:EmployeeService,
     private formBuilder: UntypedFormBuilder) {
     this.trackingsList = service.countries$;
     this.total = service.total$;
@@ -91,6 +111,9 @@ export class TrackingComponent implements OnInit {
     this.idTrackingOuput = 0;
     console.log(this.idTrackingOuput);
 
+    this.listRates();
+    this.listEmployees();
+    this.listTruckFleet();
     this.listTrackings();
   }
 
@@ -554,6 +577,87 @@ export class TrackingComponent implements OnInit {
               title: "Ocurrio un error",
               showConfirmButton: false,
             });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listTruckFleet() {
+    this.serviceTruckFlett.listTruckFleets()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.truckFleets = response.datos.truckFleets;
+              console.log(this.truckFleets);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listRates() {
+    this.servicesRate.listRates()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.rates = response.datos.rates;
+              console.log(this.rates);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listEmployees() {
+    this.serviceEmployee.listEmployees()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.employees = response.datos.employees;
+              console.log(this.employees);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
           }
         },
         error => {
