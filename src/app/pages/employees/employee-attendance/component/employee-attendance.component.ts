@@ -130,6 +130,7 @@ export class EmployeeAttendanceComponent implements OnInit {
       centered: true,
       size: 'md'
     };
+    this.selectEmployee=null;
     this.modalService.open(content, ngbModalOptions);
   }
 
@@ -198,6 +199,8 @@ export class EmployeeAttendanceComponent implements OnInit {
     this.employeeAttendanceForm.controls['employee'].setValue(listData[0].employee);
     this.employeeAttendanceForm.controls['attendanceDate'].setValue(fortmatattendanceDate);
     this.employeeAttendanceForm.controls['status'].setValue(listData[0].status);
+    this.selectEmployee=listData[0].employee.fullName;
+
     this.idEmployeeAttendanceOuput = id;
 
   }

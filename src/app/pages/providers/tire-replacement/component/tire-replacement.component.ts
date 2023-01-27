@@ -133,6 +133,7 @@ export class TireReplacementComponent implements OnInit {
       centered: true,
       size: 'lg'
     };
+    this.selectProvider=null;
     this.modalService.open(content, ngbModalOptions);
   }
 
@@ -214,6 +215,8 @@ export class TireReplacementComponent implements OnInit {
     this.tireReplacementForm.controls['brand'].setValue(listData[0].brand);
     this.tireReplacementForm.controls['model'].setValue(listData[0].model);
     this.tireReplacementForm.controls['observation'].setValue(listData[0].observation);
+    this.selectProvider=listData[0].providers.businessName;
+
     this.idTireReplacementOuput = id;
   }
 

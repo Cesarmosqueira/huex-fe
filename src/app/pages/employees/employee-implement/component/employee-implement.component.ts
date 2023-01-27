@@ -139,6 +139,8 @@ export class EmployeeImplementComponent implements OnInit {
       centered: true,
       size: 'md'
     };
+    this.selectImplement=null;
+    this.selectEmployee=null;
     this.modalService.open(content, ngbModalOptions);
   }
 
@@ -212,6 +214,9 @@ export class EmployeeImplementComponent implements OnInit {
     this.employeeImplementForm.controls['implement'].setValue(listData[0].implement);
     this.employeeImplementForm.controls['deliveryDate'].setValue(fortmatdeliveryDate);
     this.employeeImplementForm.controls['observations'].setValue(listData[0].observations);
+    this.selectEmployee=listData[0].employee.fullName;
+    this.selectImplement=listData[0].implement.name;
+
     this.idEmployeeImplemntOuput = id;
 
   }

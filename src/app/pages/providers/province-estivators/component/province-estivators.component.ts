@@ -141,6 +141,8 @@ export class ProvinceEstivatorsComponent implements OnInit {
       centered: true,
       size: 'md'
     };
+    this.selectRoute=null;
+    this.selectProvider=null;
     this.modalService.open(content, ngbModalOptions);
   }
 
@@ -214,6 +216,9 @@ export class ProvinceEstivatorsComponent implements OnInit {
     this.provinceEstivatorForm.controls['costType'].setValue(listData[0].costType);
     this.provinceEstivatorForm.controls['cost'].setValue(listData[0].cost);
     this.provinceEstivatorForm.controls['observation'].setValue(listData[0].observation);
+    this.selectProvider=listData[0].provider.businessName;
+    this.selectRoute=listData[0].route.routeEnd;
+
     this.idProvinceEstivatorOuput = id;
 
   }

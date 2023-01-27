@@ -132,6 +132,7 @@ export class EmployeeDiscountComponent implements OnInit {
       centered: true,
       size: 'md'
     };
+    this.selectEmployee=null;
     this.modalService.open(content, ngbModalOptions);  }
 
   /**
@@ -200,6 +201,7 @@ export class EmployeeDiscountComponent implements OnInit {
     this.employeeDiscountForm.controls['date'].setValue(fortmatdate);
     this.employeeDiscountForm.controls['observations'].setValue(listData[0].observations);
     this.employeeDiscountForm.controls['charge'].setValue(listData[0].charge);
+    this.selectEmployee=listData[0].employee.fullName;
     this.idEmployeeDiscountOuput = id;
   }
 

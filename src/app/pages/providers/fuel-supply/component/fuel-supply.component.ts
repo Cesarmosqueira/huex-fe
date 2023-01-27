@@ -130,6 +130,7 @@ export class FuelSupplyComponent implements OnInit {
       centered: true,
       size: 'md'
     };
+    this.selectProvider=null;
     this.modalService.open(content, ngbModalOptions);
   }
 
@@ -203,6 +204,7 @@ export class FuelSupplyComponent implements OnInit {
     this.fuelSupplyForm.controls['fuelQuantity'].setValue(listData[0].fuelQuantity);
     this.fuelSupplyForm.controls['gallonPrice'].setValue(listData[0].gallonPrice);
     this.fuelSupplyForm.controls['observation'].setValue(listData[0].observation);
+    this.selectProvider=listData[0].provider.businessName;
     this.idFuelSupplyOuput = id;
   }
 

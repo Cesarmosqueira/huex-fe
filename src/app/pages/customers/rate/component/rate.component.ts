@@ -140,6 +140,8 @@ export class RateComponent implements OnInit {
       centered: true,
       size: 'md'
     };
+    this.selectCustomer=null;
+    this.selectRoute=null;
     this.modalService.open(content, ngbModalOptions);
   }
 
@@ -217,6 +219,9 @@ export class RateComponent implements OnInit {
     this.rateForm.controls['volume'].setValue(listData[0].volume);
     this.rateForm.controls['cost'].setValue(listData[0].cost);
     this.rateForm.controls['observationRate'].setValue(listData[0].observationRate);
+    this.selectRoute=listData[0].route.routeEnd;
+    this.selectCustomer=listData[0].customer.socialReason;
+
     this.idRateOuput = id;
   }
 
