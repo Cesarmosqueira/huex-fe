@@ -133,7 +133,8 @@ export class TruckFleetComponent implements OnInit {
       centered: true,
       size: 'xl'
     };
-    
+    this.selectProvider = null;
+
     this.modalService.open(content, ngbModalOptions);
   }
 
@@ -159,7 +160,6 @@ export class TruckFleetComponent implements OnInit {
       const fleetType = this.truckFleetForm.get('fleetType')?.value;
 
       let truckFleet = new TruckFleet();
-      truckFleet.idProvider = idProvider;
       truckFleet.tractPlate = tractPlate;
       truckFleet.vanPlate = vanPlate;
       truckFleet.brand = brand;
@@ -170,9 +170,10 @@ export class TruckFleetComponent implements OnInit {
       truckFleet.model = model;
       truckFleet.highWideLong = highWideLong;
       truckFleet.fleetType = fleetType;
+      let provider = new Providers();
+      provider.id = idProvider;
+      truckFleet.provider = provider;
       const id = this.truckFleetForm.get('id')?.value;
-      console.log(truckFleet);
-      console.log(id);
       if (id == '0') {
         this.registerTruckFleet(truckFleet);
       } else {
@@ -208,7 +209,8 @@ export class TruckFleetComponent implements OnInit {
     this.truckFleetForm.controls['highWideLong'].setValue(listData[0].highWideLong);
     this.truckFleetForm.controls['fleetType'].setValue(listData[0].fleetType);
     this.truckFleetForm.controls['tonNumber'].setValue(listData[0].tonNumber);
-    this.selectProvider = this.providers.filter(c => c.id === listData[0].idProvider)[0];
+    this.truckFleetForm.controls['idProvider'].setValue(listData[0].provider.id);
+    this.selectProvider = listData[0].provider.businessName;
     this.idTruckFleetOuput = id;
   }
 

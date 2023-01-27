@@ -1,6 +1,7 @@
+import { Providers } from "src/app/pages/providers/provider/models/providers.model";
+
 export class TruckFleet {
     id: any;
-    idProvider: any;
     tractPlate?: string;
     vanPlate: string;
     brand: string;
@@ -12,4 +13,5 @@ export class TruckFleet {
     model: string;
     highWideLong: string;
     fleetType: string;
+    provider: Providers;
 }
