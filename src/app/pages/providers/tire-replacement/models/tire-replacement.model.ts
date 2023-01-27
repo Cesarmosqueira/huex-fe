@@ -6,7 +6,6 @@ export class TireReplacement {
   replacementDate:any;
   tireQuantity:number;
   unitPrice:number;
-  totalPrice:number;
   brand:string;
   model:string;
   observation:string;

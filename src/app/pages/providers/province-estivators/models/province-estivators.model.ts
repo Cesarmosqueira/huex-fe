@@ -5,6 +5,8 @@ export class ProvinceEstivators {
   id:any;
   route:Route;
   provider:Providers;
-  costM3:number;
+  costType:String;
+  cost:number;
   observation:string;
+
 }

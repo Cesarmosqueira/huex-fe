@@ -61,7 +61,6 @@ export class TireReplacementComponent implements OnInit {
       replacementDate: ['', [Validators.required]],
       tireQuantity: ['', [Validators.required]],
       unitPrice: ['', [Validators.required]],
-      totalPrice: ['', [Validators.required]],
       brand: ['', [Validators.required]],
       model: ['', [Validators.required]],
       observation: ['', [Validators.required]],
@@ -132,7 +131,7 @@ export class TireReplacementComponent implements OnInit {
       backdrop: 'static',
       keyboard: false,
       centered: true,
-      size: 'md'
+      size: 'lg'
     };
     this.modalService.open(content, ngbModalOptions);
   }
@@ -156,7 +155,6 @@ export class TireReplacementComponent implements OnInit {
       const fortmatreplacementDate = this.pipe.transform(replacementDate, 'yyyy-MM-dd');
       const tireQuantity = this.tireReplacementForm.get('tireQuantity')?.value;
       const unitPrice = this.tireReplacementForm.get('unitPrice')?.value;
-      const totalPrice = this.tireReplacementForm.get('totalPrice')?.value;
       const brand = this.tireReplacementForm.get('brand')?.value;
       const model = this.tireReplacementForm.get('model')?.value;
       const observation = this.tireReplacementForm.get('observation')?.value;
@@ -171,7 +169,6 @@ export class TireReplacementComponent implements OnInit {
       tireReplacement.replacementDate = fortmatreplacementDate;
       tireReplacement.tireQuantity = tireQuantity;
       tireReplacement.unitPrice = unitPrice;
-      tireReplacement.totalPrice = totalPrice;
       tireReplacement.brand = brand;
       tireReplacement.model = model;
       tireReplacement.observation = observation;
@@ -201,7 +198,7 @@ export class TireReplacementComponent implements OnInit {
   editDataGet(id: any, content: any) {
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
-    this.modalService.open(content, { size: 'md', centered: true });
+    this.modalService.open(content, { size: 'lg', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
     modelTitle.innerHTML = 'Actualizar proveedores llantas';
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
@@ -214,7 +211,6 @@ export class TireReplacementComponent implements OnInit {
     this.tireReplacementForm.controls['replacementDate'].setValue(fortmatreplacementDate);
     this.tireReplacementForm.controls['tireQuantity'].setValue(listData[0].tireQuantity);
     this.tireReplacementForm.controls['unitPrice'].setValue(listData[0].unitPrice);
-    this.tireReplacementForm.controls['totalPrice'].setValue(listData[0].totalPrice);
     this.tireReplacementForm.controls['brand'].setValue(listData[0].brand);
     this.tireReplacementForm.controls['model'].setValue(listData[0].model);
     this.tireReplacementForm.controls['observation'].setValue(listData[0].observation);
@@ -334,7 +330,6 @@ export class TireReplacementComponent implements OnInit {
     this.tireReplacementForm.controls['replacementDate'].setValue("");
     this.tireReplacementForm.controls['tireQuantity'].setValue("");
     this.tireReplacementForm.controls['unitPrice'].setValue("");
-    this.tireReplacementForm.controls['totalPrice'].setValue("");
     this.tireReplacementForm.controls['brand'].setValue("");
     this.tireReplacementForm.controls['model'].setValue("");
     this.tireReplacementForm.controls['observation'].setValue("");
@@ -346,7 +341,6 @@ export class TireReplacementComponent implements OnInit {
     this.tireReplacementForm.controls['replacementDate'].enable();
     this.tireReplacementForm.controls['tireQuantity'].enable();
     this.tireReplacementForm.controls['unitPrice'].enable();
-    this.tireReplacementForm.controls['totalPrice'].enable();
     this.tireReplacementForm.controls['brand'].enable();
     this.tireReplacementForm.controls['model'].enable();
     this.tireReplacementForm.controls['observation'].enable();

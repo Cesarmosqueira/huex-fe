@@ -162,7 +162,7 @@ export class UserComponent implements OnInit {
    */
   validation() {
 
-    if (!this.userForm.valid) {
+    /*if (!this.userForm.valid) {
       Swal.fire({
         icon: config.ERROR,
         title: "Debe Completar todos los datos del Usuario",
@@ -178,10 +178,9 @@ export class UserComponent implements OnInit {
         showConfirmButton: false,
       });
       return false;
-    }
+    }*/
 
     return true;
-
   }
 
   saveUser() {
@@ -256,7 +255,7 @@ export class UserComponent implements OnInit {
     this.enableInputs();
     this.userForm.reset();
     var listData = this.users.filter((data: { id: any; }) => data.id === id);
-    
+
     this.userForm.controls['id'].setValue(listData[0].id);
     this.userForm.controls['idEmployee'].setValue(listData[0].employee.fullName);
     this.userForm.controls['userName'].setValue(listData[0].userName);
@@ -382,7 +381,7 @@ export class UserComponent implements OnInit {
                 'El usuario ha sido eliminado.',
                 'success'
               );
-              
+
               this.listUsers();
             } else {
               Swal.fire({

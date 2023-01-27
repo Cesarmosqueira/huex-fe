@@ -185,7 +185,7 @@ export class CustomerEmployeesComponent implements OnInit {
         customerEmployees.id = id;
         this.updateCustomerEmployees(customerEmployees);
       }
-
+      this.clear();
       this.modalService.dismissAll();
       setTimeout(() => {
         this.customerEmployeesForm.reset();

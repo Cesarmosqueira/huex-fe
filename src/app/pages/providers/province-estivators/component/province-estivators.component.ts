@@ -66,7 +66,8 @@ export class ProvinceEstivatorsComponent implements OnInit {
       id: ['0', [Validators.required]],
       route: ['', [Validators.required]],
       provider: ['', [Validators.required]],
-      costM3: ['', [Validators.required]],
+      costType: ['', [Validators.required]],
+      cost: ['', [Validators.required]],
       observation: ['', [Validators.required]],
       btnSave: []
 
@@ -159,7 +160,8 @@ export class ProvinceEstivatorsComponent implements OnInit {
       this.pipe = new DatePipe('en-US');
       const routeId = this.selectRoute.id;
       const providerId =this.selectProvider.id;
-      const costM3 = this.provinceEstivatorForm.get('costM3')?.value;
+      const costType = this.provinceEstivatorForm.get('costType')?.value;
+      const cost = this.provinceEstivatorForm.get('cost')?.value;
       const observation = this.provinceEstivatorForm.get('observation')?.value;
 
       let provinceEstivators = new ProvinceEstivators();
@@ -170,7 +172,8 @@ export class ProvinceEstivatorsComponent implements OnInit {
 
       provinceEstivators.route = routes;
       provinceEstivators.provider = providers;
-      provinceEstivators.costM3 = costM3;
+      provinceEstivators.costType = costType;
+      provinceEstivators.cost = cost;
       provinceEstivators.observation = observation;
 
       const id = this.provinceEstivatorForm.get('id')?.value;
@@ -208,7 +211,8 @@ export class ProvinceEstivatorsComponent implements OnInit {
     this.provinceEstivatorForm.controls['id'].setValue(listData[0].id);
     this.provinceEstivatorForm.controls['route'].setValue(listData[0].route);
     this.provinceEstivatorForm.controls['provider'].setValue(listData[0].provider);
-    this.provinceEstivatorForm.controls['costM3'].setValue(listData[0].costM3);
+    this.provinceEstivatorForm.controls['costType'].setValue(listData[0].costType);
+    this.provinceEstivatorForm.controls['cost'].setValue(listData[0].cost);
     this.provinceEstivatorForm.controls['observation'].setValue(listData[0].observation);
     this.idProvinceEstivatorOuput = id;
 
@@ -324,7 +328,8 @@ export class ProvinceEstivatorsComponent implements OnInit {
     this.provinceEstivatorForm.controls['id'].setValue("0");
     this.provinceEstivatorForm.controls['route'].setValue("");
     this.provinceEstivatorForm.controls['provider'].setValue("");
-    this.provinceEstivatorForm.controls['costM3'].setValue("");
+    this.provinceEstivatorForm.controls['costType'].setValue("");
+    this.provinceEstivatorForm.controls['cost'].setValue("");
     this.provinceEstivatorForm.controls['observation'].setValue("");
   }
 
@@ -332,7 +337,8 @@ export class ProvinceEstivatorsComponent implements OnInit {
     this.provinceEstivatorForm.controls['id'].enable();
     this.provinceEstivatorForm.controls['route'].enable();
     this.provinceEstivatorForm.controls['provider'].enable();
-    this.provinceEstivatorForm.controls['costM3'].enable();
+    this.provinceEstivatorForm.controls['costType'].enable();
+    this.provinceEstivatorForm.controls['cost'].enable();
     this.provinceEstivatorForm.controls['observation'].enable();
   }
 

@@ -2,11 +2,9 @@ export class Tracking {
 	id: any;
 	dateService: Date;
 	idTruckFleet: any;
-	volume: any;
 	requestedVolume: any;
 	bill: string;
 	destinationDetail: string;
-	zone: string;
 	numberPoints: any;
 	serviceType: string;
 	additionalCost: string;

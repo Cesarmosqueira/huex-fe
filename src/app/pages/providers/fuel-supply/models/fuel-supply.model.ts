@@ -6,6 +6,5 @@ export class FuelSupply {
   dateFuel:any;
   fuelQuantity:number;
   gallonPrice:number;
-  totalPrice:number;
   observation:string;
 }
