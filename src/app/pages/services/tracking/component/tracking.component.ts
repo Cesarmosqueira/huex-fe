@@ -232,7 +232,7 @@ export class TrackingComponent implements OnInit {
 
       let tracking = new Tracking();
       tracking.dateService = fortmatDateService;
-      tracking.idTruckFleet = idTruckFleet;
+      tracking.truckFleet = idTruckFleet;
       tracking.requestedVolume = requestedVolume;
       tracking.bill = bill;
       tracking.destinationDetail = destinationDetail;
@@ -244,10 +244,10 @@ export class TrackingComponent implements OnInit {
       tracking.datePrecharge = fortmatDatePrecharge;
       tracking.preloadStatus = preloadStatus;
       tracking.scheduledAppointment = fortmatScheduledAppointment;
-      tracking.idRates = idRates;
-      tracking.idDriver = idDriver;
-      tracking.idCopilot = idCopilot;
-      tracking.idStevedore = idStevedore;
+      tracking.rate = idRates;
+      tracking.driver = idDriver;
+      tracking.copilot = idCopilot;
+      tracking.stevedore = idStevedore;
       tracking.dateTimeCompletion = fortmatDateTimeCompletion;
       tracking.weightLoad = weightLoad;
       tracking.moneyDelivered = moneyDelivered;
@@ -356,7 +356,7 @@ export class TrackingComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.trackings;
+              this.test = response.datos.trackingsService;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
@@ -389,7 +389,7 @@ export class TrackingComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              const trackingsDto = response.datos.tracking;
+              const trackingsDto = response.datos.trackingService;
               this.idTrackingOuput = trackingsDto.id;
               this.listTrackings();
             } else {
@@ -456,7 +456,7 @@ export class TrackingComponent implements OnInit {
   clear() {
     this.trackingForm.controls['id'].setValue("0");
     this.trackingForm.controls['dateService'].setValue("");
-    this.trackingForm.controls['idTruckFleet'].setValue("");
+    this.trackingForm.controls['truckFleet'].setValue("");
     this.trackingForm.controls['requestedVolume'].setValue("");
     this.trackingForm.controls['bill'].setValue("");
     this.trackingForm.controls['destinationDetail'].setValue("");
@@ -468,10 +468,10 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['datePrecharge'].setValue("");
     this.trackingForm.controls['preloadStatus'].setValue("");
     this.trackingForm.controls['scheduledAppointment'].setValue("");
-    this.trackingForm.controls['idRates'].setValue("");
-    this.trackingForm.controls['idDriver'].setValue("");
-    this.trackingForm.controls['idCopilot'].setValue("");
-    this.trackingForm.controls['idStevedore'].setValue("");
+    this.trackingForm.controls['rate'].setValue("");
+    this.trackingForm.controls['driver'].setValue("");
+    this.trackingForm.controls['copilot'].setValue("");
+    this.trackingForm.controls['stevedore'].setValue("");
     this.trackingForm.controls['dateTimeCompletion'].setValue("");
     this.trackingForm.controls['weightLoad'].setValue("");
     this.trackingForm.controls['moneyDelivered'].setValue("");
@@ -486,7 +486,7 @@ export class TrackingComponent implements OnInit {
   disableInputs() {
     this.trackingForm.controls['id'].disable();
     this.trackingForm.controls['dateService'].disable();
-    this.trackingForm.controls['idTruckFleet'].disable();
+    this.trackingForm.controls['truckFleet'].disable();
     this.trackingForm.controls['requestedVolume'].disable();
     this.trackingForm.controls['bill'].disable();
     this.trackingForm.controls['destinationDetail'].disable();
@@ -498,10 +498,10 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['datePrecharge'].disable();
     this.trackingForm.controls['preloadStatus'].disable();
     this.trackingForm.controls['scheduledAppointment'].disable();
-    this.trackingForm.controls['idRates'].disable();
-    this.trackingForm.controls['idDriver'].disable();
-    this.trackingForm.controls['idCopilot'].disable();
-    this.trackingForm.controls['idStevedore'].disable();
+    this.trackingForm.controls['rate'].disable();
+    this.trackingForm.controls['driver'].disable();
+    this.trackingForm.controls['driver'].disable();
+    this.trackingForm.controls['stevedore'].disable();
     this.trackingForm.controls['dateTimeCompletion'].disable();
     this.trackingForm.controls['weightLoad'].disable();
     this.trackingForm.controls['moneyDelivered'].disable();
@@ -515,7 +515,7 @@ export class TrackingComponent implements OnInit {
   enableInputs() {
     this.trackingForm.controls['id'].setValue("0");
     this.trackingForm.controls['dateService'].enable();
-    this.trackingForm.controls['idTruckFleet'].enable();
+    this.trackingForm.controls['truckFleet'].enable();
     this.trackingForm.controls['requestedVolume'].enable();
     this.trackingForm.controls['bill'].enable();
     this.trackingForm.controls['destinationDetail'].enable();
@@ -527,10 +527,10 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['datePrecharge'].enable();
     this.trackingForm.controls['preloadStatus'].enable();
     this.trackingForm.controls['scheduledAppointment'].enable();
-    this.trackingForm.controls['idRates'].enable();
-    this.trackingForm.controls['idDriver'].enable();
-    this.trackingForm.controls['idCopilot'].enable();
-    this.trackingForm.controls['idStevedore'].enable();
+    this.trackingForm.controls['rate'].enable();
+    this.trackingForm.controls['driver'].enable();
+    this.trackingForm.controls['copilot'].enable();
+    this.trackingForm.controls['stevedore'].enable();
     this.trackingForm.controls['dateTimeCompletion'].enable();
     this.trackingForm.controls['weightLoad'].enable();
     this.trackingForm.controls['moneyDelivered'].enable();

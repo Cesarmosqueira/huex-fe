@@ -1,7 +1,7 @@
 export class Tracking {
 	id: any;
 	dateService: Date;
-	idTruckFleet: any;
+  truckFleet: any;
 	requestedVolume: any;
 	bill: string;
 	destinationDetail: string;
@@ -13,10 +13,10 @@ export class Tracking {
 	datePrecharge: Date;
 	preloadStatus: string;
 	scheduledAppointment: Date;
-	idRates: any;
-	idDriver: any;
-	idCopilot: any;
-	idStevedore: any;
+  rate: any;
+  driver: any;
+  copilot: any;
+  stevedore: any;
 	dateTimeCompletion: Date;
 	weightLoad: any;
 	moneyDelivered: any;

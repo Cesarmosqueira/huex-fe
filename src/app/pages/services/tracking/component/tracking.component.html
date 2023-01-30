@@ -31,19 +31,19 @@
                 <tr>
                   <th class="align-middle">ID</th>
                   <th class="align-middle">Fecha servicio</th>
-                  <th class="align-middle">Flota Camion</th>
+                  <th class="align-middle">Placa Tracto</th>
+                  <th class="align-middle">Placa Furgon</th>
                   <th class="align-middle">Volumen</th>
                   <th class="align-middle">Volumen Solicitado</th>
                   <th class="align-middle">Detalle Destino</th>
                   <th class="align-middle">Cantidad Puntos</th>
-                  <th class="align-middle">Zona</th>
                   <th class="align-middle">Tipo Servicio</th>
                   <th class="align-middle">Costo adicional</th>
                   <th class="align-middle">Obsevaciones</th>
                   <th class="align-middle">Numero guia</th>
                   <th class="align-middle">Fecha precarga</th>
+                  <th class="align-middle">Estado precarga</th>
                   <th class="align-middle">Cita Programada</th>
-                  <th class="align-middle">Tarifa</th>
                   <th class="align-middle">Chofer</th>
                   <th class="align-middle">Copiloto</th>
                   <th class="align-middle">Estibador</th>
@@ -55,8 +55,6 @@
                   <th class="align-middle">Operación</th>
                   <th class="align-middle">Estado</th>
                   <th class="align-middle">Monitoreo Servicios</th>
-                  <th class="align-middle">Resumen Liquidacion</th>
-                  <th class="align-middle">Incidencias</th>
                   <th class="align-middle">Acciones</th>
               </thead>
               <tbody>
@@ -65,12 +63,11 @@
                     <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                   </td>
                   <td>{{data.dateService}}</td>
-                  <td>{{data.idTruckFleet}}</td>
-                  <td>{{data.idTruckFleet.volume}}</td>
+                  <td>{{data.truckFleet.tractPlate}}</td>
+                  <td>{{data.truckFleet.vanPlate}}</td>
+                  <td>{{data.truckFleet.volume}}</td>
                   <td>{{data.requestedVolume}}</td>
-                  <td>{{data.bill}}</td>
                   <td>{{data.destinationDetail}}</td>
-                  <td>{{data.idRates.Route.routeEnd}}</td>
                   <td>{{data.numberPoints}}</td>
                   <td>{{data.serviceType}}</td>
                   <td>{{data.additionalCost}}</td>
@@ -79,18 +76,17 @@
                   <td>{{data.datePrecharge}}</td>
                   <td>{{data.preloadStatus}}</td>
                   <td>{{data.scheduledAppointment}}</td>
-                  <td>{{data.idRates}}</td>
-                  <td>{{data.idDriver}}</td>
-                  <td>{{data.idCopilot}}</td>
-                  <td>{{data.idStevedore}}</td>
+                  <td>{{data.driver.fullName}}</td>
+                  <td>{{data.copilot.fullName}}</td>
+                  <td>{{data.stevedore.fullName}}</td>
                   <td>{{data.dateTimeCompletion}}</td>
                   <td>{{data.weightLoad}}</td>
-                  <td>{{data.moneyDelivered}}</td>
+                  <td>{{data.photoInsurance}}</td>
                   <td>{{data.detailMoney}}</td>
+                  <td>{{data.moneyDelivered}}</td>
                   <td>{{data.operation}}</td>
                   <td>{{data.condition}}</td>
                   <td>{{data.monitoring}}</td>
-                  <td>{{data.photoInsurance}}</td>
                   <td>
                     <div class="d-flex gap-3">
                       <a href="javascript:void(0);" class="text-primary" (click)="editDataGet(data.id,content,true)"><i
@@ -151,10 +147,10 @@
                   <label for="customername-field" class="form-label">Camion</label>
                   <ng-select [items]="truckFleets" bindLabel="tractPlate" placeholder="Seleccione Camion"
                              [(ngModel)]="selectTruckFleet" id="customername-field" [clearable]="false" required
-                             formControlName="idTruckFleet" [ngClass]="{ 'is-invalid': submitted && form['idTruckFleet'].errors }">
+                             formControlName="truckFleet" [ngClass]="{ 'is-invalid': submitted && form['truckFleet'].errors }">
                   </ng-select>
-                  <div *ngIf="submitted && form['idTruckFleet'].errors" class="invalid-feedback" align="left">
-                    <div *ngIf="form['idTruckFleet'].errors['required']">Ruta es requerido</div>
+                  <div *ngIf="submitted && form['truckFleet'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['truckFleet'].errors['required']">Ruta es requerido</div>
                   </div>
                 </div>
               </div>
@@ -305,8 +301,8 @@
                     </ng-template>
                   </ng-select>
 
-                  <div *ngIf="submitted && form['idRates'].errors" class="invalid-feedback" align="left">
-                    <div *ngIf="form['idRates'].errors['required']">Tarifa es requerido</div>
+                  <div *ngIf="submitted && form['rate'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['rate'].errors['required']">Tarifa es requerido</div>
                   </div>
                 </div>
               </div>
@@ -317,10 +313,10 @@
                   <label for="customername-field" class="form-label">Chofer</label>
                   <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Chofer"
                              [(ngModel)]="selectDriver" id="customername-field" [clearable]="false" required
-                             formControlName="idDriver" [ngClass]="{ 'is-invalid': submitted && form['idDriver'].errors }">
+                             formControlName="driver" [ngClass]="{ 'is-invalid': submitted && form['driver'].errors }">
                   </ng-select>
-                  <div *ngIf="submitted && form['idDriver'].errors" class="invalid-feedback" align="left">
-                    <div *ngIf="form['idDriver'].errors['required']">Chofer es requerido</div>
+                  <div *ngIf="submitted && form['driver'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['driver'].errors['required']">Chofer es requerido</div>
                   </div>
                 </div>
 
@@ -332,10 +328,10 @@
                   <label for="customername-field" class="form-label">Copiloto</label>
                   <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Chofer"
                              [(ngModel)]="selectCopilot" id="customername-field" [clearable]="false" required
-                             formControlName="idCopilot" [ngClass]="{ 'is-invalid': submitted && form['idCopilot'].errors }">
+                             formControlName="copilot" [ngClass]="{ 'is-invalid': submitted && form['copilot'].errors }">
                   </ng-select>
-                  <div *ngIf="submitted && form['idCopilot'].errors" class="invalid-feedback" align="left">
-                    <div *ngIf="form['idCopilot'].errors['required']">Copiloto es requerido</div>
+                  <div *ngIf="submitted && form['copilot'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['copilot'].errors['required']">Copiloto es requerido</div>
                   </div>
                 </div>
               </div>
@@ -348,10 +344,10 @@
                   <label for="customername-field" class="form-label">Estibador</label>
                   <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Chofer"
                              [(ngModel)]="selectStevedore" id="customername-field" [clearable]="false" required
-                             formControlName="idStevedore" [ngClass]="{ 'is-invalid': submitted && form['idStevedore'].errors }">
+                             formControlName="stevedore" [ngClass]="{ 'is-invalid': submitted && form['stevedore'].errors }">
                   </ng-select>
-                  <div *ngIf="submitted && form['idStevedore'].errors" class="invalid-feedback" align="left">
-                    <div *ngIf="form['idStevedore'].errors['required']">Estibador es requerido</div>
+                  <div *ngIf="submitted && form['stevedore'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['stevedore'].errors['required']">Estibador es requerido</div>
                   </div>
                 </div>
               </div>
