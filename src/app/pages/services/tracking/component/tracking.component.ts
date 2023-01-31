@@ -79,7 +79,7 @@ export class TrackingComponent implements OnInit {
     this.trackingForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
       dateService: ['', [Validators.required]],
-      idTruckFleet: [0, [Validators.required]],
+      truckFleet: [0, [Validators.required]],
       requestedVolume: [0, [Validators.required]],
       bill: ['', [Validators.required]],
       destinationDetail: ['', [Validators.required]],
@@ -91,10 +91,10 @@ export class TrackingComponent implements OnInit {
       datePrecharge: ['', [Validators.required]],
       preloadStatus: ['', [Validators.required]],
       scheduledAppointment: ['', [Validators.required]],
-      idRates: [0, [Validators.required]],
-      idDriver: [0, [Validators.required]],
-      idCopilot: [0, [Validators.required]],
-      idStevedore: [0, [Validators.required]],
+      rate: [0, [Validators.required]],
+      driver: [0, [Validators.required]],
+      copilot: [0, [Validators.required]],
+      stevedore: [0, [Validators.required]],
       dateTimeCompletion: ['', [Validators.required]],
       weightLoad: [0, [Validators.required]],
       moneyDelivered: [0, [Validators.required]],
@@ -201,7 +201,7 @@ export class TrackingComponent implements OnInit {
       this.pipe = new DatePipe('en-US');
       const dateService = this.trackingForm.get('dateService')?.value;
       const fortmatDateService = this.pipe.transform(dateService, 'yyyy-MM-dd');
-      const idTruckFleet = this.trackingForm.get('idTruckFleet')?.value;
+      const idTruckFleet = this.trackingForm.get('truckFleet')?.value;
       const requestedVolume = this.trackingForm.get('requestedVolume')?.value;
       const bill = this.trackingForm.get('bill')?.value;
       const destinationDetail = this.trackingForm.get('destinationDetail')?.value;
@@ -215,10 +215,10 @@ export class TrackingComponent implements OnInit {
       const preloadStatus = this.trackingForm.get('preloadStatus')?.value;
       const scheduledAppointment = this.trackingForm.get('scheduledAppointment')?.value;
       const fortmatScheduledAppointment = this.pipe.transform(scheduledAppointment, 'yyyy-MM-dd');
-      const idRates = this.trackingForm.get('preloadStatus')?.value;
-      const idDriver = this.trackingForm.get('preloadStatus')?.value;
-      const idCopilot = this.trackingForm.get('preloadStatus')?.value;
-      const idStevedore = this.trackingForm.get('preloadStatus')?.value;
+      const idRates = this.trackingForm.get('rate')?.value;
+      const idDriver = this.trackingForm.get('driver')?.value;
+      const idCopilot = this.trackingForm.get('copilot')?.value;
+      const idStevedore = this.trackingForm.get('stevedore')?.value;
       const dateTimeCompletion = this.trackingForm.get('dateTimeCompletion')?.value;
       const fortmatDateTimeCompletion = this.pipe.transform(dateTimeCompletion, 'yyyy-MM-dd');
       const weightLoad = this.trackingForm.get('weightLoad')?.value;
@@ -302,7 +302,7 @@ export class TrackingComponent implements OnInit {
     const dateService = listData[0].birthDate.substring(0, 10);
     const fortmatDateService = this.pipe.transform(dateService, 'yyyy-MM-dd');
     this.trackingForm.controls['dateService'].setValue(fortmatDateService);
-    this.trackingForm.controls['idTruckFleet'].setValue(listData[0].idTruckFleet);
+    this.trackingForm.controls['truckFleet'].setValue(listData[0].truckFleet);
     this.trackingForm.controls['requestedVolume'].setValue(listData[0].requestedVolume);
     this.trackingForm.controls['bill'].setValue(listData[0].bill);
     this.trackingForm.controls['destinationDetail'].setValue(listData[0].destinationDetail);
@@ -318,10 +318,10 @@ export class TrackingComponent implements OnInit {
     const scheduledAppointment = listData[0].birthDate.substring(0, 10);
     const fortmatScheduledAppointment = this.pipe.transform(scheduledAppointment, 'yyyy-MM-dd');
     this.trackingForm.controls['scheduledAppointment'].setValue(fortmatScheduledAppointment);
-    this.trackingForm.controls['idRates'].setValue(listData[0].idRates);
-    this.trackingForm.controls['idDriver'].setValue(listData[0].idDriver);
-    this.trackingForm.controls['idCopilot'].setValue(listData[0].idCopilot);
-    this.trackingForm.controls['idStevedore'].setValue(listData[0].idStevedore);
+    this.trackingForm.controls['rate'].setValue(listData[0].rate);
+    this.trackingForm.controls['driver'].setValue(listData[0].driver);
+    this.trackingForm.controls['copilot'].setValue(listData[0].copilot);
+    this.trackingForm.controls['stevedore'].setValue(listData[0].stevedore);
     const dateTimeCompletion = listData[0].birthDate.substring(0, 10);
     const fortmatDateTimeCompletion = this.pipe.transform(dateTimeCompletion, 'yyyy-MM-dd');
     this.trackingForm.controls['dateTimeCompletion'].setValue(fortmatDateTimeCompletion);

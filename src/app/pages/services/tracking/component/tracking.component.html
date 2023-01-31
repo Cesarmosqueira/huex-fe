@@ -62,7 +62,7 @@
                   <td>
                     <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                   </td>
-                  <td>{{data.dateService}}</td>
+                  <td>{{data.dateService.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                   <td>{{data.truckFleet.tractPlate}}</td>
                   <td>{{data.truckFleet.vanPlate}}</td>
                   <td>{{data.truckFleet.volume}}</td>
@@ -73,13 +73,13 @@
                   <td>{{data.additionalCost}}</td>
                   <td>{{data.observations}}</td>
                   <td>{{data.guideNumber}}</td>
-                  <td>{{data.datePrecharge}}</td>
+                  <td>{{data.datePrecharge.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                   <td>{{data.preloadStatus}}</td>
-                  <td>{{data.scheduledAppointment}}</td>
+                  <td>{{data.scheduledAppointment.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                   <td>{{data.driver.fullName}}</td>
                   <td>{{data.copilot.fullName}}</td>
                   <td>{{data.stevedore.fullName}}</td>
-                  <td>{{data.dateTimeCompletion}}</td>
+                  <td>{{data.dateTimeCompletion.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                   <td>{{data.weightLoad}}</td>
                   <td>{{data.photoInsurance}}</td>
                   <td>{{data.detailMoney}}</td>
@@ -117,7 +117,7 @@
 <!-- Order Create Model -->
 <ng-template #content role="document" let-modal>
   <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Nueva Empleado</h5>
+    <h5 class="modal-title" id="exampleModalLabel">Nuevo Servicio</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
       (click)="modal.dismiss('Cross click')"></button>
   </div>
@@ -265,26 +265,25 @@
               <div class="col-lg-3">
                 <div class="mb-3">
                   <label for="customername-field" class="form-label">Estado</label>
-                  <input type="text" id="customername-field" class="form-control" required
-                    formControlName="preloadStatus"
-                    [ngClass]="{ 'is-invalid': submitted && form['preloadStatus'].errors }" autocomplete="off" />
+                  <ng-select [items]="['En cochera','En ruta','Retornando','Cargando','Descangardo']" id="customername-field" required formControlName="preloadStatus"
+                             [ngClass]="{ 'is-invalid': submitted && form['preloadStatus'].errors }"></ng-select>
                   <div *ngIf="submitted && form['preloadStatus'].errors" class="invalid-feedback" align="left">
                     <div *ngIf="form['preloadStatus'].errors['required']">Estado es requerido</div>
                   </div>
                 </div>
+
               </div>
             </div>
             <div class="row">
               <div class="col-lg-3">
-                <div class="mb-3">
-                  <label for="customername-field" class="form-label">Cita Programada</label>
-                  <input type="text" id="customername-field" class="form-control" required
-                    formControlName="scheduledAppointment"
-                    [ngClass]="{ 'is-invalid': submitted && form['scheduledAppointment'].errors }" autocomplete="off" />
-                  <div *ngIf="submitted && form['scheduledAppointment'].errors" class="invalid-feedback" align="left">
-                    <div *ngIf="form['scheduledAppointment'].errors['required']">Cita Programada es requerido</div>
+                  <div class="mb-3">
+                    <label>Cita programada</label>
+                    <div class="input-group clockpicker">
+                      <input class="form-control" type="date" id="example-date-input" formControlName="scheduledAppointment"
+                             autocomplete="disabled">
+                    </div>
                   </div>
-                </div>
+
               </div>
 
               <div class="col-lg-3">
@@ -433,7 +432,6 @@
           </div>
           <div class="row">
             <div class="col-lg-3">
-
             </div>
           </div>
         </ng-template>
