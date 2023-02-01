@@ -230,6 +230,7 @@ export class MaintenanceOilComponent implements OnInit {
     this.maintenanceOilForm.controls['differences'].setValue(listData[0].differences);
     this.selectTruckFleets=listData[0].truckFleet.tractPlate;
     this.idTruckFleetOuput=id;
+
   }
 
   listMaintenanceOils() {
@@ -279,7 +280,6 @@ export class MaintenanceOilComponent implements OnInit {
                 'success'
               );
               this.listMaintenanceOils();
-              //this.listMaintenanceOilsByIdTruckFleet(this.idTruckFleet);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -317,7 +317,6 @@ export class MaintenanceOilComponent implements OnInit {
                 'success'
               );
               this.listMaintenanceOils();
-              //this.listMaintenanceOilsByIdTruckFleet(this.idTruckFleet);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -356,7 +355,6 @@ export class MaintenanceOilComponent implements OnInit {
                 'success'
               );
                  this.listMaintenanceOils();
-              //this.listMaintenanceOilsByIdTruckFleet(this.idTruckFleet);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -406,7 +404,6 @@ export class MaintenanceOilComponent implements OnInit {
           });
         });
   }
-
 
 
 }

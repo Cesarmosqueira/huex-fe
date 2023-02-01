@@ -8,6 +8,8 @@ import { config } from 'src/app/shared/shared.config';
 import Swal from 'sweetalert2';
 import { MaintenanceTire } from '../models/maintenance-tire.model';
 import { MaintenanceTireService } from '../services/maintenance-tire.service';
+import {TruckFleet} from "../../truck-fleet/models/truck-fleet.model";
+import {TruckFleetService} from "../../truck-fleet/services/truck-fleet.service";
 
 @Component({
   selector: 'app-maintenance-tire',
@@ -16,8 +18,8 @@ import { MaintenanceTireService } from '../services/maintenance-tire.service';
 })
 export class MaintenanceTireComponent implements OnInit {
 
-  @Input () idTruckFleet: number;
-  
+  idMaintenanceTireOuput: number=0;
+
   // bread crumb items
   breadCrumbItems: Array<{}>;
   term: any;
@@ -35,7 +37,9 @@ export class MaintenanceTireComponent implements OnInit {
   maintenanceTiresList!: Observable<MaintenanceTire[]>;
   total: Observable<number>;
   pipe: any;
-  selectProvider = null;
+
+  truckFleets:TruckFleet[]=[];
+  selectTruckFleets=null;
 
   image: any;
   file: File = null;
@@ -43,6 +47,7 @@ export class MaintenanceTireComponent implements OnInit {
   textButton = "Registrar";
 
   constructor(public service: MaintenanceTireService,
+    private serviceTruckFleet:TruckFleetService,
     private formBuilder: UntypedFormBuilder,
     private modalService: NgbModal) {
     this.maintenanceTiresList = service.countries$;
@@ -50,9 +55,11 @@ export class MaintenanceTireComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.breadCrumbItems = [{ label: 'Vehiculos' }, { label: 'Mantenimiento Llanta', active: true }];
 
     this.maintenanceTireForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
+      truckFleet: ['', [Validators.required]],
       dateReview: ['', [Validators.required]],
       dateRenewal: ['', [Validators.required]],
       statusTire: ['', [Validators.required]]
@@ -62,8 +69,14 @@ export class MaintenanceTireComponent implements OnInit {
       this.content = this.maintenanceTires;
       this.maintenanceTires = Object.assign([], x);
     });
-
+    this.idMaintenanceTireOuput = 0;
+    console.log(this.idMaintenanceTireOuput);
+    this.listTruckFleet();
     this.listMaintenanceTires();
+  }
+
+  openViewModal(content: any) {
+    this.modalService.open(content, { centered: true });
   }
 
   delete(id: any) {
@@ -107,6 +120,7 @@ export class MaintenanceTireComponent implements OnInit {
   }
 
   openModal(content: any) {
+    this.clearControl();
     this.submitted = false;
     let ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
@@ -114,7 +128,7 @@ export class MaintenanceTireComponent implements OnInit {
       centered: true,
       size: 'md'
     };
-    
+
     this.modalService.open(content, ngbModalOptions);
   }
 
@@ -127,12 +141,16 @@ export class MaintenanceTireComponent implements OnInit {
     if (this.maintenanceTireForm.valid) {
       this.pipe = new DatePipe('en-US');
       const id = this.maintenanceTireForm.get('id')?.value;
-      const idTruckFleet = this.idTruckFleet;
+      const truckFleetId = this.selectTruckFleets.id;
       const dateRenewal = this.maintenanceTireForm.get('dateRenewal')?.value;
       const dateReview = this.maintenanceTireForm.get('dateReview')?.value;
       const statusTire = this.maintenanceTireForm.get('statusTire')?.value;
+
       let maintenanceTire = new MaintenanceTire();
-      maintenanceTire.idTruckFleet = idTruckFleet;
+      let truckFleet=new TruckFleet();
+
+      truckFleet.id=truckFleetId;
+      maintenanceTire.truckFleet = truckFleet;
       maintenanceTire.dateRenewal = this.pipe.transform(dateRenewal, 'yyyy-MM-dd');
       maintenanceTire.dateReview = this.pipe.transform(dateReview, 'yyyy-MM-dd');
       maintenanceTire.statusTire = statusTire;
@@ -145,14 +163,18 @@ export class MaintenanceTireComponent implements OnInit {
         maintenanceTire.id = id;
         this.updateMaintenanceTire(maintenanceTire);
       }
+      this.modalService.dismissAll();
+      setTimeout(() => {
+        this.maintenanceTireForm.reset();
+      }, 2000);
 
-      this.new = false;
-      this.textButton = "Nuevo";
+
       this.clearControl();
     }
   }
 
   clearControl(){
+    this.maintenanceTireForm.controls['truckFleet'].setValue("");
     this.maintenanceTireForm.controls['dateRenewal'].setValue("");
     this.maintenanceTireForm.controls['dateReview'].setValue("");
     this.maintenanceTireForm.controls['statusTire'].setValue("");
@@ -171,7 +193,7 @@ export class MaintenanceTireComponent implements OnInit {
       centered: true,
       size: 'md'
     };
-    
+
     this.modalService.open(content, ngbModalOptions);
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
     modelTitle.innerHTML = 'Actualizar Mantenimiento Llantas';
@@ -179,9 +201,13 @@ export class MaintenanceTireComponent implements OnInit {
     updateBtn.innerHTML = "Actualizar";
     var listData = this.maintenanceTires.filter((data: { id: any; }) => data.id === id);
     this.maintenanceTireForm.controls['id'].setValue(listData[0].id);
-    this.maintenanceTireForm.controls['dateRenewal'].setValue(this.pipe.transform(listData[0].dateRenewal, 'yyyy-MM-dd'));
+    this.maintenanceTireForm.controls['truckFleet'].setValue(listData[0].truckFleet.id);
     this.maintenanceTireForm.controls['dateReview'].setValue(this.pipe.transform(listData[0].dateReview, 'yyyy-MM-dd'));
+    this.maintenanceTireForm.controls['dateRenewal'].setValue(this.pipe.transform(listData[0].dateRenewal, 'yyyy-MM-dd'));
     this.maintenanceTireForm.controls['statusTire'].setValue(listData[0].statusTire);
+    this.selectTruckFleets=listData[0].truckFleet.tractPlate;
+    this.idMaintenanceTireOuput=id;
+
   }
 
   listMaintenanceTires() {
@@ -218,34 +244,6 @@ export class MaintenanceTireComponent implements OnInit {
         });
   }
 
-  listMaintenanceTiresByIdTruckFleet(id) {
-    this.service.listByIdTruckFleet(id)
-      .pipe(first())
-      .subscribe(
-        response => {
-          if (response) {
-            if (response.datos) {
-              this.maintenanceTiresResponse = response.datos.maintenancesTire;
-              this.service.paginationTable(this.maintenanceTiresResponse);
-            } else {
-              this.service.paginationTable([]);
-            }
-          } else {
-            Swal.fire({
-              icon: config.ERROR,
-              title: "Ocurrio un error",
-              showConfirmButton: false,
-            });
-          }
-        },
-        error => {
-          Swal.fire({
-            icon: config.ERROR,
-            title: error,
-            showConfirmButton: false,
-          });
-        });
-  }
 
   registerMaintenanceTire(maintenanceTire) {
     this.service.registerMaintenanceTire(maintenanceTire)
@@ -259,7 +257,7 @@ export class MaintenanceTireComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.listMaintenanceTiresByIdTruckFleet(this.idTruckFleet)
+              this.listMaintenanceTires();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -291,7 +289,12 @@ export class MaintenanceTireComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.listMaintenanceTiresByIdTruckFleet(this.idTruckFleet)
+              Swal.fire(
+                '¡Actualizado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
+              this.listMaintenanceTires();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -329,8 +332,8 @@ export class MaintenanceTireComponent implements OnInit {
                 'Su archivo ha sido eliminado.',
                 'success'
               );
-              
-              this.listMaintenanceTiresByIdTruckFleet(this.idTruckFleet)
+              this.listMaintenanceTires();
+
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -344,6 +347,33 @@ export class MaintenanceTireComponent implements OnInit {
               title: "Ocurrio un error",
               showConfirmButton: false,
             });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listTruckFleet() {
+    this.serviceTruckFleet.listTruckFleets()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.truckFleets = response.datos.truckFleets;
+              console.log(this.truckFleets);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
           }
         },
         error => {
