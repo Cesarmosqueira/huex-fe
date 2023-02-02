@@ -211,13 +211,12 @@ export class ProvinceEstivatorsComponent implements OnInit {
     updateBtn.innerHTML = "Actualizar";
     var listData = this.provinceEstivator.filter((data: { id: any; }) => data.id === id);
     this.provinceEstivatorForm.controls['id'].setValue(listData[0].id);
-    this.provinceEstivatorForm.controls['route'].setValue(listData[0].route);
-    this.provinceEstivatorForm.controls['provider'].setValue(listData[0].provider);
+
     this.provinceEstivatorForm.controls['costType'].setValue(listData[0].costType);
     this.provinceEstivatorForm.controls['cost'].setValue(listData[0].cost);
     this.provinceEstivatorForm.controls['observation'].setValue(listData[0].observation);
-    this.selectProvider=listData[0].provider.businessName;
-    this.selectRoute=listData[0].route.routeEnd;
+    this.selectProvider=listData[0].provider;
+    this.selectRoute=listData[0].route;
 
     this.idProvinceEstivatorOuput = id;
 

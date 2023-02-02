@@ -371,9 +371,6 @@
                   <input type="file" id="customername-field" accept=".jpg" class="form-control"
                     (change)="getDocument($event)" autocomplete="off"
                     [ngClass]="{ 'is-invalid': submitted && form['photoInsurance'].errors }" />
-                  <div *ngIf="submitted && form['photoInsurance'].errors" class="invalid-feedback" align="left">
-                    <div *ngIf="form['photoInsurance'].errors['required']">Fotos serguro es requerido</div>
-                  </div>
                 </div>
               </div>
             </div>

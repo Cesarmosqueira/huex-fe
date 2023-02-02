@@ -219,7 +219,6 @@ export class MaintenanceOilComponent implements OnInit {
     updateBtn.innerHTML = "Actualizar";
     var listData = this.maintenanceOils.filter((data: { id: any; }) => data.id === id);
     this.maintenanceOilForm.controls['id'].setValue(listData[0].id);
-    this.maintenanceOilForm.controls['truckFleet'].setValue(listData[0].truckFleet.id);
     this.maintenanceOilForm.controls['changeType'].setValue(listData[0].changeType);
     this.maintenanceOilForm.controls['place'].setValue(listData[0].place);
     this.maintenanceOilForm.controls['dateChange'].setValue(this.pipe.transform(listData[0].dateChange, 'yyyy-MM-dd'));
@@ -228,7 +227,7 @@ export class MaintenanceOilComponent implements OnInit {
     this.maintenanceOilForm.controls['kmNext'].setValue(listData[0].kmNext);
     this.maintenanceOilForm.controls['status'].setValue(listData[0].status);
     this.maintenanceOilForm.controls['differences'].setValue(listData[0].differences);
-    this.selectTruckFleets=listData[0].truckFleet.tractPlate;
+    this.selectTruckFleets=listData[0].truckFleet;
     this.idTruckFleetOuput=id;
 
   }

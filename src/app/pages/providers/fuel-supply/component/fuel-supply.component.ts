@@ -199,12 +199,11 @@ export class FuelSupplyComponent implements OnInit {
     const dateFuel = listData[0].dateFuel.substring(0, 10);
     const fortmatdateFuel = this.pipe.transform(dateFuel, 'yyyy-MM-dd');
     this.fuelSupplyForm.controls['id'].setValue(listData[0].id);
-    this.fuelSupplyForm.controls['provider'].setValue(listData[0].provider);
     this.fuelSupplyForm.controls['dateFuel'].setValue(fortmatdateFuel);
     this.fuelSupplyForm.controls['fuelQuantity'].setValue(listData[0].fuelQuantity);
     this.fuelSupplyForm.controls['gallonPrice'].setValue(listData[0].gallonPrice);
     this.fuelSupplyForm.controls['observation'].setValue(listData[0].observation);
-    this.selectProvider=listData[0].provider.businessName;
+    this.selectProvider=listData[0].provider;
     this.idFuelSupplyOuput = id;
   }
 

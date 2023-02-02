@@ -201,11 +201,10 @@ export class MaintenanceTireComponent implements OnInit {
     updateBtn.innerHTML = "Actualizar";
     var listData = this.maintenanceTires.filter((data: { id: any; }) => data.id === id);
     this.maintenanceTireForm.controls['id'].setValue(listData[0].id);
-    this.maintenanceTireForm.controls['truckFleet'].setValue(listData[0].truckFleet.id);
     this.maintenanceTireForm.controls['dateReview'].setValue(this.pipe.transform(listData[0].dateReview, 'yyyy-MM-dd'));
     this.maintenanceTireForm.controls['dateRenewal'].setValue(this.pipe.transform(listData[0].dateRenewal, 'yyyy-MM-dd'));
     this.maintenanceTireForm.controls['statusTire'].setValue(listData[0].statusTire);
-    this.selectTruckFleets=listData[0].truckFleet.tractPlate;
+    this.selectTruckFleets=listData[0].truckFleet;
     this.idMaintenanceTireOuput=id;
 
   }

@@ -197,11 +197,10 @@ export class EmployeeDiscountComponent implements OnInit {
     const date = listData[0].date.substring(0, 10);
     const fortmatdate = this.pipe.transform(date, 'yyyy-MM-dd');
     this.employeeDiscountForm.controls['id'].setValue(listData[0].id);
-    this.employeeDiscountForm.controls['employee'].setValue(listData[0].employee);
     this.employeeDiscountForm.controls['date'].setValue(fortmatdate);
     this.employeeDiscountForm.controls['observations'].setValue(listData[0].observations);
     this.employeeDiscountForm.controls['charge'].setValue(listData[0].charge);
-    this.selectEmployee=listData[0].employee.fullName;
+    this.selectEmployee=listData[0].employee;
     this.idEmployeeDiscountOuput = id;
   }
 
