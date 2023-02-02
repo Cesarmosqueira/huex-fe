@@ -9,7 +9,7 @@ export class MaintenanceOil {
     kmLast: number;
     kmCurrent:number;
     kmNext: number;
-    status: number;
+    status: string;
     dateCurrent: any;
     differences: number;
 }
