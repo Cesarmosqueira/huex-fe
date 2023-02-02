@@ -8,13 +8,13 @@ import { config } from 'src/app/shared/shared.config';
 import Swal from 'sweetalert2';
 import { Tracking } from "../models/tracking.model";
 import { TrackingService } from "../services/tracking.service";
-import {Customer} from "../../../customers/customer/models/customer.model";
-import {TruckFleet} from "../../../vehicles/truck-fleet/models/truck-fleet.model";
-import {Rate} from "../../../customers/rate/models/rate.model";
-import {Employee} from "../../../employees/employee/models/employee.model";
-import {TruckFleetService} from "../../../vehicles/truck-fleet/services/truck-fleet.service";
-import {RateService} from "../../../customers/rate/services/rate.service";
-import {EmployeeService} from "../../../employees/employee/services/employee.service";
+import { Customer } from "../../../customers/customer/models/customer.model";
+import { TruckFleet } from "../../../vehicles/truck-fleet/models/truck-fleet.model";
+import { Rate } from "../../../customers/rate/models/rate.model";
+import { Employee } from "../../../employees/employee/models/employee.model";
+import { TruckFleetService } from "../../../vehicles/truck-fleet/services/truck-fleet.service";
+import { RateService } from "../../../customers/rate/services/rate.service";
+import { EmployeeService } from "../../../employees/employee/services/employee.service";
 
 @Component({
   selector: 'app-tracking',
@@ -42,29 +42,34 @@ export class TrackingComponent implements OnInit {
   total: Observable<number>;
   pipe: any;
 
-  truckFleets:TruckFleet[]=[];
-  selectTruckFleet=null;
+  truckFleets: TruckFleet[] = [];
+  selectTruckFleet = null;
 
-  rates:Rate[]=[];
-  selectRates=null;
+  rates: Rate[] = [];
+  selectRates = null;
 
-  employees:Employee[]=[];
-  selectDriver=null;
+  employees: Employee[] = [];
+  tipoServicio: string[] = ['LABORANDO', 'RETIRADO', 'BLOQUEADO'];
+  estado: string[] = ['En cochera', 'En ruta', 'Retornando', 'Cargando', 'Descangardo'];
+  selectDriver = null;
 
-  selectCopilot=null;
+  selectCopilot = null;
 
-  selectStevedore=null;
+  selectStevedore = null;
 
   fileToUpload: any;
   imageUrl: any;
   fileList: FileList;
-  myImageBaseUrl:string='../../../../../assets/images/huex/profile.jpg';
+  myImageBaseUrl: string = '../../../../../assets/images/huex/profile.jpg';
+
+  image: any;
+  file: File = null;
 
   constructor(public service: TrackingService,
     private modalService: NgbModal,
-    private serviceTruckFlett:TruckFleetService,
-    private servicesRate:RateService,
-    private serviceEmployee:EmployeeService,
+    private serviceTruckFlett: TruckFleetService,
+    private servicesRate: RateService,
+    private serviceEmployee: EmployeeService,
     private formBuilder: UntypedFormBuilder) {
     this.trackingsList = service.countries$;
     this.total = service.total$;
@@ -100,7 +105,6 @@ export class TrackingComponent implements OnInit {
       moneyDelivered: [0, [Validators.required]],
       detailMoney: ['', [Validators.required]],
       operation: ['', [Validators.required]],
-      condition: ['', [Validators.required]],
       monitoring: ['', [Validators.required]],
       photoInsurance: [0, [Validators.required]]
     });
@@ -111,7 +115,6 @@ export class TrackingComponent implements OnInit {
     });
 
     this.idTrackingOuput = 0;
-    console.log(this.idTrackingOuput);
 
     this.listRates();
     this.listEmployees();
@@ -122,14 +125,12 @@ export class TrackingComponent implements OnInit {
   getImage(event) {
     if (event.target.files && event.target.files.length) {
       const file = (event.target.files[0] as File);
-      console.log(file);
       this.trackingForm.get('photoInsurance').setValue(file);
       this.fileList = event.target.files;
       this.fileToUpload = event.target.files.item(0);
       let reader = new FileReader();
       reader.onload = (event: any) => {
         this.imageUrl = event.target.result;
-        console.log(this.imageUrl);
       }
       reader.readAsDataURL(this.fileToUpload);
     }
@@ -225,10 +226,8 @@ export class TrackingComponent implements OnInit {
       const moneyDelivered = this.trackingForm.get('moneyDelivered')?.value;
       const detailMoney = this.trackingForm.get('detailMoney')?.value;
       const operation = this.trackingForm.get('operation')?.value;
-      const condition = this.trackingForm.get('condition')?.value;
+      //const condition = this.trackingForm.get('condition')?.value;
       const monitoring = this.trackingForm.get('monitoring')?.value;
-      const photoInsurance = this.trackingForm.get('photoInsurance')?.value;
-      const photoUrl = this.imageUrl.replace("data:image/jpeg;base64,", "");
 
       let tracking = new Tracking();
       tracking.dateService = fortmatDateService;
@@ -253,12 +252,11 @@ export class TrackingComponent implements OnInit {
       tracking.moneyDelivered = moneyDelivered;
       tracking.detailMoney = detailMoney;
       tracking.operation = operation;
-      tracking.condition = condition;
+      //tracking.condition = condition;
       tracking.monitoring = monitoring;
-      tracking.photoInsurance = photoInsurance;
+      tracking.photoInsurance = this.imageUrl.replace("data:image/jpeg;base64,", "");
 
       const id = this.trackingForm.get('id')?.value;
-
       if (id == '0') {
         this.registerTracking(tracking);
       } else {
@@ -276,6 +274,17 @@ export class TrackingComponent implements OnInit {
     }
   }
 
+  getDocument(event) {
+    this.file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(this.file);
+    reader.onload = () => {
+      this.imageUrl = reader.result;
+    };
+  }
+
+
+
   /**
    * Open Edit modal
    * @param content modal content
@@ -285,24 +294,26 @@ export class TrackingComponent implements OnInit {
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
     this.modalService.open(content, { size: 'xl', centered: true });
-    if(action){
+    if (action) {
       var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-      modelTitle.innerHTML = 'Detalle Empleados';
+      modelTitle.innerHTML = 'Detalle Tracking';
       this.disableInputs();
-      document.getElementById('add-btn').setAttribute("disabled","disabled");
+      document.getElementById('add-btn').setAttribute("disabled", "disabled");
     } else {
       this.enableInputs();
       document.getElementById('add-btn').removeAttribute("disabled");
       var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-      modelTitle.innerHTML = 'Actualizar Empleados';
+      modelTitle.innerHTML = 'Actualizar Tracking';
       var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
       updateBtn.innerHTML = "Actualizar";
     }
     var listData = this.trackings.filter((data: { id: any; }) => data.id === id);
-    const dateService = listData[0].birthDate.substring(0, 10);
+    this.trackingForm.controls['id'].setValue(listData[0].id);
+    const dateService = listData[0].dateService.substring(0, 10);
     const fortmatDateService = this.pipe.transform(dateService, 'yyyy-MM-dd');
     this.trackingForm.controls['dateService'].setValue(fortmatDateService);
-    this.trackingForm.controls['truckFleet'].setValue(listData[0].truckFleet);
+    this.selectTruckFleet = listData[0].truckFleet;
+    //this.trackingForm.controls['truckFleet'].setValue(listData[0].truckFleet.tractPlate);
     this.trackingForm.controls['requestedVolume'].setValue(listData[0].requestedVolume);
     this.trackingForm.controls['bill'].setValue(listData[0].bill);
     this.trackingForm.controls['destinationDetail'].setValue(listData[0].destinationDetail);
@@ -311,27 +322,29 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['additionalCost'].setValue(listData[0].additionalCost);
     this.trackingForm.controls['observations'].setValue(listData[0].observations);
     this.trackingForm.controls['guideNumber'].setValue(listData[0].guideNumber);
-    const datePrecharge = listData[0].birthDate.substring(0, 10);
+    const datePrecharge = listData[0].datePrecharge.substring(0, 10);
     const fortmatDatePrecharge = this.pipe.transform(datePrecharge, 'yyyy-MM-dd');
     this.trackingForm.controls['datePrecharge'].setValue(fortmatDatePrecharge);
     this.trackingForm.controls['preloadStatus'].setValue(listData[0].preloadStatus);
-    const scheduledAppointment = listData[0].birthDate.substring(0, 10);
+    const scheduledAppointment = listData[0].scheduledAppointment.substring(0, 10);
     const fortmatScheduledAppointment = this.pipe.transform(scheduledAppointment, 'yyyy-MM-dd');
     this.trackingForm.controls['scheduledAppointment'].setValue(fortmatScheduledAppointment);
-    this.trackingForm.controls['rate'].setValue(listData[0].rate);
-    this.trackingForm.controls['driver'].setValue(listData[0].driver);
-    this.trackingForm.controls['copilot'].setValue(listData[0].copilot);
-    this.trackingForm.controls['stevedore'].setValue(listData[0].stevedore);
-    const dateTimeCompletion = listData[0].birthDate.substring(0, 10);
+    let rate = this.rates.filter((data: { id: any; }) => data.id === listData[0].rate.id);
+    this.selectRates = rate[0];
+    this.selectDriver = listData[0].driver;
+    this.selectCopilot = listData[0].copilot;
+    this.selectStevedore = listData[0].stevedore;
+    const dateTimeCompletion = listData[0].dateTimeCompletion.substring(0, 10);
     const fortmatDateTimeCompletion = this.pipe.transform(dateTimeCompletion, 'yyyy-MM-dd');
     this.trackingForm.controls['dateTimeCompletion'].setValue(fortmatDateTimeCompletion);
     this.trackingForm.controls['weightLoad'].setValue(listData[0].weightLoad);
     this.trackingForm.controls['moneyDelivered'].setValue(listData[0].moneyDelivered);
     this.trackingForm.controls['detailMoney'].setValue(listData[0].detailMoney);
     this.trackingForm.controls['operation'].setValue(listData[0].operation);
-    this.trackingForm.controls['condition'].setValue(listData[0].condition);
+    //this.trackingForm.controls['condition'].setValue(listData[0].condition);
     this.trackingForm.controls['monitoring'].setValue(listData[0].monitoring);
-    this.trackingForm.controls['photoInsurance'].setValue(listData[0].photoInsurance);
+    this.imageUrl = 'data:image/jpeg;base64,' + listData[0].photoInsurance;
+    this.trackingForm.get('photoInsurance').setValue(this.dataURLtoFile(this.imageUrl, 'foto.jpeg'));
     this.idTrackingOuput = id;
   }
 
@@ -382,7 +395,6 @@ export class TrackingComponent implements OnInit {
       .subscribe(
         response => {
           if (response) {
-            console.log(response);
             if (response.datos) {
               Swal.fire(
                 '¡Registrado!',
@@ -477,7 +489,7 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['moneyDelivered'].setValue("");
     this.trackingForm.controls['detailMoney'].setValue("");
     this.trackingForm.controls['operation'].setValue("");
-    this.trackingForm.controls['condition'].setValue("");
+    //this.trackingForm.controls['condition'].setValue("");
     this.trackingForm.controls['monitoring'].setValue("");
     this.trackingForm.controls['photoInsurance'].setValue("");
     this.imageUrl = null;
@@ -507,7 +519,7 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['moneyDelivered'].disable();
     this.trackingForm.controls['detailMoney'].disable();
     this.trackingForm.controls['operation'].disable();
-    this.trackingForm.controls['condition'].disable();
+    //this.trackingForm.controls['condition'].disable();
     this.trackingForm.controls['monitoring'].disable();
     this.trackingForm.controls['photoInsurance'].disable();
   }
@@ -536,7 +548,7 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['moneyDelivered'].enable();
     this.trackingForm.controls['detailMoney'].enable();
     this.trackingForm.controls['operation'].enable();
-    this.trackingForm.controls['condition'].enable();
+    //this.trackingForm.controls['condition'].enable();
     this.trackingForm.controls['monitoring'].enable();
     this.trackingForm.controls['photoInsurance'].enable();
   }
@@ -586,7 +598,6 @@ export class TrackingComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.truckFleets = response.datos.truckFleets;
-              console.log(this.truckFleets);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -613,7 +624,13 @@ export class TrackingComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.rates = response.datos.rates;
-              console.log(this.rates);
+              this.rates.forEach(element => {
+                let cus = new Customer();
+                cus = element.customer;
+                cus.name = element.customer.socialReason + "/" + element.route.routeEnd;
+                element.customer = cus;
+
+              });
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -640,7 +657,6 @@ export class TrackingComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.employees = response.datos.employees;
-              console.log(this.employees);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -658,4 +674,23 @@ export class TrackingComponent implements OnInit {
           });
         });
   }
+
+  viewDocument(id) {
+    var documentResponse = this.test.filter(c => c.id === id)[0];
+    const linkSource = 'data:image/jpeg;base64,' + documentResponse.photoInsurance;
+    this.service.downloadImage(linkSource).subscribe(res => {
+      const fileURL = URL.createObjectURL(res);
+      window.open(fileURL, '_blank');
+    });
+  }
+
+  saveByteArray(id: any) {
+    var documentResponse = this.test.filter(c => c.id === id)[0];
+    const linkSource = 'data:image/jpeg;base64,' + documentResponse.photoInsurance;
+    const downloadLink = document.createElement("a");
+    const fileName = "Seguro";
+    downloadLink.href = linkSource;
+    downloadLink.download = fileName;
+    downloadLink.click();
+  };
 }

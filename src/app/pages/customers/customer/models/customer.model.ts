@@ -4,5 +4,5 @@ export class Customer {
   socialReason: string;
   bankAccount: string;
   registerDate: any;
-
+  name: string;
 }

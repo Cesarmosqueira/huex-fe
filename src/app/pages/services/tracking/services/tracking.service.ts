@@ -80,6 +80,12 @@ export class TrackingService extends BaseService {
       }), catchError(this.handleError));
   }
 
+  downloadImage(url: string): Observable<Blob> {
+    const options = { responseType: 'blob' as 'json' };
+    return this.httpClient.get<Blob>(url, options)
+      .pipe(map(res => new Blob([res], { type: 'image/jpeg' })));
+  }
+
   //Pagination
 
   public paginationTable(trackings: Tracking[]) {
@@ -109,11 +115,11 @@ export class TrackingService extends BaseService {
   get endIndex() { return this._state.endIndex; }
   get totalRecords() { return this._state.totalRecords; }
 
-  set page(page: number) { this._set({page}); }
-  set pageSize(pageSize: number) { this._set({pageSize}); }
-  set searchTerm(searchTerm: string) { this._set({searchTerm}); }
-  set sortColumn(sortColumn: SortColumn) { this._set({sortColumn}); }
-  set sortDirection(sortDirection: SortDirection) { this._set({sortDirection}); }
+  set page(page: number) { this._set({ page }); }
+  set pageSize(pageSize: number) { this._set({ pageSize }); }
+  set searchTerm(searchTerm: string) { this._set({ searchTerm }); }
+  set sortColumn(sortColumn: SortColumn) { this._set({ sortColumn }); }
+  set sortDirection(sortDirection: SortDirection) { this._set({ sortDirection }); }
   set startIndex(startIndex: number) { this._set({ startIndex }); }
   set endIndex(endIndex: number) { this._set({ endIndex }); }
   set totalRecords(totalRecords: number) { this._set({ totalRecords }); }
@@ -124,12 +130,12 @@ export class TrackingService extends BaseService {
   }
 
   private _search(): Observable<SearchResult> {
-    const {sortColumn, sortDirection, page, searchTerm} = this._state;
+    const { sortColumn, sortDirection, page, searchTerm } = this._state;
     // 1. sort
-    let trackings = sort(this.trackings, sortColumn, sortDirection);    
+    let trackings = sort(this.trackings, sortColumn, sortDirection);
 
     // 2. filter
-    trackings = trackings.filter(country => matches(country, searchTerm, this.pipe));        
+    trackings = trackings.filter(country => matches(country, searchTerm, this.pipe));
     const total = trackings.length;
 
     // 3. paginate
@@ -137,9 +143,9 @@ export class TrackingService extends BaseService {
     this._state.startIndex = (page - 1) * this.pageSize + 1;
     this._state.endIndex = (page - 1) * this.pageSize + this.pageSize;
     if (this.endIndex > this.totalRecords) {
-        this.endIndex = this.totalRecords;
+      this.endIndex = this.totalRecords;
     }
     trackings = trackings.slice(this._state.startIndex - 1, this._state.endIndex);
-    return of({trackings: trackings, total});
+    return of({ trackings: trackings, total });
   }
 }
