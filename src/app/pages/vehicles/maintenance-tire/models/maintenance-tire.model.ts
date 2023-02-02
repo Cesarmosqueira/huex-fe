@@ -1,7 +1,9 @@
+import {TruckFleet} from "../../truck-fleet/models/truck-fleet.model";
+
 export class MaintenanceTire {
-    id: number;
-    idTruckFleet: number;
-    dateReview: string;
-    dateRenewal: string;
+    id: any;
+    truckFleet: TruckFleet;
+    dateReview: any;
+    dateRenewal: any;
     statusTire: string;
 }

@@ -82,13 +82,6 @@ export class MaintenanceOilService extends BaseService {
       }), catchError(this.handleError));
   }
 
-  public listByIdTruckFleet(id: number): Observable<ResponseModel<any>> {
-    return this.httpClient.get(environment.server + environment.vehicles.maintenanceOil.listByIdTruckFleet + id)
-      .pipe(map((responseModel: ResponseModel<any>) => {
-        return responseModel;
-      }), catchError(this.handleError));
-  }
-
   //Pagination
 
   public paginationTable(maintenanceOils: MaintenanceOil[]) {
@@ -132,7 +125,7 @@ export class MaintenanceOilService extends BaseService {
   private _search(): Observable<SearchResult> {
     const {page} = this._state;
 
-    let maintenanceOils = this.maintenanceOils;       
+    let maintenanceOils = this.maintenanceOils;
     const total = maintenanceOils.length;
 
     // 3. paginate
