@@ -22,7 +22,7 @@ import { EmployeeService } from "../../../employees/employee/services/employee.s
   styleUrls: ['./tracking.component.scss']
 })
 export class TrackingComponent implements OnInit {
-  
+
   idTrackingOuput: number = 0;
 
   // bread crumb items
@@ -51,8 +51,10 @@ export class TrackingComponent implements OnInit {
   selectRates = null;
 
   employees: Employee[] = [];
-  tipoServicio: string[] = ['LABORANDO', 'RETIRADO', 'BLOQUEADO'];
-  estado: string[] = ['En cochera', 'En ruta', 'Retornando', 'Cargando', 'Descangardo'];
+  tipoServicio: string[] = ['Local', 'Provincia'];
+  estado: string[] = ['En cochera', 'En ruta', 'Retornando', 'Cargando', 'Descargando','Finalizo'];
+  invoiced:string[]=['Facturado','Pendiente'];
+  charge:string[]=['Cobrado','Pendiente'];
   selectDriver = null;
 
   selectCopilot = null;
@@ -92,7 +94,6 @@ export class TrackingComponent implements OnInit {
       dateService: ['', [Validators.required]],
       truckFleet: [0, [Validators.required]],
       requestedVolume: [0, [Validators.required]],
-      bill: ['', [Validators.required]],
       destinationDetail: ['', [Validators.required]],
       numberPoints: ['', [Validators.required]],
       serviceType: ['', [Validators.required]],
@@ -111,7 +112,9 @@ export class TrackingComponent implements OnInit {
       moneyDelivered: [0, [Validators.required]],
       detailMoney: ['', [Validators.required]],
       operation: ['', [Validators.required]],
-      monitoring: ['', [Validators.required]],
+      invoiced: ['', [Validators.required]],
+      charge: ['', [Validators.required]],
+
       photoInsurance: [0]
     });
 
@@ -213,7 +216,6 @@ export class TrackingComponent implements OnInit {
       const fortmatDateService = this.pipe.transform(dateService, 'yyyy-MM-dd');
       const idTruckFleet = this.trackingForm.get('truckFleet')?.value;
       const requestedVolume = this.trackingForm.get('requestedVolume')?.value;
-      const bill = this.trackingForm.get('bill')?.value;
       const destinationDetail = this.trackingForm.get('destinationDetail')?.value;
       const numberPoints = this.trackingForm.get('numberPoints')?.value;
       const serviceType = this.trackingForm.get('serviceType')?.value;
@@ -235,14 +237,15 @@ export class TrackingComponent implements OnInit {
       const moneyDelivered = this.trackingForm.get('moneyDelivered')?.value;
       const detailMoney = this.trackingForm.get('detailMoney')?.value;
       const operation = this.trackingForm.get('operation')?.value;
+      const invoiced = this.trackingForm.get('invoiced')?.value;
+      const charge = this.trackingForm.get('charge')?.value;
+
       //const condition = this.trackingForm.get('condition')?.value;
-      const monitoring = this.trackingForm.get('monitoring')?.value;
 
       let tracking = new Tracking();
       tracking.dateService = fortmatDateService;
       tracking.truckFleet = idTruckFleet;
       tracking.requestedVolume = requestedVolume;
-      tracking.bill = bill;
       tracking.destinationDetail = destinationDetail;
       tracking.numberPoints = numberPoints;
       tracking.serviceType = serviceType;
@@ -261,8 +264,10 @@ export class TrackingComponent implements OnInit {
       tracking.moneyDelivered = moneyDelivered;
       tracking.detailMoney = detailMoney;
       tracking.operation = operation;
+      tracking.charge = charge;
+      tracking.invoiced = invoiced;
+
       //tracking.condition = condition;
-      tracking.monitoring = monitoring;
       tracking.photoInsurance = this.imageUrl.replace("data:image/jpeg;base64,", "");
 
       const id = this.trackingForm.get('id')?.value;
@@ -314,7 +319,6 @@ export class TrackingComponent implements OnInit {
     this.selectTruckFleet = listData[0].truckFleet;
     //this.trackingForm.controls['truckFleet'].setValue(listData[0].truckFleet.tractPlate);
     this.trackingForm.controls['requestedVolume'].setValue(listData[0].requestedVolume);
-    this.trackingForm.controls['bill'].setValue(listData[0].bill);
     this.trackingForm.controls['destinationDetail'].setValue(listData[0].destinationDetail);
     this.trackingForm.controls['numberPoints'].setValue(listData[0].numberPoints);
     this.trackingForm.controls['serviceType'].setValue(listData[0].serviceType);
@@ -340,8 +344,9 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['moneyDelivered'].setValue(listData[0].moneyDelivered);
     this.trackingForm.controls['detailMoney'].setValue(listData[0].detailMoney);
     this.trackingForm.controls['operation'].setValue(listData[0].operation);
+    this.trackingForm.controls['invoiced'].setValue(listData[0].invoiced);
+    this.trackingForm.controls['charge'].setValue(listData[0].charge);
     //this.trackingForm.controls['condition'].setValue(listData[0].condition);
-    this.trackingForm.controls['monitoring'].setValue(listData[0].monitoring);
     this.imageUrl = 'data:image/jpeg;base64,' + listData[0].photoInsurance;
     this.trackingForm.get('photoInsurance').setValue(this.dataURLtoFile(this.imageUrl, 'foto.jpeg'));
     this.idTrackingOuput = listData[0].id;
@@ -471,7 +476,6 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['dateService'].setValue("");
     this.trackingForm.controls['truckFleet'].setValue("");
     this.trackingForm.controls['requestedVolume'].setValue("");
-    this.trackingForm.controls['bill'].setValue("");
     this.trackingForm.controls['destinationDetail'].setValue("");
     this.trackingForm.controls['numberPoints'].setValue("");
     this.trackingForm.controls['serviceType'].setValue("");
@@ -490,8 +494,10 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['moneyDelivered'].setValue("");
     this.trackingForm.controls['detailMoney'].setValue("");
     this.trackingForm.controls['operation'].setValue("");
+    this.trackingForm.controls['invoiced'].setValue("");
+    this.trackingForm.controls['charge'].setValue("");
+
     //this.trackingForm.controls['condition'].setValue("");
-    this.trackingForm.controls['monitoring'].setValue("");
     this.trackingForm.controls['photoInsurance'].setValue("");
     this.imageUrl = null;
   }
@@ -501,7 +507,6 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['dateService'].disable();
     this.trackingForm.controls['truckFleet'].disable();
     this.trackingForm.controls['requestedVolume'].disable();
-    this.trackingForm.controls['bill'].disable();
     this.trackingForm.controls['destinationDetail'].disable();
     this.trackingForm.controls['numberPoints'].disable();
     this.trackingForm.controls['serviceType'].disable();
@@ -520,8 +525,10 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['moneyDelivered'].disable();
     this.trackingForm.controls['detailMoney'].disable();
     this.trackingForm.controls['operation'].disable();
+    this.trackingForm.controls['invoiced'].disable();
+    this.trackingForm.controls['charge'].disable();
+
     //this.trackingForm.controls['condition'].disable();
-    this.trackingForm.controls['monitoring'].disable();
     this.trackingForm.controls['photoInsurance'].disable();
   }
 
@@ -530,7 +537,6 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['dateService'].enable();
     this.trackingForm.controls['truckFleet'].enable();
     this.trackingForm.controls['requestedVolume'].enable();
-    this.trackingForm.controls['bill'].enable();
     this.trackingForm.controls['destinationDetail'].enable();
     this.trackingForm.controls['numberPoints'].enable();
     this.trackingForm.controls['serviceType'].enable();
@@ -549,8 +555,10 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['moneyDelivered'].enable();
     this.trackingForm.controls['detailMoney'].enable();
     this.trackingForm.controls['operation'].enable();
+    this.trackingForm.controls['invoiced'].enable();
+    this.trackingForm.controls['charge'].enable();
+
     //this.trackingForm.controls['condition'].enable();
-    this.trackingForm.controls['monitoring'].enable();
     this.trackingForm.controls['photoInsurance'].enable();
   }
 

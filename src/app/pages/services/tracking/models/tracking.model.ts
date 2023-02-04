@@ -3,7 +3,6 @@ export class Tracking {
 	dateService: Date;
 	truckFleet: any;
 	requestedVolume: any;
-	bill: string;
 	destinationDetail: string;
 	numberPoints: any;
 	serviceType: string;
@@ -23,6 +22,7 @@ export class Tracking {
 	detailMoney: string;
 	operation: string;
 	condition: string;
-	monitoring: string;
 	photoInsurance: any;
+  invoiced:string;
+  charge:string;
 }

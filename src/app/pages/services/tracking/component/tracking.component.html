@@ -32,28 +32,13 @@
                   <th class="align-middle">ID</th>
                   <th class="align-middle">Fecha servicio</th>
                   <th class="align-middle">Placa Tracto</th>
-                  <th class="align-middle">Placa Furgon</th>
-                  <th class="align-middle">Volumen</th>
                   <th class="align-middle">Volumen Solicitado</th>
                   <th class="align-middle">Detalle Destino</th>
                   <th class="align-middle">Cantidad Puntos</th>
-                  <th class="align-middle">Tipo Servicio</th>
-                  <th class="align-middle">Costo adicional</th>
-                  <th class="align-middle">Obsevaciones</th>
-                  <th class="align-middle">Numero guia</th>
-                  <th class="align-middle">Fecha precarga</th>
-                  <th class="align-middle">Estado precarga</th>
-                  <th class="align-middle">Cita Programada</th>
                   <th class="align-middle">Chofer</th>
-                  <th class="align-middle">Copiloto</th>
-                  <th class="align-middle">Estibador</th>
-                  <th class="align-middle">Fecha hora Culminacion</th>
-                  <th class="align-middle">Peso Carga</th>
+                  <th class="align-middle">Costo adicional</th>
+                  <th class="align-middle">Estado</th>
                   <th class="align-middle">Fotos serguro</th>
-                  <th class="align-middle">Detalle Dinero</th>
-                  <th class="align-middle">Dinero entregado</th>
-                  <th class="align-middle">Operación</th>
-                  <th class="align-middle">Monitoreo Servicios</th>
                   <th class="align-middle">Acciones</th>
               </thead>
               <tbody>
@@ -63,33 +48,20 @@
                   </td>
                   <td>{{data.dateService.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                   <td>{{data.truckFleet.tractPlate}}</td>
-                  <td>{{data.truckFleet.vanPlate}}</td>
-                  <td>{{data.truckFleet.volume}}</td>
                   <td>{{data.requestedVolume}}</td>
                   <td>{{data.destinationDetail}}</td>
                   <td>{{data.numberPoints}}</td>
-                  <td>{{data.serviceType}}</td>
-                  <td>{{data.additionalCost}}</td>
-                  <td>{{data.observations}}</td>
-                  <td>{{data.guideNumber}}</td>
-                  <td>{{data.datePrecharge.substring(0,10) | date:'dd/MM/YYYY'}}</td>
-                  <td>{{data.preloadStatus}}</td>
-                  <td>{{data.scheduledAppointment.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                   <td>{{data.driver.fullName}}</td>
-                  <td>{{data.copilot.fullName}}</td>
-                  <td>{{data.stevedore.fullName}}</td>
-                  <td>{{data.dateTimeCompletion.substring(0,10) | date:'dd/MM/YYYY'}}</td>
-                  <td>{{data.weightLoad}}</td>
+                  <td>{{data.additionalCost}}</td>
+                  <td>{{data.preloadStatus}}</td>
                   <td>
                     <a href="javascript:void(0);" class="text-success" (click)="viewDocument(data.id)">Ver <i
                         class="mdi mdi-eye font-size-16 mt"></i>/</a>
                     <a href="javascript:void(0);" class="text-success" (click)="saveByteArray(data.id)">Descargar <i
                         class="mdi mdi-cloud-download font-size-16 mt"></i></a>
                   </td>
-                  <td>{{data.detailMoney}}</td>
-                  <td>{{data.moneyDelivered}}</td>
-                  <td>{{data.operation}}</td>
-                  <td>{{data.monitoring}}</td>
+
+
                   <td>
                     <div class="d-flex gap-3">
                       <a href="javascript:void(0);" class="text-primary" (click)="editDataGet(data.id,content,true)"><i
@@ -222,15 +194,19 @@
 
             <div class="col-lg-3">
               <div class="mb-3">
-                <label for="customername-field" class="form-label">Cuenta</label>
-                <input type="text" id="customername-field" class="form-control" required formControlName="bill"
-                  [ngClass]="{ 'is-invalid': submitted && form['bill'].errors }" autocomplete="off" />
-                <div *ngIf="submitted && form['bill'].errors" class="invalid-feedback" align="left">
-                  <div *ngIf="form['bill'].errors['required']">Cuenta es requerido</div>
+                <label for="customername-field" class="form-label">Tarifa</label>
+                <ng-select [items]="rates" bindLabel="customer.name" placeholder="Seleccione Tarifa"
+                           [(ngModel)]="selectRates" id="customername-field" [clearable]="false" required formControlName="rate"
+                           [ngClass]="{ 'is-invalid': submitted && form['rate'].errors }">
+                </ng-select>
+                <div *ngIf="submitted && form['rate'].errors" class="invalid-feedback" align="left">
+                  <div *ngIf="form['rate'].errors['required']">Tarifa es requerido</div>
                 </div>
               </div>
             </div>
           </div>
+
+
 
           <div class="row">
             <div class="col-lg-3">
@@ -338,18 +314,7 @@
               </div>
             </div>
 
-            <div class="col-lg-3">
-              <div class="mb-3">
-                <label for="customername-field" class="form-label">Tarifa</label>
-                <ng-select [items]="rates" bindLabel="customer.name" placeholder="Seleccione Tarifa"
-                  [(ngModel)]="selectRates" id="customername-field" [clearable]="false" required formControlName="rate"
-                  [ngClass]="{ 'is-invalid': submitted && form['rate'].errors }">
-                </ng-select>
-                <div *ngIf="submitted && form['rate'].errors" class="invalid-feedback" align="left">
-                  <div *ngIf="form['rate'].errors['required']">Tarifa es requerido</div>
-                </div>
-              </div>
-            </div>
+
 
             <div class="col-lg-3">
               <div class="mb-3">
@@ -379,22 +344,22 @@
                 </div>
               </div>
             </div>
-          </div>
-
-          <div class="row">
             <div class="col-lg-3">
               <div class="mb-3">
                 <input type="text" hidden formControlName="id" value="0" />
                 <label for="customername-field" class="form-label">Estibador</label>
                 <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Chofer"
-                  [(ngModel)]="selectStevedore" id="customername-field" [clearable]="false" required
-                  formControlName="stevedore" [ngClass]="{ 'is-invalid': submitted && form['stevedore'].errors }">
+                           [(ngModel)]="selectStevedore" id="customername-field" [clearable]="false" required
+                           formControlName="stevedore" [ngClass]="{ 'is-invalid': submitted && form['stevedore'].errors }">
                 </ng-select>
                 <div *ngIf="submitted && form['stevedore'].errors" class="invalid-feedback" align="left">
                   <div *ngIf="form['stevedore'].errors['required']">Estibador es requerido</div>
                 </div>
               </div>
             </div>
+          </div>
+
+          <div class="row">
 
             <div class="col-lg-3">
               <div class="mb-3">
@@ -428,6 +393,19 @@
                 </div>
               </div>
             </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Dinero entregado</label>
+                <input type="text" id="customername-field" class="form-control" required
+                       formControlName="moneyDelivered"
+                       [ngClass]="{ 'is-invalid': submitted && form['moneyDelivered'].errors }" autocomplete="off" />
+                <div *ngIf="submitted && form['moneyDelivered'].errors" class="invalid-feedback" align="left">
+                  <div *ngIf="form['moneyDelivered'].errors['required']">Dinero entregado es requerido</div>
+                </div>
+              </div>
+            </div>
+
           </div>
 
           <div class="row">
@@ -443,17 +421,6 @@
               </div>
             </div>
 
-            <div class="col-lg-3">
-              <div class="mb-3">
-                <label for="customername-field" class="form-label">Dinero entregado</label>
-                <input type="text" id="customername-field" class="form-control" required
-                  formControlName="moneyDelivered"
-                  [ngClass]="{ 'is-invalid': submitted && form['moneyDelivered'].errors }" autocomplete="off" />
-                <div *ngIf="submitted && form['moneyDelivered'].errors" class="invalid-feedback" align="left">
-                  <div *ngIf="form['moneyDelivered'].errors['required']">Dinero entregado es requerido</div>
-                </div>
-              </div>
-            </div>
 
             <div class="col-lg-3">
               <div class="mb-3">
@@ -468,14 +435,29 @@
 
             <div class="col-lg-3">
               <div class="mb-3">
-                <label for="customername-field" class="form-label">Monitoreo</label>
-                <input type="text" id="customername-field" class="form-control" required formControlName="monitoring"
-                  [ngClass]="{ 'is-invalid': submitted && form['monitoring'].errors }" autocomplete="off" />
-                <div *ngIf="submitted && form['monitoring'].errors" class="invalid-feedback" align="left">
-                  <div *ngIf="form['monitoring'].errors['required']">Monitoreo es requerido</div>
+                <label for="customername-field" class="form-label">Estado Facturacion</label>
+                <ng-select [items]="invoiced" id="customername-field" required formControlName="invoiced"
+                           placeholder="Seleccione Estado"
+                           [ngClass]="{ 'is-invalid': submitted && form['invoiced'].errors }"></ng-select>
+                <div *ngIf="submitted && form['invoiced'].errors" class="invalid-feedback" align="left">
+                  <div *ngIf="form['invoiced'].errors['required']">Estado de facturacion es requerido</div>
                 </div>
               </div>
             </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Estado cobrado</label>
+                <ng-select [items]="charge" id="customername-field" required formControlName="charge"
+                           placeholder="Seleccione Estado"
+                           [ngClass]="{ 'is-invalid': submitted && form['charge'].errors }"></ng-select>
+                <div *ngIf="submitted && form['charge'].errors" class="invalid-feedback" align="left">
+                  <div *ngIf="form['charge'].errors['required']">Estado de cobro es requerido</div>
+                </div>
+              </div>
+            </div>
+
+
           </div>
 
           <div class="row">
