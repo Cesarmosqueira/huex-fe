@@ -196,10 +196,9 @@ export class EmployeeAttendanceComponent implements OnInit {
     const attendanceDate = listData[0].attendanceDate.substring(0, 10);
     const fortmatattendanceDate = this.pipe.transform(attendanceDate, 'yyyy-MM-dd');
     this.employeeAttendanceForm.controls['id'].setValue(listData[0].id);
-    this.employeeAttendanceForm.controls['employee'].setValue(listData[0].employee);
     this.employeeAttendanceForm.controls['attendanceDate'].setValue(fortmatattendanceDate);
     this.employeeAttendanceForm.controls['status'].setValue(listData[0].status);
-    this.selectEmployee=listData[0].employee.fullName;
+    this.selectEmployee=listData[0].employee;
 
     this.idEmployeeAttendanceOuput = id;
 

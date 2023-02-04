@@ -208,14 +208,13 @@ export class TireReplacementComponent implements OnInit {
     const replacementDate = listData[0].replacementDate.substring(0, 10);
     const fortmatreplacementDate = this.pipe.transform(replacementDate, 'yyyy-MM-dd');
     this.tireReplacementForm.controls['id'].setValue(listData[0].id);
-    this.tireReplacementForm.controls['provider'].setValue(listData[0].provider);
     this.tireReplacementForm.controls['replacementDate'].setValue(fortmatreplacementDate);
     this.tireReplacementForm.controls['tireQuantity'].setValue(listData[0].tireQuantity);
     this.tireReplacementForm.controls['unitPrice'].setValue(listData[0].unitPrice);
     this.tireReplacementForm.controls['brand'].setValue(listData[0].brand);
     this.tireReplacementForm.controls['model'].setValue(listData[0].model);
     this.tireReplacementForm.controls['observation'].setValue(listData[0].observation);
-    this.selectProvider=listData[0].providers.businessName;
+    this.selectProvider=listData[0].provider;
 
     this.idTireReplacementOuput = id;
   }

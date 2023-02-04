@@ -213,14 +213,12 @@ export class RateComponent implements OnInit {
     updateBtn.innerHTML = "Actualizar";
     var listData = this.rates.filter((data: { id: any; }) => data.id === id);
     this.rateForm.controls['id'].setValue(listData[0].id);
-    this.rateForm.controls['customer'].setValue(listData[0].customer);
-    this.rateForm.controls['route'].setValue(listData[0].route);
     this.rateForm.controls['leadTime'].setValue(listData[0].leadTime);
     this.rateForm.controls['volume'].setValue(listData[0].volume);
     this.rateForm.controls['cost'].setValue(listData[0].cost);
     this.rateForm.controls['observationRate'].setValue(listData[0].observationRate);
-    this.selectRoute=listData[0].route.routeEnd;
-    this.selectCustomer=listData[0].customer.socialReason;
+    this.selectRoute=listData[0].route;
+    this.selectCustomer=listData[0].customer;
 
     this.idRateOuput = id;
   }

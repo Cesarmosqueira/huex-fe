@@ -24,9 +24,9 @@
                                 <th class="align-middle">Tipo Cambio</th>
                                 <th class="align-middle">Lugar</th>
                                 <th class="align-middle">Fecha de Cambio</th>
-                                <th class="align-middle">Km Último</th>
-                                <th class="align-middle">Km actual</th>
-                                <th class="align-middle">Km Próximo</th>
+                                <th class="align-middle">Ultimo cambio</th>
+                                <th class="align-middle">KM actual</th>
+                                <th class="align-middle">Proximo cambio</th>
                                 <th class="align-middle">Estado</th>
                                 <th class="align-middle">Diferencia</th>
                                 <th class="align-middle">Fecha Registro</th>
@@ -95,16 +95,20 @@
               </div>
 
                 <div class="col-md-6">
-                    <div class="mt-3">
-                        <label for="example-date-input" class="col-md-12 col-form-label">Tipo Cambio</label>
-                        <div class="col-md-12">
-                            <input class="form-control" type="text" formControlName="changeType"
-                                id="example-date-input">
-                        </div>
+
+                  <div class="mt-3">
+                    <label for="customername-field" class="form-label">Tipo cambio</label>
+                    <ng-select [items]="['Cambio de aceite','Cambio de caja y corona','Filtro de aire']" id="customername-field" required formControlName="changeType"
+                               [ngClass]="{ 'is-invalid': submitted && form['changeType'].errors }"></ng-select>
+                    <div *ngIf="submitted && form['changeType'].errors" class="invalid-feedback" align="left">
+                      <div *ngIf="form['changeType'].errors['required']">Tipo cambio es requerido</div>
                     </div>
+                  </div>
+
                 </div>
 
             </div>
+
             <div class="row">
 
               <div class="col-md-6">
@@ -128,58 +132,28 @@
 
             </div>
             <div class="row">
-                <div class="col-md-6">
-                    <div class="mt-3">
-                        <label for="example-date-input" class="col-md-12 col-form-label">Km Proximo</label>
-                        <div class="col-md-12">
-                            <input class="form-control" type="number" formControlName="kmNext" id="example-date-input">
-                        </div>
-                    </div>
-                </div>
+
               <div class="col-md-6">
                 <div class="mt-3">
-                  <label for="example-date-input" class="col-md-12 col-form-label">Km Actual</label>
+                  <label for="example-date-input" class="col-md-12 col-form-label">Ultimo cambio</label>
                   <div class="col-md-12">
                     <input class="form-control" type="number" formControlName="kmLast" id="example-date-input">
                   </div>
                 </div>
               </div>
 
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mt-3">
-                        <label for="example-date-input" class="col-md-12 col-form-label">Diferencia</label>
-                        <div class="col-md-12">
-                            <input class="form-control" type="number" formControlName="differences"
-                                id="example-date-input">
-                        </div>
-                    </div>
-                </div>
-
               <div class="col-md-6">
                 <div class="mt-3">
-                  <label for="example-date-input" class="col-md-12 col-form-label">Estado</label>
+                  <label for="example-date-input" class="col-md-12 col-form-label">Km actual</label>
                   <div class="col-md-12">
-                    <input class="form-control" type="text" formControlName="status" id="example-date-input">
+                    <input class="form-control" type="number" formControlName="kmCurrent"
+                           id="example-date-input">
                   </div>
                 </div>
               </div>
 
             </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="mt-3">
-                <label for="example-date-input" class="col-md-12 col-form-label">Km actual</label>
-                <div class="col-md-12">
-                  <input class="form-control" type="number" formControlName="kmCurrent"
-                         id="example-date-input">
-                </div>
-              </div>
-            </div>
 
-
-          </div>
         </div>
         <div class="modal-footer">
             <div class="hstack gap-2 justify-content-end">

@@ -210,12 +210,10 @@ export class EmployeeImplementComponent implements OnInit {
     const deliveryDate = listData[0].deliveryDate.substring(0, 10);
     const fortmatdeliveryDate = this.pipe.transform(deliveryDate, 'yyyy-MM-dd');
     this.employeeImplementForm.controls['id'].setValue(listData[0].id);
-    this.employeeImplementForm.controls['employee'].setValue(listData[0].employee);
-    this.employeeImplementForm.controls['implement'].setValue(listData[0].implement);
     this.employeeImplementForm.controls['deliveryDate'].setValue(fortmatdeliveryDate);
     this.employeeImplementForm.controls['observations'].setValue(listData[0].observations);
-    this.selectEmployee=listData[0].employee.fullName;
-    this.selectImplement=listData[0].implement.name;
+    this.selectEmployee=listData[0].employee;
+    this.selectImplement=listData[0].implement;
 
     this.idEmployeeImplemntOuput = id;
 

@@ -112,7 +112,7 @@ export class TrackingComponent implements OnInit {
       detailMoney: ['', [Validators.required]],
       operation: ['', [Validators.required]],
       monitoring: ['', [Validators.required]],
-      photoInsurance: [0, [Validators.required]]
+      photoInsurance: [0]
     });
 
     this.trackingsList.subscribe(x => {

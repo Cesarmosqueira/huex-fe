@@ -215,10 +215,8 @@ export class CustomerEmployeesComponent implements OnInit {
     this.customerEmployeesForm.controls['status'].setValue(listData[0].status);
     this.customerEmployeesForm.controls['registerDate'].setValue(fortmatregisterDate);
     this.customerEmployeesForm.controls['observations'].setValue(listData[0].observations);
-    this.customerEmployeesForm.controls['customer'].setValue(listData[0].customer.id);
-    this.selectCustomer = listData[0].customer.socialReason;
-    this.customerEmployeesForm.controls['employee'].setValue(listData[0].employee.id);
-    this.selectEmployee=listData[0].employee.fullName;
+    this.selectCustomer = listData[0].customer;
+    this.selectEmployee=listData[0].employee;
     this.idCustomerEmployeeOuput = id;
 
   }

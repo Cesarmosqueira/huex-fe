@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
+import {defaultIfEmpty, first} from 'rxjs/operators';
 import { config } from 'src/app/shared/shared.config';
 import Swal from 'sweetalert2';
 import { MaintenanceOil } from '../models/maintenance-oil.model';
@@ -67,9 +67,9 @@ export class MaintenanceOilComponent implements OnInit {
       dateChange: ['', [Validators.required]],
       kmLast: ['', [Validators.required]],
       kmCurrent: ['', [Validators.required]],
-      kmNext: ['', [Validators.required]],
-      status: ['', [Validators.required]],
-      differences: ['', [Validators.required]]
+      kmNext: [''],
+      status: [''],
+      differences: ['']
     });
 
     this.maintenanceOilsList.subscribe(x => {
@@ -153,9 +153,15 @@ export class MaintenanceOilComponent implements OnInit {
       const dateChange = this.maintenanceOilForm.get('dateChange')?.value;
       const kmLast = this.maintenanceOilForm.get('kmLast')?.value;
       const kmCurrent = this.maintenanceOilForm.get('kmCurrent')?.value;
-      const kmNext = this.maintenanceOilForm.get('kmNext')?.value;
-      const status =  this.maintenanceOilForm.get('status')?.value;
-      const differences = this.maintenanceOilForm.get('differences')?.value;
+      const kmNext = kmLast+7000;
+      let status;
+      const differences = kmNext-kmCurrent;
+      if(differences>0){
+         status="No cambiar";
+      }else {
+         status="Cambio";
+      }
+
       const myDate = new Date();
       let maintenanceOil = new MaintenanceOil();
       let truckFleet=new TruckFleet();
@@ -167,7 +173,7 @@ export class MaintenanceOilComponent implements OnInit {
       maintenanceOil.kmLast = kmLast;
       maintenanceOil.kmCurrent = kmCurrent;
       maintenanceOil.kmNext = kmNext;
-      maintenanceOil.status = Number(status);
+      maintenanceOil.status = status;
       maintenanceOil.differences = differences;
       maintenanceOil.dateCurrent = this.pipe.transform(myDate, 'yyyy-MM-dd');
 
@@ -196,9 +202,7 @@ export class MaintenanceOilComponent implements OnInit {
     this.maintenanceOilForm.controls['dateChange'].setValue("");
     this.maintenanceOilForm.controls['kmLast'].setValue("");
     this.maintenanceOilForm.controls['kmCurrent'].setValue("");
-    this.maintenanceOilForm.controls['kmNext'].setValue("");
-    this.maintenanceOilForm.controls['status'].setValue("");
-    this.maintenanceOilForm.controls['differences'].setValue("");
+
     this.maintenanceOilForm.controls['id'].setValue("0");
   }
 
@@ -219,16 +223,15 @@ export class MaintenanceOilComponent implements OnInit {
     updateBtn.innerHTML = "Actualizar";
     var listData = this.maintenanceOils.filter((data: { id: any; }) => data.id === id);
     this.maintenanceOilForm.controls['id'].setValue(listData[0].id);
-    this.maintenanceOilForm.controls['truckFleet'].setValue(listData[0].truckFleet.id);
     this.maintenanceOilForm.controls['changeType'].setValue(listData[0].changeType);
     this.maintenanceOilForm.controls['place'].setValue(listData[0].place);
     this.maintenanceOilForm.controls['dateChange'].setValue(this.pipe.transform(listData[0].dateChange, 'yyyy-MM-dd'));
     this.maintenanceOilForm.controls['kmLast'].setValue(listData[0].kmLast);
     this.maintenanceOilForm.controls['kmCurrent'].setValue(listData[0].kmCurrent);
-    this.maintenanceOilForm.controls['kmNext'].setValue(listData[0].kmNext);
-    this.maintenanceOilForm.controls['status'].setValue(listData[0].status);
-    this.maintenanceOilForm.controls['differences'].setValue(listData[0].differences);
-    this.selectTruckFleets=listData[0].truckFleet.tractPlate;
+    //this.maintenanceOilForm.controls['kmNext'].setValue(listData[0].kmNext);
+   // this.maintenanceOilForm.controls['status'].setValue(listData[0].status);
+    //this.maintenanceOilForm.controls['differences'].setValue(listData[0].differences);
+    this.selectTruckFleets=listData[0].truckFleet;
     this.idTruckFleetOuput=id;
 
   }
