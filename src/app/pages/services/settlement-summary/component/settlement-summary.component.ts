@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
-import {TruckFleet} from "../../../vehicles/truck-fleet/models/truck-fleet.model";
-import {Observable} from "rxjs";
-import {TruckFleetService} from "../../../vehicles/truck-fleet/services/truck-fleet.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import { Component, Input, OnInit } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { Observable } from "rxjs";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
-import {DatePipe} from "@angular/common";
-import {first} from "rxjs/operators";
-import {config} from "../../../../shared/shared.config";
-import {SettlementSummary} from "../models/settlement-summary.model";
-import {SettlementSummaryService} from "../services/settlement-summary.service";
+import { DatePipe } from "@angular/common";
+import { first } from "rxjs/operators";
+import { config } from "../../../../shared/shared.config";
+import { SettlementSummary } from "../models/settlement-summary.model";
+import { SettlementSummaryService } from "../services/settlement-summary.service";
+import { Tracking } from '../../tracking/models/tracking.model';
+import { ExpenseTypeService } from '../../expense-type/services/expense-type.service';
 
 @Component({
   selector: 'app-settlement-summary',
@@ -18,6 +18,8 @@ import {SettlementSummaryService} from "../services/settlement-summary.service";
 })
 export class SettlementSummaryComponent implements OnInit {
 
+  @Input() idTracking: number;
+
   // bread crumb items
   breadCrumbItems: Array<{}>;
   term: any;
@@ -25,7 +27,7 @@ export class SettlementSummaryComponent implements OnInit {
   settlementSummaryForm!: UntypedFormGroup;
   submitted = false;
   register = true;
-
+  selectExpenseType: any;
   transactions;
 
   // Table data
@@ -36,9 +38,12 @@ export class SettlementSummaryComponent implements OnInit {
   total: Observable<number>;
   pipe: any;
 
+  listExpenseType: any;
+
   constructor(public service: SettlementSummaryService,
-              private modalService: NgbModal,
-              private formBuilder: UntypedFormBuilder) {
+    private modalService: NgbModal,
+    private formBuilder: UntypedFormBuilder,
+    private serviceExpense: ExpenseTypeService) {
     this.settlementSummaryList = service.countries$;
     this.total = service.total$;
   }
@@ -51,7 +56,6 @@ export class SettlementSummaryComponent implements OnInit {
      */
     this.settlementSummaryForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
-      trackingServiceId: ['', [Validators.required]],
       expenseTypeId: ['', [Validators.required]],
       settlementDate: ['', [Validators.required]],
       detail: ['', [Validators.required]],
@@ -63,7 +67,9 @@ export class SettlementSummaryComponent implements OnInit {
       this.settlementSummary = Object.assign([], x);
     });
 
-    this.listSettlementSummary();
+    console.log(this.idTracking);
+    this.listExpenseTypes();
+    this.listSettlementSummaryByIdTracking(this.idTracking);
   }
 
   /**
@@ -132,7 +138,6 @@ export class SettlementSummaryComponent implements OnInit {
     this.submitted = true
     if (this.settlementSummaryForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const trackingServiceId = 7;//this.settlementSummaryForm.get('trackingServiceId')?.value;
       const expenseTypeId = this.settlementSummaryForm.get('expenseTypeId')?.value;
       const settlementDate = this.settlementSummaryForm.get('settlementDate')?.value;
       const fortmatSettlementDate = this.pipe.transform(settlementDate, 'yyyy-MM-dd');
@@ -140,8 +145,11 @@ export class SettlementSummaryComponent implements OnInit {
       const totalExpense = this.settlementSummaryForm.get('totalExpense')?.value;
 
       let settlementSummary = new SettlementSummary();
-      settlementSummary.trackingServiceId = trackingServiceId;
-      settlementSummary.expenseTypeId = expenseTypeId;
+      let tracking = new Tracking();
+      tracking.id = this.idTracking;
+      console.log(expenseTypeId)
+      settlementSummary.trackingService = tracking;
+      settlementSummary.expenseType = expenseTypeId;
       settlementSummary.settlementDate = fortmatSettlementDate;
       settlementSummary.detail = detail;
       settlementSummary.totalExpense = totalExpense;
@@ -177,19 +185,18 @@ export class SettlementSummaryComponent implements OnInit {
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.settlementSummary.filter((data: { id: any; }) => data.id === id);
-    const fabricationDate = listData[0].fabricationDate.substring(0, 10);
-    const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
+    const settlementDate = listData[0].settlementDate.substring(0, 10);
+    const fortmatSettlementDate = this.pipe.transform(settlementDate, 'yyyy-MM-dd');
     this.settlementSummaryForm.controls['id'].setValue(listData[0].id);
-    this.settlementSummaryForm.controls['trackingServiceId'].setValue(listData[0].trackingServiceId);
-    this.settlementSummaryForm.controls['expenseTypeId'].setValue(listData[0].expenseTypeId);
-    this.settlementSummaryForm.controls['settlementDate'].setValue(fortmatFabricationDate);
+    this.settlementSummaryForm.controls['settlementDate'].setValue(fortmatSettlementDate);
     this.settlementSummaryForm.controls['detail'].setValue(listData[0].detail);
     this.settlementSummaryForm.controls['totalExpense'].setValue(listData[0].totalExpense);
+    this.selectExpenseType = listData[0].expenseType;
 
   }
 
-  listSettlementSummary() {
-    this.service.listSettlementSummary()
+  listSettlementSummaryByIdTracking(id) {
+    this.service.listSettlementSummaryByIdTracking(id)
       .pipe(first())
       .subscribe(
         response => {
@@ -197,12 +204,6 @@ export class SettlementSummaryComponent implements OnInit {
             if (response.datos) {
               this.test = response.datos.settlementsSummary;
               this.service.paginationTable(this.test);
-            } else {
-              Swal.fire({
-                icon: config.WARNING,
-                title: response.meta.mensajes[0].mensaje,
-                showConfirmButton: false,
-              });
             }
           } else {
             Swal.fire({
@@ -233,7 +234,7 @@ export class SettlementSummaryComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.listSettlementSummary();
+              this.listSettlementSummaryByIdTracking(this.idTracking);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -265,7 +266,7 @@ export class SettlementSummaryComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.listSettlementSummary();
+              this.listSettlementSummaryByIdTracking(this.idTracking);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -290,6 +291,28 @@ export class SettlementSummaryComponent implements OnInit {
         });
   }
 
+  listExpenseTypes() {
+    this.serviceExpense.listExpenseType()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.listExpenseType = response.datos.expenseTypes;
+              console.log("this.listExpenseType ");
+              console.log(this.listExpenseType);
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
   deleteSettlementSummary(id) {
     this.service.deleteSettlementSummary(id)
       .pipe(first())
@@ -302,7 +325,7 @@ export class SettlementSummaryComponent implements OnInit {
                 'Su archivo ha sido eliminado.',
                 'success'
               );
-              this.listSettlementSummary();
+              this.listSettlementSummaryByIdTracking(this.idTracking);
             } else {
               Swal.fire({
                 icon: config.WARNING,

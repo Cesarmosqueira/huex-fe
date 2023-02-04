@@ -1,5 +1,4 @@
 <div class="container-fluid">
-  <app-page-title title="Orders" [breadcrumbItems]="breadCrumbItems"></app-page-title>
   <div class="row">
     <div class="col-12">
       <div class="card">
@@ -8,7 +7,8 @@
             <div class="col-sm-4">
               <div class="search-box me-2 mb-2 d-inline-block">
                 <div class="position-relative">
-                  <input type="text" class="form-control" placeholder="Buscar por servicio..." [(ngModel)]="service.searchTerm">
+                  <input type="text" class="form-control" placeholder="Buscar por servicio..."
+                    [(ngModel)]="service.searchTerm">
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
@@ -16,7 +16,7 @@
             <div class="col-sm-8">
               <div class="text-sm-end">
                 <button type="button" class="btn btn-success btn-rounded mb-2 me-2" (click)="openModal(content)"><i
-                  class="mdi mdi-plus mr-1"></i>
+                    class="mdi mdi-plus mr-1"></i>
                   Nuevo</button>
               </div>
             </div><!-- end col-->
@@ -26,34 +26,33 @@
           <div class="table-responsive mb-0">
             <table class="table table-centered table-nowrap">
               <thead class="table-light">
-              <tr>
-                <th class="align-middle">ID</th>
-                <th class="align-middle">Servicio</th>
-                <th class="align-middle">Tipo gasto</th>
-                <th class="align-middle">Fecha gasto</th>
-                <th class="align-middle">Detalles</th>
-                <th class="align-middle">Total gasto</th>
-              </tr>
+                <tr>
+                  <th class="align-middle">ID</th>
+                  <th class="align-middle">Tipo gasto</th>
+                  <th class="align-middle">Fecha gasto</th>
+                  <th class="align-middle">Detalles</th>
+                  <th class="align-middle">Total gasto</th>
+                  <th class="align-middle">Acciones</th>
+                </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let data of settlementSummary" id="o_{{data.id}}">
-                <td>
-                  <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
-                </td>
-                <td>{{data.trackingServiceId}}</td>
-                <td>{{data.expenseTypeId}}</td>
-                <td>{{data.settlementDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
-                <td>{{data.detail}}</td>
-                <td>{{data.totalExpense}}</td>
-                <td>
-                  <div class="d-flex gap-3">
-                    <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
-                      class="mdi mdi-pencil font-size-18"></i></a>
-                    <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
-                      class="mdi mdi-delete font-size-18"></i></a>
-                  </div>
-                </td>
-              </tr>
+                <tr *ngFor="let data of settlementSummary" id="o_{{data.id}}">
+                  <td>
+                    <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
+                  </td>
+                  <td>{{data.expenseType.expenseType}}</td>
+                  <td>{{data.settlementDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                  <td>{{data.detail}}</td>
+                  <td>{{data.totalExpense}}</td>
+                  <td>
+                    <div class="d-flex gap-3">
+                      <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
+                          class="mdi mdi-pencil font-size-18"></i></a>
+                      <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
+                          class="mdi mdi-delete font-size-18"></i></a>
+                    </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
 
@@ -75,25 +74,18 @@
   <div class="modal-header">
     <h5 class="modal-title" id="exampleModalLabel">Nueva liquidacion</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
-            (click)="modal.dismiss('Cross click')"></button>
+      (click)="modal.dismiss('Cross click')"></button>
   </div>
   <form (ngSubmit)="saveUser()" [formGroup]="settlementSummaryForm">
     <div class="modal-body">
       <input type="text" hidden formControlName="id" value="0" />
 
       <div class="mb-3">
-        <label for="customername-field" class="form-label">Servicio</label>
-        <ng-select [items]="['AEN729','B6T705']" id="customername-field" required formControlName="trackingServiceId"
-                   [ngClass]="{ 'is-invalid': submitted && form['trackingServiceId'].errors }"></ng-select>
-        <div *ngIf="submitted && form['trackingServiceId'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['trackingServiceId'].errors['required']">Servicio es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
         <label for="customername-field" class="form-label">Tipo gasto</label>
-        <ng-select [items]="['LAVADO','PEAJE']" id="customername-field" required formControlName="expenseTypeId"
-                   [ngClass]="{ 'is-invalid': submitted && form['expenseTypeId'].errors }"></ng-select>
+        <ng-select [items]="listExpenseType" bindLabel="expenseType" placeholder="Seleccione Tipo gasto"
+          [(ngModel)]="selectExpenseType" id="customername-field" [clearable]="false" required
+          formControlName="expenseTypeId" [ngClass]="{ 'is-invalid': submitted && form['expenseTypeId'].errors }">
+        </ng-select>
         <div *ngIf="submitted && form['expenseTypeId'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['expenseTypeId'].errors['required']">Tipo gasto es requerido</div>
         </div>
@@ -103,14 +95,15 @@
       <div class="mb-3">
         <label>Fecha gasto</label>
         <div class="input-group clockpicker">
-          <input class="form-control" type="date" id="example-date-input" formControlName="settlementDate" autocomplete="disabled">
+          <input class="form-control" type="date" id="example-date-input" formControlName="settlementDate"
+            autocomplete="off">
         </div>
       </div>
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Detalles</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="detail"
-               [ngClass]="{ 'is-invalid': submitted && form['detail'].errors }" autocomplete="disabled" />
+          [ngClass]="{ 'is-invalid': submitted && form['detail'].errors }" autocomplete="off" />
         <div *ngIf="submitted && form['detail'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['detail'].errors['required']">Detalle es requerido</div>
         </div>
@@ -119,7 +112,7 @@
       <div class="mb-3">
         <label for="customername-field" class="form-label">Gasto total</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="totalExpense"
-               [ngClass]="{ 'is-invalid': submitted && form['totalExpense'].errors }" autocomplete="disabled" />
+          [ngClass]="{ 'is-invalid': submitted && form['totalExpense'].errors }" autocomplete="off" />
         <div *ngIf="submitted && form['totalExpense'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['totalExpense'].errors['required']">Gasto total es requerido</div>
         </div>
@@ -130,7 +123,7 @@
     <div class="modal-footer">
       <div class="hstack gap-2 justify-content-end">
         <button type="button" class="btn btn-light" data-bs-dismiss="modal"
-                (click)="modal.close('Close click')">Cancelar</button>
+          (click)="modal.close('Close click')">Cancelar</button>
         <button type="submit" class="btn btn-success" id="add-btn">Registrar</button>
       </div>
     </div>

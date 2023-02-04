@@ -1,5 +1,4 @@
 <div class="container-fluid">
-  <app-page-title title="Orders" [breadcrumbItems]="breadCrumbItems"></app-page-title>
 
   <div class="row">
     <div class="col-12">
@@ -29,12 +28,12 @@
               <thead class="table-light">
               <tr>
                 <th class="align-middle">ID</th>
-                <th class="align-middle">Servicio</th>
                 <th class="align-middle">GRT</th>
                 <th class="align-middle">GRR</th>
                 <th class="align-middle">Orden</th>
                 <th class="align-middle">Cantidad</th>
                 <th class="align-middle">Observaciones</th>
+                <th class="align-middle">Acciones</th>
               </tr>
               </thead>
               <tbody>
@@ -42,7 +41,6 @@
                 <td>
                   <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                 </td>
-                <td>{{data.trackingServiceId}}</td>
                 <td>{{data.grt}}</td>
                 <td>{{data.grr}}</td>
                 <td>{{data.order}}</td>
@@ -85,18 +83,9 @@
       <input type="text" hidden formControlName="id" value="0" />
 
       <div class="mb-3">
-        <label for="customername-field" class="form-label">Servicio</label>
-        <ng-select [items]="['AEN729','B6T705']" id="customername-field" required formControlName="trackingServiceId"
-                   [ngClass]="{ 'is-invalid': submitted && form['trackingServiceId'].errors }"></ng-select>
-        <div *ngIf="submitted && form['trackingServiceId'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['trackingServiceId'].errors['required']">Servicio es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
         <label for="customername-field" class="form-label">GRT</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="grt"
-               [ngClass]="{ 'is-invalid': submitted && form['grt'].errors }" autocomplete="disabled" />
+               [ngClass]="{ 'is-invalid': submitted && form['grt'].errors }" autocomplete="off" />
         <div *ngIf="submitted && form['grt'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['grt'].errors['required']">GRT Tracto es requerido</div>
         </div>
@@ -105,7 +94,7 @@
       <div class="mb-3">
         <label for="customername-field" class="form-label">GRR</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="grr"
-               [ngClass]="{ 'is-invalid': submitted && form['grr'].errors }" autocomplete="disabled" />
+               [ngClass]="{ 'is-invalid': submitted && form['grr'].errors }" autocomplete="off" />
         <div *ngIf="submitted && form['grr'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['grr'].errors['required']">GRR Furgon es requerido</div>
         </div>
@@ -114,7 +103,7 @@
       <div class="mb-3">
         <label for="customername-field" class="form-label">Numero orden</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="order"
-               [ngClass]="{ 'is-invalid': submitted && form['order'].errors }" autocomplete="disabled" />
+               [ngClass]="{ 'is-invalid': submitted && form['order'].errors }" autocomplete="off" />
         <div *ngIf="submitted && form['order'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['order'].errors['required']">Numero de orden es requerido</div>
         </div>
@@ -123,7 +112,7 @@
       <div class="mb-3">
         <label for="customername-field" class="form-label">Cantidad de unidades</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="quantityUnits"
-               [ngClass]="{ 'is-invalid': submitted && form['quantityUnits'].errors }" autocomplete="disabled" />
+               [ngClass]="{ 'is-invalid': submitted && form['quantityUnits'].errors }" autocomplete="off" />
         <div *ngIf="submitted && form['quantityUnits'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['quantityUnits'].errors['required']">Cantidad de unidades es requerido</div>
         </div>
@@ -132,7 +121,7 @@
       <div class="mb-3">
         <label for="customername-field" class="form-label">Observaciones</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="observation"
-               [ngClass]="{ 'is-invalid': submitted && form['observation'].errors }" autocomplete="disabled" />
+               [ngClass]="{ 'is-invalid': submitted && form['observation'].errors }" autocomplete="off" />
         <div *ngIf="submitted && form['observation'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['observation'].errors['required']">Observaciones es requerido</div>
         </div>

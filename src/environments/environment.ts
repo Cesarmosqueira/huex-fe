@@ -103,21 +103,24 @@ export const environment = {
       retrieve: '/api-huex/v1/service_incident/',
       register: '/api-huex/v1/service_incident',
       update: '/api-huex/v1/service_incident',
-      delete: '/api-huex/v1/service_incident/'
+      delete: '/api-huex/v1/service_incident/',
+      listByIdTracking: '/api-huex/v1/service_incident/tracking/'
     },
     settlementSummary: {
       list: '/api-huex/v1/settlement_summary',
       retrieve: '/api-huex/v1/settlement_summary/',
       register: '/api-huex/v1/settlement_summary',
       update: '/api-huex/v1/settlement_summary',
-      delete: '/api-huex/v1/settlement_summary/'
+      delete: '/api-huex/v1/settlement_summary/',
+      listByIdTracking: '/api-huex/v1/settlement_summary/tracking/',
     },
     serviceMonitoring: {
       list: '/api-huex/v1/serviceMonitoring',
       retrieve: '/api-huex/v1/serviceMonitoring/',
       register: '/api-huex/v1/serviceMonitoring',
       update: '/api-huex/v1/serviceMonitoring',
-      delete: '/api-huex/v1/serviceMonitoring/'
+      delete: '/api-huex/v1/serviceMonitoring/',
+      listByIdTracking: '/api-huex/v1/serviceMonitoring/tracking/'
     }
   },
 

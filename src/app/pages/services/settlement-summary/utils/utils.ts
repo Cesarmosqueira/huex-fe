@@ -19,5 +19,5 @@ export function sort(settlementSummaries: SettlementSummary[], column: SortColum
 }
 
 export function matches(settlementSummary: SettlementSummary, term: string, pipe: PipeTransform) {
-    return settlementSummary.trackingServiceId.toLowerCase().includes(term.toLowerCase());
+    return settlementSummary.detail.toLowerCase().includes(term.toLowerCase());
 }

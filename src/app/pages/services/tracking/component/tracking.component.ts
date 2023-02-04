@@ -22,6 +22,7 @@ import { EmployeeService } from "../../../employees/employee/services/employee.s
   styleUrls: ['./tracking.component.scss']
 })
 export class TrackingComponent implements OnInit {
+  
   idTrackingOuput: number = 0;
 
   // bread crumb items
@@ -31,6 +32,7 @@ export class TrackingComponent implements OnInit {
   trackingForm!: UntypedFormGroup;
   submitted = false;
   register = true;
+  textButton = "Registrar";
 
   transactions;
 
@@ -64,6 +66,10 @@ export class TrackingComponent implements OnInit {
 
   image: any;
   file: File = null;
+
+  action = 0;
+
+  newTruck = false;
 
   constructor(public service: TrackingService,
     private modalService: NgbModal,
@@ -178,7 +184,10 @@ export class TrackingComponent implements OnInit {
 
   openModal(content: any) {
     this.clear();
+    this.action = 1;
+    this.newTruck = false;
     this.submitted = false;
+    this.textButton = "Registrar";
     let ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
       keyboard: false,
@@ -266,11 +275,6 @@ export class TrackingComponent implements OnInit {
 
       this.imageUrl = null;
 
-      this.modalService.dismissAll();
-      setTimeout(() => {
-        this.trackingForm.reset();
-      }, 2000);
-
     }
   }
 
@@ -292,20 +296,15 @@ export class TrackingComponent implements OnInit {
   editDataGet(id: any, content: any, action: any) {
     this.imageUrl = null;
     this.submitted = false;
+    this.action = 2;
+    this.newTruck = true;
     this.pipe = new DatePipe('en-US');
+    this.textButton = "Actualizar";
     this.modalService.open(content, { size: 'xl', centered: true });
     if (action) {
-      var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-      modelTitle.innerHTML = 'Detalle Tracking';
       this.disableInputs();
-      document.getElementById('add-btn').setAttribute("disabled", "disabled");
     } else {
       this.enableInputs();
-      document.getElementById('add-btn').removeAttribute("disabled");
-      var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-      modelTitle.innerHTML = 'Actualizar Tracking';
-      var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
-      updateBtn.innerHTML = "Actualizar";
     }
     var listData = this.trackings.filter((data: { id: any; }) => data.id === id);
     this.trackingForm.controls['id'].setValue(listData[0].id);
@@ -345,7 +344,7 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['monitoring'].setValue(listData[0].monitoring);
     this.imageUrl = 'data:image/jpeg;base64,' + listData[0].photoInsurance;
     this.trackingForm.get('photoInsurance').setValue(this.dataURLtoFile(this.imageUrl, 'foto.jpeg'));
-    this.idTrackingOuput = id;
+    this.idTrackingOuput = listData[0].id;
   }
 
   dataURLtoFile(dataurl, filename) {
@@ -403,6 +402,8 @@ export class TrackingComponent implements OnInit {
               );
               const trackingsDto = response.datos.trackingService;
               this.idTrackingOuput = trackingsDto.id;
+              this.action = 0;
+              this.newTruck = true;
               this.listTrackings();
             } else {
               Swal.fire({

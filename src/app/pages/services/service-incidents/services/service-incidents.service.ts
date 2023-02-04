@@ -81,6 +81,13 @@ export class ServiceIncidentsService extends BaseService{
       }), catchError(this.handleError));
   }
 
+  public listServiceIncidentsByIdTracking(id: number): Observable<ResponseModel<any>> {
+    return this.httpClient.get(environment.server + environment.services.serviceIncidents.listByIdTracking + id)
+      .pipe(map((responseModel: ResponseModel<any>) => {
+        return responseModel;
+      }), catchError(this.handleError));
+  }
+
   //Pagination
 
   public paginationTable(serviceIncidents: ServiceIncidents[]) {

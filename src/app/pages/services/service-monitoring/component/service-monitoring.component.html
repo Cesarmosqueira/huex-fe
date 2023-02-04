@@ -1,5 +1,4 @@
 <div class="container-fluid">
-  <app-page-title title="Orders" [breadcrumbItems]="breadCrumbItems"></app-page-title>
   <div class="row">
     <div class="col-12">
       <div class="card">
@@ -28,7 +27,6 @@
               <thead class="table-light">
               <tr>
                 <th class="align-middle">ID</th>
-                <th class="align-middle">Servicio</th>
                 <th class="align-middle">Fecha y hora</th>
                 <th class="align-middle">Estado</th>
                 <th class="align-middle">Observaciones</th>
@@ -41,11 +39,15 @@
                 <td>
                   <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                 </td>
-                <td>{{data.idTrackingService}}</td>
                 <td>{{data.dateHour.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                 <td>{{data.status}}</td>
                 <td>{{data.observation}}</td>
-                <td>{{data.photoMonitoring}}</td>
+                <td>
+                  <a href="javascript:void(0);" class="text-success" (click)="viewDocument(data.id)">Ver <i
+                      class="mdi mdi-eye font-size-16 mt"></i>/</a>
+                  <a href="javascript:void(0);" class="text-success" (click)="saveByteArray(data.id)">Descargar <i
+                      class="mdi mdi-cloud-download font-size-16 mt"></i></a>
+                </td>
 
                 <td>
                   <div class="d-flex gap-3">
@@ -82,62 +84,44 @@
   <form (ngSubmit)="saveUser()" [formGroup]="serviceMonitoringForm">
     <div class="modal-body">
       <input type="text" hidden formControlName="id" value="0" />
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Servicio</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="idTrackingService"
-               [ngClass]="{ 'is-invalid': submitted && form['idTrackingService'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['idTrackingService'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['idTrackingService'].errors['required']">Servicio es requerido</div>
+      <div class="row">
+        <div class="col-lg-2">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Foto</label>
+            <img [src]="imageUrl != null ? imageUrl : myImageBaseUrl" class="image">
+            <input type="file" id="customername-field" accept=".jpg" class="form-control"
+              (change)="getImage($event)" autocomplete="off"
+              [ngClass]="{ 'is-invalid': submitted && form['photoMonitoring'].errors }" />
+            <div *ngIf="submitted && form['photoMonitoring'].errors" class="invalid-feedback" align="left">
+              <div *ngIf="form['photoMonitoring'].errors['required']">Foto es requerido</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-10">
+          <div class="mb-3">
+            <label>Fecha y hora</label>
+            <div class="input-group clockpicker">
+              <input class="form-control" type="date" id="example-date-input" formControlName="dateHour" autocomplete="off">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Estado</label>
+            <ng-select [items]="['EN DESCARGA','EN COCHERA','EN RUTA','RETORNANDO']" id="customername-field" required formControlName="status"
+                       [ngClass]="{ 'is-invalid': submitted && form['status'].errors }"></ng-select>
+            <div *ngIf="submitted && form['status'].errors" class="invalid-feedback" align="left">
+              <div *ngIf="form['status'].errors['required']">Estado es requerido</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Observaciones</label>
+            <input type="text" id="customername-field" class="form-control" required formControlName="observation"
+                   [ngClass]="{ 'is-invalid': submitted && form['observation'].errors }" autocomplete="off" />
+            <div *ngIf="submitted && form['observation'].errors" class="invalid-feedback" align="left">
+              <div *ngIf="form['observation'].errors['required']">Observaciones es requerido</div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class="mb-3">
-        <label>Fecha y hora</label>
-        <div class="input-group clockpicker">
-          <input class="form-control" type="date" id="example-date-input" formControlName="dateHour" autocomplete="disabled">
-        </div>
-      </div>
-
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Razon social</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="socialReason"
-               [ngClass]="{ 'is-invalid': submitted && form['socialReason'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['socialReason'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['socialReason'].errors['required']">Razon social es requerido</div>
-        </div>
-      </div>
-
-
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Estado</label>
-        <ng-select [items]="['EN DESCARGA','EN COCHERA','EN RUTA','RETORNANDO']" id="customername-field" required formControlName="status"
-                   [ngClass]="{ 'is-invalid': submitted && form['status'].errors }"></ng-select>
-        <div *ngIf="submitted && form['status'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['status'].errors['required']">Estado es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Observaciones</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="observation"
-               [ngClass]="{ 'is-invalid': submitted && form['observation'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['observation'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['observation'].errors['required']">Observaciones es requerido</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Foto</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="photoMonitoring"
-               [ngClass]="{ 'is-invalid': submitted && form['photoMonitoring'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['photoMonitoring'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['photoMonitoring'].errors['required']">Foto es requerido</div>
-        </div>
-      </div>
-
     </div>
     <div class="modal-footer">
       <div class="hstack gap-2 justify-content-end">

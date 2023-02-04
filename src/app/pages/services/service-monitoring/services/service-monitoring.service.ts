@@ -81,6 +81,18 @@ export class ServiceMonitoringService extends BaseService{
       }), catchError(this.handleError));
   }
 
+  public listServiceMonitoringByIdTracking(id: number): Observable<ResponseModel<any>> {
+    return this.httpClient.get(environment.server + environment.services.serviceMonitoring.listByIdTracking + id)
+      .pipe(map((responseModel: ResponseModel<any>) => {
+        return responseModel;
+      }), catchError(this.handleError));
+  }
+
+  downloadImage(url: string): Observable<Blob> {
+    const options = { responseType: 'blob' as 'json' };
+    return this.httpClient.get<Blob>(url, options)
+      .pipe(map(res => new Blob([res], { type: 'image/jpeg' })));
+  }
   //Pagination
 
   public paginationTable(serviceMonitoring: ServiceMonitoring[]) {

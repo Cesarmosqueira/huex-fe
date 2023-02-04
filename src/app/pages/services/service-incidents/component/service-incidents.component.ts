@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -8,6 +8,7 @@ import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
 import {ServiceIncidents} from "../models/service-incidents.model";
 import {ServiceIncidentsService} from "../services/service-incidents.service";
+import { Tracking } from '../../tracking/models/tracking.model';
 
 @Component({
   selector: 'app-service-incidents',
@@ -16,6 +17,8 @@ import {ServiceIncidentsService} from "../services/service-incidents.service";
 })
 export class ServiceIncidentsComponent implements OnInit {
 
+  @Input() idTracking: number;
+  
   // bread crumb items
   breadCrumbItems: Array<{}>;
   term: any;
@@ -49,7 +52,6 @@ export class ServiceIncidentsComponent implements OnInit {
      */
     this.serviceIncidentsForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
-      trackingServiceId: ['', [Validators.required]],
       grt: ['', [Validators.required]],
       grr: ['', [Validators.required]],
       order: ['', [Validators.required]],
@@ -62,7 +64,7 @@ export class ServiceIncidentsComponent implements OnInit {
       this.serviceIncidents = Object.assign([], x);
     });
 
-    this.listServiceIncidents();
+    this.listServiceIncidentsByIdTracking(this.idTracking);
   }
 
   /**
@@ -131,17 +133,17 @@ export class ServiceIncidentsComponent implements OnInit {
     this.submitted = true
     if (this.serviceIncidentsForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const trackingServiceId = 2;//this.serviceIncidentsForm.get('trackingServiceId')?.value;
       const grt = this.serviceIncidentsForm.get('grt')?.value;
       const grr = this.serviceIncidentsForm.get('grr')?.value;
       const order = this.serviceIncidentsForm.get('order')?.value;
       const quantityUnits = this.serviceIncidentsForm.get('quantityUnits')?.value;
       const observation = this.serviceIncidentsForm.get('observation')?.value;
-
+      let tracking = new Tracking();
+      tracking.id = this.idTracking;
 
 
       let serviceIncidents = new ServiceIncidents();
-      serviceIncidents.trackingServiceId = trackingServiceId;
+      serviceIncidents.trackingService = tracking;
       serviceIncidents.grt = grt;
       serviceIncidents.grr = grr;
       serviceIncidents.order = order;
@@ -179,10 +181,7 @@ export class ServiceIncidentsComponent implements OnInit {
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.serviceIncidents.filter((data: { id: any; }) => data.id === id);
-    const fabricationDate = listData[0].fabricationDate.substring(0, 10);
-    const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
     this.serviceIncidentsForm.controls['id'].setValue(listData[0].id);
-    this.serviceIncidentsForm.controls['trackingServiceId'].setValue(listData[0].trackingServiceId);
     this.serviceIncidentsForm.controls['grt'].setValue(listData[0].grt);
     this.serviceIncidentsForm.controls['grr'].setValue(listData[0].grr);
     this.serviceIncidentsForm.controls['order'].setValue(listData[0].order);
@@ -190,8 +189,8 @@ export class ServiceIncidentsComponent implements OnInit {
     this.serviceIncidentsForm.controls['observation'].setValue(listData[0].observation);
   }
 
-  listServiceIncidents() {
-    this.service.listServiceIncidents()
+  listServiceIncidentsByIdTracking(id) {
+    this.service.listServiceIncidentsByIdTracking(id)
       .pipe(first())
       .subscribe(
         response => {
@@ -199,12 +198,6 @@ export class ServiceIncidentsComponent implements OnInit {
             if (response.datos) {
               this.test = response.datos.serviceIncidents;
               this.service.paginationTable(this.test);
-            } else {
-              Swal.fire({
-                icon: config.WARNING,
-                title: response.meta.mensajes[0].mensaje,
-                showConfirmButton: false,
-              });
             }
           } else {
             Swal.fire({
@@ -235,7 +228,7 @@ export class ServiceIncidentsComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.listServiceIncidents();
+              this.listServiceIncidentsByIdTracking(this.idTracking);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -267,7 +260,7 @@ export class ServiceIncidentsComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.listServiceIncidents();
+              this.listServiceIncidentsByIdTracking(this.idTracking);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -304,7 +297,7 @@ export class ServiceIncidentsComponent implements OnInit {
                 'Su archivo ha sido eliminado.',
                 'success'
               );
-              this.listServiceIncidents();
+              this.listServiceIncidentsByIdTracking(this.idTracking);
             } else {
               Swal.fire({
                 icon: config.WARNING,

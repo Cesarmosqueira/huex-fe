@@ -80,6 +80,13 @@ export class SettlementSummaryService extends BaseService{
       }), catchError(this.handleError));
   }
 
+  public listSettlementSummaryByIdTracking(id: number): Observable<ResponseModel<any>> {
+    return this.httpClient.get(environment.server + environment.services.settlementSummary.listByIdTracking + id)
+      .pipe(map((responseModel: ResponseModel<any>) => {
+        return responseModel;
+      }), catchError(this.handleError));
+  }
+
   //Pagination
 
   public paginationTable(settlementSummary: SettlementSummary[]) {

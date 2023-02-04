@@ -83,7 +83,7 @@
       <div class="mb-3">
         <label for="customername-field" class="form-label">Tipo gasto</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="expenseType"
-               [ngClass]="{ 'is-invalid': submitted && form['expenseType'].errors }" autocomplete="disabled" />
+               [ngClass]="{ 'is-invalid': submitted && form['expenseType'].errors }" autocomplete="off"/>
         <div *ngIf="submitted && form['expenseType'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['expenseType'].errors['required']">Tipo gasto es requerido</div>
         </div>
@@ -92,7 +92,7 @@
       <div class="mb-3">
         <label for="customername-field" class="form-label">Descripcion</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="description"
-               [ngClass]="{ 'is-invalid': submitted && form['description'].errors }" autocomplete="disabled" />
+               [ngClass]="{ 'is-invalid': submitted && form['description'].errors }" autocomplete="off" />
         <div *ngIf="submitted && form['description'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['description'].errors['required']">descripcion es requerido</div>
         </div>
