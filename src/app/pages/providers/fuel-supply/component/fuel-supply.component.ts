@@ -61,7 +61,7 @@ export class FuelSupplyComponent implements OnInit {
       dateFuel: ['', [Validators.required]],
       fuelQuantity: ['', [Validators.required]],
       gallonPrice: ['', [Validators.required]],
-      observation: ['', [Validators.required]],
+      observation: [''],
     });
 
     this.fuelSuplyList.subscribe(x => {

@@ -56,12 +56,12 @@ export class ProviderComponent implements OnInit {
       ruc: ['', [Validators.required]],
       businessName: ['', [Validators.required]],
       contactName: ['', [Validators.required]],
-      email: ['', [Validators.required]],
-      phoneNumber: ['', [Validators.required]],
-      address: ['', [Validators.required]],
+      email: [''],
+      phoneNumber: [''],
+      address: [''],
       admissionDate: ['', [Validators.required]],
-      bankAccount: ['', [Validators.required]],
-      observation: ['', [Validators.required]],
+      bankAccount: [''],
+      observation: [''],
       btnSave: []
     });
 

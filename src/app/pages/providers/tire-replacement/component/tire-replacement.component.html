@@ -144,22 +144,18 @@
         <div class="col-md-6">
           <div class="mb-3">
             <label for="customername-field" class="form-label">Modelo</label>
-            <input type="text" id="customername-field" class="form-control" required formControlName="model"
+            <input type="text" id="customername-field" class="form-control"  formControlName="model"
                    [ngClass]="{ 'is-invalid': submitted && form['model'].errors }" autocomplete="disabled" />
-            <div *ngIf="submitted && form['model'].errors" class="invalid-feedback" align="left">
-              <div *ngIf="form['model'].errors['required']">Modelo es requerido</div>
-            </div>
+
           </div>
         </div>
 
       <div class="col-md-6">
       <div class="mb-3">
         <label for="customername-field" class="form-label">Marca</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="brand"
+        <input type="text" id="customername-field" class="form-control"  formControlName="brand"
                [ngClass]="{ 'is-invalid': submitted && form['brand'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['brand'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['brand'].errors['required']">Marca es requerido</div>
-        </div>
+
       </div>
       </div>
       </div>
@@ -169,11 +165,9 @@
       <div class="col-md-6">
       <div class="mb-3">
         <label for="customername-field" class="form-label">Observaciones</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="observation"
+        <input type="text" id="customername-field" class="form-control"  formControlName="observation"
                [ngClass]="{ 'is-invalid': submitted && form['observation'].errors }" autocomplete="disabled" />
-        <div *ngIf="submitted && form['observation'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['observation'].errors['required']">Observaciones es requerido</div>
-        </div>
+
       </div>
       </div>
 

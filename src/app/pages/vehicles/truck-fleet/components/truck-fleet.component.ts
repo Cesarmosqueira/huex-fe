@@ -60,15 +60,15 @@ export class TruckFleetComponent implements OnInit {
       id: ['0', [Validators.required]],
       idProvider: ['', [Validators.required]],
       tractPlate: ['', [Validators.required]],
-      vanPlate: ['', [Validators.required]],
-      brand: ['', [Validators.required]],
+      vanPlate: [''],
+      brand: [''],
       volume: ['', [Validators.required]],
-      fabricationDate: ['', [Validators.required]],
-      tonNumber: ['', [Validators.required]],
-      axes: ['', [Validators.required]],
-      model: ['', [Validators.required]],
-      highWideLong: ['', [Validators.required]],
-      fleetType: ['', [Validators.required]],
+      fabricationDate: [''],
+      tonNumber: [''],
+      axes: [''],
+      model: [''],
+      highWideLong: [''],
+      fleetType: ['',[Validators.required]],
       btnSave: []
     });
 
@@ -251,7 +251,7 @@ export class TruckFleetComponent implements OnInit {
               this.newTruck = true;
               this.action = 0;
               this.disableInputs();
-              const truckFleetDto = response.datos.truckFleetDto;
+              const truckFleetDto = response.datos.truckFleet;
               this.idTruckFleetOuput = truckFleetDto.id;
               this.listTruckFleets();
             } else {
@@ -327,6 +327,7 @@ export class TruckFleetComponent implements OnInit {
 
   enableInputs() {
     this.truckFleetForm.controls['id'].enable();
+    this.truckFleetForm.controls['idProvider'].enable();
     this.truckFleetForm.controls['tractPlate'].enable();
     this.truckFleetForm.controls['vanPlate'].enable();
     this.truckFleetForm.controls['brand'].enable();

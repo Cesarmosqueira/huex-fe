@@ -52,7 +52,7 @@ export class ExpenseTypeComponent implements OnInit {
     this.expenseTypeForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
       expenseType: ['', [Validators.required]],
-      description: ['', [Validators.required]],
+      description: [''],
     });
 
     this.expenseTypesList.subscribe(x => {

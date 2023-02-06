@@ -61,9 +61,9 @@ export class TireReplacementComponent implements OnInit {
       replacementDate: ['', [Validators.required]],
       tireQuantity: ['', [Validators.required]],
       unitPrice: ['', [Validators.required]],
-      brand: ['', [Validators.required]],
-      model: ['', [Validators.required]],
-      observation: ['', [Validators.required]],
+      brand: [''],
+      model: [''],
+      observation: [''],
     });
 
     this.tireReplacementList.subscribe(x => {

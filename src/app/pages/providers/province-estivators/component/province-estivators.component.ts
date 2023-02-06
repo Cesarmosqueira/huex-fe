@@ -68,7 +68,7 @@ export class ProvinceEstivatorsComponent implements OnInit {
       provider: ['', [Validators.required]],
       costType: ['', [Validators.required]],
       cost: ['', [Validators.required]],
-      observation: ['', [Validators.required]],
+      observation: [''],
       btnSave: []
 
     });

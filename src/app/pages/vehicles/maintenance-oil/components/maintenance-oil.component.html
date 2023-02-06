@@ -113,12 +113,16 @@
 
               <div class="col-md-6">
                 <div class="mt-3">
-                  <label for="example-date-input" class="col-md-12 col-form-label">Lugar</label>
-                  <div class="col-md-12">
-                    <input class="form-control" type="text" formControlName="place" id="example-date-input">
+                  <label for="customername-field" class="col-md-12 col-form-label">Lugar</label>
+                  <input type="text" id="customername-field" class="form-control" required formControlName="place"
+                         [ngClass]="{ 'is-invalid': submitted && form['place'].errors }" autocomplete="disabled" />
+                  <div *ngIf="submitted && form['place'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['place'].errors['required']">Lugar es requerido</div>
                   </div>
                 </div>
               </div>
+
+
 
                 <div class="col-md-6">
                     <div class="mt-3">
@@ -129,25 +133,28 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <div class="row">
 
               <div class="col-md-6">
                 <div class="mt-3">
-                  <label for="example-date-input" class="col-md-12 col-form-label">Ultimo cambio</label>
-                  <div class="col-md-12">
-                    <input class="form-control" type="number" formControlName="kmLast" id="example-date-input">
+                  <label for="customername-field" class="col-md-12 col-form-label">Ultimo cambio</label>
+                  <input type="text" id="customername-field" class="form-control" required formControlName="kmLast"
+                         [ngClass]="{ 'is-invalid': submitted && form['kmLast'].errors }" autocomplete="disabled" />
+                  <div *ngIf="submitted && form['kmLast'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['kmLast'].errors['required']">Ultimo cambio es requerido</div>
                   </div>
                 </div>
               </div>
 
+
               <div class="col-md-6">
                 <div class="mt-3">
-                  <label for="example-date-input" class="col-md-12 col-form-label">Km actual</label>
-                  <div class="col-md-12">
-                    <input class="form-control" type="number" formControlName="kmCurrent"
-                           id="example-date-input">
+                  <label for="customername-field" class="col-md-12 col-form-label">Km actual</label>
+                  <input type="text" id="customername-field" class="form-control" required formControlName="kmCurrent"
+                         [ngClass]="{ 'is-invalid': submitted && form['kmCurrent'].errors }" autocomplete="disabled" />
+                  <div *ngIf="submitted && form['kmCurrent'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['kmCurrent'].errors['required']">Km actual es requerido</div>
                   </div>
                 </div>
               </div>
