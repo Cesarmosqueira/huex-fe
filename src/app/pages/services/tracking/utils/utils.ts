@@ -19,5 +19,5 @@ export function sort(trackings: Tracking[], column: SortColumn, direction: strin
 }
 
 export function matches(tracking: Tracking, term: string, pipe: PipeTransform) {
-    return tracking.driver.fullName.toLowerCase().includes(term.toLowerCase());
+    return tracking.truckFleet.tractPlate.toLowerCase().includes(term.toLowerCase());
 }
