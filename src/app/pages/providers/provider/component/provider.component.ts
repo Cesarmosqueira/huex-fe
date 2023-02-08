@@ -60,7 +60,10 @@ export class ProviderComponent implements OnInit {
       phoneNumber: [''],
       address: [''],
       admissionDate: ['', [Validators.required]],
+      bankName: [''],
       bankAccount: [''],
+      interbankAccount: [''],
+      providerType: [''],
       observation: [''],
       btnSave: []
     });
@@ -157,7 +160,10 @@ export class ProviderComponent implements OnInit {
       const address = this.providerForm.get('address')?.value;
       const admissionDate = this.providerForm.get('admissionDate')?.value;
       const fortmatadmissionDate = this.pipe.transform(admissionDate, 'yyyy-MM-dd');
+      const bankName = this.providerForm.get('bankName')?.value;
       const bankAccount = this.providerForm.get('bankAccount')?.value;
+      const interbankAccount = this.providerForm.get('interbankAccount')?.value;
+      const providerType = this.providerForm.get('providerType')?.value;
       const observation = this.providerForm.get('observation')?.value;
 
       let providers = new Providers();
@@ -168,7 +174,10 @@ export class ProviderComponent implements OnInit {
       providers.phoneNumber = phoneNumber;
       providers.address = address;
       providers.admissionDate = fortmatadmissionDate;
+      providers.bankName = bankName;
       providers.bankAccount = bankAccount;
+      providers.interbankAccount = interbankAccount;
+      providers.providerType = providerType;
       providers.observation = observation;
 
       const id = this.providerForm.get('id')?.value;
@@ -214,7 +223,10 @@ export class ProviderComponent implements OnInit {
     this.providerForm.controls['phoneNumber'].setValue(listData[0].phoneNumber);
     this.providerForm.controls['address'].setValue(listData[0].address);
     this.providerForm.controls['admissionDate'].setValue(fortmatregisterDate);
+    this.providerForm.controls['bankName'].setValue(listData[0].bankName);
     this.providerForm.controls['bankAccount'].setValue(listData[0].bankAccount);
+    this.providerForm.controls['interbankAccount'].setValue(listData[0].interbankAccount);
+    this.providerForm.controls['providerType'].setValue(listData[0].providerType);
     this.providerForm.controls['observation'].setValue(listData[0].observation);
     this.idProviderOuput = id;
   }
@@ -332,7 +344,11 @@ export class ProviderComponent implements OnInit {
     this.providerForm.controls['phoneNumber'].setValue("");
     this.providerForm.controls['address'].setValue("");
     this.providerForm.controls['admissionDate'].setValue("");
+    this.providerForm.controls['bankName'].setValue("");
     this.providerForm.controls['bankAccount'].setValue("");
+    this.providerForm.controls['interbankAccount'].setValue("");
+    this.providerForm.controls['providerType'].setValue("");
+
     this.providerForm.controls['observation'].setValue("");
 
   }
@@ -346,7 +362,10 @@ export class ProviderComponent implements OnInit {
     this.providerForm.controls['phoneNumber'].enable();
     this.providerForm.controls['address'].enable();
     this.providerForm.controls['admissionDate'].enable();
+    this.providerForm.controls['bankName'].enable();
     this.providerForm.controls['bankAccount'].enable();
+    this.providerForm.controls['interbankAccount'].enable();
+    this.providerForm.controls['providerType'].enable();
     this.providerForm.controls['observation'].enable();
 
   }

@@ -36,7 +36,10 @@
                 <th class="align-middle">Telefono</th>
                 <th class="align-middle">Direcion</th>
                 <th class="align-middle">Fecha ingreso</th>
+                <th class="align-middle">Banco</th>
                 <th class="align-middle">Cuenta bancaria</th>
+                <th class="align-middle">Cuenta interbancaria</th>
+                <th class="align-middle">Tipo proveedor</th>
                 <th class="align-middle">Observacion</th>
                 <th class="align-middle">Acción</th>
               </tr>
@@ -53,7 +56,11 @@
                 <td>{{data.phoneNumber}}</td>
                 <td>{{data.address}}</td>
                 <td>{{data.admissionDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                <td>{{data.bankName}}</td>
                 <td>{{data.bankAccount}}</td>
+                <td>{{data.interbankAccount}}</td>
+                <td>{{data.providerType}}</td>
+
                 <td>{{data.observation}}</td>
                 <td>
                   <div class="d-flex gap-3">
@@ -173,23 +180,58 @@
       </div>
       </div>
 
-      <div class="col-md-6">
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Cuenta bancaria</label>
-        <input type="text" id="customername-field" class="form-control"  formControlName="bankAccount"
-               [ngClass]="{ 'is-invalid': submitted && form['bankAccount'].errors }" autocomplete="disabled" />
-      </div>
-      </div>
-      </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Banco</label>
+            <input type="text" id="customername-field" class="form-control"  formControlName="bankName"
+                   [ngClass]="{ 'is-invalid': submitted && form['bankName'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
 
-      <div class="col-md-6">
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Observation</label>
-        <input type="text" id="customername-field" class="form-control"  formControlName="observation"
-               [ngClass]="{ 'is-invalid': submitted && form['observation'].errors }" autocomplete="disabled" />
 
       </div>
+
+      <div class="row">
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Cuenta bancaria</label>
+            <input type="text" id="customername-field" class="form-control"  formControlName="bankAccount"
+                   [ngClass]="{ 'is-invalid': submitted && form['bankAccount'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Cuenta Interbancaria</label>
+            <input type="text" id="customername-field" class="form-control"  formControlName="interbankAccount"
+                   [ngClass]="{ 'is-invalid': submitted && form['interbankAccount'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+
       </div>
+
+      <div class="row">
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Tipo proveedor</label>
+            <input type="text" id="customername-field" class="form-control"  formControlName="providerType"
+                   [ngClass]="{ 'is-invalid': submitted && form['providerType'].errors }" autocomplete="disabled" />
+
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Observation</label>
+            <input type="text" id="customername-field" class="form-control"  formControlName="observation"
+                   [ngClass]="{ 'is-invalid': submitted && form['observation'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+      </div>
+
+
 
     </div>
     <div class="modal-footer">
