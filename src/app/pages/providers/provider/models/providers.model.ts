@@ -7,6 +7,9 @@ export class Providers {
   phoneNumber:string;
   address:string;
   admissionDate:any;
+  bankName:string;
   bankAccount:string;
+  interbankAccount:string;
+  providerType:string;
   observation:string;
 }
