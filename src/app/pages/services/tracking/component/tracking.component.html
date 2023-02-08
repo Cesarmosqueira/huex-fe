@@ -139,10 +139,10 @@
       <div [ngbNavOutlet]="nav"></div>
     </div><!-- End Default Tabs -->
   </div>
-  <div class="modal-footer">
+ <!--  <div class="modal-footer">
     <button class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
   </div>
-
+-->
 
 
 </ng-template>
@@ -386,7 +386,7 @@
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Fotos serguro</label>
                 <input type="file" id="customername-field" accept=".jpg" class="form-control"
-                  (change)="getDocument($event)" autocomplete="off" formControlName="photoInsurance"
+                  (change)="getDocument($event)" autocomplete="off"
                   [ngClass]="{ 'is-invalid': submitted && form['photoInsurance'].errors }" />
                 <div *ngIf="submitted && form['photoInsurance'].errors" class="invalid-feedback" align="left">
                   <div *ngIf="form['photoInsurance'].errors['required']">Fotos serguro es requerido</div>
@@ -465,7 +465,7 @@
             </div>
             <div class="col-md-4"></div>
             <div class="col-md-2">
-              <div class="mb-3">
+              <div>
                 <label for="customername-field" class="form-label"></label>
                 <div class="hstack gap-2 justify-content-end">
                   <button type="submit" class="btn btn-success" id="add-btn" *ngIf="action===1">Registrar</button>
@@ -489,5 +489,5 @@
 </ng-template>
 
 <ng-template #TabContent3>
-  <app-settlement-summary [idTracking]="idTrackingOuput"></app-settlement-summary>
+  <app-settlement-summary [tracking]="trackingOutput"></app-settlement-summary>
 </ng-template>

@@ -1,13 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
-import {Observable} from "rxjs";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { Observable } from "rxjs";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
-import {DatePipe} from "@angular/common";
-import {first} from "rxjs/operators";
-import {config} from "../../../../shared/shared.config";
-import {ServiceMonitoring} from "../models/service-monitoring.model";
-import {ServiceMonitoringService} from "../services/service-monitoring.service";
+import { DatePipe } from "@angular/common";
+import { first } from "rxjs/operators";
+import { config } from "../../../../shared/shared.config";
+import { ServiceMonitoring } from "../models/service-monitoring.model";
+import { ServiceMonitoringService } from "../services/service-monitoring.service";
 import { Tracking } from '../../tracking/models/tracking.model';
 
 @Component({
@@ -18,7 +18,7 @@ import { Tracking } from '../../tracking/models/tracking.model';
 export class ServiceMonitoringComponent implements OnInit {
 
   @Input() idTracking: number;
-  
+
   // bread crumb items
   breadCrumbItems: Array<{}>;
   term: any;
@@ -39,12 +39,15 @@ export class ServiceMonitoringComponent implements OnInit {
 
   imageUrl: any;
   fileList: FileList;
-  myImageBaseUrl:string='../../../../../assets/images/huex/profile.jpg';
+  myImageBaseUrl: string = '';
   fileToUpload: any;
 
+  new = false;
+  textButton = "Registrar";
+
   constructor(public service: ServiceMonitoringService,
-              private modalService: NgbModal,
-              private formBuilder: UntypedFormBuilder) {
+    private modalService: NgbModal,
+    private formBuilder: UntypedFormBuilder) {
     this.serviceMonitoringList = service.countries$;
     this.total = service.total$;
   }
@@ -110,11 +113,24 @@ export class ServiceMonitoringComponent implements OnInit {
   }
 
 
-  openModal(content: any) {
-    this.submitted = false;
-    this.modalService.open(content, { size: 'md', centered: true });
+  openModal(value) {
+    this.new = value;
   }
 
+  cancel() {
+    this.clearControl();
+    this.submitted = false;
+    this.new = false;
+    this.textButton = "Registrar";
+  }
+
+  clearControl() {
+    this.serviceMonitoringForm.controls['id'].setValue("0");
+    this.serviceMonitoringForm.controls['dateHour'].setValue("");
+    this.serviceMonitoringForm.controls['status'].setValue("");
+    this.serviceMonitoringForm.controls['observation'].setValue("");
+    this.serviceMonitoringForm.controls['photoMonitoring'].setValue("");
+  }
 
   get form() {
     return this.serviceMonitoringForm.controls;
@@ -150,10 +166,9 @@ export class ServiceMonitoringComponent implements OnInit {
         this.updateServiceMonitoring(serviceMonitoring);
       }
 
-      this.modalService.dismissAll();
-      setTimeout(() => {
-        this.serviceMonitoringForm.reset();
-      }, 2000);
+      this.new = false;
+      this.textButton = "Registrar";
+      this.clearControl();
 
     }
   }
@@ -193,14 +208,10 @@ export class ServiceMonitoringComponent implements OnInit {
     downloadLink.click();
   };
 
-  editDataGet(id: any, content: any) {
+  editDataGet(id: any) {
+    this.new = true;
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
-    this.modalService.open(content, { size: 'md', centered: true });
-    var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-    modelTitle.innerHTML = 'Actualizar Monitoreo servicio';
-    var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
-    updateBtn.innerHTML = "Actualizar";
     var listData = this.serviceMonitoring.filter((data: { id: any; }) => data.id === id);
     const dateHour = listData[0].dateHour.substring(0, 10);
     const fortmatdateHour = this.pipe.transform(dateHour, 'yyyy-MM-dd');
@@ -210,6 +221,7 @@ export class ServiceMonitoringComponent implements OnInit {
     this.serviceMonitoringForm.controls['observation'].setValue(listData[0].observation);
     this.imageUrl = 'data:image/jpeg;base64,' + listData[0].photoMonitoring;
     this.serviceMonitoringForm.get('photoMonitoring').setValue(this.dataURLtoFile(this.imageUrl, 'foto.jpeg'));
+    this.textButton = "Actualizar";
   }
 
   dataURLtoFile(dataurl, filename) {
@@ -298,7 +310,7 @@ export class ServiceMonitoringComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.listServiceMonitoring();
+              this.listServiceMonitoringByIdTracking(this.idTracking);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -330,7 +342,7 @@ export class ServiceMonitoringComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.listServiceMonitoring();
+              this.listServiceMonitoringByIdTracking(this.idTracking);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -367,7 +379,7 @@ export class ServiceMonitoringComponent implements OnInit {
                 'Su archivo ha sido eliminado.',
                 'success'
               );
-              this.listServiceMonitoring();
+              this.listServiceMonitoringByIdTracking(this.idTracking);
             } else {
               Swal.fire({
                 icon: config.WARNING,

@@ -23,6 +23,6 @@ export class Tracking {
 	operation: string;
 	condition: string;
 	photoInsurance: any;
-  invoiced:string;
-  charge:string;
+	invoiced: string;
+	charge: string;
 }

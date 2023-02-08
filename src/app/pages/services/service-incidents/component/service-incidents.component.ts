@@ -37,6 +37,9 @@ export class ServiceIncidentsComponent implements OnInit {
   total: Observable<number>;
   pipe: any;
 
+  new = false;
+  textButton = "Registrar";
+
   constructor(public service: ServiceIncidentsService,
               private modalService: NgbModal,
               private formBuilder: UntypedFormBuilder) {
@@ -110,25 +113,31 @@ export class ServiceIncidentsComponent implements OnInit {
       });
   }
 
-  /**
-   * Open modal
-   * @param content modal content
-   */
-  openModal(content: any) {
-    this.submitted = false;
-    this.modalService.open(content, { size: 'md', centered: true });
+  openModal(value) {
+    this.new = value;
   }
 
-  /**
-   * Form data get
-   */
+  cancel(){
+    this.clearControl();
+    this.submitted = false;
+    this.new = false;
+    this.textButton = "Registrar";
+  }
+
+  clearControl(){
+    this.serviceIncidentsForm.controls['id'].setValue("0");
+    this.serviceIncidentsForm.controls['grt'].setValue("");
+    this.serviceIncidentsForm.controls['grr'].setValue("");
+    this.serviceIncidentsForm.controls['order'].setValue("");
+    this.serviceIncidentsForm.controls['quantityUnits'].setValue("");
+    this.serviceIncidentsForm.controls['observation'].setValue("");
+  }
+  
   get form() {
     return this.serviceIncidentsForm.controls;
   }
 
-  /**
-   * Save user
-   */
+
   saveUser() {
     this.submitted = true
     if (this.serviceIncidentsForm.valid) {
@@ -160,26 +169,17 @@ export class ServiceIncidentsComponent implements OnInit {
         this.updateServiceIncidents(serviceIncidents);
       }
 
-      this.modalService.dismissAll();
-      setTimeout(() => {
-        this.serviceIncidentsForm.reset();
-      }, 2000);
+      this.new = false;
+      this.textButton = "Registrar";
+      this.clearControl();
 
     }
   }
 
-  /**
-   * Open Edit modal
-   * @param content modal content
-   */
-  editDataGet(id: any, content: any) {
+  editDataGet(id: any) {
+    this.new = true;
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
-    this.modalService.open(content, { size: 'md', centered: true });
-    var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-    modelTitle.innerHTML = 'Actualizar Incidente servicio';
-    var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
-    updateBtn.innerHTML = "Actualizar";
     var listData = this.serviceIncidents.filter((data: { id: any; }) => data.id === id);
     this.serviceIncidentsForm.controls['id'].setValue(listData[0].id);
     this.serviceIncidentsForm.controls['grt'].setValue(listData[0].grt);
@@ -187,6 +187,7 @@ export class ServiceIncidentsComponent implements OnInit {
     this.serviceIncidentsForm.controls['order'].setValue(listData[0].order);
     this.serviceIncidentsForm.controls['quantityUnits'].setValue(listData[0].quantityUnits);
     this.serviceIncidentsForm.controls['observation'].setValue(listData[0].observation);
+    this.textButton = "Actualizar";
   }
 
   listServiceIncidentsByIdTracking(id) {

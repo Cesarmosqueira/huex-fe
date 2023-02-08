@@ -18,7 +18,7 @@ import { ExpenseTypeService } from '../../expense-type/services/expense-type.ser
 })
 export class SettlementSummaryComponent implements OnInit {
 
-  @Input() idTracking: number;
+  @Input() tracking: Tracking;
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
@@ -40,6 +40,11 @@ export class SettlementSummaryComponent implements OnInit {
 
   listExpenseType: any;
 
+  sumaTotal: number = 0;
+
+  new = false;
+  textButton = "Registrar";
+
   constructor(public service: SettlementSummaryService,
     private modalService: NgbModal,
     private formBuilder: UntypedFormBuilder,
@@ -51,9 +56,6 @@ export class SettlementSummaryComponent implements OnInit {
   ngOnInit(): void {
     this.breadCrumbItems = [{ label: 'Servicios' }, { label: 'Liquidacion de servicio', active: true }];
 
-    /**
-     * Form Validation
-     */
     this.settlementSummaryForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
       expenseTypeId: ['', [Validators.required]],
@@ -67,20 +69,15 @@ export class SettlementSummaryComponent implements OnInit {
       this.settlementSummary = Object.assign([], x);
     });
 
-    console.log(this.idTracking);
+    console.log(this.tracking.id);
     this.listExpenseTypes();
-    this.listSettlementSummaryByIdTracking(this.idTracking);
+    this.listSettlementSummaryByIdTracking(this.tracking.id);
   }
 
-  /**
-   * Open modal
-   * @param content modal content
-   */
-  openViewModal(content: any) {
-    this.modalService.open(content, { centered: true });
+  get form() {
+    return this.settlementSummaryForm.controls;
   }
 
-  // Delete Data
   delete(id: any) {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -115,25 +112,25 @@ export class SettlementSummaryComponent implements OnInit {
       });
   }
 
-  /**
-   * Open modal
-   * @param content modal content
-   */
-  openModal(content: any) {
+  openModal(value) {
+    this.new = value;
+  }
+
+  cancel() {
+    this.clearControl();
     this.submitted = false;
-    this.modalService.open(content, { size: 'md', centered: true });
+    this.new = false;
+    this.textButton = "Registrar";
   }
 
-  /**
-   * Form data get
-   */
-  get form() {
-    return this.settlementSummaryForm.controls;
+  clearControl() {
+    this.settlementSummaryForm.controls['id'].setValue("0");
+    this.settlementSummaryForm.controls['expenseTypeId'].setValue("");
+    this.settlementSummaryForm.controls['settlementDate'].setValue("");
+    this.settlementSummaryForm.controls['detail'].setValue("");
+    this.settlementSummaryForm.controls['totalExpense'].setValue("");
   }
 
-  /**
-   * Save user
-   */
   saveUser() {
     this.submitted = true
     if (this.settlementSummaryForm.valid) {
@@ -146,7 +143,7 @@ export class SettlementSummaryComponent implements OnInit {
 
       let settlementSummary = new SettlementSummary();
       let tracking = new Tracking();
-      tracking.id = this.idTracking;
+      tracking.id = this.tracking.id;
       console.log(expenseTypeId)
       settlementSummary.trackingService = tracking;
       settlementSummary.expenseType = expenseTypeId;
@@ -164,10 +161,9 @@ export class SettlementSummaryComponent implements OnInit {
         this.updateSettlementSummary(settlementSummary);
       }
 
-      this.modalService.dismissAll();
-      setTimeout(() => {
-        this.settlementSummaryForm.reset();
-      }, 2000);
+      this.new = false;
+      this.textButton = "Registrar";
+      this.clearControl();
 
     }
   }
@@ -176,14 +172,10 @@ export class SettlementSummaryComponent implements OnInit {
    * Open Edit modal
    * @param content modal content
    */
-  editDataGet(id: any, content: any) {
+  editDataGet(id: any) {
+    this.new = true;
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
-    this.modalService.open(content, { size: 'md', centered: true });
-    var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-    modelTitle.innerHTML = 'Actualizar liquidacion servicio';
-    var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
-    updateBtn.innerHTML = "Actualizar";
     var listData = this.settlementSummary.filter((data: { id: any; }) => data.id === id);
     const settlementDate = listData[0].settlementDate.substring(0, 10);
     const fortmatSettlementDate = this.pipe.transform(settlementDate, 'yyyy-MM-dd');
@@ -192,8 +184,10 @@ export class SettlementSummaryComponent implements OnInit {
     this.settlementSummaryForm.controls['detail'].setValue(listData[0].detail);
     this.settlementSummaryForm.controls['totalExpense'].setValue(listData[0].totalExpense);
     this.selectExpenseType = listData[0].expenseType;
-
+    this.textButton = "Actualizar";
   }
+
+
 
   listSettlementSummaryByIdTracking(id) {
     this.service.listSettlementSummaryByIdTracking(id)
@@ -203,6 +197,7 @@ export class SettlementSummaryComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.test = response.datos.settlementsSummary;
+              this.sumaTotal = this.test.reduce((a, b) => a + b.totalExpense, 0);
               this.service.paginationTable(this.test);
             }
           } else {
@@ -234,7 +229,7 @@ export class SettlementSummaryComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.listSettlementSummaryByIdTracking(this.idTracking);
+              this.listSettlementSummaryByIdTracking(this.tracking.id);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -266,7 +261,7 @@ export class SettlementSummaryComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.listSettlementSummaryByIdTracking(this.idTracking);
+              this.listSettlementSummaryByIdTracking(this.tracking.id);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -325,7 +320,7 @@ export class SettlementSummaryComponent implements OnInit {
                 'Su archivo ha sido eliminado.',
                 'success'
               );
-              this.listSettlementSummaryByIdTracking(this.idTracking);
+              this.listSettlementSummaryByIdTracking(this.tracking.id);
             } else {
               Swal.fire({
                 icon: config.WARNING,

@@ -52,9 +52,9 @@ export class TrackingComponent implements OnInit {
 
   employees: Employee[] = [];
   tipoServicio: string[] = ['Local', 'Provincia'];
-  estado: string[] = ['En cochera', 'En ruta', 'Retornando', 'Cargando', 'Descargando','Finalizo'];
-  invoiced:string[]=['Facturado','Pendiente'];
-  charge:string[]=['Cobrado','Pendiente'];
+  estado: string[] = ['En cochera', 'En ruta', 'Retornando', 'Cargando', 'Descargando', 'Finalizo'];
+  invoiced: string[] = ['Facturado', 'Pendiente'];
+  charge: string[] = ['Cobrado', 'Pendiente'];
   selectDriver = null;
 
   selectCopilot = null;
@@ -72,6 +72,8 @@ export class TrackingComponent implements OnInit {
   action = 0;
 
   newTruck = false;
+
+  trackingOutput: Tracking;
 
   constructor(public service: TrackingService,
     private modalService: NgbModal,
@@ -91,7 +93,7 @@ export class TrackingComponent implements OnInit {
      */
     this.trackingForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
-      dateService: ['', [Validators.required]],
+      dateService: [''],
       truckFleet: [0, [Validators.required]],
       requestedVolume: [0, [Validators.required]],
       destinationDetail: ['', [Validators.required]],
@@ -100,14 +102,14 @@ export class TrackingComponent implements OnInit {
       additionalCost: ['', [Validators.required]],
       observations: ['', [Validators.required]],
       guideNumber: ['', [Validators.required]],
-      datePrecharge: ['', [Validators.required]],
+      datePrecharge: [''],
       preloadStatus: ['', [Validators.required]],
-      scheduledAppointment: ['', [Validators.required]],
+      scheduledAppointment: [''],
       rate: [0, [Validators.required]],
       driver: [0, [Validators.required]],
       copilot: [0, [Validators.required]],
       stevedore: [0, [Validators.required]],
-      dateTimeCompletion: ['', [Validators.required]],
+      dateTimeCompletion: [''],
       weightLoad: [0, [Validators.required]],
       moneyDelivered: [0, [Validators.required]],
       detailMoney: ['', [Validators.required]],
@@ -305,7 +307,13 @@ export class TrackingComponent implements OnInit {
     this.newTruck = true;
     this.pipe = new DatePipe('en-US');
     this.textButton = "Actualizar";
-    this.modalService.open(content, { size: 'xl', centered: true });
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'xl'
+    };
+    this.modalService.open(content, ngbModalOptions);
     if (action) {
       this.disableInputs();
     } else {
@@ -313,9 +321,12 @@ export class TrackingComponent implements OnInit {
     }
     var listData = this.trackings.filter((data: { id: any; }) => data.id === id);
     this.trackingForm.controls['id'].setValue(listData[0].id);
-    const dateService = listData[0].dateService.substring(0, 10);
-    const fortmatDateService = this.pipe.transform(dateService, 'yyyy-MM-dd');
-    this.trackingForm.controls['dateService'].setValue(fortmatDateService);
+    if (listData[0].dateService != null || listData[0].dateService != undefined) {
+      const dateService = listData[0].dateService.substring(0, 10);
+      const fortmatDateService = this.pipe.transform(dateService, 'yyyy-MM-dd');
+      this.trackingForm.controls['dateService'].setValue(fortmatDateService);
+    }
+
     this.selectTruckFleet = listData[0].truckFleet;
     //this.trackingForm.controls['truckFleet'].setValue(listData[0].truckFleet.tractPlate);
     this.trackingForm.controls['requestedVolume'].setValue(listData[0].requestedVolume);
@@ -325,31 +336,40 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['additionalCost'].setValue(listData[0].additionalCost);
     this.trackingForm.controls['observations'].setValue(listData[0].observations);
     this.trackingForm.controls['guideNumber'].setValue(listData[0].guideNumber);
-    const datePrecharge = listData[0].datePrecharge.substring(0, 10);
-    const fortmatDatePrecharge = this.pipe.transform(datePrecharge, 'yyyy-MM-dd');
-    this.trackingForm.controls['datePrecharge'].setValue(fortmatDatePrecharge);
+    if (listData[0].datePrecharge != null || listData[0].datePrecharge != undefined) {
+      const datePrecharge = listData[0].datePrecharge.substring(0, 10);
+      const fortmatDatePrecharge = this.pipe.transform(datePrecharge, 'yyyy-MM-dd');
+      this.trackingForm.controls['datePrecharge'].setValue(fortmatDatePrecharge);
+    }
+
     this.trackingForm.controls['preloadStatus'].setValue(listData[0].preloadStatus);
-    const scheduledAppointment = listData[0].scheduledAppointment.substring(0, 10);
-    const fortmatScheduledAppointment = this.pipe.transform(scheduledAppointment, 'yyyy-MM-dd');
-    this.trackingForm.controls['scheduledAppointment'].setValue(fortmatScheduledAppointment);
+    if (listData[0].scheduledAppointment != null || listData[0].scheduledAppointment != undefined) {
+      const scheduledAppointment = listData[0].scheduledAppointment.substring(0, 10);
+      const fortmatScheduledAppointment = this.pipe.transform(scheduledAppointment, 'yyyy-MM-dd');
+      this.trackingForm.controls['scheduledAppointment'].setValue(fortmatScheduledAppointment);
+    }
+
     let rate = this.rates.filter((data: { id: any; }) => data.id === listData[0].rate.id);
     this.selectRates = rate[0];
     this.selectDriver = listData[0].driver;
     this.selectCopilot = listData[0].copilot;
     this.selectStevedore = listData[0].stevedore;
-    const dateTimeCompletion = listData[0].dateTimeCompletion.substring(0, 10);
-    const fortmatDateTimeCompletion = this.pipe.transform(dateTimeCompletion, 'yyyy-MM-dd');
-    this.trackingForm.controls['dateTimeCompletion'].setValue(fortmatDateTimeCompletion);
+    if (listData[0].dateTimeCompletion != null || listData[0].dateTimeCompletion != undefined) {
+      const dateTimeCompletion = listData[0].dateTimeCompletion.substring(0, 10);
+      const fortmatDateTimeCompletion = this.pipe.transform(dateTimeCompletion, 'yyyy-MM-dd');
+      this.trackingForm.controls['dateTimeCompletion'].setValue(fortmatDateTimeCompletion);
+    }
+
     this.trackingForm.controls['weightLoad'].setValue(listData[0].weightLoad);
     this.trackingForm.controls['moneyDelivered'].setValue(listData[0].moneyDelivered);
     this.trackingForm.controls['detailMoney'].setValue(listData[0].detailMoney);
     this.trackingForm.controls['operation'].setValue(listData[0].operation);
     this.trackingForm.controls['invoiced'].setValue(listData[0].invoiced);
     this.trackingForm.controls['charge'].setValue(listData[0].charge);
-    //this.trackingForm.controls['condition'].setValue(listData[0].condition);
     this.imageUrl = 'data:image/jpeg;base64,' + listData[0].photoInsurance;
     this.trackingForm.get('photoInsurance').setValue(this.dataURLtoFile(this.imageUrl, 'foto.jpeg'));
     this.idTrackingOuput = listData[0].id;
+    this.trackingOutput = listData[0];
   }
 
   dataURLtoFile(dataurl, filename) {
@@ -407,6 +427,7 @@ export class TrackingComponent implements OnInit {
               );
               const trackingsDto = response.datos.trackingService;
               this.idTrackingOuput = trackingsDto.id;
+              this.trackingOutput = trackingsDto;
               this.action = 0;
               this.newTruck = true;
               this.listTrackings();
@@ -496,8 +517,11 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['operation'].setValue("");
     this.trackingForm.controls['invoiced'].setValue("");
     this.trackingForm.controls['charge'].setValue("");
-
-    //this.trackingForm.controls['condition'].setValue("");
+    this.selectRates = null;
+    this.selectDriver = null;
+    this.selectCopilot = null;
+    this.selectStevedore = null;
+    this.selectTruckFleet = null;
     this.trackingForm.controls['photoInsurance'].setValue("");
     this.imageUrl = null;
   }
