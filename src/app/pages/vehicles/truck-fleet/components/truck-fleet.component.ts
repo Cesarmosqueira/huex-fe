@@ -133,9 +133,10 @@ export class TruckFleetComponent implements OnInit {
       centered: true,
       size: 'xl'
     };
+    this.modalService.open(content, ngbModalOptions);
     this.selectProvider = null;
 
-    this.modalService.open(content, ngbModalOptions);
+    
   }
 
   get form() {
@@ -194,7 +195,13 @@ export class TruckFleetComponent implements OnInit {
     this.action = 2;
     this.newTruck = true;
     this.textButton = "Actualizar";
-    this.modalService.open(content, { size: 'xl', centered: true });
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'xl'
+    };
+    this.modalService.open(content, ngbModalOptions);
     var listData = this.truckFleets.filter((data: { id: any; }) => data.id === id);
     const fabricationDate = listData[0].fabricationDate.substring(0, 10);
     const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');

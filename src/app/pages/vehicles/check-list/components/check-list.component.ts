@@ -7,6 +7,7 @@ import { first } from 'rxjs/operators';
 import { ProviderService } from 'src/app/pages/providers/provider/services/provider.service';
 import { config } from 'src/app/shared/shared.config';
 import Swal from 'sweetalert2';
+import { TruckFleet } from '../../truck-fleet/models/truck-fleet.model';
 import { CheckList } from '../models/check-list.model';
 import { CheckListService } from '../services/check-list.service';
 
@@ -125,7 +126,9 @@ export class CheckListComponent implements OnInit {
       const date = this.checkListForm.get('documentDate')?.value;
       const dateFormat = this.pipe.transform(date, 'yyyy-MM-dd');
       let checkList = new CheckList();
-      checkList.idTruckFleet = idTruckFleet;
+      let truckFleet = new TruckFleet();
+      truckFleet.id = this.idTruckFleet;
+      checkList.truckFleet = truckFleet;
       checkList.date = dateFormat;
       checkList.namePhoto = this.file.name;
       checkList.photo = this.image.replace("data:application/pdf;base64,", "");

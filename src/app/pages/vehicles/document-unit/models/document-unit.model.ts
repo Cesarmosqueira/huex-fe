@@ -1,6 +1,8 @@
+import { TruckFleet } from "../../truck-fleet/models/truck-fleet.model";
+
 export class DocumentUnit {
     id: number;
-    idTruckFleet: number;
+    truckFleet: TruckFleet;
     fireExtinguisherExpiration: Date;
     firstAidKitExpiration: Date;
     technicalReviewExpiration: Date;

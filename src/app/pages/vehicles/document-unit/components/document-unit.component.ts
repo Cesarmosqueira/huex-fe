@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { config } from 'src/app/shared/shared.config';
 import Swal from 'sweetalert2';
+import { TruckFleet } from '../../truck-fleet/models/truck-fleet.model';
 import { DocumentUnit } from '../models/document-unit.model';
 import { DocumentUnitService } from '../services/document-unit.service';
 
@@ -43,15 +44,17 @@ export class DocumentUnitComponent implements OnInit {
   photoMtcLocal: any;
   policyDocumentLocal: any;
   photoPolicyLocal: any;
-  namePhotoTechnicalReviewLocal: any;
-  namePhotoSoatLocal: any;
-  namePhotoMtcLocal: any;
-  namePolicyDocumentLocal: any;
-  namePhotoPolicyLocal: any;
+  namePhotoTechnicalReviewLocal: string = "";
+  namePhotoSoatLocal: string = "";
+  namePhotoMtcLocal: string = "";
+  namePolicyDocumentLocal: string = "";
+  namePhotoPolicyLocal: string = "";
 
   file: File = null;
   new = false;
   textButton = "Registrar";
+
+  myImageBaseUrl: string = '';
 
   constructor(public service: DocumentUnitService,
     private modalService: NgbModal,
@@ -89,16 +92,10 @@ export class DocumentUnitComponent implements OnInit {
     this.listDocumentUnitsByIdTruckFleet(this.idTruckFleet);
   }
 
-
-  /**
-     * Open modal
-     * @param content modal content
-     */
   openViewModal(content: any) {
     this.modalService.open(content, { centered: true });
   }
 
-  // Delete Data
   delete(id: any) {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -121,7 +118,6 @@ export class DocumentUnitComponent implements OnInit {
         if (result.value) {
           this.deleteDocumentUnit(id);
         } else if (
-          /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel
         ) {
           swalWithBootstrapButtons.fire(
@@ -133,10 +129,6 @@ export class DocumentUnitComponent implements OnInit {
       });
   }
 
-  /**
-   * Open modal
-   * @param content modal content
-   */
   openModal(value) {
     this.new = value;
   }
@@ -147,9 +139,6 @@ export class DocumentUnitComponent implements OnInit {
     this.textButton = "Registrar";
   }
 
-  /**
-   * Form data get
-   */
   get form() {
     return this.documentUnitForm.controls;
   }
@@ -161,7 +150,6 @@ export class DocumentUnitComponent implements OnInit {
       this.pipe = new DatePipe('en-US');
 
       const id = this.documentUnitForm.get('id')?.value;
-      const idTruckFleet = this.idTruckFleet;
       const fireExtinguisherExpiration = this.documentUnitForm.get('fireExtinguisherExpiration')?.value;
       const firstAidKitExpiration = this.documentUnitForm.get('firstAidKitExpiration')?.value;
       const technicalReviewExpiration = this.documentUnitForm.get('technicalReviewExpiration')?.value;
@@ -170,7 +158,9 @@ export class DocumentUnitComponent implements OnInit {
       const expirationPolicy = this.documentUnitForm.get('expirationPolicy')?.value;
 
       let documentUnit = new DocumentUnit();
-      documentUnit.idTruckFleet = idTruckFleet;
+      let truckFleet = new TruckFleet();
+      truckFleet.id = this.idTruckFleet;
+      documentUnit.truckFleet = truckFleet;
       documentUnit.fireExtinguisherExpiration = this.pipe.transform(fireExtinguisherExpiration, 'yyyy-MM-dd');
       documentUnit.firstAidKitExpiration = this.pipe.transform(firstAidKitExpiration, 'yyyy-MM-dd');
       documentUnit.technicalReviewExpiration = this.pipe.transform(technicalReviewExpiration, 'yyyy-MM-dd');
@@ -185,7 +175,6 @@ export class DocumentUnitComponent implements OnInit {
       documentUnit.namePhotoTechnicalReview = this.namePhotoTechnicalReviewLocal;
       documentUnit.nameSoatPhoto = this.namePhotoSoatLocal;
       documentUnit.namePhotoMtc = this.namePhotoMtcLocal;
-      //documentUnit.namePolicyDocument=this.namePolicyDocumentLocal;
       documentUnit.namePhotoPolicy = this.namePhotoPolicyLocal;
       console.log(documentUnit);
 
@@ -199,8 +188,15 @@ export class DocumentUnitComponent implements OnInit {
       this.new = false;
       this.textButton = "Registrar";
       this.clearControl();
+    } else {
+      Swal.fire({
+        icon: config.WARNING,
+        title: "Debe completar todos los datos",
+        showConfirmButton: false,
+      });
     }
   }
+
 
   clearControl() {
     this.documentUnitForm.controls['fireExtinguisherExpiration'].setValue("");
@@ -214,11 +210,13 @@ export class DocumentUnitComponent implements OnInit {
     this.documentUnitForm.controls['policyDocument'].setValue(null);
     this.documentUnitForm.controls['expirationPolicy'].setValue("");
     this.documentUnitForm.controls['photoPolicy'].setValue(null);
+    this.namePhotoTechnicalReviewLocal = "";
+    this.namePhotoSoatLocal = "";
+    this.namePhotoMtcLocal = "";
+    this.namePolicyDocumentLocal = "";
+    this.namePhotoPolicyLocal = "";
   }
-  /**
-   * Open Edit modal
-   * @param content modal content
-   */
+
   editDataGet(id: any) {
     this.new = true;
     this.submitted = false;
@@ -233,16 +231,46 @@ export class DocumentUnitComponent implements OnInit {
     this.documentUnitForm.controls['fireExtinguisherExpiration'].setValue(this.pipe.transform(fireExtinguisherExpiration, 'yyyy-MM-dd'));
     this.documentUnitForm.controls['firstAidKitExpiration'].setValue(this.pipe.transform(firstAidKitExpiration, 'yyyy-MM-dd'));
     this.documentUnitForm.controls['technicalReviewExpiration'].setValue(this.pipe.transform(technicalReviewExpiration, 'yyyy-MM-dd'));
-    this.documentUnitForm.controls['photoTechnicalReview'].setValue(null);
     this.documentUnitForm.controls['soatExpiration'].setValue(this.pipe.transform(soatExpiration, 'yyyy-MM-dd'));
-    this.documentUnitForm.controls['photoSoat'].setValue(null);
     this.documentUnitForm.controls['mtcExpiration'].setValue(this.pipe.transform(mtcExpiration, 'yyyy-MM-dd'));
-    this.documentUnitForm.controls['photoMtc'].setValue(null);
-    this.documentUnitForm.controls['policyDocument'].setValue(null);
     this.documentUnitForm.controls['expirationPolicy'].setValue(this.pipe.transform(expirationPolicy, 'yyyy-MM-dd'));
-    this.documentUnitForm.controls['photoPolicy'].setValue(null);
     this.documentUnitForm.controls['id'].setValue(id);
     this.textButton = "Actualizar";
+    console.log(listData[0]);
+    this.photoSoatLocal = 'data:image/jpeg;base64,' + listData[0].photoSoat;
+    this.namePhotoSoatLocal = listData[0].nameSoatPhoto;
+    this.documentUnitForm.get('photoSoat').setValue(this.dataURLtoFile(this.photoSoatLocal, this.namePhotoSoatLocal));
+
+    this.photoTechnicalReviewLocal = 'data:image/jpeg;base64,' + listData[0].photoTechnicalReview;
+    this.namePhotoTechnicalReviewLocal = listData[0].namePhotoTechnicalReview;
+    this.documentUnitForm.get('photoTechnicalReview').setValue(this.dataURLtoFile(this.photoTechnicalReviewLocal, this.namePhotoTechnicalReviewLocal));
+
+    this.photoMtcLocal = 'data:image/jpeg;base64,' + listData[0].photoMtc;
+    this.namePhotoMtcLocal = listData[0].namePhotoMtc;
+    this.documentUnitForm.get('photoMtc').setValue(this.dataURLtoFile(this.photoMtcLocal, this.namePhotoMtcLocal));
+
+    this.policyDocumentLocal = 'data:application/pdf;base64,' + listData[0].policy;
+    this.namePolicyDocumentLocal = 'Poliza.pdf';
+    this.documentUnitForm.get('policyDocument').setValue(this.dataURLtoFile(this.policyDocumentLocal, "Poliza.pdf"));
+
+    this.photoPolicyLocal = 'data:image/jpeg;base64,' + listData[0].photoPolicy;
+    this.namePhotoPolicyLocal = listData[0].namePhotoPolicy;
+    this.documentUnitForm.get('photoPolicy').setValue(this.dataURLtoFile(this.photoPolicyLocal, this.namePhotoPolicyLocal));
+
+  }
+
+  dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: mime });
   }
 
   listDocumentUnits() {
@@ -354,6 +382,11 @@ export class DocumentUnitComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
+              Swal.fire(
+                '¡Actualizado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
               this.listDocumentUnitsByIdTruckFleet(this.idTruckFleet);
             } else {
               Swal.fire({
@@ -493,35 +526,38 @@ export class DocumentUnitComponent implements OnInit {
     });
   }
 
-  getDocument(event, option) {
-    this.file = event.target.files[0];
-    const reader = new FileReader();
-    console.log(reader);
-    reader.readAsDataURL(this.file);
-    reader.onload = () => {
-      console.log(reader.result);
-      switch (option) {
-        case 1:
-          this.photoTechnicalReviewLocal = reader.result;
-          this.namePhotoTechnicalReviewLocal = this.file.name;
-          break;
-        case 2:
-          this.photoSoatLocal = reader.result;
-          this.namePhotoSoatLocal = this.file.name;
-          break;
-        case 3:
-          this.photoMtcLocal = reader.result;
-          this.namePhotoMtcLocal = this.file.name;
-          break;
-        case 4:
-          this.photoPolicyLocal = reader.result;
-          this.namePhotoPolicyLocal = this.file.name;
-          break;
-        case 5:
-          this.policyDocumentLocal = reader.result;
-          this.namePolicyDocumentLocal = this.file.name;
-          break;
+  getImage(event, nameInput, option) {
+    if (event.target.files && event.target.files.length) {
+      const file = (event.target.files[0] as File);
+      this.documentUnitForm.get(nameInput).setValue(file);
+      let fileToUpload = event.target.files.item(0);
+      let reader = new FileReader();
+      reader.onload = (event: any) => {
+        switch (option) {
+          case 1:
+            this.photoTechnicalReviewLocal = event.target.result;
+            this.namePhotoTechnicalReviewLocal = fileToUpload.name;
+            break;
+          case 2:
+            this.photoSoatLocal = event.target.result;
+            this.namePhotoSoatLocal = fileToUpload.name;
+            break;
+          case 3:
+            this.photoMtcLocal = event.target.result;
+            this.namePhotoMtcLocal = fileToUpload.name;
+            break;
+          case 4:
+            this.photoPolicyLocal = event.target.result;
+            this.namePhotoPolicyLocal = fileToUpload.name;
+            break;
+          case 5:
+            this.policyDocumentLocal = event.target.result;
+            this.namePolicyDocumentLocal = fileToUpload.name;
+            break;
+        }
       }
-    };
+      reader.readAsDataURL(fileToUpload);
+    }
   }
+
 }
