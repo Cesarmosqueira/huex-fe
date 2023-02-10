@@ -59,7 +59,7 @@ export class EmployeeComponent implements OnInit {
       dni: ['', [Validators.required]],
       currentState: ['', [Validators.required]],
       placeOfBirth: ['', [Validators.required]],
-      birthDate: ['', [Validators.required]],
+      birthDate: [''],
       address: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required]],
       email: ['', [Validators.required]],
@@ -286,9 +286,11 @@ export class EmployeeComponent implements OnInit {
     this.employeeForm.controls['dni'].setValue(listData[0].dni);
     this.employeeForm.controls['currentState'].setValue(listData[0].currentState);
     this.employeeForm.controls['placeOfBirth'].setValue(listData[0].placeOfBirth);
-    const birthDate = listData[0].birthDate.substring(0, 10);
-    const fortmatbirthDate = this.pipe.transform(birthDate, 'yyyy-MM-dd');
-    this.employeeForm.controls['birthDate'].setValue(fortmatbirthDate);
+    if(listData[0].birthDate!=null || listData[0].birthDate != undefined){
+      const birthDate = listData[0].birthDate.substring(0, 10);
+      const fortmatbirthDate = this.pipe.transform(birthDate, 'yyyy-MM-dd');
+      this.employeeForm.controls['birthDate'].setValue(fortmatbirthDate);
+    }
     this.employeeForm.controls['address'].setValue(listData[0].address);
     this.employeeForm.controls['phoneNumber'].setValue(listData[0].phoneNumber);
     this.employeeForm.controls['email'].setValue(listData[0].email);

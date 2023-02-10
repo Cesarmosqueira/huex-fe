@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  server: 'http://localhost:8082',
+  server: 'http://localhost:8080',
   production: false,
   defaultauth: 'fackbackend',
   firebaseConfig: {
@@ -18,210 +18,210 @@ export const environment = {
   },
   employees: {
     employee: {
-      list: '/api-huex/v1/employees',
-      retrieve: '/api-huex/v1/employees/',
-      register: '/api-huex/v1/employees',
-      update: '/api-huex/v1/employees',
-      delete: '/api-huex/v1/employees/'
+      list: '/v0.1/api-huex/v1/employees',
+      retrieve: '/v0.1/api-huex/v1/employees/',
+      register: '/v0.1/api-huex/v1/employees',
+      update: '/v0.1/api-huex/v1/employees',
+      delete: '/v0.1/api-huex/v1/employees/'
     },
     implement: {
-      list: '/api-huex/v1/implements',
-      retrieve: '/api-huex/v1/implements/',
-      register: '/api-huex/v1/implements',
-      update: '/api-huex/v1/implements',
-      delete: '/api-huex/v1/implements/'
+      list: '/v0.1/api-huex/v1/implements',
+      retrieve: '/v0.1/api-huex/v1/implements/',
+      register: '/v0.1/api-huex/v1/implements',
+      update: '/v0.1/api-huex/v1/implements',
+      delete: '/v0.1/api-huex/v1/implements/'
     },
     employeeImplement: {
-      list: '/api-huex/v1/employee_implements',
-      retrieve: '/api-huex/v1/employee_implements/',
-      register: '/api-huex/v1/employee_implements',
-      update: '/api-huex/v1/employee_implements',
-      delete: '/api-huex/v1/employee_implements/'
+      list: '/v0.1/api-huex/v1/employee_implements',
+      retrieve: '/v0.1/api-huex/v1/employee_implements/',
+      register: '/v0.1/api-huex/v1/employee_implements',
+      update: '/v0.1/api-huex/v1/employee_implements',
+      delete: '/v0.1/api-huex/v1/employee_implements/'
     },
     employeeAttendance: {
-      list: '/api-huex/v1/attendances',
-      retrieve: '/api-huex/v1/attendances/',
-      register: '/api-huex/v1/attendances',
-      update: '/api-huex/v1/attendances',
-      delete: '/api-huex/v1/attendances/'
+      list: '/v0.1/api-huex/v1/attendances',
+      retrieve: '/v0.1/api-huex/v1/attendances/',
+      register: '/v0.1/api-huex/v1/attendances',
+      update: '/v0.1/api-huex/v1/attendances',
+      delete: '/v0.1/api-huex/v1/attendances/'
     },
     employeeDiscount: {
-      list: '/api-huex/v1/discounts',
-      retrieve: '/api-huex/v1/discounts/',
-      register: '/api-huex/v1/discounts',
-      update: '/api-huex/v1/discounts',
-      delete: '/api-huex/v1/discounts/'
+      list: '/v0.1/api-huex/v1/discounts',
+      retrieve: '/v0.1/api-huex/v1/discounts/',
+      register: '/v0.1/api-huex/v1/discounts',
+      update: '/v0.1/api-huex/v1/discounts',
+      delete: '/v0.1/api-huex/v1/discounts/'
     }
   },
   customers: {
     customer: {
-      list: '/api-huex/v1/customers',
-      retrieve: '/api-huex/v1/customers/',
-      register: '/api-huex/v1/customers',
-      update: '/api-huex/v1/customers',
-      delete: '/api-huex/v1/customers/'
+      list: '/v0.1/api-huex/v1/customers',
+      retrieve: '/v0.1/api-huex/v1/customers/',
+      register: '/v0.1/api-huex/v1/customers',
+      update: '/v0.1/api-huex/v1/customers',
+      delete: '/v0.1/api-huex/v1/customers/'
     },
     route: {
-      list: '/api-huex/v1/routes',
-      retrieve: '/api-huex/v1/routes/',
-      register: '/api-huex/v1/routes',
-      update: '/api-huex/v1/routes',
-      delete: '/api-huex/v1/routes/'
+      list: '/v0.1/api-huex/v1/routes',
+      retrieve: '/v0.1/api-huex/v1/routes/',
+      register: '/v0.1/api-huex/v1/routes',
+      update: '/v0.1/api-huex/v1/routes',
+      delete: '/v0.1/api-huex/v1/routes/'
     },
     rate: {
-      list: '/api-huex/v1/rates',
-      retrieve: '/api-huex/v1/rates/',
-      register: '/api-huex/v1/rates',
-      update: '/api-huex/v1/rates',
-      delete: '/api-huex/v1/rates/'
+      list: '/v0.1/api-huex/v1/rates',
+      retrieve: '/v0.1/api-huex/v1/rates/',
+      register: '/v0.1/api-huex/v1/rates',
+      update: '/v0.1/api-huex/v1/rates',
+      delete: '/v0.1/api-huex/v1/rates/'
     },
     customerEmployees: {
-      list: '/api-huex/v1/customer_employee',
-      retrieve: '/api-huex/v1/customer_employee/',
-      register: '/api-huex/v1/customer_employee',
-      update: '/api-huex/v1/customer_employee',
-      delete: '/api-huex/v1/customer_employee/'
+      list: '/v0.1/api-huex/v1/customer_employee',
+      retrieve: '/v0.1/api-huex/v1/customer_employee/',
+      register: '/v0.1/api-huex/v1/customer_employee',
+      update: '/v0.1/api-huex/v1/customer_employee',
+      delete: '/v0.1/api-huex/v1/customer_employee/'
     }
   },
   services: {
     tracking: {
-      list: '/api-huex/v1/service/tracking',
-      retrieve: '/api-huex/v1/service/tracking/',
-      register: '/api-huex/v1/service/tracking',
-      update: '/api-huex/v1/service/tracking',
-      delete: '/api-huex/v1/service/tracking/'
+      list: '/v0.1/api-huex/v1/service/tracking',
+      retrieve: '/v0.1/api-huex/v1/service/tracking/',
+      register: '/v0.1/api-huex/v1/service/tracking',
+      update: '/v0.1/api-huex/v1/service/tracking',
+      delete: '/v0.1/api-huex/v1/service/tracking/'
     },
     expenseType: {
-      list: '/api-huex/v1/expense_type',
-      retrieve: '/api-huex/v1/expense_type/',
-      register: '/api-huex/v1/expense_type',
-      update: '/api-huex/v1/expense_type',
-      delete: '/api-huex/v1/expense_type/'
+      list: '/v0.1/api-huex/v1/expense_type',
+      retrieve: '/v0.1/api-huex/v1/expense_type/',
+      register: '/v0.1/api-huex/v1/expense_type',
+      update: '/v0.1/api-huex/v1/expense_type',
+      delete: '/v0.1/api-huex/v1/expense_type/'
     },
     serviceIncidents: {
-      list: '/api-huex/v1/service_incident',
-      retrieve: '/api-huex/v1/service_incident/',
-      register: '/api-huex/v1/service_incident',
-      update: '/api-huex/v1/service_incident',
-      delete: '/api-huex/v1/service_incident/',
-      listByIdTracking: '/api-huex/v1/service_incident/tracking/'
+      list: '/v0.1/api-huex/v1/service_incident',
+      retrieve: '/v0.1/api-huex/v1/service_incident/',
+      register: '/v0.1/api-huex/v1/service_incident',
+      update: '/v0.1/api-huex/v1/service_incident',
+      delete: '/v0.1/api-huex/v1/service_incident/',
+      listByIdTracking: '/v0.1/api-huex/v1/service_incident/tracking/'
     },
     settlementSummary: {
-      list: '/api-huex/v1/settlement_summary',
-      retrieve: '/api-huex/v1/settlement_summary/',
-      register: '/api-huex/v1/settlement_summary',
-      update: '/api-huex/v1/settlement_summary',
-      delete: '/api-huex/v1/settlement_summary/',
-      listByIdTracking: '/api-huex/v1/settlement_summary/tracking/',
+      list: '/v0.1/api-huex/v1/settlement_summary',
+      retrieve: '/v0.1/api-huex/v1/settlement_summary/',
+      register: '/v0.1/api-huex/v1/settlement_summary',
+      update: '/v0.1/api-huex/v1/settlement_summary',
+      delete: '/v0.1/api-huex/v1/settlement_summary/',
+      listByIdTracking: '/v0.1/api-huex/v1/settlement_summary/tracking/',
     },
     serviceMonitoring: {
-      list: '/api-huex/v1/serviceMonitoring',
-      retrieve: '/api-huex/v1/serviceMonitoring/',
-      register: '/api-huex/v1/serviceMonitoring',
-      update: '/api-huex/v1/serviceMonitoring',
-      delete: '/api-huex/v1/serviceMonitoring/',
-      listByIdTracking: '/api-huex/v1/serviceMonitoring/tracking/'
+      list: '/v0.1/api-huex/v1/serviceMonitoring',
+      retrieve: '/v0.1/api-huex/v1/serviceMonitoring/',
+      register: '/v0.1/api-huex/v1/serviceMonitoring',
+      update: '/v0.1/api-huex/v1/serviceMonitoring',
+      delete: '/v0.1/api-huex/v1/serviceMonitoring/',
+      listByIdTracking: '/v0.1/api-huex/v1/serviceMonitoring/tracking/'
     }
   },
 
   security:{
     user:{
-      login: '/api-huex/v1/security/user/login',
-      register: '/api-huex/v1/security/user',
-      list: '/api-huex/v1/security/user',
-      delete: '/api-huex/v1/security/user/',
+      login: '/v0.1/api-huex/v1/security/user/login',
+      register: '/v0.1/api-huex/v1/security/user',
+      list: '/v0.1/api-huex/v1/security/user',
+      delete: '/v0.1/api-huex/v1/security/user/',
     },
     menu:{
-      list: '/api-huex/v1/security/menu',
-      listByUserId: '/api-huex/v1/security/menu/'
+      list: '/v0.1/api-huex/v1/security/menu',
+      listByUserId: '/v0.1/api-huex/v1/security/menu/'
     }
   },
 
   vehicles: {
     truckfleet: {
-      list: '/api-huex/v1/vehicle/truckFleet',
-      retrieve: '/api-huex/v1/vehicle/truckFleet/',
-      register: '/api-huex/v1/vehicle/truckFleet',
-      update: '/api-huex/v1/vehicle/truckFleet',
-      delete: '/api-huex/v1/vehicle/truckFleet/'
+      list: '/v0.1/api-huex/v1/vehicle/truckFleet',
+      retrieve: '/v0.1/api-huex/v1/vehicle/truckFleet/',
+      register: '/v0.1/api-huex/v1/vehicle/truckFleet',
+      update: '/v0.1/api-huex/v1/vehicle/truckFleet',
+      delete: '/v0.1/api-huex/v1/vehicle/truckFleet/'
     },
     checkList: {
-      list: '/api-huex/v1/vehicle/checkList',
-      retrieve: '/api-huex/v1/vehicle/checkList/',
-      register: '/api-huex/v1/vehicle/checkList',
-      update: '/api-huex/v1/vehicle/checkList',
-      delete: '/api-huex/v1/vehicle/checkList/',
-      listByIdTruckFleet: '/api-huex/v1/vehicle/checkList/truckFleet/',
+      list: '/v0.1/api-huex/v1/vehicle/checkList',
+      retrieve: '/v0.1/api-huex/v1/vehicle/checkList/',
+      register: '/v0.1/api-huex/v1/vehicle/checkList',
+      update: '/v0.1/api-huex/v1/vehicle/checkList',
+      delete: '/v0.1/api-huex/v1/vehicle/checkList/',
+      listByIdTruckFleet: '/v0.1/api-huex/v1/vehicle/checkList/truckFleet/',
     },
     kardexFuel: {
-      list: '/api-huex/v1/vehicle/kardexFuel',
-      retrieve: '/api-huex/v1/vehicle/kardexFuel/',
-      register: '/api-huex/v1/vehicle/kardexFuel',
-      update: '/api-huex/v1/vehicle/kardexFuel',
-      delete: '/api-huex/v1/vehicle/kardexFuel/',
-      listByIdTruckFleet: '/api-huex/v1/vehicle/kardexFuel/truckFleet/',
+      list: '/v0.1/api-huex/v1/vehicle/kardexFuel',
+      retrieve: '/v0.1/api-huex/v1/vehicle/kardexFuel/',
+      register: '/v0.1/api-huex/v1/vehicle/kardexFuel',
+      update: '/v0.1/api-huex/v1/vehicle/kardexFuel',
+      delete: '/v0.1/api-huex/v1/vehicle/kardexFuel/',
+      listByIdTruckFleet: '/v0.1/api-huex/v1/vehicle/kardexFuel/truckFleet/',
     },
     maintenanceOil: {
-      list: '/api-huex/v1/vehicle/maintenanceOil',
-      retrieve: '/api-huex/v1/vehicle/maintenanceOil/',
-      register: '/api-huex/v1/vehicle/maintenanceOil',
-      update: '/api-huex/v1/vehicle/maintenanceOil',
-      delete: '/api-huex/v1/vehicle/maintenanceOil/',
-      listByIdTruckFleet: '/api-huex/v1/vehicle/maintenanceOil/truckFleet/',
+      list: '/v0.1/api-huex/v1/vehicle/maintenanceOil',
+      retrieve: '/v0.1/api-huex/v1/vehicle/maintenanceOil/',
+      register: '/v0.1/api-huex/v1/vehicle/maintenanceOil',
+      update: '/v0.1/api-huex/v1/vehicle/maintenanceOil',
+      delete: '/v0.1/api-huex/v1/vehicle/maintenanceOil/',
+      listByIdTruckFleet: '/v0.1/api-huex/v1/vehicle/maintenanceOil/truckFleet/',
     },
     maintenanceTire: {
-      list: '/api-huex/v1/vehicle/maintenanceTire',
-      retrieve: '/api-huex/v1/vehicle/maintenanceTire/',
-      register: '/api-huex/v1/vehicle/maintenanceTire',
-      update: '/api-huex/v1/vehicle/maintenanceTire',
-      delete: '/api-huex/v1/vehicle/maintenanceTire/',
-      listByIdTruckFleet: '/api-huex/v1/vehicle/maintenanceTire/truckFleet/',
+      list: '/v0.1/api-huex/v1/vehicle/maintenanceTire',
+      retrieve: '/v0.1/api-huex/v1/vehicle/maintenanceTire/',
+      register: '/v0.1/api-huex/v1/vehicle/maintenanceTire',
+      update: '/v0.1/api-huex/v1/vehicle/maintenanceTire',
+      delete: '/v0.1/api-huex/v1/vehicle/maintenanceTire/',
+      listByIdTruckFleet: '/v0.1/api-huex/v1/vehicle/maintenanceTire/truckFleet/',
     },
     documentUnit: {
-      list: '/api-huex/v1/vehicle/documentUnit',
-      retrieve: '/api-huex/v1/vehicle/documentUnit/',
-      register: '/api-huex/v1/vehicle/documentUnit',
-      update: '/api-huex/v1/vehicle/documentUnit',
-      delete: '/api-huex/v1/vehicle/documentUnit/',
-      listByIdTruckFleet: '/api-huex/v1/vehicle/documentUnit/truckFleet/',
+      list: '/v0.1/api-huex/v1/vehicle/documentUnit',
+      retrieve: '/v0.1/api-huex/v1/vehicle/documentUnit/',
+      register: '/v0.1/api-huex/v1/vehicle/documentUnit',
+      update: '/v0.1/api-huex/v1/vehicle/documentUnit',
+      delete: '/v0.1/api-huex/v1/vehicle/documentUnit/',
+      listByIdTruckFleet: '/v0.1/api-huex/v1/vehicle/documentUnit/truckFleet/',
     },
     fuel: {
-      list: '/api-huex/v1/vehicle/fuel',
-      retrieve: '/api-huex/v1/vehicle/fuel/',
-      register: '/api-huex/v1/vehicle/fuel',
-      update: '/api-huex/v1/vehicle/fuel',
-      delete: '/api-huex/v1/vehicle/fuel/',
+      list: '/v0.1/api-huex/v1/vehicle/fuel',
+      retrieve: '/v0.1/api-huex/v1/vehicle/fuel/',
+      register: '/v0.1/api-huex/v1/vehicle/fuel',
+      update: '/v0.1/api-huex/v1/vehicle/fuel',
+      delete: '/v0.1/api-huex/v1/vehicle/fuel/',
       listByIdTruckFleet: '/api-huex/v1/vehicle/fuel/truckFleet/',
     }
   },
   providers: {
     provider: {
-      list: '/api-huex/v1/provider',
-      retrieve: '/api-huex/v1/provider/',
-      register: '/api-huex/v1/provider',
-      update: '/api-huex/v1/provider',
-      delete: '/api-huex/v1/provider/'
+      list: '/v0.1/api-huex/v1/provider',
+      retrieve: '/v0.1/api-huex/v1/provider/',
+      register: '/v0.1/api-huex/v1/provider',
+      update: '/v0.1/api-huex/v1/provider',
+      delete: '/v0.1/api-huex/v1/provider/'
     },
     provinceEstivators: {
-      list: '/api-huex/v1/provinceEstivators',
-      retrieve: '/api-huex/v1/provinceEstivators/',
-      register: '/api-huex/v1/provinceEstivators',
-      update: '/api-huex/v1/provinceEstivators',
-      delete: '/api-huex/v1/provinceEstivators/'
+      list: '/v0.1/api-huex/v1/provinceEstivators',
+      retrieve: '/v0.1/api-huex/v1/provinceEstivators/',
+      register: '/v0.1/api-huex/v1/provinceEstivators',
+      update: '/v0.1/api-huex/v1/provinceEstivators',
+      delete: '/v0.1/api-huex/v1/provinceEstivators/'
     },
     tireReplacement: {
-      list: '/api-huex/v1/tireReplacement',
-      retrieve: '/api-huex/v1/tireReplacement/',
-      register: '/api-huex/v1/tireReplacement',
-      update: '/api-huex/v1/tireReplacement',
-      delete: '/api-huex/v1/tireReplacement/'
+      list: '/v0.1/api-huex/v1/tireReplacement',
+      retrieve: '/v0.1/api-huex/v1/tireReplacement/',
+      register: '/v0.1/api-huex/v1/tireReplacement',
+      update: '/v0.1/api-huex/v1/tireReplacement',
+      delete: '/v0.1/api-huex/v1/tireReplacement/'
     },
     fuelSupply: {
-      list: '/api-huex/v1/fuelSupply',
-      retrieve: '/api-huex/v1/fuelSupply/',
-      register: '/api-huex/v1/fuelSupply',
-      update: '/api-huex/v1/fuelSupply',
-      delete: '/api-huex/v1/fuelSupply/'
+      list: '/v0.1/api-huex/v1/fuelSupply',
+      retrieve: '/v0.1/api-huex/v1/fuelSupply/',
+      register: '/v0.1/api-huex/v1/fuelSupply',
+      update: '/v0.1/api-huex/v1/fuelSupply',
+      delete: '/v0.1/api-huex/v1/fuelSupply/'
     }
   }
 };
