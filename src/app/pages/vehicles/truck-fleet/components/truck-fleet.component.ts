@@ -136,7 +136,7 @@ export class TruckFleetComponent implements OnInit {
     this.modalService.open(content, ngbModalOptions);
     this.selectProvider = null;
 
-    
+
   }
 
   get form() {
@@ -216,8 +216,7 @@ export class TruckFleetComponent implements OnInit {
     this.truckFleetForm.controls['highWideLong'].setValue(listData[0].highWideLong);
     this.truckFleetForm.controls['fleetType'].setValue(listData[0].fleetType);
     this.truckFleetForm.controls['tonNumber'].setValue(listData[0].tonNumber);
-    this.truckFleetForm.controls['idProvider'].setValue(listData[0].provider.id);
-    this.selectProvider = listData[0].provider.businessName;
+    this.selectProvider = listData[0].provider;
     this.idTruckFleetOuput = id;
   }
 
@@ -292,6 +291,11 @@ export class TruckFleetComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
+              Swal.fire(
+                '¡Actualizado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
               this.listTruckFleets();
             } else {
               Swal.fire({

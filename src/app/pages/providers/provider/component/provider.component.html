@@ -34,7 +34,7 @@
                 <th class="align-middle">Nombre contacto</th>
                 <th class="align-middle">Correo</th>
                 <th class="align-middle">Telefono</th>
-                <th class="align-middle">Direcion</th>
+                <th class="align-middle">Direcion legal</th>
                 <th class="align-middle">Fecha ingreso</th>
                 <th class="align-middle">Banco</th>
                 <th class="align-middle">Cuenta bancaria</th>
@@ -141,7 +141,7 @@
 
       <div class="col-md-6">
       <div class="mb-3">
-        <label for="customername-field" class="form-label">Email</label>
+        <label for="customername-field" class="form-label">Correo</label>
         <input type="text" id="customername-field" class="form-control"  formControlName="email"
                [ngClass]="{ 'is-invalid': submitted && form['email'].errors }" autocomplete="disabled" />
       </div>
@@ -161,7 +161,7 @@
 
       <div class="col-md-6">
       <div class="mb-3">
-        <label for="customername-field" class="form-label">Correo</label>
+        <label for="customername-field" class="form-label">Direcion Legal</label>
         <input type="text" id="customername-field" class="form-control"  formControlName="address"
                [ngClass]="{ 'is-invalid': submitted && form['address'].errors }" autocomplete="disabled" />
 
@@ -215,11 +215,11 @@
 
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="customername-field" class="form-label">Tipo proveedor</label>
-            <input type="text" id="customername-field" class="form-control"  formControlName="providerType"
-                   [ngClass]="{ 'is-invalid': submitted && form['providerType'].errors }" autocomplete="disabled" />
-
+            <label for="customername-field" class="form-label">Tipo servicio</label>
+            <ng-select [items]="['Transporte','Llantas','Lubricantes','Lavado','Descarga']" id="customername-field"  formControlName="providerType"
+                       [ngClass]="{ 'is-invalid': submitted && form['providerType'].errors }"></ng-select>
           </div>
+
         </div>
 
         <div class="col-md-6">
@@ -228,6 +228,7 @@
             <input type="text" id="customername-field" class="form-control"  formControlName="observation"
                    [ngClass]="{ 'is-invalid': submitted && form['observation'].errors }" autocomplete="disabled" />
           </div>
+
         </div>
       </div>
 
