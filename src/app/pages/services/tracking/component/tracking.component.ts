@@ -86,7 +86,7 @@ export class TrackingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.breadCrumbItems = [{ label: 'Empleados' }, { label: 'Trabajadores', active: true }];
+    this.breadCrumbItems = [{ label: 'Servicios' }, { label: 'Tracking', active: true }];
 
     /**
      * Form Validation
