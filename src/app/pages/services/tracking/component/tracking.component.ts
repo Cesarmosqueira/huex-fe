@@ -55,6 +55,8 @@ export class TrackingComponent implements OnInit {
   estado: string[] = ['En cochera', 'En ruta', 'Retornando', 'Cargando', 'Descargando', 'Finalizo'];
   invoiced: string[] = ['Facturado', 'Pendiente'];
   charge: string[] = ['Cobrado', 'Pendiente'];
+  documentaryStatus: string[] = ['Pendiente', 'Recepcionado','Enviado'];
+
   selectDriver = null;
 
   selectCopilot = null;
@@ -116,7 +118,9 @@ export class TrackingComponent implements OnInit {
       operation: [''],
       invoiced: [''],
       charge: [''],
-      photoInsurance: ['']
+      photoInsurance: [''],
+      documentaryStatus: ['']
+
     });
 
     this.trackingsList.subscribe(x => {
@@ -240,6 +244,8 @@ export class TrackingComponent implements OnInit {
       const operation = this.trackingForm.get('operation')?.value;
       const invoiced = this.trackingForm.get('invoiced')?.value;
       const charge = this.trackingForm.get('charge')?.value;
+      const documentaryStatus = this.trackingForm.get('documentaryStatus')?.value;
+
 
       //const condition = this.trackingForm.get('condition')?.value;
 
@@ -267,6 +273,8 @@ export class TrackingComponent implements OnInit {
       tracking.operation = operation;
       tracking.charge = charge;
       tracking.invoiced = invoiced;
+      tracking.documentaryStatus = documentaryStatus;
+
 
       //tracking.condition = condition;
       if (this.imageUrl != null || this.imageUrl != undefined) {
@@ -368,6 +376,8 @@ console.log(listData[0]);
     this.trackingForm.controls['operation'].setValue(listData[0].operation);
     this.trackingForm.controls['invoiced'].setValue(listData[0].invoiced);
     this.trackingForm.controls['charge'].setValue(listData[0].charge);
+    this.trackingForm.controls['documentaryStatus'].setValue(listData[0].documentaryStatus);
+
     if (listData[0].photoInsurance != null || listData[0].photoInsurance != undefined) {
       this.imageUrl = 'data:image/jpeg;base64,' + listData[0].photoInsurance;
       this.trackingForm.get('photoInsurance').setValue(this.dataURLtoFile(this.imageUrl, 'foto.jpeg'));
@@ -521,6 +531,7 @@ console.log(listData[0]);
     this.trackingForm.controls['operation'].setValue("");
     this.trackingForm.controls['invoiced'].setValue("");
     this.trackingForm.controls['charge'].setValue("");
+    this.trackingForm.controls['documentaryStatus'].setValue("");
     this.selectRates = null;
     this.selectDriver = null;
     this.selectCopilot = null;
@@ -555,6 +566,7 @@ console.log(listData[0]);
     this.trackingForm.controls['operation'].disable();
     this.trackingForm.controls['invoiced'].disable();
     this.trackingForm.controls['charge'].disable();
+    this.trackingForm.controls['documentaryStatus'].disable();
 
     //this.trackingForm.controls['condition'].disable();
     this.trackingForm.controls['photoInsurance'].disable();
@@ -585,6 +597,7 @@ console.log(listData[0]);
     this.trackingForm.controls['operation'].enable();
     this.trackingForm.controls['invoiced'].enable();
     this.trackingForm.controls['charge'].enable();
+    this.trackingForm.controls['documentaryStatus'].enable();
 
     //this.trackingForm.controls['condition'].enable();
     this.trackingForm.controls['photoInsurance'].enable();

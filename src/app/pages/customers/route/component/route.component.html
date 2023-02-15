@@ -105,7 +105,7 @@
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Zona</label>
-        <ng-select [items]="['CENTRO','SUR','NORTE']" id="customername-field" required formControlName="zone"
+        <ng-select [items]="['CENTRO','SUR','NORTE','ORIENTE']" id="customername-field" required formControlName="zone"
                    [ngClass]="{ 'is-invalid': submitted && form['zone'].errors }"></ng-select>
         <div *ngIf="submitted && form['zone'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['zone'].errors['required']">Zona es requerido</div>

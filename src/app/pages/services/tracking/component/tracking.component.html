@@ -41,8 +41,10 @@
                   <th class="align-middle">Cantidad Puntos</th>
                   <th class="align-middle">Chofer</th>
                   <th class="align-middle">Costo adicional</th>
-                  <th class="align-middle">Estado</th>
-             <!-- <th class="align-middle">Fotos serguro</th>-->
+                  <th class="align-middle">Estado servicio</th>
+                  <th class="align-middle">Estado documentario</th>
+
+                  <!-- <th class="align-middle">Fotos serguro</th>-->
                   <th class="align-middle">Acciones</th>
               </thead>
               <tbody>
@@ -62,13 +64,15 @@
                   <td>{{data.driver.fullName}}</td>
                   <td>{{data.additionalCost}}</td>
                   <td>{{data.preloadStatus}}</td>
-              <!--    <td>
-                    <a href="javascript:void(0);" class="text-success" (click)="viewDocument(data.id)">Ver <i
-                        class="mdi mdi-eye font-size-16 mt"></i>/</a>
-                    <a href="javascript:void(0);" class="text-success" (click)="saveByteArray(data.id)">Descargar <i
-                        class="mdi mdi-cloud-download font-size-16 mt"></i></a>
-                  </td>
-                -->
+                  <td>{{data.documentaryStatus}}</td>
+
+                  <!--    <td>
+                        <a href="javascript:void(0);" class="text-success" (click)="viewDocument(data.id)">Ver <i
+                            class="mdi mdi-eye font-size-16 mt"></i>/</a>
+                        <a href="javascript:void(0);" class="text-success" (click)="saveByteArray(data.id)">Descargar <i
+                            class="mdi mdi-cloud-download font-size-16 mt"></i></a>
+                      </td>
+                    -->
 
                   <td>
                     <div class="d-flex gap-3">
@@ -432,6 +436,20 @@
               </div>
             </div>
 
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Estado documentario</label>
+                <ng-select [items]="documentaryStatus" id="customername-field"  formControlName="documentaryStatus"
+                           placeholder="Seleccione Estado"
+                           [ngClass]="{ 'is-invalid': submitted && form['documentaryStatus'].errors }"></ng-select>
+
+              </div>
+            </div>
 
           </div>
 

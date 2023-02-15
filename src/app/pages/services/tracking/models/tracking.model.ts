@@ -25,4 +25,5 @@ export class Tracking {
 	photoInsurance: any;
 	invoiced: string;
 	charge: string;
+  documentaryStatus:string
 }
