@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  server: 'http://localhost:8080',
+  server: 'http://localhost:80',
   production: false,
   defaultauth: 'fackbackend',
   firebaseConfig: {

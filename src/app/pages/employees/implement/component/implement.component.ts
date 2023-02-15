@@ -61,7 +61,6 @@ export class ImplementComponent implements OnInit {
       this.implement = Object.assign([], x);
     });
     this.idImplementOuput = 0;
-    console.log(this.idImplementOuput);
     this.listImplements();
   }
 
@@ -145,8 +144,6 @@ export class ImplementComponent implements OnInit {
       implement.description = description;
       const id = this.implementForm.get('id')?.value;
 
-      console.log(implement);
-      console.log(id);
       if (id == '0') {
         this.registerImplement(implement);
       } else {

@@ -77,7 +77,6 @@ export class TruckFleetComponent implements OnInit {
       this.truckFleets = Object.assign([], x);
     });
     this.idTruckFleetOuput = 0;
-    console.log(this.idTruckFleetOuput);
     this.listProviders();
     this.listTruckFleets();
   }
@@ -247,7 +246,6 @@ export class TruckFleetComponent implements OnInit {
       .subscribe(
         response => {
           if (response) {
-            console.log(response);
             if (response.datos) {
               Swal.fire(
                 '¡Registrado!',
@@ -411,7 +409,6 @@ export class TruckFleetComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.providers = response.datos.providers;
-              console.log(this.providers);
             } else {
               Swal.fire({
                 icon: config.WARNING,

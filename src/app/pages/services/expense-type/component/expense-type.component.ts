@@ -60,7 +60,6 @@ export class ExpenseTypeComponent implements OnInit {
       this.expenseTypes = Object.assign([], x);
     });
     this.idExpenseTypeOuput = 0;
-    console.log(this.idExpenseTypeOuput);
 
     this.listExpenseTypes();
   }
@@ -147,8 +146,6 @@ export class ExpenseTypeComponent implements OnInit {
       expenseType1.description = description;
       const id = this.expenseTypeForm.get('id')?.value;
 
-      console.log(expenseType1);
-      console.log(id);
       if (id == '0') {
         this.registerExpenseType(expenseType1);
       } else {

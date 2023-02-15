@@ -67,7 +67,6 @@ export class EmployeeAttendanceComponent implements OnInit {
       this.employeeAttendance = Object.assign([], x);
     });
     this.idEmployeeAttendanceOuput = 0;
-    console.log(this.idEmployeeAttendanceOuput);
 
     this.listEmployees();
     this.listEmployeeAttendance();
@@ -162,8 +161,6 @@ export class EmployeeAttendanceComponent implements OnInit {
 
       const id = this.employeeAttendanceForm.get('id')?.value;
 
-      console.log(employeeAttendance);
-      console.log(id);
       if (id == '0') {
         this.registerEmployeeAttendance(employeeAttendance);
       } else {
@@ -364,7 +361,6 @@ export class EmployeeAttendanceComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.employees = response.datos.employees;
-              console.log(this.employees);
             } else {
               Swal.fire({
                 icon: config.WARNING,

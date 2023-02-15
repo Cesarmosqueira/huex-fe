@@ -73,7 +73,6 @@ export class ProviderComponent implements OnInit {
       this.providers = Object.assign([], x);
     });
     this.idProviderOuput = 0;
-    console.log(this.idProviderOuput);
 
     this.listProviders();
   }
@@ -182,8 +181,6 @@ export class ProviderComponent implements OnInit {
 
       const id = this.providerForm.get('id')?.value;
 
-      console.log(Providers);
-      console.log(id);
       if (id == '0') {
         this.registerProvider(providers);
       } else {
@@ -264,7 +261,6 @@ export class ProviderComponent implements OnInit {
       .subscribe(
         response => {
           if (response) {
-            console.log(response);
             if (response.datos) {
               Swal.fire(
                 '¡Registrado!',

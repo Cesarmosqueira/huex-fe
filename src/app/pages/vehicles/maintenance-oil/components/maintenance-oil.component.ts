@@ -77,7 +77,6 @@ export class MaintenanceOilComponent implements OnInit {
       this.maintenanceOils = Object.assign([], x);
     });
     this.idTruckFleetOuput = 0;
-    console.log(this.idTruckFleetOuput);
     this.listMaintenanceOils();
     this.listTruckFleet();
   }
@@ -178,8 +177,6 @@ export class MaintenanceOilComponent implements OnInit {
       maintenanceOil.dateCurrent = this.pipe.transform(myDate, 'yyyy-MM-dd');
 
       const id = this.maintenanceOilForm.get('id')?.value;
-      console.log(maintenanceOil);
-      console.log(id);
       if (id == '0') {
         this.registerMaintenanceOil(maintenanceOil);
       } else {
@@ -345,7 +342,6 @@ export class MaintenanceOilComponent implements OnInit {
   }
 
   deleteMaintenanceOil(id) {
-    console.log(id);
     this.service.deleteMaintenanceOil(id)
       .pipe(first())
       .subscribe(
@@ -389,7 +385,6 @@ export class MaintenanceOilComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.truckFleets = response.datos.truckFleets;
-              console.log(this.truckFleets);
             } else {
               Swal.fire({
                 icon: config.WARNING,

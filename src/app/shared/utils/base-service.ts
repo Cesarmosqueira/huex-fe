@@ -21,7 +21,6 @@ export class BaseService {
             // errorMessage = `Código retornado por el servidor: ${err.status}, el mensaje de error es: ${err.message}`;
             errorMessage = err;
         }
-        console.log(errorMessage);
         return throwError(errorMessage);
     }
 

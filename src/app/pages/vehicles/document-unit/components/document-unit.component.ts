@@ -176,7 +176,6 @@ export class DocumentUnitComponent implements OnInit {
       documentUnit.nameSoatPhoto = this.namePhotoSoatLocal;
       documentUnit.namePhotoMtc = this.namePhotoMtcLocal;
       documentUnit.namePhotoPolicy = this.namePhotoPolicyLocal;
-      console.log(documentUnit);
 
       if (id == '0') {
         this.registerDocumentUnit(documentUnit);
@@ -236,7 +235,6 @@ export class DocumentUnitComponent implements OnInit {
     this.documentUnitForm.controls['expirationPolicy'].setValue(this.pipe.transform(expirationPolicy, 'yyyy-MM-dd'));
     this.documentUnitForm.controls['id'].setValue(id);
     this.textButton = "Actualizar";
-    console.log(listData[0]);
     this.photoSoatLocal = 'data:image/jpeg;base64,' + listData[0].photoSoat;
     this.namePhotoSoatLocal = listData[0].nameSoatPhoto;
     this.documentUnitForm.get('photoSoat').setValue(this.dataURLtoFile(this.photoSoatLocal, this.namePhotoSoatLocal));
@@ -281,7 +279,6 @@ export class DocumentUnitComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.documentUnitsResponse = response.datos.documentUnitDtoList;
-              console.log(this.documentUnitsResponse);
               this.service.paginationTable(this.documentUnitsResponse);
             } else {
               Swal.fire({
@@ -316,7 +313,6 @@ export class DocumentUnitComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.documentUnitsResponse = response.datos.documentsUnit;
-              console.log(this.documentUnitsResponse);
               this.service.paginationTable(this.documentUnitsResponse);
             } else {
               this.service.paginationTable([]);
@@ -413,7 +409,6 @@ export class DocumentUnitComponent implements OnInit {
   }
 
   deleteDocumentUnit(id) {
-    console.log(id);
     this.service.deleteDocumentUnit(id)
       .pipe(first())
       .subscribe(
@@ -483,7 +478,6 @@ export class DocumentUnitComponent implements OnInit {
   }
 
   saveDocument(file, name) {
-    console.log("saveDocument" + file);
     const downloadLink = document.createElement("a");
     downloadLink.href = file;
     downloadLink.download = name;
@@ -519,7 +513,6 @@ export class DocumentUnitComponent implements OnInit {
   }
 
   viewDocument(document, format) {
-    console.log("viewDocument" + document);
     this.service.downloadPDF(document, format).subscribe(res => {
       const fileURL = URL.createObjectURL(res);
       window.open(fileURL, '_blank');

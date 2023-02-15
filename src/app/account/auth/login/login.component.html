@@ -28,26 +28,21 @@
                                 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
                                     <div class="mb-3">
-                                        <label for="email">Correo electrónico</label>
+                                        <label for="email">Usuario</label>
                                         <input type="email" class="form-control" id="email" formControlName="email"
                                             [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
-                                            placeholder="Enter email">
+                                            placeholder="Ingrese usuario">
                                         <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                                            <div *ngIf="f.email.errors.required">Email is required</div>
-                                            <div *ngIf="f.email.errors.email">Email must be a valid email address
-                                            </div>
+                                            <div *ngIf="f.email.errors.required">Usuario es requerido</div>
                                         </div>
                                     </div>
 
                                     <div class="mb-3">
-                                        <div class="float-end">
-                                            <a routerLink="/account/recoverpwd-2" class="text-muted">¿Se te olvidó tu contraseña?</a>
-                                        </div>
                                         <label for="userpassword">Clave</label>
                                         <div class="input-group auth-pass-inputgroup">
                                             <input type="password" class="form-control" formControlName="password"
                                                 [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
-                                                placeholder="Enter password" aria-label="Password"
+                                                placeholder="Ingrese clave" aria-label="Password"
                                                 aria-describedby="password-addon">
                                             <button class="btn btn-light " type="button" id="password-addon"><i
                                                     class="mdi mdi-eye-outline"></i></button>
@@ -55,13 +50,6 @@
                                                 <span *ngIf="f.password.errors.required">Password is required</span>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="remember-check">
-                                        <label class="form-check-label" for="remember-check">
-                                            Recordarme
-                                        </label>
                                     </div>
 
                                     <div class="mt-3 d-grid">

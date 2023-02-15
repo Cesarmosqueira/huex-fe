@@ -64,7 +64,6 @@ export class RouteComponent implements OnInit {
       this.routes = Object.assign([], x);
     });
     this.idRouteOuput = 0;
-    console.log(this.idRouteOuput);
 
     this.listRoutes();
   }
@@ -156,9 +155,6 @@ export class RouteComponent implements OnInit {
       route.distanceKM = distanceKM;
       route.gallons = gallons;
       const id = this.routeForm.get('id')?.value;
-
-      console.log(route);
-      console.log(id);
       if (id == '0') {
         this.registerRoutes(route);
       } else {
@@ -230,7 +226,6 @@ export class RouteComponent implements OnInit {
       .subscribe(
         response => {
           if (response) {
-            console.log(response);
             if (response.datos) {
               Swal.fire(
                 '¡Registrado!',

@@ -116,8 +116,7 @@ export class TrackingComponent implements OnInit {
       operation: [''],
       invoiced: [''],
       charge: [''],
-
-      photoInsurance: [0]
+      photoInsurance: ['']
     });
 
     this.trackingsList.subscribe(x => {
@@ -225,16 +224,16 @@ export class TrackingComponent implements OnInit {
       const observations = this.trackingForm.get('observations')?.value;
       const guideNumber = this.trackingForm.get('guideNumber')?.value;
       const datePrecharge = this.trackingForm.get('datePrecharge')?.value;
-      const fortmatDatePrecharge = this.pipe.transform(datePrecharge, 'yyyy-MM-dd');
+      const fortmatDatePrecharge = this.pipe.transform(datePrecharge, 'yyyy-MM-ddTh:mm:ss');
       const preloadStatus = this.trackingForm.get('preloadStatus')?.value;
       const scheduledAppointment = this.trackingForm.get('scheduledAppointment')?.value;
-      const fortmatScheduledAppointment = this.pipe.transform(scheduledAppointment, 'yyyy-MM-dd');
+      const fortmatScheduledAppointment = this.pipe.transform(scheduledAppointment, 'yyyy-MM-ddTh:mm:ss');
       const idRates = this.trackingForm.get('rate')?.value;
       const idDriver = this.trackingForm.get('driver')?.value;
       const idCopilot = this.trackingForm.get('copilot')?.value;
       const idStevedore = this.trackingForm.get('stevedore')?.value;
       const dateTimeCompletion = this.trackingForm.get('dateTimeCompletion')?.value;
-      const fortmatDateTimeCompletion = this.pipe.transform(dateTimeCompletion, 'yyyy-MM-dd');
+      const fortmatDateTimeCompletion = this.pipe.transform(dateTimeCompletion, 'yyyy-MM-ddTh:mm:ss');
       const weightLoad = this.trackingForm.get('weightLoad')?.value;
       const moneyDelivered = this.trackingForm.get('moneyDelivered')?.value;
       const detailMoney = this.trackingForm.get('detailMoney')?.value;
@@ -270,7 +269,10 @@ export class TrackingComponent implements OnInit {
       tracking.invoiced = invoiced;
 
       //tracking.condition = condition;
-      tracking.photoInsurance = this.imageUrl.replace("data:image/jpeg;base64,", "");
+      if (this.imageUrl != null || this.imageUrl != undefined) {
+        tracking.photoInsurance = this.imageUrl.replace("data:image/jpeg;base64,", "");
+      }
+
 
       const id = this.trackingForm.get('id')?.value;
       if (id == '0') {
@@ -326,7 +328,7 @@ export class TrackingComponent implements OnInit {
       const fortmatDateService = this.pipe.transform(dateService, 'yyyy-MM-dd');
       this.trackingForm.controls['dateService'].setValue(fortmatDateService);
     }
-
+console.log(listData[0]);
     this.selectTruckFleet = listData[0].truckFleet;
     //this.trackingForm.controls['truckFleet'].setValue(listData[0].truckFleet.tractPlate);
     this.trackingForm.controls['requestedVolume'].setValue(listData[0].requestedVolume);
@@ -338,14 +340,14 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['guideNumber'].setValue(listData[0].guideNumber);
     if (listData[0].datePrecharge != null || listData[0].datePrecharge != undefined) {
       const datePrecharge = listData[0].datePrecharge.substring(0, 10);
-      const fortmatDatePrecharge = this.pipe.transform(datePrecharge, 'yyyy-MM-dd');
+      const fortmatDatePrecharge = this.pipe.transform(listData[0].datePrecharge, 'yyyy-MM-ddTHH:mm:ss');
       this.trackingForm.controls['datePrecharge'].setValue(fortmatDatePrecharge);
     }
 
     this.trackingForm.controls['preloadStatus'].setValue(listData[0].preloadStatus);
     if (listData[0].scheduledAppointment != null || listData[0].scheduledAppointment != undefined) {
       const scheduledAppointment = listData[0].scheduledAppointment.substring(0, 10);
-      const fortmatScheduledAppointment = this.pipe.transform(scheduledAppointment, 'yyyy-MM-dd');
+      const fortmatScheduledAppointment = this.pipe.transform(listData[0].scheduledAppointment, 'yyyy-MM-ddTHH:mm:ss');
       this.trackingForm.controls['scheduledAppointment'].setValue(fortmatScheduledAppointment);
     }
 
@@ -356,7 +358,7 @@ export class TrackingComponent implements OnInit {
     this.selectStevedore = listData[0].stevedore;
     if (listData[0].dateTimeCompletion != null || listData[0].dateTimeCompletion != undefined) {
       const dateTimeCompletion = listData[0].dateTimeCompletion.substring(0, 10);
-      const fortmatDateTimeCompletion = this.pipe.transform(dateTimeCompletion, 'yyyy-MM-dd');
+      const fortmatDateTimeCompletion = this.pipe.transform(listData[0].dateTimeCompletion, 'yyyy-MM-ddTHH:mm:ss');
       this.trackingForm.controls['dateTimeCompletion'].setValue(fortmatDateTimeCompletion);
     }
 
@@ -366,8 +368,10 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['operation'].setValue(listData[0].operation);
     this.trackingForm.controls['invoiced'].setValue(listData[0].invoiced);
     this.trackingForm.controls['charge'].setValue(listData[0].charge);
-    this.imageUrl = 'data:image/jpeg;base64,' + listData[0].photoInsurance;
-    this.trackingForm.get('photoInsurance').setValue(this.dataURLtoFile(this.imageUrl, 'foto.jpeg'));
+    if (listData[0].photoInsurance != null || listData[0].photoInsurance != undefined) {
+      this.imageUrl = 'data:image/jpeg;base64,' + listData[0].photoInsurance;
+      this.trackingForm.get('photoInsurance').setValue(this.dataURLtoFile(this.imageUrl, 'foto.jpeg'));
+    }
     this.idTrackingOuput = listData[0].id;
     this.trackingOutput = listData[0];
   }

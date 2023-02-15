@@ -37,8 +37,8 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     document.body.classList.add('auth-body-bg')
     this.loginForm = this.formBuilder.group({
-      email: ['jgala', [Validators.required]],
-      password: ['jgala', [Validators.required]],
+      email: ['', [Validators.required]],
+      password: ['', [Validators.required]],
     });
 
     // reset login status
@@ -82,12 +82,10 @@ export class LoginComponent implements OnInit {
   }
 
   login(user) {
-    console.log(user);
     this.authenticationService.login(user)
       .pipe(first())
       .subscribe(
         (response) => {
-          console.log(response);
           this.listCheckLists(response.user.id);
         },
         () => {
@@ -108,7 +106,6 @@ export class LoginComponent implements OnInit {
             if (response.datos) {
               this.menuItems = response.datos.menus;
               localStorage.setItem('menuItems', JSON.stringify(this.menuItems));
-              console.log(this.menuItems);
               this.router.navigate(['/dashboard']);
             } else {
               this.authenticationService.logout();

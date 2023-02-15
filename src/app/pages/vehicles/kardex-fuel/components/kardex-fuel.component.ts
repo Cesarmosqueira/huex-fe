@@ -131,8 +131,6 @@ export class KardexFuelComponent implements OnInit {
       kardexFuel.mileage = mileage;
       kardexFuel.dutyManager = dutyManager;
 
-      console.log(kardexFuel);
-
       if (id == '0') {
         this.registerKardexFuel(kardexFuel);
       } else {
@@ -303,7 +301,6 @@ export class KardexFuelComponent implements OnInit {
   }
 
   deleteKardexFuel(id) {
-    console.log(id);
     this.service.deleteKardexFuel(id)
       .pipe(first())
       .subscribe(

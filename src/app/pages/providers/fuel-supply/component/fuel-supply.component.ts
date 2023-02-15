@@ -69,7 +69,6 @@ export class FuelSupplyComponent implements OnInit {
       this.fuelSupply = Object.assign([], x);
     });
     this.idFuelSupplyOuput = 0;
-    console.log(this.idFuelSupplyOuput);
     this.listProviders();
     this.listFuelSupply();
   }
@@ -166,8 +165,6 @@ export class FuelSupplyComponent implements OnInit {
 
 
       const id = this.fuelSupplyForm.get('id')?.value;
-      console.log(fuelSupply);
-      console.log(id);
       if (id == '0') {
         this.registerFuelSupply(fuelSupply);
       } else {
@@ -379,7 +376,6 @@ export class FuelSupplyComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.providers = response.datos.providers;
-              console.log(this.providers);
             } else {
               Swal.fire({
                 icon: config.WARNING,

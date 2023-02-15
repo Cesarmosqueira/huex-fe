@@ -49,8 +49,6 @@ export class TopbarComponent implements OnInit {
   ngOnInit() {
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.user = currentUser.user;
-    console.log("this.user");
-    console.log(this.user);
     this.openMobileMenu = false;
     this.element = document.documentElement;
 

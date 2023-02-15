@@ -64,7 +64,6 @@ export class CustomerComponent implements OnInit {
       this.customers = Object.assign([], x);
     });
     this.idCustomerOuput = 0;
-    console.log(this.idCustomerOuput);
 
     this.listCustomers();
   }
@@ -155,9 +154,6 @@ export class CustomerComponent implements OnInit {
       customer.bankAccount = bankAccount;
       customer.registerDate = fortmatregisterDate;
       const id = this.customerForm.get('id')?.value;
-
-      console.log(customer);
-      console.log(id);
       if (id == '0') {
         this.registerCustomer(customer);
       } else {
@@ -231,7 +227,6 @@ export class CustomerComponent implements OnInit {
       .subscribe(
         response => {
           if (response) {
-            console.log(response);
             if (response.datos) {
               Swal.fire(
                 '¡Registrado!',

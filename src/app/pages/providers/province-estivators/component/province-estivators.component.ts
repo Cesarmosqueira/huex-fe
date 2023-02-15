@@ -79,7 +79,6 @@ export class ProvinceEstivatorsComponent implements OnInit {
     });
 
     this.idProvinceEstivatorOuput = 0;
-    console.log(this.idProvinceEstivatorOuput);
     this.listProviders();
     this.listRoutes();
     this.listProvinceEstivators();
@@ -180,8 +179,6 @@ export class ProvinceEstivatorsComponent implements OnInit {
 
       const id = this.provinceEstivatorForm.get('id')?.value;
 
-      console.log(provinceEstivators);
-      console.log(id);
       if (id == '0') {
         this.registerProvinceEstivators(provinceEstivators);
       } else {
@@ -391,7 +388,6 @@ export class ProvinceEstivatorsComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.routes = response.datos.routes;
-              console.log(this.routes);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -418,7 +414,6 @@ export class ProvinceEstivatorsComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.providers = response.datos.providers;
-              console.log(this.providers);
             } else {
               Swal.fire({
                 icon: config.WARNING,

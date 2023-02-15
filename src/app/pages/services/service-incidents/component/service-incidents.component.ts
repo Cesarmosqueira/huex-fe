@@ -160,8 +160,6 @@ export class ServiceIncidentsComponent implements OnInit {
       serviceIncidents.observation = observation;
 
       const id = this.serviceIncidentsForm.get('id')?.value;
-      console.log(serviceIncidents);
-      console.log(id);
       if (id == '0') {
         this.registerServiceIncidents(serviceIncidents);
       } else {

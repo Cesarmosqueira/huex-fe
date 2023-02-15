@@ -140,7 +140,6 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
    */
   initialize(): void {
     this.menuItems = JSON.parse(localStorage.getItem('menuItems'));
-    console.log(this.menuItems);
   }
   
 }

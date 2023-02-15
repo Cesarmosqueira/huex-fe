@@ -75,7 +75,6 @@ export class EmployeeImplementComponent implements OnInit {
       this.employeeImplement = Object.assign([], x);
     });
     this.idEmployeeImplemntOuput = 0;
-    console.log(this.idEmployeeImplemntOuput);
 
     this.listImplements();
     this.listEmployees();
@@ -176,8 +175,6 @@ export class EmployeeImplementComponent implements OnInit {
 
       const id = this.employeeImplementForm.get('id')?.value;
 
-      console.log(employeeImplement);
-      console.log(id);
       if (id == '0') {
         this.registerEmployeeImplement(employeeImplement);
       } else {
@@ -252,7 +249,6 @@ export class EmployeeImplementComponent implements OnInit {
       .subscribe(
         response => {
           if (response) {
-            console.log(response);
             if (response.datos) {
               Swal.fire(
                 '¡Registrado!',
@@ -382,7 +378,6 @@ export class EmployeeImplementComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.employees = response.datos.employees;
-              console.log(this.employees);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -409,7 +404,6 @@ export class EmployeeImplementComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.implementss = response.datos.implementss;
-              console.log(this.implementss);
             } else {
               Swal.fire({
                 icon: config.WARNING,

@@ -71,7 +71,6 @@ export class TireReplacementComponent implements OnInit {
       this.tireReplacement = Object.assign([], x);
     });
     this.idTireReplacementOuput = 0;
-    console.log(this.idTireReplacementOuput);
 
     this.listProviders();
     this.listTireReplacement();
@@ -175,8 +174,6 @@ export class TireReplacementComponent implements OnInit {
       tireReplacement.observation = observation;
 
       const id = this.tireReplacementForm.get('id')?.value;
-      console.log(tireReplacement);
-      console.log(id);
       if (id == '0') {
         this.registerTireReplacement(tireReplacement);
       } else {
@@ -394,7 +391,6 @@ export class TireReplacementComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.providers = response.datos.providers;
-              console.log(this.providers);
             } else {
               Swal.fire({
                 icon: config.WARNING,

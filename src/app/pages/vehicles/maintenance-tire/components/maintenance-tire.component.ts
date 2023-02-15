@@ -70,7 +70,6 @@ export class MaintenanceTireComponent implements OnInit {
       this.maintenanceTires = Object.assign([], x);
     });
     this.idMaintenanceTireOuput = 0;
-    console.log(this.idMaintenanceTireOuput);
     this.listTruckFleet();
     this.listMaintenanceTires();
   }
@@ -154,8 +153,6 @@ export class MaintenanceTireComponent implements OnInit {
       maintenanceTire.dateRenewal = this.pipe.transform(dateRenewal, 'yyyy-MM-dd');
       maintenanceTire.dateReview = this.pipe.transform(dateReview, 'yyyy-MM-dd');
       maintenanceTire.statusTire = statusTire;
-
-      console.log(maintenanceTire);
 
       if (id == '0') {
         this.registerMaintenanceTire(maintenanceTire);
@@ -319,7 +316,6 @@ export class MaintenanceTireComponent implements OnInit {
   }
 
   deleteMaintenanceTire(id) {
-    console.log(id);
     this.service.deleteMaintenanceTire(id)
       .pipe(first())
       .subscribe(
@@ -365,7 +361,6 @@ export class MaintenanceTireComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.truckFleets = response.datos.truckFleets;
-              console.log(this.truckFleets);
             } else {
               Swal.fire({
                 icon: config.WARNING,

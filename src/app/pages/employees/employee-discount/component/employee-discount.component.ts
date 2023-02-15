@@ -165,8 +165,6 @@ export class EmployeeDiscountComponent implements OnInit {
       employeeDiscount.charge = charge;
 
       const id = this.employeeDiscountForm.get('id')?.value;
-      console.log(employeeDiscount);
-      console.log(id);
       if (id == '0') {
         this.registerEmployeeDiscount(employeeDiscount);
       } else {
@@ -367,7 +365,6 @@ export class EmployeeDiscountComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.employees = response.datos.employees;
-              console.log(this.employees);
             } else {
               Swal.fire({
                 icon: config.WARNING,

@@ -77,7 +77,6 @@ export class CustomerEmployeesComponent implements OnInit {
       this.customerEmployees = Object.assign([], x);
     });
     this.idCustomerEmployeeOuput = 0;
-    console.log(this.idCustomerEmployeeOuput);
 
     this.listCustomers();
     this.listEmployees();
@@ -179,8 +178,6 @@ export class CustomerEmployeesComponent implements OnInit {
 
       const id = this.customerEmployeesForm.get('id')?.value;
 
-      console.log(customerEmployees);
-      console.log(id);
       if (id == '0') {
         this.registerCustomerEmployees(customerEmployees);
       } else {
@@ -393,7 +390,6 @@ export class CustomerEmployeesComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.customers = response.datos.customer;
-              console.log(this.customers);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -420,7 +416,6 @@ export class CustomerEmployeesComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.employees = response.datos.employees;
-              console.log(this.employees);
             } else {
               Swal.fire({
                 icon: config.WARNING,

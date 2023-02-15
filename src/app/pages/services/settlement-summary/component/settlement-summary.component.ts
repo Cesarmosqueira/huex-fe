@@ -69,7 +69,6 @@ export class SettlementSummaryComponent implements OnInit {
       this.settlementSummary = Object.assign([], x);
     });
 
-    console.log(this.tracking.id);
     this.listExpenseTypes();
     this.listSettlementSummaryByIdTracking(this.tracking.id);
   }
@@ -144,7 +143,6 @@ export class SettlementSummaryComponent implements OnInit {
       let settlementSummary = new SettlementSummary();
       let tracking = new Tracking();
       tracking.id = this.tracking.id;
-      console.log(expenseTypeId)
       settlementSummary.trackingService = tracking;
       settlementSummary.expenseType = expenseTypeId;
       settlementSummary.settlementDate = fortmatSettlementDate;
@@ -152,8 +150,6 @@ export class SettlementSummaryComponent implements OnInit {
       settlementSummary.totalExpense = totalExpense;
 
       const id = this.settlementSummaryForm.get('id')?.value;
-      console.log(settlementSummary);
-      console.log(id);
       if (id == '0') {
         this.registerSettlementSummary(settlementSummary);
       } else {
@@ -294,8 +290,6 @@ export class SettlementSummaryComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.listExpenseType = response.datos.expenseTypes;
-              console.log("this.listExpenseType ");
-              console.log(this.listExpenseType);
             }
           }
         },

@@ -85,7 +85,6 @@ export class UserComponent implements OnInit {
       this.users = Object.assign([], x);
     });
     this.idUserOuput = 0;
-    console.log(this.idUserOuput);
     this.listMenus();
     this.listUsers();
     this.listEmployees();
@@ -219,14 +218,7 @@ export class UserComponent implements OnInit {
 
       user.menus = menu;
 
-      if (id == '0') {
-        console.log("user");
-        console.log(user);
-        this.registerUsers(user);
-      } else {
-        user.id = id;
-        this.updateUsers(user);
-      }
+      this.registerUsers(user);
 
       this.modalService.dismissAll();
 
@@ -298,7 +290,6 @@ export class UserComponent implements OnInit {
       .subscribe(
         response => {
           if (response) {
-            console.log(response);
             if (response.datos) {
               Swal.fire(
                 '¡Registrado!',
@@ -369,7 +360,6 @@ export class UserComponent implements OnInit {
   }
 
   deleteUser(id) {
-    console.log(id);
     this.service.deleteUser(id)
       .pipe(first())
       .subscribe(

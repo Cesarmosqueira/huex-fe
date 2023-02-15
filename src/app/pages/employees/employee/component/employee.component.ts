@@ -90,7 +90,6 @@ export class EmployeeComponent implements OnInit {
     });
 
     this.idEmployeeOuput = 0;
-    console.log(this.idEmployeeOuput);
 
     this.listEmployees();
   }
@@ -98,14 +97,12 @@ export class EmployeeComponent implements OnInit {
   getImage(event) {
     if (event.target.files && event.target.files.length) {
       const file = (event.target.files[0] as File);
-      console.log(file);
       this.employeeForm.get('photoUrl').setValue(file);
       this.fileList = event.target.files;
       this.fileToUpload = event.target.files.item(0);
       let reader = new FileReader();
       reader.onload = (event: any) => {
         this.imageUrl = event.target.result;
-        console.log(this.imageUrl);
       }
       reader.readAsDataURL(this.fileToUpload);
     }
@@ -371,7 +368,6 @@ export class EmployeeComponent implements OnInit {
       .subscribe(
         response => {
           if (response) {
-            console.log(response);
             if (response.datos) {
               Swal.fire(
                 '¡Registrado!',

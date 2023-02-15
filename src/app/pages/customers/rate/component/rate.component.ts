@@ -77,7 +77,6 @@ export class RateComponent implements OnInit {
       this.rates = Object.assign([], x);
     });
     this.idRateOuput = 0;
-    console.log(this.idRateOuput);
 
     this.listRates();
     this.listCustomers();
@@ -181,8 +180,6 @@ export class RateComponent implements OnInit {
 
       const id = this.rateForm.get('id')?.value;
 
-      console.log(rate);
-      console.log(id);
       if (id == '0') {
         this.registerRates(rate);
       } else {
@@ -256,7 +253,6 @@ export class RateComponent implements OnInit {
       .subscribe(
         response => {
           if (response) {
-            console.log(response);
             if (response.datos) {
               Swal.fire(
                 '¡Registrado!',
@@ -392,7 +388,6 @@ export class RateComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.customers = response.datos.customer;
-              console.log(this.customers);
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -419,7 +414,6 @@ export class RateComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.routes = response.datos.routes;
-              console.log(this.routes);
             } else {
               Swal.fire({
                 icon: config.WARNING,

@@ -133,8 +133,6 @@ export class CheckListComponent implements OnInit {
       checkList.namePhoto = this.file.name;
       checkList.photo = this.image.replace("data:application/pdf;base64,", "");
 
-      console.log(checkList);
-
       if (id == '0') {
         this.registerCheckList(checkList);
       } else {
@@ -299,7 +297,6 @@ export class CheckListComponent implements OnInit {
   }
 
   deleteCheckList(id) {
-    console.log(id);
     this.service.deleteCheckList(id)
       .pipe(first())
       .subscribe(
@@ -350,7 +347,6 @@ export class CheckListComponent implements OnInit {
 
   saveByteArray(id: any) {
     var documentResponse = this.checkListsResponse.filter(c => c.id === id)[0];
-    console.log(documentResponse);
     const linkSource = 'data:application/pdf;base64,' + documentResponse.photo;
     const downloadLink = document.createElement("a");
     const fileName = documentResponse.namePhoto;
@@ -364,14 +360,12 @@ export class CheckListComponent implements OnInit {
     const reader = new FileReader();
     reader.readAsDataURL(this.file);
     reader.onload = () => {
-      console.log(reader.result);
       this.image = reader.result;
     };
   }
 
   viewDocument(id){
     var documentResponse = this.checkListsResponse.filter(c => c.id === id)[0];
-    console.log(documentResponse);
     const linkSource = 'data:application/pdf;base64,' + documentResponse.photo;
     this.service.downloadPDF(linkSource).subscribe(res => {
       const fileURL = URL.createObjectURL(res);
