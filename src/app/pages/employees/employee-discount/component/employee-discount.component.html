@@ -33,6 +33,7 @@
                 <th class="align-middle">Fecha</th>
                 <th class="align-middle">Observaciones</th>
                 <th class="align-middle">Monto</th>
+                <th class="align-middle">Estado</th>
                 <th class="align-middle">Acciones</th>
 
               </tr>
@@ -46,6 +47,8 @@
                 <td>{{data.date.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                 <td>{{data.observations}}</td>
                 <td>{{data.charge}}</td>
+                <td>{{data.status}}</td>
+
                 <td>
                   <div class="d-flex gap-3">
                     <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
@@ -118,6 +121,13 @@
         <div *ngIf="submitted && form['charge'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['charge'].errors['required']">Monto es requerido</div>
         </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Estado</label>
+        <ng-select [items]="['PENDIENTE','COBRADO']" id="customername-field" formControlName="status"
+                   [ngClass]="{ 'is-invalid': submitted && form['status'].errors }"></ng-select>
+
       </div>
 
     </div>

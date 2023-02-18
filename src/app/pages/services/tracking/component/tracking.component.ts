@@ -56,6 +56,8 @@ export class TrackingComponent implements OnInit {
   invoiced: string[] = ['Facturado', 'Pendiente'];
   charge: string[] = ['Cobrado', 'Pendiente'];
   documentaryStatus: string[] = ['Pendiente', 'Recepcionado','Enviado'];
+  volumen:string[]=['60','70','80','90','100','110','120'];
+  weightLoad:string[]=['10','15','20','25','30','35'];
 
   selectDriver = null;
 

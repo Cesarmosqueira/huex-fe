@@ -7,6 +7,7 @@ export class Rate {
   customer:Customer;
   route:Route;
   leadTime:number;
+  tonNumber:string;
   volume:number;
   cost:number;
   observationRate:string;

@@ -6,6 +6,7 @@ export class EmployeeDiscount {
   employee:Employee;
   date:any;
   observations:string;
+  status:string;
   charge:number;
 
 }

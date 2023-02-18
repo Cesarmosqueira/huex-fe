@@ -64,6 +64,7 @@ export class EmployeeDiscountComponent implements OnInit {
       employee: ['', [Validators.required]],
       date: ['', [Validators.required]],
       observations: ['', [Validators.required]],
+      status: [''],
       charge: ['', [Validators.required]],
     });
 
@@ -153,6 +154,7 @@ export class EmployeeDiscountComponent implements OnInit {
       const date = this.employeeDiscountForm.get('date')?.value;
       const fortmatdate = this.pipe.transform(date, 'yyyy-MM-dd');
       const observations = this.employeeDiscountForm.get('observations')?.value;
+      const status = this.employeeDiscountForm.get('status')?.value;
       const charge = this.employeeDiscountForm.get('charge')?.value;
 
 
@@ -162,6 +164,7 @@ export class EmployeeDiscountComponent implements OnInit {
       employeeDiscount.employee = employee;
       employeeDiscount.date = fortmatdate;
       employeeDiscount.observations = observations;
+      employeeDiscount.status = status;
       employeeDiscount.charge = charge;
 
       const id = this.employeeDiscountForm.get('id')?.value;
@@ -197,6 +200,7 @@ export class EmployeeDiscountComponent implements OnInit {
     this.employeeDiscountForm.controls['id'].setValue(listData[0].id);
     this.employeeDiscountForm.controls['date'].setValue(fortmatdate);
     this.employeeDiscountForm.controls['observations'].setValue(listData[0].observations);
+    this.employeeDiscountForm.controls['status'].setValue(listData[0].status);
     this.employeeDiscountForm.controls['charge'].setValue(listData[0].charge);
     this.selectEmployee=listData[0].employee;
     this.idEmployeeDiscountOuput = id;
@@ -308,6 +312,7 @@ export class EmployeeDiscountComponent implements OnInit {
     this.employeeDiscountForm.controls['employee'].setValue("");
     this.employeeDiscountForm.controls['date'].setValue("");
     this.employeeDiscountForm.controls['observations'].setValue("");
+    this.employeeDiscountForm.controls['status'].setValue("");
     this.employeeDiscountForm.controls['charge'].setValue("");
 
   }
@@ -317,6 +322,7 @@ export class EmployeeDiscountComponent implements OnInit {
     this.employeeDiscountForm.controls['employee'].enable();
     this.employeeDiscountForm.controls['date'].enable();
     this.employeeDiscountForm.controls['observations'].enable();
+    this.employeeDiscountForm.controls['status'].enable();
     this.employeeDiscountForm.controls['charge'].enable();
   }
 

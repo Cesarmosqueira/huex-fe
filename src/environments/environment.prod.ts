@@ -3,8 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  server: 'http://89.117.33.137:8084',
-  production: true,
+  server: 'http://localhost:8080',
+  //server: 'http://89.117.33.137:8084',
+  production: false,
   defaultauth: 'fackbackend',
   firebaseConfig: {
     apiKey: '',
@@ -112,7 +113,7 @@ export const environment = {
       register: '/api-huex/v1/settlement_summary',
       update: '/api-huex/v1/settlement_summary',
       delete: '/api-huex/v1/settlement_summary/',
-      listByIdTracking: '/v0.1/api-huex/v1/settlement_summary/tracking/',
+      listByIdTracking: '/api-huex/v1/settlement_summary/tracking/',
     },
     serviceMonitoring: {
       list: '/api-huex/v1/serviceMonitoring',
@@ -159,7 +160,7 @@ export const environment = {
       register: '/api-huex/v1/vehicle/kardexFuel',
       update: '/api-huex/v1/vehicle/kardexFuel',
       delete: '/api-huex/v1/vehicle/kardexFuel/',
-      listByIdTruckFleet: '/v0.1/api-huex/v1/vehicle/kardexFuel/truckFleet/',
+      listByIdTruckFleet: '/api-huex/v1/vehicle/kardexFuel/truckFleet/',
     },
     maintenanceOil: {
       list: '/api-huex/v1/vehicle/maintenanceOil',

@@ -66,6 +66,7 @@ export class RateComponent implements OnInit {
       customer: ['', [Validators.required]],
       route: ['', [Validators.required]],
       leadTime: [''],
+      tonNumber: [''],
       volume: [''],
       cost: ['', [Validators.required]],
       observationRate: [''],
@@ -160,6 +161,7 @@ export class RateComponent implements OnInit {
       this.pipe = new DatePipe('en-US');
       const customerId =this.selectCustomer.id;
       const routeId = this.selectRoute.id;
+      const tonNumber = this.rateForm.get('tonNumber')?.value;
       const leadTime = this.rateForm.get('leadTime')?.value;
       const volume = this.rateForm.get('volume')?.value;
       const cost = this.rateForm.get('cost')?.value;
@@ -174,6 +176,7 @@ export class RateComponent implements OnInit {
       rate.customer = customers;
       rate.route = routes;
       rate.leadTime = leadTime;
+      rate.tonNumber = tonNumber;
       rate.volume = volume;
       rate.cost = cost;
       rate.observationRate = observationRate;
@@ -211,6 +214,7 @@ export class RateComponent implements OnInit {
     var listData = this.rates.filter((data: { id: any; }) => data.id === id);
     this.rateForm.controls['id'].setValue(listData[0].id);
     this.rateForm.controls['leadTime'].setValue(listData[0].leadTime);
+    this.rateForm.controls['tonNumber'].setValue(listData[0].tonNumber);
     this.rateForm.controls['volume'].setValue(listData[0].volume);
     this.rateForm.controls['cost'].setValue(listData[0].cost);
     this.rateForm.controls['observationRate'].setValue(listData[0].observationRate);
@@ -328,6 +332,7 @@ export class RateComponent implements OnInit {
     this.rateForm.controls['customer'].setValue(null);
     this.rateForm.controls['route'].setValue(null);
     this.rateForm.controls['leadTime'].setValue("");
+    this.rateForm.controls['tonNumber'].setValue("");
     this.rateForm.controls['volume'].setValue("");
     this.rateForm.controls['cost'].setValue("");
     this.rateForm.controls['observationRate'].setValue("");
@@ -338,6 +343,7 @@ export class RateComponent implements OnInit {
     this.rateForm.controls['customer'].enable();
     this.rateForm.controls['route'].enable();
     this.rateForm.controls['leadTime'].enable();
+    this.rateForm.controls['tonNumber'].enable();
     this.rateForm.controls['volume'].enable();
     this.rateForm.controls['cost'].enable();
     this.rateForm.controls['observationRate'].enable();

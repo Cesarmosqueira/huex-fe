@@ -31,6 +31,7 @@
                 <th class="align-middle">Cliente</th>
                 <th class="align-middle">Ruta</th>
                 <th class="align-middle">Lead time</th>
+                <th class="align-middle">Toneladas</th>
                 <th class="align-middle">Volumen</th>
                 <th class="align-middle">Costo</th>
                 <th class="align-middle">Observaciones</th>
@@ -45,6 +46,7 @@
                 <td>{{data.customer.socialReason}}</td>
                 <td>{{data.route.routeEnd}}</td>
                 <td>{{data.leadTime}}</td>
+                <td>{{data.tonNumber}}</td>
                 <td>{{data.volume}}</td>
                 <td>{{data.cost}}</td>
                 <td>{{data.observationRate}}</td>
@@ -120,6 +122,12 @@
         <label for="customername-field" class="form-label">Volumen</label>
         <input type="text" id="customername-field" class="form-control"  formControlName="volume"
                [ngClass]="{ 'is-invalid': submitted && form['volume'].errors }" autocomplete="disabled" />
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Toneladas</label>
+        <input type="text" id="customername-field" class="form-control"  formControlName="tonNumber"
+               [ngClass]="{ 'is-invalid': submitted && form['tonNumber'].errors }" autocomplete="disabled" />
       </div>
 
       <div class="mb-3">

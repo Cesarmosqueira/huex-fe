@@ -9,7 +9,7 @@
             <div class="col-sm-4">
               <div class="search-box me-2 mb-2 d-inline-block">
                 <div class="position-relative">
-                  <input type="text" class="form-control" placeholder="Buscar por Nombre..."
+                  <input type="text" class="form-control" placeholder="Buscar por Placa..."
                     [(ngModel)]="service.searchTerm">
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
@@ -194,17 +194,30 @@
 
             <div class="col-lg-3">
               <div class="mb-3">
-                <label for="customername-field" class="form-label">Volumen Solicitado</label>
-                <input type="number" id="customername-field" class="form-control" required
-                  formControlName="requestedVolume"
-                  [ngClass]="{ 'is-invalid': submitted && form['requestedVolume'].errors }" autocomplete="off" />
-                <div *ngIf="submitted && form['requestedVolume'].errors" class="invalid-feedback" align="left">
-                  <div *ngIf="form['requestedVolume'].errors['required']">Volumen Solicitado es requerido</div>
-                </div>
+                <label for="customername-field" class="form-label">Volumen solicitado</label>
+                <ng-select [items]="volumen" id="customername-field"  formControlName="requestedVolume"
+                           placeholder="Seleccione Volumen"
+                           [ngClass]="{ 'is-invalid': submitted && form['requestedVolume'].errors }"></ng-select>
+
               </div>
             </div>
 
+
             <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Peso Toneladas</label>
+                <ng-select [items]="weightLoad" id="customername-field"  formControlName="weightLoad"
+                           placeholder="Seleccione Toneladas"
+                           [ngClass]="{ 'is-invalid': submitted && form['weightLoad'].errors }"></ng-select>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="row">
+
+            <div class="col-lg-6">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Tarifa</label>
                 <ng-select [items]="rates" bindLabel="customer.name" placeholder="Seleccione Tarifa"
@@ -216,11 +229,7 @@
                 </div>
               </div>
             </div>
-          </div>
 
-
-
-          <div class="row">
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Detalle Destino</label>
@@ -243,12 +252,16 @@
               </div>
             </div>
 
+          </div>
+
+          <div class="row">
+
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Tipo Servicio</label>
                 <ng-select [items]="tipoServicio" id="customername-field"  formControlName="serviceType"
-                  placeholder="Seleccione Tipo Servicio"
-                  [ngClass]="{ 'is-invalid': submitted && form['serviceType'].errors }"></ng-select>
+                           placeholder="Seleccione Tipo Servicio"
+                           [ngClass]="{ 'is-invalid': submitted && form['serviceType'].errors }"></ng-select>
 
               </div>
             </div>
@@ -257,14 +270,11 @@
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Costo adicional</label>
                 <input type="text" id="customername-field" class="form-control"
-                  formControlName="additionalCost"
-                  [ngClass]="{ 'is-invalid': submitted && form['additionalCost'].errors }" autocomplete="off" />
-
+                       formControlName="additionalCost"
+                       [ngClass]="{ 'is-invalid': submitted && form['additionalCost'].errors }" autocomplete="off" />
               </div>
             </div>
-          </div>
 
-          <div class="row">
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Obsevaciones</label>
@@ -281,12 +291,17 @@
 
               </div>
             </div>
+
+          </div>
+
+          <div class="row">
+
             <div class="col-lg-3">
               <div class="mb-3">
                 <label>Fecha precarga</label>
                 <div class="input-group clockpicker">
                   <input class="form-control" type="datetime-local" id="example-date-input" formControlName="datePrecharge"
-                    autocomplete="disabled">
+                         autocomplete="disabled">
                 </div>
               </div>
             </div>
@@ -295,14 +310,11 @@
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Estado</label>
                 <ng-select [items]="estado" id="customername-field"  formControlName="preloadStatus"
-                  placeholder="Seleccione Estado"
-                  [ngClass]="{ 'is-invalid': submitted && form['preloadStatus'].errors }"></ng-select>
+                           placeholder="Seleccione Estado"
+                           [ngClass]="{ 'is-invalid': submitted && form['preloadStatus'].errors }"></ng-select>
 
               </div>
             </div>
-          </div>
-
-          <div class="row">
 
             <div class="col-lg-3">
               <div class="mb-3">
@@ -332,17 +344,23 @@
 
             </div>
 
+          </div>
+
+          <div class="row">
+
             <div class="col-lg-3">
               <div class="mb-3">
                 <input type="text" hidden formControlName="id" value="0" />
                 <label for="customername-field" class="form-label">Copiloto</label>
                 <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Chofer"
-                  [(ngModel)]="selectCopilot" id="customername-field" [clearable]="false"
-                  formControlName="copilot" [ngClass]="{ 'is-invalid': submitted && form['copilot'].errors }">
+                           [(ngModel)]="selectCopilot" id="customername-field" [clearable]="false"
+                           formControlName="copilot" [ngClass]="{ 'is-invalid': submitted && form['copilot'].errors }">
                 </ng-select>
 
               </div>
             </div>
+
+
             <div class="col-lg-3">
               <div class="mb-3">
                 <input type="text" hidden formControlName="id" value="0" />
@@ -354,9 +372,6 @@
 
               </div>
             </div>
-          </div>
-
-          <div class="row">
 
             <div class="col-lg-3">
               <div class="mb-3">
@@ -370,20 +385,17 @@
 
             <div class="col-lg-3">
               <div class="mb-3">
-                <label for="customername-field" class="form-label">Peso Carga</label>
-                <input type="number" id="customername-field" class="form-control"  formControlName="weightLoad"
-                  [ngClass]="{ 'is-invalid': submitted && form['weightLoad'].errors }" autocomplete="off" />
-
-              </div>
-            </div>
-
-            <div class="col-lg-3">
-              <div class="mb-3">
                 <label for="customername-field" class="form-label">Fotos serguro</label>
                 <input type="file" id="customername-field" accept=".jpg" class="form-control"
                   (change)="getDocument($event)" autocomplete="off" />
               </div>
             </div>
+
+
+
+          </div>
+
+          <div class="row">
 
             <div class="col-lg-3">
               <div class="mb-3">
@@ -394,10 +406,6 @@
 
               </div>
             </div>
-
-          </div>
-
-          <div class="row">
 
             <div class="col-lg-3">
               <div class="mb-3">
@@ -426,6 +434,12 @@
               </div>
             </div>
 
+
+          </div>
+
+
+          <div class="row">
+
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Estado cobrado</label>
@@ -436,10 +450,6 @@
               </div>
             </div>
 
-
-          </div>
-
-          <div class="row">
 
             <div class="col-lg-3">
               <div class="mb-3">
