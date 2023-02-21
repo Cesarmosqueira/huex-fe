@@ -52,7 +52,7 @@ export class TrackingComponent implements OnInit {
 
   employees: Employee[] = [];
   tipoServicio: string[] = ['Local', 'Provincia'];
-  estado: string[] = ['En cochera', 'En ruta', 'Retornando', 'Cargando', 'Descargando', 'Finalizo'];
+  estado: string[] = ['En cochera', 'En ruta','Esperando descarga', 'Retornando', 'Cargando', 'Descargando', 'Finalizo'];
   invoiced: string[] = ['Facturado', 'Pendiente'];
   charge: string[] = ['Cobrado', 'Pendiente'];
   documentaryStatus: string[] = ['Pendiente', 'Recepcionado','Enviado'];
@@ -99,8 +99,8 @@ export class TrackingComponent implements OnInit {
       id: ['0', [Validators.required]],
       dateService: [''],
       truckFleet: [0, [Validators.required]],
-      requestedVolume: [0, [Validators.required]],
-      destinationDetail: ['', [Validators.required]],
+      requestedVolume: [0],
+      destinationDetail: [''],
       numberPoints: [''],
       serviceType: [''],
       additionalCost: [''],
@@ -230,16 +230,16 @@ export class TrackingComponent implements OnInit {
       const observations = this.trackingForm.get('observations')?.value;
       const guideNumber = this.trackingForm.get('guideNumber')?.value;
       const datePrecharge = this.trackingForm.get('datePrecharge')?.value;
-      const fortmatDatePrecharge = this.pipe.transform(datePrecharge, 'yyyy-MM-ddTh:mm:ss');
+      const fortmatDatePrecharge = this.pipe.transform(datePrecharge, 'yyyy-MM-ddTHH:mm:ss');
       const preloadStatus = this.trackingForm.get('preloadStatus')?.value;
       const scheduledAppointment = this.trackingForm.get('scheduledAppointment')?.value;
-      const fortmatScheduledAppointment = this.pipe.transform(scheduledAppointment, 'yyyy-MM-ddTh:mm:ss');
+      const fortmatScheduledAppointment = this.pipe.transform(scheduledAppointment, 'yyyy-MM-ddTHH:mm:ss');
       const idRates = this.trackingForm.get('rate')?.value;
       const idDriver = this.trackingForm.get('driver')?.value;
       const idCopilot = this.trackingForm.get('copilot')?.value;
       const idStevedore = this.trackingForm.get('stevedore')?.value;
       const dateTimeCompletion = this.trackingForm.get('dateTimeCompletion')?.value;
-      const fortmatDateTimeCompletion = this.pipe.transform(dateTimeCompletion, 'yyyy-MM-ddTh:mm:ss');
+      const fortmatDateTimeCompletion = this.pipe.transform(dateTimeCompletion, 'yyyy-MM-ddTHH:mm:ss');
       const weightLoad = this.trackingForm.get('weightLoad')?.value;
       const moneyDelivered = this.trackingForm.get('moneyDelivered')?.value;
       const detailMoney = this.trackingForm.get('detailMoney')?.value;

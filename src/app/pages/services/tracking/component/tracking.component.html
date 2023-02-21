@@ -9,7 +9,7 @@
             <div class="col-sm-4">
               <div class="search-box me-2 mb-2 d-inline-block">
                 <div class="position-relative">
-                  <input type="text" class="form-control" placeholder="Buscar por Placa..."
+                  <input type="text" class="form-control" placeholder="Buscar registro..."
                     [(ngModel)]="service.searchTerm">
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
@@ -32,7 +32,6 @@
                   <th class="align-middle">ID</th>
                   <th class="align-middle">Fecha servicio</th>
                   <th class="align-middle">Placa Tracto</th>
-                  <th class="align-middle">Propietario</th>
                   <th class="align-middle">Volumen Solicitado</th>
                   <th class="align-middle">Cliente</th>
                   <th class="align-middle">Inicio</th>
@@ -54,7 +53,6 @@
                   </td>
                   <td>{{data.dateService.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                   <td>{{data.truckFleet.tractPlate}}</td>
-                  <td>{{data.truckFleet.provider.businessName}}</td>
                   <td>{{data.requestedVolume}}</td>
                   <td>{{data.rate.customer.socialReason}}</td>
                   <td>{{data.rate.route.routeStart}}</td>
@@ -233,12 +231,9 @@
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Detalle Destino</label>
-                <input type="text" id="customername-field" class="form-control" required
+                <input type="text" id="customername-field" class="form-control"
                   formControlName="destinationDetail"
                   [ngClass]="{ 'is-invalid': submitted && form['destinationDetail'].errors }" autocomplete="off" />
-                <div *ngIf="submitted && form['destinationDetail'].errors" class="invalid-feedback" align="left">
-                  <div *ngIf="form['destinationDetail'].errors['required']">Detalle Destino es requerido</div>
-                </div>
               </div>
             </div>
 

@@ -19,5 +19,6 @@ export function sort(truckFleets: TruckFleet[], column: SortColumn, direction: s
 }
 
 export function matches(truckFleet: TruckFleet, term: string, pipe: PipeTransform) {
-    return truckFleet.tractPlate.toLowerCase().includes(term.toLowerCase());
+    return truckFleet.tractPlate.toLowerCase().includes(term.toLowerCase())||
+      truckFleet.provider.businessName.toLowerCase().includes(term.toLowerCase());
 }
