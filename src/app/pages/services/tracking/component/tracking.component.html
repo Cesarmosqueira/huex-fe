@@ -33,6 +33,7 @@
                   <th class="align-middle">Fecha servicio</th>
                   <th class="align-middle">Placa Tracto</th>
                   <th class="align-middle">Volumen Solicitado</th>
+                  <th class="align-middle">Toneladas Solicitado</th>
                   <th class="align-middle">Cliente</th>
                   <th class="align-middle">Inicio</th>
                   <th class="align-middle">Destino</th>
@@ -53,7 +54,8 @@
                   </td>
                   <td>{{data.dateService.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                   <td>{{data.truckFleet.tractPlate}}</td>
-                  <td>{{data.requestedVolume}}</td>
+                  <td>{{data.rate.volume}}</td>
+                  <td>{{data.rate.tonNumber}}</td>
                   <td>{{data.rate.customer.socialReason}}</td>
                   <td>{{data.rate.route.routeStart}}</td>
                   <td>{{data.rate.route.routeEnd}}</td>
@@ -190,31 +192,6 @@
               </div>
             </div>
 
-            <div class="col-lg-3">
-              <div class="mb-3">
-                <label for="customername-field" class="form-label">Volumen solicitado</label>
-                <ng-select [items]="volumen" id="customername-field"  formControlName="requestedVolume"
-                           placeholder="Seleccione Volumen"
-                           [ngClass]="{ 'is-invalid': submitted && form['requestedVolume'].errors }"></ng-select>
-
-              </div>
-            </div>
-
-
-            <div class="col-lg-3">
-              <div class="mb-3">
-                <label for="customername-field" class="form-label">Peso Toneladas</label>
-                <ng-select [items]="weightLoad" id="customername-field"  formControlName="weightLoad"
-                           placeholder="Seleccione Toneladas"
-                           [ngClass]="{ 'is-invalid': submitted && form['weightLoad'].errors }"></ng-select>
-              </div>
-            </div>
-          </div>
-
-
-
-          <div class="row">
-
             <div class="col-lg-6">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Tarifa</label>
@@ -227,6 +204,13 @@
                 </div>
               </div>
             </div>
+
+
+          </div>
+
+
+
+          <div class="row">
 
             <div class="col-lg-3">
               <div class="mb-3">
@@ -247,10 +231,6 @@
               </div>
             </div>
 
-          </div>
-
-          <div class="row">
-
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Tipo Servicio</label>
@@ -270,6 +250,10 @@
               </div>
             </div>
 
+          </div>
+
+          <div class="row">
+
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Obsevaciones</label>
@@ -286,10 +270,6 @@
 
               </div>
             </div>
-
-          </div>
-
-          <div class="row">
 
             <div class="col-lg-3">
               <div class="mb-3">
@@ -311,6 +291,11 @@
               </div>
             </div>
 
+          </div>
+
+          <div class="row">
+
+
             <div class="col-lg-3">
               <div class="mb-3">
                 <label>Cita programada</label>
@@ -320,8 +305,6 @@
                 </div>
               </div>
             </div>
-
-
 
             <div class="col-lg-3">
               <div class="mb-3">
@@ -334,14 +317,8 @@
                 <div *ngIf="submitted && form['driver'].errors" class="invalid-feedback" align="left">
                   <div *ngIf="form['driver'].errors['required']">Chofer es requerido</div>
                 </div>
-
               </div>
-
             </div>
-
-          </div>
-
-          <div class="row">
 
             <div class="col-lg-3">
               <div class="mb-3">
@@ -368,6 +345,11 @@
               </div>
             </div>
 
+
+
+          </div>
+
+          <div class="row">
             <div class="col-lg-3">
               <div class="mb-3">
                 <label>Fecha hora Culminacion</label>
@@ -386,12 +368,6 @@
               </div>
             </div>
 
-
-
-          </div>
-
-          <div class="row">
-
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Dinero entregado</label>
@@ -406,10 +382,14 @@
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Detalle Dinero</label>
                 <input type="text" id="customername-field" class="form-control"  formControlName="detailMoney"
-                  [ngClass]="{ 'is-invalid': submitted && form['detailMoney'].errors }" autocomplete="off" />
+                       [ngClass]="{ 'is-invalid': submitted && form['detailMoney'].errors }" autocomplete="off" />
               </div>
             </div>
 
+
+          </div>
+
+          <div class="row">
 
             <div class="col-lg-3">
               <div class="mb-3">
@@ -428,12 +408,6 @@
                            [ngClass]="{ 'is-invalid': submitted && form['invoiced'].errors }"></ng-select>
               </div>
             </div>
-
-
-          </div>
-
-
-          <div class="row">
 
             <div class="col-lg-3">
               <div class="mb-3">
@@ -456,7 +430,9 @@
               </div>
             </div>
 
+
           </div>
+
 
           <div class="row">
             <div class="col-md-6">

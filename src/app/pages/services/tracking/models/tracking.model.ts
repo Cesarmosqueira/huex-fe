@@ -2,7 +2,6 @@ export class Tracking {
 	id: any;
 	dateService: Date;
 	truckFleet: any;
-	requestedVolume: any;
 	destinationDetail: string;
 	numberPoints: any;
 	serviceType: string;
@@ -17,7 +16,6 @@ export class Tracking {
 	copilot: any;
 	stevedore: any;
 	dateTimeCompletion: Date;
-	weightLoad: any;
 	moneyDelivered: any;
 	detailMoney: string;
 	operation: string;

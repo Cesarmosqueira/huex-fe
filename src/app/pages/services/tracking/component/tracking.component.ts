@@ -99,7 +99,6 @@ export class TrackingComponent implements OnInit {
       id: ['0', [Validators.required]],
       dateService: [''],
       truckFleet: [0, [Validators.required]],
-      requestedVolume: [0],
       destinationDetail: [''],
       numberPoints: [''],
       serviceType: [''],
@@ -114,7 +113,6 @@ export class TrackingComponent implements OnInit {
       copilot: [0],
       stevedore: [0],
       dateTimeCompletion: [''],
-      weightLoad: [0],
       moneyDelivered: [0],
       detailMoney: [''],
       operation: [''],
@@ -222,7 +220,6 @@ export class TrackingComponent implements OnInit {
       const dateService = this.trackingForm.get('dateService')?.value;
       const fortmatDateService = this.pipe.transform(dateService, 'yyyy-MM-dd');
       const idTruckFleet = this.trackingForm.get('truckFleet')?.value;
-      const requestedVolume = this.trackingForm.get('requestedVolume')?.value;
       const destinationDetail = this.trackingForm.get('destinationDetail')?.value;
       const numberPoints = this.trackingForm.get('numberPoints')?.value;
       const serviceType = this.trackingForm.get('serviceType')?.value;
@@ -240,7 +237,6 @@ export class TrackingComponent implements OnInit {
       const idStevedore = this.trackingForm.get('stevedore')?.value;
       const dateTimeCompletion = this.trackingForm.get('dateTimeCompletion')?.value;
       const fortmatDateTimeCompletion = this.pipe.transform(dateTimeCompletion, 'yyyy-MM-ddTHH:mm:ss');
-      const weightLoad = this.trackingForm.get('weightLoad')?.value;
       const moneyDelivered = this.trackingForm.get('moneyDelivered')?.value;
       const detailMoney = this.trackingForm.get('detailMoney')?.value;
       const operation = this.trackingForm.get('operation')?.value;
@@ -254,7 +250,6 @@ export class TrackingComponent implements OnInit {
       let tracking = new Tracking();
       tracking.dateService = fortmatDateService;
       tracking.truckFleet = idTruckFleet;
-      tracking.requestedVolume = requestedVolume;
       tracking.destinationDetail = destinationDetail;
       tracking.numberPoints = numberPoints;
       tracking.serviceType = serviceType;
@@ -269,7 +264,6 @@ export class TrackingComponent implements OnInit {
       tracking.copilot = idCopilot;
       tracking.stevedore = idStevedore;
       tracking.dateTimeCompletion = fortmatDateTimeCompletion;
-      tracking.weightLoad = weightLoad;
       tracking.moneyDelivered = moneyDelivered;
       tracking.detailMoney = detailMoney;
       tracking.operation = operation;
@@ -341,7 +335,6 @@ export class TrackingComponent implements OnInit {
 console.log(listData[0]);
     this.selectTruckFleet = listData[0].truckFleet;
     //this.trackingForm.controls['truckFleet'].setValue(listData[0].truckFleet.tractPlate);
-    this.trackingForm.controls['requestedVolume'].setValue(listData[0].requestedVolume);
     this.trackingForm.controls['destinationDetail'].setValue(listData[0].destinationDetail);
     this.trackingForm.controls['numberPoints'].setValue(listData[0].numberPoints);
     this.trackingForm.controls['serviceType'].setValue(listData[0].serviceType);
@@ -372,7 +365,6 @@ console.log(listData[0]);
       this.trackingForm.controls['dateTimeCompletion'].setValue(fortmatDateTimeCompletion);
     }
 
-    this.trackingForm.controls['weightLoad'].setValue(listData[0].weightLoad);
     this.trackingForm.controls['moneyDelivered'].setValue(listData[0].moneyDelivered);
     this.trackingForm.controls['detailMoney'].setValue(listData[0].detailMoney);
     this.trackingForm.controls['operation'].setValue(listData[0].operation);
@@ -512,7 +504,6 @@ console.log(listData[0]);
     this.trackingForm.controls['id'].setValue("0");
     this.trackingForm.controls['dateService'].setValue("");
     this.trackingForm.controls['truckFleet'].setValue("");
-    this.trackingForm.controls['requestedVolume'].setValue("");
     this.trackingForm.controls['destinationDetail'].setValue("");
     this.trackingForm.controls['numberPoints'].setValue("");
     this.trackingForm.controls['serviceType'].setValue("");
@@ -527,7 +518,6 @@ console.log(listData[0]);
     this.trackingForm.controls['copilot'].setValue("");
     this.trackingForm.controls['stevedore'].setValue("");
     this.trackingForm.controls['dateTimeCompletion'].setValue("");
-    this.trackingForm.controls['weightLoad'].setValue("");
     this.trackingForm.controls['moneyDelivered'].setValue("");
     this.trackingForm.controls['detailMoney'].setValue("");
     this.trackingForm.controls['operation'].setValue("");
@@ -547,7 +537,6 @@ console.log(listData[0]);
     this.trackingForm.controls['id'].disable();
     this.trackingForm.controls['dateService'].disable();
     this.trackingForm.controls['truckFleet'].disable();
-    this.trackingForm.controls['requestedVolume'].disable();
     this.trackingForm.controls['destinationDetail'].disable();
     this.trackingForm.controls['numberPoints'].disable();
     this.trackingForm.controls['serviceType'].disable();
@@ -562,7 +551,6 @@ console.log(listData[0]);
     this.trackingForm.controls['driver'].disable();
     this.trackingForm.controls['stevedore'].disable();
     this.trackingForm.controls['dateTimeCompletion'].disable();
-    this.trackingForm.controls['weightLoad'].disable();
     this.trackingForm.controls['moneyDelivered'].disable();
     this.trackingForm.controls['detailMoney'].disable();
     this.trackingForm.controls['operation'].disable();
@@ -578,7 +566,6 @@ console.log(listData[0]);
     this.trackingForm.controls['id'].setValue("0");
     this.trackingForm.controls['dateService'].enable();
     this.trackingForm.controls['truckFleet'].enable();
-    this.trackingForm.controls['requestedVolume'].enable();
     this.trackingForm.controls['destinationDetail'].enable();
     this.trackingForm.controls['numberPoints'].enable();
     this.trackingForm.controls['serviceType'].enable();
@@ -593,7 +580,6 @@ console.log(listData[0]);
     this.trackingForm.controls['copilot'].enable();
     this.trackingForm.controls['stevedore'].enable();
     this.trackingForm.controls['dateTimeCompletion'].enable();
-    this.trackingForm.controls['weightLoad'].enable();
     this.trackingForm.controls['moneyDelivered'].enable();
     this.trackingForm.controls['detailMoney'].enable();
     this.trackingForm.controls['operation'].enable();
@@ -679,7 +665,8 @@ console.log(listData[0]);
               this.rates.forEach(element => {
                 let cus = new Customer();
                 cus = element.customer;
-                cus.name = element.customer.socialReason + "/" + element.route.routeEnd;
+                cus.name = element.customer.socialReason + "/" + element.route.routeEnd+"/M3 "
+                  + element.volume+"/TN "+ element.tonNumber;
                 element.customer = cus;
 
               });
