@@ -36,6 +36,12 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.EMPLOYEES.LIST.EMPLOYEEDISCOUNT',
         link: '/employees/employee-discount',
         parentId: 1
+      },
+      {
+        id: 2,
+        label: 'MENUITEMS.EMPLOYEES.LIST.PROVIDERDISCOUNT',
+        link: '/employees/provider-discount',
+        parentId: 1
       }
     ]
   },

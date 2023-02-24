@@ -1,0 +1,144 @@
+<div class="container-fluid">
+  <app-page-title title="Orders" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-4">
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Buscar por proveedor..." [(ngModel)]="service.searchTerm">
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="text-sm-end">
+                <button type="button" class="btn btn-success btn-rounded mb-2 me-2" (click)="openModal(content)"><i
+                  class="mdi mdi-plus mr-1"></i>
+                  Nuevo</button>
+              </div>
+            </div><!-- end col-->
+          </div>
+
+          <!-- Table data -->
+          <div class="table-responsive mb-0">
+            <table class="table table-centered table-nowrap">
+              <thead class="table-light">
+              <tr>
+                <th class="align-middle">ID</th>
+                <th class="align-middle">Provedor</th>
+                <th class="align-middle">Fecha</th>
+                <th class="align-middle">Observaciones</th>
+                <th class="align-middle">Monto</th>
+                <th class="align-middle">Estado</th>
+                <th class="align-middle">Acciones</th>
+
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of providerDiscount" id="o_{{data.id}}">
+                <td>
+                  <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
+                </td>
+                <td>{{data.provider.businessName}}</td>
+                <td>{{data.date.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                <td>{{data.observations}}</td>
+                <td>{{data.charge}}</td>
+                <td>{{data.status}}</td>
+
+                <td>
+                  <div class="d-flex gap-3">
+                    <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
+                      class="mdi mdi-pencil font-size-18"></i></a>
+                    <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
+                      class="mdi mdi-delete font-size-18"></i></a>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+
+          </div>
+          <!-- end table -->
+          <ul class="pagination pagination-rounded justify-content-end mb-2">
+            <ngb-pagination [collectionSize]="(total | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+            </ngb-pagination>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Order Create Model -->
+<ng-template #content role="document" let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Nuevo descuento</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+            (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form (ngSubmit)="saveUser()" [formGroup]="providerDiscountForm">
+    <div class="modal-body">
+      <input type="text" hidden formControlName="id" value="0" />
+
+
+      <div class="mb-3">
+        <input type="text" hidden formControlName="id" value="0" />
+        <label for="customername-field" class="form-label">Proveedor</label>
+        <ng-select [items]="providers" bindLabel="businessName" placeholder="Seleccione Trabajador"
+                   [(ngModel)]="selectProviders" id="customername-field" [clearable]="false" required
+                   formControlName="Providers" [ngClass]="{ 'is-invalid': submitted && form['Providers'].errors }">
+        </ng-select>
+        <div *ngIf="submitted && form['Providers'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['Providers'].errors['required']">Proveedor es requerido</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label>Fecha</label>
+        <div class="input-group clockpicker">
+          <input class="form-control" type="date" id="example-date-input" formControlName="date" autocomplete="disabled">
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Observaciones</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="observations"
+               [ngClass]="{ 'is-invalid': submitted && form['observations'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['observations'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['observations'].errors['required']">Observaciones es requerido</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Monto</label>
+        <input type="text" id="customername-field" class="form-control" required formControlName="charge"
+               [ngClass]="{ 'is-invalid': submitted && form['charge'].errors }" autocomplete="disabled" />
+        <div *ngIf="submitted && form['charge'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['charge'].errors['required']">Monto es requerido</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Estado</label>
+        <ng-select [items]="['PENDIENTE','COBRADO']" id="customername-field" formControlName="status"
+                   [ngClass]="{ 'is-invalid': submitted && form['status'].errors }"></ng-select>
+
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                (click)="modal.close('Close click')">Cancelar</button>
+        <button type="submit" class="btn btn-success" id="add-btn">Registrar</button>
+      </div>
+    </div>
+
+  </form>
+</ng-template>

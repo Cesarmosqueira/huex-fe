@@ -5,13 +5,15 @@ import {ImplementComponent} from "./implement/component/implement.component";
 import {EmployeeImplementComponent} from "./employee-implement/component/employee-implement.component";
 import {EmployeeAttendanceComponent} from "./employee-attendance/component/employee-attendance.component";
 import {EmployeeDiscountComponent} from "./employee-discount/component/employee-discount.component";
+import {ProviderDiscountComponent} from "./provider-discount/component/provider-discount.component";
 
 const routes: Routes = [
   {path:"employee", component: EmployeeComponent},
   {path:"implement",component:ImplementComponent},
   {path:"employee-implement",component:EmployeeImplementComponent},
   {path:"employee-attendance",component:EmployeeAttendanceComponent},
-  {path:"employee-discount",component:EmployeeDiscountComponent}
+  {path:"employee-discount",component:EmployeeDiscountComponent},
+  {path:"provider-discount",component:ProviderDiscountComponent}
 ];
 
 @NgModule({

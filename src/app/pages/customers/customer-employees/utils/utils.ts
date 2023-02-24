@@ -19,5 +19,6 @@ export function sort(customerEmployees: CustomerEmployees[], column: SortColumn,
 }
 
 export function matches(customerEmployees: CustomerEmployees, term: string, pipe: PipeTransform) {
-  return customerEmployees.customer.socialReason.toLowerCase().includes(term.toLowerCase());
+  return customerEmployees.customer.socialReason.toLowerCase().includes(term.toLowerCase())
+    || customerEmployees.employee.fullName.toLowerCase().includes(term.toLowerCase());
 }
