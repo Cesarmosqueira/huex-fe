@@ -235,7 +235,7 @@ export class ProviderComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.providers;
+              this.test = response.datos.providerDtoList;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({

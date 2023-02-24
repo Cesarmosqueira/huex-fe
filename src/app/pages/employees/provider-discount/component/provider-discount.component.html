@@ -89,12 +89,12 @@
       <div class="mb-3">
         <input type="text" hidden formControlName="id" value="0" />
         <label for="customername-field" class="form-label">Proveedor</label>
-        <ng-select [items]="providers" bindLabel="businessName" placeholder="Seleccione Trabajador"
+        <ng-select [items]="providers" bindLabel="businessName" placeholder="Seleccione Proveedor"
                    [(ngModel)]="selectProviders" id="customername-field" [clearable]="false" required
-                   formControlName="Providers" [ngClass]="{ 'is-invalid': submitted && form['Providers'].errors }">
+                   formControlName="provider" [ngClass]="{ 'is-invalid': submitted && form['provider'].errors }">
         </ng-select>
-        <div *ngIf="submitted && form['Providers'].errors" class="invalid-feedback" align="left">
-          <div *ngIf="form['Providers'].errors['required']">Proveedor es requerido</div>
+        <div *ngIf="submitted && form['provider'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['provider'].errors['required']">Proveedor es requerido</div>
         </div>
       </div>
 
