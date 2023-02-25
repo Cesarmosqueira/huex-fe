@@ -52,6 +52,13 @@ export const environment = {
       register: '/api-huex/v1/discounts',
       update: '/api-huex/v1/discounts',
       delete: '/api-huex/v1/discounts/'
+    },
+    providerDiscount: {
+      list: '/api-huex/v1/provider_discounts',
+      retrieve: '/api-huex/v1/provider_discounts/',
+      register: '/api-huex/v1/provider_discounts',
+      update: '/api-huex/v1/provider_discounts',
+      delete: '/api-huex/v1/provider_discounts/'
     }
   },
   customers: {
