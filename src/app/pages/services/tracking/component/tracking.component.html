@@ -32,8 +32,6 @@
                   <th class="align-middle">ID</th>
                   <th class="align-middle">Fecha servicio</th>
                   <th class="align-middle">Placa Tracto</th>
-                  <th class="align-middle">Volumen Solicitado</th>
-                  <th class="align-middle">Toneladas Solicitado</th>
                   <th class="align-middle">Cliente</th>
                   <th class="align-middle">Inicio</th>
                   <th class="align-middle">Destino</th>
@@ -41,6 +39,8 @@
                   <th class="align-middle">Cantidad Puntos</th>
                   <th class="align-middle">Chofer</th>
                   <th class="align-middle">Costo adicional</th>
+                  <th class="align-middle">Volumen Solicitado</th>
+                  <th class="align-middle">Toneladas Solicitado</th>
                   <th class="align-middle">Estado servicio</th>
                   <th class="align-middle">Estado documentario</th>
 
@@ -54,8 +54,6 @@
                   </td>
                   <td>{{data.dateService.substring(0,10) | date:'dd/MM/YYYY'}}</td>
                   <td>{{data.truckFleet.tractPlate}}</td>
-                  <td>{{data.rate.volume}}</td>
-                  <td>{{data.rate.tonNumber}}</td>
                   <td>{{data.rate.customer.socialReason}}</td>
                   <td>{{data.rate.route.routeStart}}</td>
                   <td>{{data.rate.route.routeEnd}}</td>
@@ -63,6 +61,8 @@
                   <td>{{data.numberPoints}}</td>
                   <td>{{data.driver.fullName}}</td>
                   <td>{{data.additionalCost}}</td>
+                  <td>{{data.rate.volume}}</td>
+                  <td>{{data.rate.tonNumber}}</td>
                   <td>{{data.preloadStatus}}</td>
                   <td>{{data.documentaryStatus}}</td>
 
