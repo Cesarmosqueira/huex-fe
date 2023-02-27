@@ -1,6 +1,6 @@
 export class Tracking {
 	id: any;
-	dateService: Date;
+	dateService: any;
 	truckFleet: any;
 	destinationDetail: string;
 	numberPoints: any;
