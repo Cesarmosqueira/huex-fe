@@ -64,6 +64,8 @@ export class ProviderComponent implements OnInit {
       bankAccount: [''],
       interbankAccount: [''],
       providerType: [''],
+      detraction: [''],
+      operationPlace:[''],
       observation: [''],
       btnSave: []
     });
@@ -163,6 +165,8 @@ export class ProviderComponent implements OnInit {
       const bankAccount = this.providerForm.get('bankAccount')?.value;
       const interbankAccount = this.providerForm.get('interbankAccount')?.value;
       const providerType = this.providerForm.get('providerType')?.value;
+      const detraction = this.providerForm.get('detraction')?.value;
+      const operationPlace=this.providerForm.get('operationPlace')?.value;
       const observation = this.providerForm.get('observation')?.value;
 
       let providers = new Providers();
@@ -177,6 +181,8 @@ export class ProviderComponent implements OnInit {
       providers.bankAccount = bankAccount;
       providers.interbankAccount = interbankAccount;
       providers.providerType = providerType;
+      providers.detraction = detraction;
+      providers.operationPlace=operationPlace;
       providers.observation = observation;
 
       const id = this.providerForm.get('id')?.value;
@@ -224,6 +230,8 @@ export class ProviderComponent implements OnInit {
     this.providerForm.controls['bankAccount'].setValue(listData[0].bankAccount);
     this.providerForm.controls['interbankAccount'].setValue(listData[0].interbankAccount);
     this.providerForm.controls['providerType'].setValue(listData[0].providerType);
+    this.providerForm.controls['detraction'].setValue(listData[0].detraction);
+    this.providerForm.controls['operationPlace'].setValue(listData[0].operationPlace);
     this.providerForm.controls['observation'].setValue(listData[0].observation);
     this.idProviderOuput = id;
   }
@@ -344,9 +352,9 @@ export class ProviderComponent implements OnInit {
     this.providerForm.controls['bankAccount'].setValue("");
     this.providerForm.controls['interbankAccount'].setValue("");
     this.providerForm.controls['providerType'].setValue("");
-
+    this.providerForm.controls['detraction'].setValue("");
+    this.providerForm.controls['operationPlace'].setValue("");
     this.providerForm.controls['observation'].setValue("");
-
   }
 
   enableInputs() {
@@ -362,6 +370,8 @@ export class ProviderComponent implements OnInit {
     this.providerForm.controls['bankAccount'].enable();
     this.providerForm.controls['interbankAccount'].enable();
     this.providerForm.controls['providerType'].enable();
+    this.providerForm.controls['detraction'].enable();
+    this.providerForm.controls['operationPlace'].enable();
     this.providerForm.controls['observation'].enable();
 
   }

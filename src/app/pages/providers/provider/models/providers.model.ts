@@ -11,5 +11,7 @@ export class Providers {
   bankAccount:string;
   interbankAccount:string;
   providerType:string;
+  detraction:string;
+  operationPlace:string;
   observation:string;
 }
