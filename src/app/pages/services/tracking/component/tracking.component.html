@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <app-page-title title="Orders" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <app-page-title title="Tracking" [breadcrumbItems]="breadCrumbItems"></app-page-title>
 
   <div class="row">
     <div class="col-12">
@@ -9,12 +9,20 @@
             <div class="col-sm-4">
               <div class="search-box me-2 mb-2 d-inline-block">
                 <div class="position-relative">
-                  <input type="text" class="form-control" placeholder="Buscar registro..."
+                  <input type="text" class="form-control" placeholder="Buscar Por Fecha..."
                     [(ngModel)]="service.searchTerm">
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Buscar cliente..."
+                    [(ngModel)]="service.searchName">
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
             </div>
+            
             <div class="col-sm-8">
               <div class="text-sm-end">
                 <button type="button" class="btn btn-success btn-rounded mb-2 me-2" (click)="openModal(content)"><i
@@ -52,7 +60,7 @@
                   <td>
                     <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                   </td>
-                  <td>{{data.dateService.substring(0,10) | date:'yyyy-MM-dd'}}</td>
+                  <td>{{data.dateService}}</td>
                   <td>{{data.truckFleet.tractPlate}}</td>
                   <td>{{data.rate.customer.socialReason}}</td>
                   <td>{{data.rate.route.routeStart}}</td>

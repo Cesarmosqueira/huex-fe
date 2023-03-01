@@ -12,4 +12,5 @@ export interface State {
     status: string;
     payment: string;
     date: string;
+    searchName: string;
   }
