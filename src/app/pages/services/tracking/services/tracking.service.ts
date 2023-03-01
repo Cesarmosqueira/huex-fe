@@ -10,7 +10,7 @@ import { environment } from '../../../../../environments/environment';
 import { SearchResult } from '../interfaces/search-result.interface';
 import { State } from '../interfaces/state.interface';
 import { Tracking } from '../models/tracking.model';
-import { matches, sort, SortColumn, SortDirection } from '../utils/utils';
+import {  matchesDate, matchesName, sort, SortColumn, SortDirection } from '../utils/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +37,7 @@ export class TrackingService extends BaseService {
     status: '',
     payment: '',
     date: '',
+    searchName: ''
   };
 
   constructor(protected httpClient: HttpClient, private pipe: DecimalPipe) {
@@ -111,6 +112,7 @@ export class TrackingService extends BaseService {
   get page() { return this._state.page; }
   get pageSize() { return this._state.pageSize; }
   get searchTerm() { return this._state.searchTerm; }
+  get searchName() { return this._state.searchName; }
   get startIndex() { return this._state.startIndex; }
   get endIndex() { return this._state.endIndex; }
   get totalRecords() { return this._state.totalRecords; }
@@ -118,6 +120,7 @@ export class TrackingService extends BaseService {
   set page(page: number) { this._set({ page }); }
   set pageSize(pageSize: number) { this._set({ pageSize }); }
   set searchTerm(searchTerm: string) { this._set({ searchTerm }); }
+  set searchName(searchName: string) { this._set({ searchName }); }
   set sortColumn(sortColumn: SortColumn) { this._set({ sortColumn }); }
   set sortDirection(sortDirection: SortDirection) { this._set({ sortDirection }); }
   set startIndex(startIndex: number) { this._set({ startIndex }); }
@@ -130,12 +133,15 @@ export class TrackingService extends BaseService {
   }
 
   private _search(): Observable<SearchResult> {
-    const { sortColumn, sortDirection, page, searchTerm } = this._state;
+    const { sortColumn, sortDirection, page, searchTerm, searchName } = this._state;
     // 1. sort
     let trackings = sort(this.trackings, sortColumn, sortDirection);
 
     // 2. filter
-    trackings = trackings.filter(country => matches(country, searchTerm, this.pipe));
+      trackings = trackings.filter(country => matchesDate(country, searchTerm, this.pipe));
+      trackings = trackings.filter(country => matchesName(country, searchName, this.pipe));
+
+    
     const total = trackings.length;
 
     // 3. paginate
