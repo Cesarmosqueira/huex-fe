@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
@@ -9,6 +9,8 @@ import {config} from "../../../../shared/shared.config";
 import {ServiceIncidents} from "../models/service-incidents.model";
 import {ServiceIncidentsService} from "../services/service-incidents.service";
 import { Tracking } from '../../tracking/models/tracking.model';
+import {TrackingService} from "../../tracking/services/tracking.service";
+
 
 @Component({
   selector: 'app-service-incidents',
@@ -17,13 +19,14 @@ import { Tracking } from '../../tracking/models/tracking.model';
 })
 export class ServiceIncidentsComponent implements OnInit {
 
-  @Input() idTracking: number;
-  
+
+  idServiceIncidentOuput: number = 0;
+
   // bread crumb items
   breadCrumbItems: Array<{}>;
   term: any;
 
-  serviceIncidentsForm!: UntypedFormGroup;
+  serviceIncidentForm!: UntypedFormGroup;
   submitted = false;
   register = true;
 
@@ -31,19 +34,21 @@ export class ServiceIncidentsComponent implements OnInit {
 
   // Table data
   content?: any;
-  serviceIncidents?: any;
+  serviceIncident?: any;
   test: ServiceIncidents[] = [];
-  serviceIncidentsList!: Observable<ServiceIncidents[]>;
+  serviceIncidentList!: Observable<ServiceIncidents[]>;
   total: Observable<number>;
   pipe: any;
 
-  new = false;
-  textButton = "Registrar";
+  tracking:Tracking[]=[];
+  selectTracking=null;
+
 
   constructor(public service: ServiceIncidentsService,
+              private serviceTracking:TrackingService,
               private modalService: NgbModal,
               private formBuilder: UntypedFormBuilder) {
-    this.serviceIncidentsList = service.countries$;
+    this.serviceIncidentList = service.countries$;
     this.total = service.total$;
   }
 
@@ -53,21 +58,35 @@ export class ServiceIncidentsComponent implements OnInit {
     /**
      * Form Validation
      */
-    this.serviceIncidentsForm = this.formBuilder.group({
+    this.serviceIncidentForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
-      grt: ['', [Validators.required]],
-      grr: ['', [Validators.required]],
-      order: ['', [Validators.required]],
-      quantityUnits: ['', [Validators.required]],
-      observation: ['', [Validators.required]],
+      trackingService: [''],
+      folio: [''],
+      sku: [''],
+      nameProduct: [''],
+      observationDate: [''],
+      damageType: [''],
+      motive: [''],
+      responsible: [''],
+      fullName: [''],
+      stored: [''],
+      quantityUnits: [''],
+      observation: [''],
+      grt:[''],
+      grr: [''],
+      order: [''],
+
+      btnSave: []
     });
 
-    this.serviceIncidentsList.subscribe(x => {
-      this.content = this.serviceIncidents;
-      this.serviceIncidents = Object.assign([], x);
+    this.serviceIncidentList.subscribe(x => {
+      this.content = this.serviceIncident;
+      this.serviceIncident = Object.assign([], x);
     });
+    this.idServiceIncidentOuput = 0;
 
-    this.listServiceIncidentsByIdTracking(this.idTracking);
+    this.listServiceIndicent();
+    this.listTracking();
   }
 
   /**
@@ -99,7 +118,7 @@ export class ServiceIncidentsComponent implements OnInit {
       })
       .then(result => {
         if (result.value) {
-          this.deleteServiceIncidents(id);
+          this.deleteIncidentService(id);
         } else if (
           /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel
@@ -113,83 +132,134 @@ export class ServiceIncidentsComponent implements OnInit {
       });
   }
 
-  openModal(value) {
-    this.new = value;
-  }
-
-  cancel(){
-    this.clearControl();
+  /**
+   * Open modal
+   * @param content modal content
+   */
+  openModal(content: any) {
+    this.clear();
     this.submitted = false;
-    this.new = false;
-    this.textButton = "Registrar";
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'xl'
+    };
+    this.selectTracking=null;
+    this.modalService.open(content, ngbModalOptions);
   }
 
-  clearControl(){
-    this.serviceIncidentsForm.controls['id'].setValue("0");
-    this.serviceIncidentsForm.controls['grt'].setValue("");
-    this.serviceIncidentsForm.controls['grr'].setValue("");
-    this.serviceIncidentsForm.controls['order'].setValue("");
-    this.serviceIncidentsForm.controls['quantityUnits'].setValue("");
-    this.serviceIncidentsForm.controls['observation'].setValue("");
-  }
-  
+  /**
+   * Form data get
+   */
   get form() {
-    return this.serviceIncidentsForm.controls;
+    return this.serviceIncidentForm.controls;
   }
 
-
+  /**
+   * Save user
+   */
   saveUser() {
     this.submitted = true
-    if (this.serviceIncidentsForm.valid) {
+    if (this.serviceIncidentForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const grt = this.serviceIncidentsForm.get('grt')?.value;
-      const grr = this.serviceIncidentsForm.get('grr')?.value;
-      const order = this.serviceIncidentsForm.get('order')?.value;
-      const quantityUnits = this.serviceIncidentsForm.get('quantityUnits')?.value;
-      const observation = this.serviceIncidentsForm.get('observation')?.value;
-      let tracking = new Tracking();
-      tracking.id = this.idTracking;
+      const trackingServiceId=this.selectTracking.id;
+      const folio = this.serviceIncidentForm.get('folio')?.value;
+      const sku = this.serviceIncidentForm.get('sku')?.value;
+      const nameProduct = this.serviceIncidentForm.get('nameProduct')?.value;
+      const observationDate = this.serviceIncidentForm.get('observationDate')?.value;
+      const fortmatObservationDate = this.pipe.transform(observationDate, 'yyyy-MM-dd');
+      const damageType = this.serviceIncidentForm.get('damageType')?.value;
+      const motive = this.serviceIncidentForm.get('motive')?.value;
+      const responsible = this.serviceIncidentForm.get('responsible')?.value;
+      const fullName = this.serviceIncidentForm.get('fullName')?.value;
+      const stored = this.serviceIncidentForm.get('stored')?.value;
+      const quantityUnits = this.serviceIncidentForm.get('quantityUnits')?.value;
+      const observation = this.serviceIncidentForm.get('observation')?.value;
+      const grt = this.serviceIncidentForm.get('grt')?.value;
+      const grr = this.serviceIncidentForm.get('grr')?.value;
+      const order = this.serviceIncidentForm.get('order')?.value;
+
+      let serviceIncident = new ServiceIncidents();
+      let tracking=new Tracking();
+      tracking.id=trackingServiceId;
+      serviceIncident.trackingService = tracking;
+      serviceIncident.folio = folio;
+      serviceIncident.sku=sku;
+      serviceIncident.nameProduct=nameProduct;
+      serviceIncident.observationDate=fortmatObservationDate;
+      serviceIncident.damageType=damageType;
+      serviceIncident.motive=motive;
+      serviceIncident.responsible=responsible;
+      serviceIncident.fullName=fullName;
+      serviceIncident.stored=stored;
+      serviceIncident.quantityUnits=quantityUnits;
+      serviceIncident.observation=observation;
+      serviceIncident.grt=grt;
+      serviceIncident.grr=grr;
+      serviceIncident.order=order;
 
 
-      let serviceIncidents = new ServiceIncidents();
-      serviceIncidents.trackingService = tracking;
-      serviceIncidents.grt = grt;
-      serviceIncidents.grr = grr;
-      serviceIncidents.order = order;
-      serviceIncidents.quantityUnits = quantityUnits;
-      serviceIncidents.observation = observation;
 
-      const id = this.serviceIncidentsForm.get('id')?.value;
+      const id = this.serviceIncidentForm.get('id')?.value;
+
       if (id == '0') {
-        this.registerServiceIncidents(serviceIncidents);
+        this.registerIncidentService(serviceIncident);
       } else {
-        serviceIncidents.id = id;
-        this.updateServiceIncidents(serviceIncidents);
+        serviceIncident.id = id;
+        this.updateIncidentService(serviceIncident);
       }
-
-      this.new = false;
-      this.textButton = "Registrar";
-      this.clearControl();
+      this.modalService.dismissAll();
+      setTimeout(() => {
+        this.serviceIncidentForm.reset();
+      }, 2000);
 
     }
   }
 
-  editDataGet(id: any) {
-    this.new = true;
+  /**
+   * Open Edit modal
+   * @param content modal content
+   */
+  editDataGet(id: any, content: any) {
     this.submitted = false;
     this.pipe = new DatePipe('en-US');
-    var listData = this.serviceIncidents.filter((data: { id: any; }) => data.id === id);
-    this.serviceIncidentsForm.controls['id'].setValue(listData[0].id);
-    this.serviceIncidentsForm.controls['grt'].setValue(listData[0].grt);
-    this.serviceIncidentsForm.controls['grr'].setValue(listData[0].grr);
-    this.serviceIncidentsForm.controls['order'].setValue(listData[0].order);
-    this.serviceIncidentsForm.controls['quantityUnits'].setValue(listData[0].quantityUnits);
-    this.serviceIncidentsForm.controls['observation'].setValue(listData[0].observation);
-    this.textButton = "Actualizar";
+    this.enableInputs();
+
+    this.modalService.open(content, { size: 'xl', centered: true });
+    var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
+    modelTitle.innerHTML = 'Actualizar proveedores';
+    var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
+    updateBtn.innerHTML = "Actualizar";
+    var listData = this.serviceIncident.filter((data: { id: any; }) => data.id === id);
+
+
+    this.serviceIncidentForm.controls['id'].setValue(listData[0].id);
+    this.serviceIncidentForm.controls['folio'].setValue(listData[0].folio);
+    this.serviceIncidentForm.controls['sku'].setValue(listData[0].sku);
+    this.serviceIncidentForm.controls['nameProduct'].setValue(listData[0].nameProduct);
+    if (listData[0].observationDate != null || listData[0].observationDate != undefined) {
+      const observationDate = listData[0].observationDate.substring(0, 10);
+      const fortmatObservationDate = this.pipe.transform(observationDate, 'yyyy-MM-dd');
+      this.serviceIncidentForm.controls['observationDate'].setValue(fortmatObservationDate);
+    }
+
+    this.serviceIncidentForm.controls['damageType'].setValue(listData[0].damageType);
+    this.serviceIncidentForm.controls['motive'].setValue(listData[0].motive);
+    this.serviceIncidentForm.controls['responsible'].setValue(listData[0].responsible);
+    this.serviceIncidentForm.controls['fullName'].setValue(listData[0].fullName);
+    this.serviceIncidentForm.controls['stored'].setValue(listData[0].stored);
+    this.serviceIncidentForm.controls['quantityUnits'].setValue(listData[0].quantityUnits);
+    this.serviceIncidentForm.controls['observation'].setValue(listData[0].observation);
+    this.serviceIncidentForm.controls['grt'].setValue(listData[0].grt);
+    this.serviceIncidentForm.controls['grr'].setValue(listData[0].grr);
+    this.serviceIncidentForm.controls['order'].setValue(listData[0].order);
+    this.selectTracking=listData[0].trackingService;
+    this.idServiceIncidentOuput = id;
   }
 
-  listServiceIncidentsByIdTracking(id) {
-    this.service.listServiceIncidentsByIdTracking(id)
+  listServiceIndicent() {
+    this.service.listServiceIncidents()
       .pipe(first())
       .subscribe(
         response => {
@@ -197,13 +267,13 @@ export class ServiceIncidentsComponent implements OnInit {
             if (response.datos) {
               this.test = response.datos.serviceIncidents;
               this.service.paginationTable(this.test);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
             }
-          } else {
-            Swal.fire({
-              icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
-              showConfirmButton: false,
-            });
           }
         },
         error => {
@@ -215,8 +285,8 @@ export class ServiceIncidentsComponent implements OnInit {
         });
   }
 
-  registerServiceIncidents(serviceIncidents) {
-    this.service.registerServiceIncidents(serviceIncidents)
+  registerIncidentService(servicesIncident) {
+    this.service.registerServiceIncidents(servicesIncident)
       .pipe(first())
       .subscribe(
         response => {
@@ -227,7 +297,7 @@ export class ServiceIncidentsComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.listServiceIncidentsByIdTracking(this.idTracking);
+              this.listServiceIndicent();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -238,7 +308,7 @@ export class ServiceIncidentsComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -252,14 +322,19 @@ export class ServiceIncidentsComponent implements OnInit {
         });
   }
 
-  updateServiceIncidents(serviceIncidents) {
-    this.service.updateServiceIncidents(serviceIncidents)
+  updateIncidentService(serviceIncident) {
+    this.service.updateServiceIncidents(serviceIncident)
       .pipe(first())
       .subscribe(
         response => {
           if (response) {
             if (response.datos) {
-              this.listServiceIncidentsByIdTracking(this.idTracking);
+              Swal.fire(
+                '¡Actualizado!',
+                response.meta.mensajes[0].mensaje,
+                'success'
+              );
+              this.listServiceIndicent();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -270,7 +345,7 @@ export class ServiceIncidentsComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -284,7 +359,48 @@ export class ServiceIncidentsComponent implements OnInit {
         });
   }
 
-  deleteServiceIncidents(id) {
+  clear() {
+    this.serviceIncidentForm.controls['id'].setValue("0");
+    this.serviceIncidentForm.controls['trackingService'].setValue(null);
+    this.serviceIncidentForm.controls['folio'].setValue("");
+    this.serviceIncidentForm.controls['sku'].setValue("");
+    this.serviceIncidentForm.controls['nameProduct'].setValue("");
+    this.serviceIncidentForm.controls['observationDate'].setValue("");
+    this.serviceIncidentForm.controls['damageType'].setValue("");
+    this.serviceIncidentForm.controls['motive'].setValue("");
+    this.serviceIncidentForm.controls['responsible'].setValue("");
+    this.serviceIncidentForm.controls['fullName'].setValue("");
+    this.serviceIncidentForm.controls['stored'].setValue("");
+    this.serviceIncidentForm.controls['quantityUnits'].setValue("");
+    this.serviceIncidentForm.controls['observation'].setValue("");
+    this.serviceIncidentForm.controls['grt'].setValue("");
+    this.serviceIncidentForm.controls['grr'].setValue("");
+    this.serviceIncidentForm.controls['order'].setValue("");
+  }
+
+  enableInputs() {
+    this.serviceIncidentForm.controls['id'].enable();
+    this.serviceIncidentForm.controls['trackingService'].enable();
+    this.serviceIncidentForm.controls['folio'].enable();
+    this.serviceIncidentForm.controls['sku'].enable();
+    this.serviceIncidentForm.controls['nameProduct'].enable();
+    this.serviceIncidentForm.controls['observationDate'].enable();
+    this.serviceIncidentForm.controls['damageType'].enable();
+    this.serviceIncidentForm.controls['motive'].enable();
+    this.serviceIncidentForm.controls['responsible'].enable();
+    this.serviceIncidentForm.controls['fullName'].enable();
+    this.serviceIncidentForm.controls['stored'].enable();
+    this.serviceIncidentForm.controls['quantityUnits'].enable();
+    this.serviceIncidentForm.controls['observation'].enable();
+    this.serviceIncidentForm.controls['grt'].enable();
+    this.serviceIncidentForm.controls['grr'].enable();
+    this.serviceIncidentForm.controls['order'].enable();
+
+
+  }
+
+
+  deleteIncidentService(id) {
     this.service.deleteServiceIncidents(id)
       .pipe(first())
       .subscribe(
@@ -296,7 +412,7 @@ export class ServiceIncidentsComponent implements OnInit {
                 'Su archivo ha sido eliminado.',
                 'success'
               );
-              this.listServiceIncidentsByIdTracking(this.idTracking);
+              this.listServiceIndicent();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -307,7 +423,7 @@ export class ServiceIncidentsComponent implements OnInit {
           } else {
             Swal.fire({
               icon: config.ERROR,
-              title: "Ocurrio un error, comuniquese con el encargado",
+              title: "Ocurrio un error",
               showConfirmButton: false,
             });
           }
@@ -320,4 +436,31 @@ export class ServiceIncidentsComponent implements OnInit {
           });
         });
   }
+
+  listTracking() {
+    this.serviceTracking.listTrackings()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.tracking = response.datos.trackingsService;
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
 }

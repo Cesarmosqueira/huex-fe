@@ -22,7 +22,7 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="col-sm-8">
               <div class="text-sm-end">
                 <button type="button" class="btn btn-success btn-rounded mb-2 me-2" (click)="openModal(content)"><i
@@ -126,15 +126,6 @@
           </a>
           <ng-template ngbNavContent>
             <ng-template [ngTemplateOutlet]="TabContent"></ng-template>
-          </ng-template>
-        </li>
-        <li [ngbNavItem]="2" *ngIf="newTruck">
-          <a ngbNavLink>
-            <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
-            <span class="d-none d-sm-block">Incidencias</span>
-          </a>
-          <ng-template ngbNavContent>
-            <ng-template [ngTemplateOutlet]="TabContent1"></ng-template>
           </ng-template>
         </li>
         <li [ngbNavItem]="3" *ngIf="newTruck">
@@ -462,9 +453,6 @@
   </div>
 </ng-template>
 
-<ng-template #TabContent1>
-  <app-service-incidents [idTracking]="idTrackingOuput"></app-service-incidents>
-</ng-template>
 
 <ng-template #TabContent2>
   <app-service-monitoring [idTracking]="idTrackingOuput"></app-service-monitoring>
