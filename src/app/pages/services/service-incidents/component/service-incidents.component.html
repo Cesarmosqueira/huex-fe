@@ -12,6 +12,7 @@
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
+
             </div>
             <div class="col-sm-8">
               <div class="text-sm-end">
@@ -28,10 +29,17 @@
               <thead class="table-light">
               <tr>
                 <th class="align-middle">ID</th>
-                <th class="align-middle">folio</th>
-                <th class="align-middle">sku</th>
-                <th class="align-middle">Fecha observacion</th>
-
+                <th class="align-middle">Fecha servicio</th>
+                <th class="align-middle">Placa</th>
+                <th class="align-middle">Cliente</th>
+                <th class="align-middle">Ruta</th>
+                <th class="align-middle">Producto</th>
+                <th class="align-middle">Fecha incidencia</th>
+                <th class="align-middle">Categoria</th>
+                <th class="align-middle">Motivo</th>
+                <th class="align-middle">Nombre responsable</th>
+                <th class="align-middle">Tienda</th>
+                <th class="align-middle">Cantidad</th>
                 <th class="align-middle">Acciones</th>
               </tr>
               </thead>
@@ -40,9 +48,17 @@
                 <td>
                   <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                 </td>
-                <td>{{data.folio}}</td>
-                <td>{{data.sku}}</td>
+                <td>{{data.trackingService.dateService}}</td>
+                <td>{{data.trackingService.truckFleet.tractPlate}}</td>
+                <td>{{data.trackingService.rate.customer.socialReason}}</td>
+                <td>{{data.trackingService.rate.route.routeEnd}}</td>
+                <td>{{data.nameProduct}}</td>
                 <td>{{data.observationDate}}</td>
+                <td>{{data.damageType}}</td>
+                <td>{{data.motive}}</td>
+                <td>{{data.fullName}}</td>
+                <td>{{data.stored}}</td>
+                <td>{{data.quantityUnits}}</td>
 
                 <td>
                   <div class="d-flex gap-3">
@@ -86,7 +102,7 @@
         <div class="col-lg-4">
           <input type="text" hidden formControlName="id" value="0" />
           <label for="customername-field" class="form-label">Servicio</label>
-          <ng-select [items]="tracking" bindLabel="destinationDetail" placeholder="Seleccione servicio"
+          <ng-select [items]="tracking" bindLabel="truckFleet.name" placeholder="Seleccione servicio"
                      [(ngModel)]="selectTracking" id="customername-field" [clearable]="false" required
                      formControlName="trackingService" [ngClass]="{ 'is-invalid': submitted && form['trackingService'].errors }">
           </ng-select>
@@ -141,19 +157,20 @@
 
         <div class="col-lg-4">
           <div class="mb-3">
-            <label for="customername-field" class="form-label">Tipo daño</label>
-            <input type="text" id="customername-field" class="form-control"  formControlName="damageType"
-                   [ngClass]="{ 'is-invalid': submitted && form['damageType'].errors }" autocomplete="disabled" />
+            <label for="customername-field" class="form-label">Categoria</label>
+            <ng-select [items]="typeDamage" id="customername-field"  formControlName="damageType"
+                       placeholder="Seleccione Estado"
+                       [ngClass]="{ 'is-invalid': submitted && form['damageType'].errors }"></ng-select>
+
           </div>
         </div>
-
       </div>
 
       <div class="row">
 
         <div class="col-lg-4">
           <div class="mb-3">
-            <label for="customername-field" class="form-label">Motivo(Merma)</label>
+            <label for="customername-field" class="form-label">Motivo</label>
             <input type="text" id="customername-field" class="form-control"  formControlName="motive"
                    [ngClass]="{ 'is-invalid': submitted && form['motive'].errors }" autocomplete="disabled" />
           </div>

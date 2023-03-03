@@ -19,5 +19,10 @@ export function sort(serviceIncidents: ServiceIncidents[], column: SortColumn, d
 }
 
 export function matches(serviceIncidents: ServiceIncidents, term: string, pipe: PipeTransform) {
-    return serviceIncidents.observation.toLowerCase().includes(term.toLowerCase());
+
+  return serviceIncidents.trackingService.truckFleet.tractPlate.toLowerCase().includes(term.toLowerCase())
+    || serviceIncidents.trackingService.dateService.toLowerCase().includes(term.toLowerCase())
+    ||serviceIncidents.trackingService.rate.customer.socialReason.toLowerCase().includes(term.toLowerCase())
+    || serviceIncidents.trackingService.rate.route.routeEnd.toLowerCase().includes(term.toLowerCase());
+
 }

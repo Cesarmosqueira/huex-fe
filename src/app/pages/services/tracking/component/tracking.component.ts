@@ -356,9 +356,11 @@ console.log(listData[0]);
 
     let rate = this.rates.filter((data: { id: any; }) => data.id === listData[0].rate.id);
     this.selectRates = rate[0];
+
     this.selectDriver = listData[0].driver;
     this.selectCopilot = listData[0].copilot;
     this.selectStevedore = listData[0].stevedore;
+
     if (listData[0].dateTimeCompletion != null || listData[0].dateTimeCompletion != undefined) {
       const dateTimeCompletion = listData[0].dateTimeCompletion.substring(0, 10);
       const fortmatDateTimeCompletion = this.pipe.transform(listData[0].dateTimeCompletion, 'yyyy-MM-ddTHH:mm:ss');
@@ -667,6 +669,7 @@ console.log(listData[0]);
                 cus = element.customer;
                 cus.name = element.customer.socialReason + "/" + element.route.routeEnd+"/M3 "
                   + element.volume+"/TN "+ element.tonNumber;
+
                 element.customer = cus;
 
               });

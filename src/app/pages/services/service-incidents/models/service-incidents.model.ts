@@ -6,7 +6,7 @@ export class ServiceIncidents {
   folio:string;
   sku:string;
   nameProduct:string;
-  observationDate:Date;
+  observationDate:any;
   damageType:string;
   motive:string;
   responsible:string;

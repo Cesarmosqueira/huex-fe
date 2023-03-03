@@ -10,6 +10,8 @@ import {ServiceIncidents} from "../models/service-incidents.model";
 import {ServiceIncidentsService} from "../services/service-incidents.service";
 import { Tracking } from '../../tracking/models/tracking.model';
 import {TrackingService} from "../../tracking/services/tracking.service";
+import {Customer} from "../../../customers/customer/models/customer.model";
+import {TruckFleet} from "../../../vehicles/truck-fleet/models/truck-fleet.model";
 
 
 @Component({
@@ -39,6 +41,10 @@ export class ServiceIncidentsComponent implements OnInit {
   serviceIncidentList!: Observable<ServiceIncidents[]>;
   total: Observable<number>;
   pipe: any;
+
+  typeDamage:string[]=['A-FALLO FABRICA','B-PRODUCTO INCOMPLETO','C-DETERIORO DEL PRODUCTO POR TIEMPO',
+  'D-DAÑO ORIGEN','E-DAÑO EN EL TRANSPORTE','F-MAL ALMACENAJE','G-MAL USO','H-DAÑO POR MALA MANIPULACION',
+  'I-FALLA DE CONTROL DE CALIDAD EN ORIGEN DE DESPACHO','J-EMPAQUE DAÑADO','Q-OTROS'];
 
   tracking:Tracking[]=[];
   selectTracking=null;
@@ -238,6 +244,7 @@ export class ServiceIncidentsComponent implements OnInit {
     this.serviceIncidentForm.controls['folio'].setValue(listData[0].folio);
     this.serviceIncidentForm.controls['sku'].setValue(listData[0].sku);
     this.serviceIncidentForm.controls['nameProduct'].setValue(listData[0].nameProduct);
+
     if (listData[0].observationDate != null || listData[0].observationDate != undefined) {
       const observationDate = listData[0].observationDate.substring(0, 10);
       const fortmatObservationDate = this.pipe.transform(observationDate, 'yyyy-MM-dd');
@@ -254,7 +261,10 @@ export class ServiceIncidentsComponent implements OnInit {
     this.serviceIncidentForm.controls['grt'].setValue(listData[0].grt);
     this.serviceIncidentForm.controls['grr'].setValue(listData[0].grr);
     this.serviceIncidentForm.controls['order'].setValue(listData[0].order);
-    this.selectTracking=listData[0].trackingService;
+
+    let tracking = this.tracking.filter((data: { id: any; }) => data.id === listData[0].trackingService.id);
+    this.selectTracking=tracking[0];
+
     this.idServiceIncidentOuput = id;
   }
 
@@ -445,6 +455,13 @@ export class ServiceIncidentsComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.tracking = response.datos.trackingsService;
+              this.tracking.forEach(element => {
+                let tru = new TruckFleet();
+                tru = element.truckFleet;
+                tru.name = element.dateService+"/"+element.truckFleet.tractPlate+"/"+ element.rate.customer.socialReason+"/"+element.rate.route.routeEnd;
+                element.truckFleet = tru;
+
+              });
             } else {
               Swal.fire({
                 icon: config.WARNING,
