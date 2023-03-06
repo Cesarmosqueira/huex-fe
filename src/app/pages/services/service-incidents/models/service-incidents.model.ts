@@ -19,5 +19,6 @@ export class ServiceIncidents {
   order: string;
   status:string;
   price:number;
+  chargeIncident:string;
 
 }
