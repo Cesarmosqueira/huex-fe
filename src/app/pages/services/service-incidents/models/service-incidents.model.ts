@@ -17,5 +17,7 @@ export class ServiceIncidents {
   grt: string;
   grr: string;
   order: string;
+  status:string;
+  price:number;
 
 }

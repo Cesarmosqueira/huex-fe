@@ -40,6 +40,7 @@
                 <th class="align-middle">Nombre responsable</th>
                 <th class="align-middle">Tienda</th>
                 <th class="align-middle">Cantidad</th>
+                <th class="align-middle">Estado</th>
                 <th class="align-middle">Acciones</th>
               </tr>
               </thead>
@@ -59,6 +60,7 @@
                 <td>{{data.fullName}}</td>
                 <td>{{data.stored}}</td>
                 <td>{{data.quantityUnits}}</td>
+                <td>{{data.status}}</td>
 
                 <td>
                   <div class="d-flex gap-3">
@@ -99,7 +101,7 @@
 
       <div class="row">
 
-        <div class="col-lg-4">
+        <div class="col-lg-6">
           <input type="text" hidden formControlName="id" value="0" />
           <label for="customername-field" class="form-label">Servicio</label>
           <ng-select [items]="tracking" bindLabel="truckFleet.name" placeholder="Seleccione servicio"
@@ -113,7 +115,7 @@
 
 
 
-        <div class="col-lg-4">
+        <div class="col-lg-3">
           <div class="mb-3">
             <label for="customername-field" class="form-label">Folio</label>
             <input type="text" id="customername-field" class="form-control"  formControlName="folio"
@@ -123,7 +125,7 @@
         </div>
 
 
-        <div class="col-lg-4">
+        <div class="col-lg-3">
           <div class="mb-3">
             <label for="customername-field" class="form-label">SKU</label>
             <input type="text" id="customername-field" class="form-control"  formControlName="sku"
@@ -147,7 +149,7 @@
 
         <div class="col-lg-4">
           <div class="mb-3">
-            <label>Fecha servicio</label>
+            <label>Fecha incidente</label>
             <div class="input-group clockpicker">
               <input class="form-control" type="date" id="example-date-input" formControlName="observationDate"
                      autocomplete="disabled">
@@ -160,7 +162,8 @@
             <label for="customername-field" class="form-label">Categoria</label>
             <ng-select [items]="typeDamage" id="customername-field"  formControlName="damageType"
                        placeholder="Seleccione Estado"
-                       [ngClass]="{ 'is-invalid': submitted && form['damageType'].errors }"></ng-select>
+                       [ngClass]="{ 'is-invalid': submitted && form['damageType'].errors }">
+            </ng-select>
 
           </div>
         </div>
@@ -242,11 +245,34 @@
 
         <div class="col-lg-4">
           <div class="mb-3">
-            <label for="customername-field" class="form-label">Orden compra</label>
+            <label for="customername-field" class="form-label">Numero pedido</label>
             <input type="text" id="customername-field" class="form-control"  formControlName="order"
                    [ngClass]="{ 'is-invalid': submitted && form['order'].errors }" autocomplete="disabled" />
           </div>
         </div>
+
+      </div>
+
+      <div class="row">
+
+        <div class="col-lg-4">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Estado</label>
+            <ng-select [items]="status" id="customername-field"  formControlName="status"
+                       placeholder="Seleccione Estado"
+                       [ngClass]="{ 'is-invalid': submitted && form['status'].errors }">
+            </ng-select>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Costo</label>
+            <input type="text" id="customername-field" class="form-control"  formControlName="price"
+                   [ngClass]="{ 'is-invalid': submitted && form['price'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+
 
       </div>
 

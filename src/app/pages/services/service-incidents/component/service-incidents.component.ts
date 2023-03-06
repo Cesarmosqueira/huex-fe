@@ -44,7 +44,10 @@ export class ServiceIncidentsComponent implements OnInit {
 
   typeDamage:string[]=['A-FALLO FABRICA','B-PRODUCTO INCOMPLETO','C-DETERIORO DEL PRODUCTO POR TIEMPO',
   'D-DAÑO ORIGEN','E-DAÑO EN EL TRANSPORTE','F-MAL ALMACENAJE','G-MAL USO','H-DAÑO POR MALA MANIPULACION',
-  'I-FALLA DE CONTROL DE CALIDAD EN ORIGEN DE DESPACHO','J-EMPAQUE DAÑADO','Q-OTROS'];
+  'I-FALLA DE CONTROL DE CALIDAD EN ORIGEN DE DESPACHO','J-EMPAQUE DAÑADO',
+  'K-SINIESTRADO','K-MALA ENTREGA','M-FALTANTE','Q-OTROS'];
+
+  status:string[]=['SEDE HUEX','EN TIENDA','EN ALMACEN CLIENTE']
 
   tracking:Tracking[]=[];
   selectTracking=null;
@@ -81,6 +84,9 @@ export class ServiceIncidentsComponent implements OnInit {
       grt:[''],
       grr: [''],
       order: [''],
+      status: [''],
+      price: [''],
+
 
       btnSave: []
     });
@@ -185,6 +191,9 @@ export class ServiceIncidentsComponent implements OnInit {
       const grt = this.serviceIncidentForm.get('grt')?.value;
       const grr = this.serviceIncidentForm.get('grr')?.value;
       const order = this.serviceIncidentForm.get('order')?.value;
+      const status = this.serviceIncidentForm.get('status')?.value;
+      const price = this.serviceIncidentForm.get('price')?.value;
+
 
       let serviceIncident = new ServiceIncidents();
       let tracking=new Tracking();
@@ -204,6 +213,9 @@ export class ServiceIncidentsComponent implements OnInit {
       serviceIncident.grt=grt;
       serviceIncident.grr=grr;
       serviceIncident.order=order;
+      serviceIncident.status=status;
+      serviceIncident.price=price;
+
 
 
 
@@ -261,6 +273,9 @@ export class ServiceIncidentsComponent implements OnInit {
     this.serviceIncidentForm.controls['grt'].setValue(listData[0].grt);
     this.serviceIncidentForm.controls['grr'].setValue(listData[0].grr);
     this.serviceIncidentForm.controls['order'].setValue(listData[0].order);
+    this.serviceIncidentForm.controls['status'].setValue(listData[0].status);
+    this.serviceIncidentForm.controls['price'].setValue(listData[0].price);
+
 
     let tracking = this.tracking.filter((data: { id: any; }) => data.id === listData[0].trackingService.id);
     this.selectTracking=tracking[0];
@@ -386,6 +401,9 @@ export class ServiceIncidentsComponent implements OnInit {
     this.serviceIncidentForm.controls['grt'].setValue("");
     this.serviceIncidentForm.controls['grr'].setValue("");
     this.serviceIncidentForm.controls['order'].setValue("");
+    this.serviceIncidentForm.controls['status'].setValue("");
+    this.serviceIncidentForm.controls['price'].setValue("");
+
   }
 
   enableInputs() {
@@ -405,7 +423,8 @@ export class ServiceIncidentsComponent implements OnInit {
     this.serviceIncidentForm.controls['grt'].enable();
     this.serviceIncidentForm.controls['grr'].enable();
     this.serviceIncidentForm.controls['order'].enable();
-
+    this.serviceIncidentForm.controls['status'].enable();
+    this.serviceIncidentForm.controls['price'].enable();
 
   }
 
