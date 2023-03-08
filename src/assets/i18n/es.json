@@ -119,7 +119,9 @@
         "TRUCKFLEET": "Flota de camiones",
         "FUEL": "Kardex Combustible",
         "OIL": "Mantenimiento Aceite",
-        "TIRE": "Mantenimiento LLantas"
+        "TIRE": "Mantenimiento LLantas",
+        "FUELCONTROL": "Control Combustible"
+
       }
     },
     "EMPLOYEES": {

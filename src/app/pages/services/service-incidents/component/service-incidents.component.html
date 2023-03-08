@@ -276,7 +276,7 @@
         <div class="col-lg-4">
           <div class="mb-3">
             <label for="customername-field" class="form-label">Incidente carga</label>
-            <ng-select [items]="status" id="customername-field"  formControlName="chargeIncident"
+            <ng-select [items]="chargeIncident" id="customername-field"  formControlName="chargeIncident"
                        placeholder="Seleccione Incidente carga"
                        [ngClass]="{ 'is-invalid': submitted && form['chargeIncident'].errors }">
             </ng-select>

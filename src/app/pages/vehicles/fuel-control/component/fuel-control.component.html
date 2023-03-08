@@ -1,0 +1,263 @@
+<div class="container-fluid">
+  <app-page-title title="Orders" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-4">
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Buscar registro..." [(ngModel)]="service.searchTerm">
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-sm-8">
+              <div class="text-sm-end">
+                <button type="button" class="btn btn-success btn-rounded mb-2 me-2" (click)="openModal(content)"><i
+                  class="mdi mdi-plus mr-1"></i>
+                  Nuevo</button>
+              </div>
+            </div><!-- end col-->
+          </div>
+
+          <!-- Table data -->
+          <div class="table-responsive mb-0">
+            <table class="table table-centered table-nowrap">
+              <thead class="table-light">
+              <tr>
+                <th class="align-middle">ID</th>
+                <th class="align-middle">Estado</th>
+                <th class="align-middle">Fecha servicio</th>
+                <th class="align-middle">Placa</th>
+                <th class="align-middle">Cliente</th>
+                <th class="align-middle">Ruta</th>
+                <th class="align-middle">Total galones</th>
+                <th class="align-middle">Objetivo</th>
+                <th class="align-middle">diferencia</th>
+                <th class="align-middle">Observaciones</th>
+                <th class="align-middle">Chofer</th>
+                <th class="align-middle">Copiloto</th>
+                <th class="align-middle">Acciones</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of fuelControl" id="o_{{data.id}}">
+                <td>
+                  <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
+                </td>
+                <td>{{data.trackingService.preloadStatus}}</td>
+                <td>{{data.trackingService.dateService}}</td>
+                <td>{{data.trackingService.truckFleet.tractPlate}}</td>
+                <td>{{data.trackingService.rate.customer.socialReason}}</td>
+                <td>{{data.trackingService.rate.route.routeEnd}}</td>
+                <td>{{data.totalGallons}}</td>
+                <td>{{data.target}}</td>
+                <td>{{data.difference}}</td>
+                <td>{{data.observation}}</td>
+                <td>{{data.trackingService.driver.fullName}}</td>
+                <td>{{data.trackingService.copilot.fullName}}</td>
+
+
+                <td>
+                  <div class="d-flex gap-3">
+                    <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
+                      class="mdi mdi-pencil font-size-18"></i></a>
+                    <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
+                      class="mdi mdi-delete font-size-18"></i></a>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+
+          </div>
+          <!-- end table -->
+          <ul class="pagination pagination-rounded justify-content-end mb-2">
+            <ngb-pagination [collectionSize]="(total | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+            </ngb-pagination>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Order Create Model -->
+<ng-template #content role="document" let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Nuevo control</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+            (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form (ngSubmit)="saveUser()" [formGroup]="fuelControlForm">
+    <div class="modal-body">
+      <input type="text" hidden formControlName="id" value="0" />
+
+
+      <div class="row">
+
+        <div class="col-lg-6">
+          <input type="text" hidden formControlName="id" value="0" />
+          <label for="customername-field" class="form-label">Servicio</label>
+          <ng-select [items]="tracking" bindLabel="truckFleet.name" placeholder="Seleccione servicio"
+                     [(ngModel)]="selectTracking" id="customername-field" [clearable]="false" required
+                     formControlName="trackingService" [ngClass]="{ 'is-invalid': submitted && form['trackingService'].errors }">
+          </ng-select>
+          <div *ngIf="submitted && form['trackingService'].errors" class="invalid-feedback" align="left">
+            <div *ngIf="form['trackingService'].errors['required']">Servicio es requerido</div>
+          </div>
+        </div>
+
+
+
+        <div class="col-lg-3">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Lugar 1</label>
+            <input type="text" id="customername-field" class="form-control"  formControlName="firstPlace"
+                   [ngClass]="{ 'is-invalid': submitted && form['firstPlace'].errors }" autocomplete="disabled" />
+
+          </div>
+        </div>
+
+
+        <div class="col-lg-3">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Tanqueada 1</label>
+            <input type="number" id="customername-field" class="form-control"  formControlName="firstQuantity"
+                   [ngClass]="{ 'is-invalid': submitted && form['firstQuantity'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+
+
+
+        <div class="col-lg-4">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Lugar 2</label>
+            <input type="text" id="customername-field" class="form-control"  formControlName="secondPlace"
+                   [ngClass]="{ 'is-invalid': submitted && form['secondPlace'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Tanquada 2</label>
+            <input type="number" id="customername-field" class="form-control"  formControlName="secondQuantity"
+                   [ngClass]="{ 'is-invalid': submitted && form['secondQuantity'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+
+
+
+        <div class="col-lg-4">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Lugar 3</label>
+            <input type="text" id="customername-field" class="form-control"  formControlName="thirdPlace"
+                   [ngClass]="{ 'is-invalid': submitted && form['thirdPlace'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="col-lg-4">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Tanquada 3</label>
+            <input type="number" id="customername-field" class="form-control"  formControlName="thirdQuantity"
+                   [ngClass]="{ 'is-invalid': submitted && form['thirdQuantity'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Lugar 4</label>
+            <input type="text" id="customername-field" class="form-control"  formControlName="fourthPlace"
+                   [ngClass]="{ 'is-invalid': submitted && form['fourthPlace'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+
+
+        <div class="col-lg-4">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Tanqueada 4</label>
+            <input type="number" id="customername-field" class="form-control"  formControlName="forthQuantity"
+                   [ngClass]="{ 'is-invalid': submitted && form['forthQuantity'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="col-lg-4">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Lugar 5</label>
+            <input type="text" id="customername-field" class="form-control"  formControlName="fifthPlace"
+                   [ngClass]="{ 'is-invalid': submitted && form['fifthPlace'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Tanqueada 5</label>
+            <input type="number" id="customername-field" class="form-control"  formControlName="fifthQuantity"
+                   [ngClass]="{ 'is-invalid': submitted && form['fifthQuantity'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Lugar 6</label>
+            <input type="text" id="customername-field" class="form-control"  formControlName="sixthPlace"
+                   [ngClass]="{ 'is-invalid': submitted && form['sixthPlace'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+
+        <div class="col-lg-4">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Tanqueada 6</label>
+            <input type="number" id="customername-field" class="form-control"  formControlName="sixthQuantity"
+                   [ngClass]="{ 'is-invalid': submitted && form['sixthQuantity'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Ojbectivo</label>
+            <input type="number" id="customername-field" class="form-control"  formControlName="target"
+                   [ngClass]="{ 'is-invalid': submitted && form['target'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Observacion</label>
+            <input type="text" id="customername-field" class="form-control"  formControlName="observation"
+                   [ngClass]="{ 'is-invalid': submitted && form['observation'].errors }" autocomplete="disabled" />
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                (click)="modal.close('Close click')">Cancelar</button>
+        <button type="submit" class="btn btn-success" id="add-btn">Registrar</button>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<!--End Modal -->

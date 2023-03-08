@@ -17,6 +17,7 @@ import { MaintenanceTireComponent } from './maintenance-tire/components/maintena
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
+import { FuelControlComponent } from './fuel-control/component/fuel-control.component';
 
 
 const config: DropzoneConfigInterface = {
@@ -32,7 +33,8 @@ const config: DropzoneConfigInterface = {
     DocumentUnitComponent,
     KardexFuelComponent,
     MaintenanceOilComponent,
-    MaintenanceTireComponent
+    MaintenanceTireComponent,
+    FuelControlComponent
   ],
   imports: [
     CommonModule,
