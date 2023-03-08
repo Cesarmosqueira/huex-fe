@@ -1,5 +1,6 @@
 import { PipeTransform } from "@angular/core";
 import {FuelControl} from "../models/fuel-control.model";
+import {Tracking} from "../../../services/tracking/models/tracking.model";
 
 export type SortColumn = keyof FuelControl | '';
 export type SortDirection = 'asc' | 'desc' | '';
@@ -17,7 +18,14 @@ export function sort(fuelControl: FuelControl[], column: SortColumn, direction: 
         });
     }
 }
+export function matchesDate(fuelControl: FuelControl, term: string, pipe: PipeTransform) {
 
-export function matches(fuelControl: FuelControl, term: string, pipe: PipeTransform) {
-    return fuelControl.trackingService.truckFleet.tractPlate.toLowerCase().includes(term.toLowerCase());
+  return fuelControl.trackingService.dateService.toLowerCase().includes(term.toLowerCase());
+
+}
+
+export function matchesName(fuelControl: FuelControl, term: string, pipe: PipeTransform) {
+    return fuelControl.trackingService.truckFleet.tractPlate.toLowerCase().includes(term.toLowerCase())
+      || fuelControl.trackingService.rate.route.routeEnd.toLowerCase().includes(term.toLowerCase())
+      || fuelControl.trackingService.rate.customer.socialReason.toLowerCase().includes(term.toLowerCase());
 }

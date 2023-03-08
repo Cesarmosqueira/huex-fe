@@ -187,11 +187,6 @@ export class FuelControlComponent implements OnInit {
       let difference=target-totalGallons;
       const observation = this.fuelControlForm.get('observation')?.value;
 
-
-      console.log(totalGallons);
-      console.log(difference);
-
-
       let fuelControl = new FuelControl();
       let tracking=new Tracking();
       tracking.id=trackingServiceId;

@@ -6,9 +6,19 @@
         <div class="card-body">
           <div class="row mb-2">
             <div class="col-sm-4">
+
               <div class="search-box me-2 mb-2 d-inline-block">
                 <div class="position-relative">
-                  <input type="text" class="form-control" placeholder="Buscar registro..." [(ngModel)]="service.searchTerm">
+                  <input type="text" class="form-control" placeholder="Buscar Por Fecha..."
+                         [(ngModel)]="service.searchTerm">
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Buscar registro..."
+                         [(ngModel)]="service.searchName">
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
