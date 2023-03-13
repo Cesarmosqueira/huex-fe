@@ -25,7 +25,7 @@ export function matchesDate(tracking: Tracking, term: string, pipe: PipeTransfor
 
 export function matchesName(tracking: Tracking, term: string, pipe: PipeTransform) {
 
-    return tracking.rate.customer.socialReason.toLowerCase().includes(term.toLowerCase())
-      || tracking.truckFleet.tractPlate.toLowerCase().includes(term.toLowerCase())
-      || tracking.rate.route.routeEnd.toLowerCase().includes(term.toLowerCase());
+    return tracking.socialReason.toLowerCase().includes(term.toLowerCase())
+      || tracking.tractPlate.toLowerCase().includes(term.toLowerCase())
+      || tracking.routeEnd.toLowerCase().includes(term.toLowerCase());
 }

@@ -23,5 +23,10 @@ export class Tracking {
 	photoInsurance: any;
 	invoiced: string;
 	charge: string;
-  documentaryStatus:string
+	documentaryStatus: string;
+	socialReason: string;
+	tractPlate: string;
+	routeEnd: string;
+    tonNumber: string;;
+    volume: any;
 }

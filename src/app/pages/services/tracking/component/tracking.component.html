@@ -6,7 +6,7 @@
       <div class="card">
         <div class="card-body">
           <div class="row mb-2">
-            <div class="col-sm-4">
+            <div class="col-sm-6">
               <div class="search-box me-2 mb-2 d-inline-block">
                 <div class="position-relative">
                   <input type="text" class="form-control" placeholder="Buscar Por Fecha..."
@@ -21,9 +21,11 @@
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
+
+              <button type="button" (click)="exportexcel()" class="btn custom btn-sm mt-2 mr-2"><i class="fa fa-download"></i> Exportar  </button>
             </div>
 
-            <div class="col-sm-8">
+            <div class="col-sm-6">
               <div class="text-sm-end">
                 <button type="button" class="btn btn-success btn-rounded mb-2 me-2" (click)="openModal(content)"><i
                     class="mdi mdi-plus mr-1"></i>
@@ -61,33 +63,25 @@
                     <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                   </td>
                   <td>{{data.dateService}}</td>
-                  <td>{{data.truckFleet.tractPlate}}</td>
-                  <td>{{data.rate.customer.socialReason}}</td>
-                  <td>{{data.rate.route.routeStart}}</td>
-                  <td>{{data.rate.route.routeEnd}}</td>
+                  <td>{{data.tractPlate}}</td>
+                  <td>{{data.socialReason}}</td>
+                  <td>{{data.routeStart}}</td>
+                  <td>{{data.routeEnd}}</td>
                   <td>{{data.destinationDetail}}</td>
                   <td>{{data.numberPoints}}</td>
-                  <td>{{data.driver.fullName}}</td>
+                  <td>{{data.fullNameDriver}}</td>
                   <td>{{data.additionalCost}}</td>
-                  <td>{{data.rate.volume}}</td>
-                  <td>{{data.rate.tonNumber}}</td>
+                  <td>{{data.volume}}</td>
+                  <td>{{data.tonNumber}}</td>
                   <td>{{data.preloadStatus}}</td>
                   <td>{{data.documentaryStatus}}</td>
-
-                  <!--    <td>
-                        <a href="javascript:void(0);" class="text-success" (click)="viewDocument(data.id)">Ver <i
-                            class="mdi mdi-eye font-size-16 mt"></i>/</a>
-                        <a href="javascript:void(0);" class="text-success" (click)="saveByteArray(data.id)">Descargar <i
-                            class="mdi mdi-cloud-download font-size-16 mt"></i></a>
-                      </td>
-                    -->
-
                   <td>
                     <div class="d-flex gap-3">
-                      <a href="javascript:void(0);" class="text-primary" (click)="editDataGet(data.id,content,true)"><i
-                          class="mdi mdi-eye font-size-18"></i></a>
+                      <a href="javascript:void(0);" class="text-primary"
+                        (click)="retrieveTracking(data.id,content,true)"><i class="mdi mdi-eye font-size-18"></i></a>
                       <a href="javascript:void(0);" class="text-success"
-                        (click)="editDataGet(data.id,content, false)"><i class="mdi mdi-pencil font-size-18"></i></a>
+                        (click)="retrieveTracking(data.id,content, false)"><i
+                          class="mdi mdi-pencil font-size-18"></i></a>
                       <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
                           class="mdi mdi-delete font-size-18"></i></a>
                     </div>
@@ -150,7 +144,7 @@
       <div [ngbNavOutlet]="nav"></div>
     </div><!-- End Default Tabs -->
   </div>
- <!--  <div class="modal-footer">
+  <!--  <div class="modal-footer">
     <button class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
   </div>
 -->
@@ -195,8 +189,8 @@
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Tarifa</label>
                 <ng-select [items]="rates" bindLabel="customer.name" placeholder="Seleccione Tarifa"
-                           [(ngModel)]="selectRates" id="customername-field" [clearable]="false" required formControlName="rate"
-                           [ngClass]="{ 'is-invalid': submitted && form['rate'].errors }">
+                  [(ngModel)]="selectRates" id="customername-field" [clearable]="false" required formControlName="rate"
+                  [ngClass]="{ 'is-invalid': submitted && form['rate'].errors }">
                 </ng-select>
                 <div *ngIf="submitted && form['rate'].errors" class="invalid-feedback" align="left">
                   <div *ngIf="form['rate'].errors['required']">Tarifa es requerido</div>
@@ -214,8 +208,7 @@
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Detalle Destino</label>
-                <input type="text" id="customername-field" class="form-control"
-                  formControlName="destinationDetail"
+                <input type="text" id="customername-field" class="form-control" formControlName="destinationDetail"
                   [ngClass]="{ 'is-invalid': submitted && form['destinationDetail'].errors }" autocomplete="off" />
               </div>
             </div>
@@ -223,9 +216,8 @@
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Cantidad Puntos</label>
-                <input type="number" id="customername-field" class="form-control"
-                  formControlName="numberPoints" [ngClass]="{ 'is-invalid': submitted && form['numberPoints'].errors }"
-                  autocomplete="off" />
+                <input type="number" id="customername-field" class="form-control" formControlName="numberPoints"
+                  [ngClass]="{ 'is-invalid': submitted && form['numberPoints'].errors }" autocomplete="off" />
 
               </div>
             </div>
@@ -233,9 +225,9 @@
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Tipo Servicio</label>
-                <ng-select [items]="tipoServicio" id="customername-field"  formControlName="serviceType"
-                           placeholder="Seleccione Tipo Servicio"
-                           [ngClass]="{ 'is-invalid': submitted && form['serviceType'].errors }"></ng-select>
+                <ng-select [items]="tipoServicio" id="customername-field" formControlName="serviceType"
+                  placeholder="Seleccione Tipo Servicio"
+                  [ngClass]="{ 'is-invalid': submitted && form['serviceType'].errors }"></ng-select>
 
               </div>
             </div>
@@ -243,9 +235,8 @@
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Costo adicional</label>
-                <input type="text" id="customername-field" class="form-control"
-                       formControlName="additionalCost"
-                       [ngClass]="{ 'is-invalid': submitted && form['additionalCost'].errors }" autocomplete="off" />
+                <input type="text" id="customername-field" class="form-control" formControlName="additionalCost"
+                  [ngClass]="{ 'is-invalid': submitted && form['additionalCost'].errors }" autocomplete="off" />
               </div>
             </div>
 
@@ -256,7 +247,7 @@
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Obsevaciones</label>
-                <input type="text" id="customername-field" class="form-control"  formControlName="observations"
+                <input type="text" id="customername-field" class="form-control" formControlName="observations"
                   [ngClass]="{ 'is-invalid': submitted && form['observations'].errors }" autocomplete="off" />
 
               </div>
@@ -264,7 +255,7 @@
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Numero guia</label>
-                <input type="text" id="customername-field" class="form-control"  formControlName="guideNumber"
+                <input type="text" id="customername-field" class="form-control" formControlName="guideNumber"
                   [ngClass]="{ 'is-invalid': submitted && form['guideNumber'].errors }" autocomplete="off" />
 
               </div>
@@ -274,8 +265,8 @@
               <div class="mb-3">
                 <label>Fecha precarga</label>
                 <div class="input-group clockpicker">
-                  <input class="form-control" type="datetime-local" id="example-date-input" formControlName="datePrecharge"
-                         autocomplete="disabled">
+                  <input class="form-control" type="datetime-local" id="example-date-input"
+                    formControlName="datePrecharge" autocomplete="disabled">
                 </div>
               </div>
             </div>
@@ -283,9 +274,9 @@
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Estado</label>
-                <ng-select [items]="estado" id="customername-field"  formControlName="preloadStatus"
-                           placeholder="Seleccione Estado"
-                           [ngClass]="{ 'is-invalid': submitted && form['preloadStatus'].errors }"></ng-select>
+                <ng-select [items]="estado" id="customername-field" formControlName="preloadStatus"
+                  placeholder="Seleccione Estado"
+                  [ngClass]="{ 'is-invalid': submitted && form['preloadStatus'].errors }"></ng-select>
 
               </div>
             </div>
@@ -299,8 +290,8 @@
               <div class="mb-3">
                 <label>Cita programada</label>
                 <div class="input-group clockpicker">
-                  <input class="form-control" type="datetime-local" id="example-date-input" formControlName="scheduledAppointment"
-                    autocomplete="disabled">
+                  <input class="form-control" type="datetime-local" id="example-date-input"
+                    formControlName="scheduledAppointment" autocomplete="disabled">
                 </div>
               </div>
             </div>
@@ -310,8 +301,8 @@
                 <input type="text" hidden formControlName="id" value="0" />
                 <label for="customername-field" class="form-label">Chofer</label>
                 <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Chofer"
-                  [(ngModel)]="selectDriver" id="customername-field" [clearable]="false"
-                  formControlName="driver" [ngClass]="{ 'is-invalid': submitted && form['driver'].errors }">
+                  [(ngModel)]="selectDriver" id="customername-field" [clearable]="false" formControlName="driver"
+                  [ngClass]="{ 'is-invalid': submitted && form['driver'].errors }">
                 </ng-select>
                 <div *ngIf="submitted && form['driver'].errors" class="invalid-feedback" align="left">
                   <div *ngIf="form['driver'].errors['required']">Chofer es requerido</div>
@@ -324,8 +315,8 @@
                 <input type="text" hidden formControlName="id" value="0" />
                 <label for="customername-field" class="form-label">Copiloto</label>
                 <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Chofer"
-                           [(ngModel)]="selectCopilot" id="customername-field" [clearable]="false"
-                           formControlName="copilot" [ngClass]="{ 'is-invalid': submitted && form['copilot'].errors }">
+                  [(ngModel)]="selectCopilot" id="customername-field" [clearable]="false" formControlName="copilot"
+                  [ngClass]="{ 'is-invalid': submitted && form['copilot'].errors }">
                 </ng-select>
 
               </div>
@@ -337,8 +328,8 @@
                 <input type="text" hidden formControlName="id" value="0" />
                 <label for="customername-field" class="form-label">Estibador</label>
                 <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Chofer"
-                           [(ngModel)]="selectStevedore" id="customername-field" [clearable]="false"
-                           formControlName="stevedore" [ngClass]="{ 'is-invalid': submitted && form['stevedore'].errors }">
+                  [(ngModel)]="selectStevedore" id="customername-field" [clearable]="false" formControlName="stevedore"
+                  [ngClass]="{ 'is-invalid': submitted && form['stevedore'].errors }">
                 </ng-select>
 
               </div>
@@ -353,8 +344,8 @@
               <div class="mb-3">
                 <label>Fecha hora Culminacion</label>
                 <div class="input-group clockpicker">
-                  <input class="form-control" type="datetime-local" id="example-date-input" formControlName="dateTimeCompletion"
-                    autocomplete="disabled">
+                  <input class="form-control" type="datetime-local" id="example-date-input"
+                    formControlName="dateTimeCompletion" autocomplete="disabled">
                 </div>
               </div>
             </div>
@@ -370,9 +361,8 @@
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Dinero entregado</label>
-                <input type="text" id="customername-field" class="form-control"
-                       formControlName="moneyDelivered"
-                       [ngClass]="{ 'is-invalid': submitted && form['moneyDelivered'].errors }" autocomplete="off" />
+                <input type="text" id="customername-field" class="form-control" formControlName="moneyDelivered"
+                  [ngClass]="{ 'is-invalid': submitted && form['moneyDelivered'].errors }" autocomplete="off" />
 
               </div>
             </div>
@@ -380,8 +370,8 @@
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Detalle Dinero</label>
-                <input type="text" id="customername-field" class="form-control"  formControlName="detailMoney"
-                       [ngClass]="{ 'is-invalid': submitted && form['detailMoney'].errors }" autocomplete="off" />
+                <input type="text" id="customername-field" class="form-control" formControlName="detailMoney"
+                  [ngClass]="{ 'is-invalid': submitted && form['detailMoney'].errors }" autocomplete="off" />
               </div>
             </div>
 
@@ -393,7 +383,7 @@
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Operación</label>
-                <input type="text" id="customername-field" class="form-control"  formControlName="operation"
+                <input type="text" id="customername-field" class="form-control" formControlName="operation"
                   [ngClass]="{ 'is-invalid': submitted && form['operation'].errors }" autocomplete="off" />
 
               </div>
@@ -402,18 +392,18 @@
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Estado Facturacion</label>
-                <ng-select [items]="invoiced" id="customername-field"  formControlName="invoiced"
-                           placeholder="Seleccione Estado"
-                           [ngClass]="{ 'is-invalid': submitted && form['invoiced'].errors }"></ng-select>
+                <ng-select [items]="invoiced" id="customername-field" formControlName="invoiced"
+                  placeholder="Seleccione Estado"
+                  [ngClass]="{ 'is-invalid': submitted && form['invoiced'].errors }"></ng-select>
               </div>
             </div>
 
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Estado cobrado</label>
-                <ng-select [items]="charge" id="customername-field"  formControlName="charge"
-                           placeholder="Seleccione Estado"
-                           [ngClass]="{ 'is-invalid': submitted && form['charge'].errors }"></ng-select>
+                <ng-select [items]="charge" id="customername-field" formControlName="charge"
+                  placeholder="Seleccione Estado"
+                  [ngClass]="{ 'is-invalid': submitted && form['charge'].errors }"></ng-select>
 
               </div>
             </div>
@@ -422,9 +412,9 @@
             <div class="col-lg-3">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Estado documentario</label>
-                <ng-select [items]="documentaryStatus" id="customername-field"  formControlName="documentaryStatus"
-                           placeholder="Seleccione Estado"
-                           [ngClass]="{ 'is-invalid': submitted && form['documentaryStatus'].errors }"></ng-select>
+                <ng-select [items]="documentaryStatus" id="customername-field" formControlName="documentaryStatus"
+                  placeholder="Seleccione Estado"
+                  [ngClass]="{ 'is-invalid': submitted && form['documentaryStatus'].errors }"></ng-select>
 
               </div>
             </div>

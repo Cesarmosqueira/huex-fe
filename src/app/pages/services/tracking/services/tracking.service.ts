@@ -53,7 +53,7 @@ export class TrackingService extends BaseService {
       }), catchError(this.handleError));
   }
 
-  public retrieveTracking(id: number): Observable<ResponseModel<Tracking>> {
+  public retrieveTracking(id: number): Observable<ResponseModel<any>> {
     return this.httpClient.get(environment.server + environment.services.tracking.retrieve + id)
       .pipe(map((responseModel: ResponseModel<Tracking>) => {
         return responseModel;

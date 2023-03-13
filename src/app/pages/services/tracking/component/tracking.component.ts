@@ -15,6 +15,8 @@ import { Employee } from "../../../employees/employee/models/employee.model";
 import { TruckFleetService } from "../../../vehicles/truck-fleet/services/truck-fleet.service";
 import { RateService } from "../../../customers/rate/services/rate.service";
 import { EmployeeService } from "../../../employees/employee/services/employee.service";
+import * as XLSX from 'xlsx';
+import { TrackingExcel } from '../models/tracking-excel.model';
 
 @Component({
   selector: 'app-tracking',
@@ -40,6 +42,7 @@ export class TrackingComponent implements OnInit {
   content?: any;
   trackings?: any;
   test: Tracking[] = [];
+  tracking: Tracking;
   trackingsList!: Observable<Tracking[]>;
   total: Observable<number>;
   pipe: any;
@@ -78,6 +81,10 @@ export class TrackingComponent implements OnInit {
   newTruck = false;
 
   trackingOutput: Tracking;
+
+  trackingExcel: TrackingExcel[] = [];
+  
+  fileName= 'TrackingService.xlsx';
 
   constructor(public service: TrackingService,
     private modalService: NgbModal,
@@ -306,7 +313,7 @@ export class TrackingComponent implements OnInit {
    * Open Edit modal
    * @param content modal content
    */
-  editDataGet(id: any, content: any, action: any) {
+  editDataGet(tracking: any, content: any, action: any) {
     this.imageUrl = null;
     this.submitted = false;
     this.action = 2;
@@ -325,61 +332,61 @@ export class TrackingComponent implements OnInit {
     } else {
       this.enableInputs();
     }
-    var listData = this.trackings.filter((data: { id: any; }) => data.id === id);
-    this.trackingForm.controls['id'].setValue(listData[0].id);
-    if (listData[0].dateService != null || listData[0].dateService != undefined) {
-      const dateService = listData[0].dateService.substring(0, 10);
+
+    this.trackingForm.controls['id'].setValue(tracking.id);
+    if (tracking.dateService != null || tracking.dateService != undefined) {
+      const dateService = tracking.dateService.substring(0, 10);
       const fortmatDateService = this.pipe.transform(dateService, 'yyyy-MM-dd');
       this.trackingForm.controls['dateService'].setValue(fortmatDateService);
     }
-console.log(listData[0]);
-    this.selectTruckFleet = listData[0].truckFleet;
-    //this.trackingForm.controls['truckFleet'].setValue(listData[0].truckFleet.tractPlate);
-    this.trackingForm.controls['destinationDetail'].setValue(listData[0].destinationDetail);
-    this.trackingForm.controls['numberPoints'].setValue(listData[0].numberPoints);
-    this.trackingForm.controls['serviceType'].setValue(listData[0].serviceType);
-    this.trackingForm.controls['additionalCost'].setValue(listData[0].additionalCost);
-    this.trackingForm.controls['observations'].setValue(listData[0].observations);
-    this.trackingForm.controls['guideNumber'].setValue(listData[0].guideNumber);
-    if (listData[0].datePrecharge != null || listData[0].datePrecharge != undefined) {
-      const datePrecharge = listData[0].datePrecharge.substring(0, 10);
-      const fortmatDatePrecharge = this.pipe.transform(listData[0].datePrecharge, 'yyyy-MM-ddTHH:mm:ss');
+
+    this.selectTruckFleet = tracking.truckFleet;
+    //this.trackingForm.controls['truckFleet'].setValue(tracking.truckFleet.tractPlate);
+    this.trackingForm.controls['destinationDetail'].setValue(tracking.destinationDetail);
+    this.trackingForm.controls['numberPoints'].setValue(tracking.numberPoints);
+    this.trackingForm.controls['serviceType'].setValue(tracking.serviceType);
+    this.trackingForm.controls['additionalCost'].setValue(tracking.additionalCost);
+    this.trackingForm.controls['observations'].setValue(tracking.observations);
+    this.trackingForm.controls['guideNumber'].setValue(tracking.guideNumber);
+    if (tracking.datePrecharge != null || tracking.datePrecharge != undefined) {
+      const datePrecharge = tracking.datePrecharge.substring(0, 10);
+      const fortmatDatePrecharge = this.pipe.transform(tracking.datePrecharge, 'yyyy-MM-ddTHH:mm:ss');
       this.trackingForm.controls['datePrecharge'].setValue(fortmatDatePrecharge);
     }
 
-    this.trackingForm.controls['preloadStatus'].setValue(listData[0].preloadStatus);
-    if (listData[0].scheduledAppointment != null || listData[0].scheduledAppointment != undefined) {
-      const scheduledAppointment = listData[0].scheduledAppointment.substring(0, 10);
-      const fortmatScheduledAppointment = this.pipe.transform(listData[0].scheduledAppointment, 'yyyy-MM-ddTHH:mm:ss');
+    this.trackingForm.controls['preloadStatus'].setValue(tracking.preloadStatus);
+    if (tracking.scheduledAppointment != null || tracking.scheduledAppointment != undefined) {
+      const scheduledAppointment = tracking.scheduledAppointment.substring(0, 10);
+      const fortmatScheduledAppointment = this.pipe.transform(tracking.scheduledAppointment, 'yyyy-MM-ddTHH:mm:ss');
       this.trackingForm.controls['scheduledAppointment'].setValue(fortmatScheduledAppointment);
     }
 
-    let rate = this.rates.filter((data: { id: any; }) => data.id === listData[0].rate.id);
+    let rate = this.rates.filter((data: { id: any; }) => data.id === tracking.rate.id);
     this.selectRates = rate[0];
 
-    this.selectDriver = listData[0].driver;
-    this.selectCopilot = listData[0].copilot;
-    this.selectStevedore = listData[0].stevedore;
+    this.selectDriver = tracking.driver;
+    this.selectCopilot = tracking.copilot;
+    this.selectStevedore = tracking.stevedore;
 
-    if (listData[0].dateTimeCompletion != null || listData[0].dateTimeCompletion != undefined) {
-      const dateTimeCompletion = listData[0].dateTimeCompletion.substring(0, 10);
-      const fortmatDateTimeCompletion = this.pipe.transform(listData[0].dateTimeCompletion, 'yyyy-MM-ddTHH:mm:ss');
+    if (tracking.dateTimeCompletion != null || tracking.dateTimeCompletion != undefined) {
+      const dateTimeCompletion = tracking.dateTimeCompletion.substring(0, 10);
+      const fortmatDateTimeCompletion = this.pipe.transform(tracking.dateTimeCompletion, 'yyyy-MM-ddTHH:mm:ss');
       this.trackingForm.controls['dateTimeCompletion'].setValue(fortmatDateTimeCompletion);
     }
 
-    this.trackingForm.controls['moneyDelivered'].setValue(listData[0].moneyDelivered);
-    this.trackingForm.controls['detailMoney'].setValue(listData[0].detailMoney);
-    this.trackingForm.controls['operation'].setValue(listData[0].operation);
-    this.trackingForm.controls['invoiced'].setValue(listData[0].invoiced);
-    this.trackingForm.controls['charge'].setValue(listData[0].charge);
-    this.trackingForm.controls['documentaryStatus'].setValue(listData[0].documentaryStatus);
+    this.trackingForm.controls['moneyDelivered'].setValue(tracking.moneyDelivered);
+    this.trackingForm.controls['detailMoney'].setValue(tracking.detailMoney);
+    this.trackingForm.controls['operation'].setValue(tracking.operation);
+    this.trackingForm.controls['invoiced'].setValue(tracking.invoiced);
+    this.trackingForm.controls['charge'].setValue(tracking.charge);
+    this.trackingForm.controls['documentaryStatus'].setValue(tracking.documentaryStatus);
 
-    if (listData[0].photoInsurance != null || listData[0].photoInsurance != undefined) {
-      this.imageUrl = 'data:image/jpeg;base64,' + listData[0].photoInsurance;
+    if (tracking.photoInsurance != null || tracking.photoInsurance != undefined) {
+      this.imageUrl = 'data:image/jpeg;base64,' + tracking.photoInsurance;
       this.trackingForm.get('photoInsurance').setValue(this.dataURLtoFile(this.imageUrl, 'foto.jpeg'));
     }
-    this.idTrackingOuput = listData[0].id;
-    this.trackingOutput = listData[0];
+    this.idTrackingOuput = tracking.id;
+    this.trackingOutput = tracking;
   }
 
   dataURLtoFile(dataurl, filename) {
@@ -397,6 +404,7 @@ console.log(listData[0]);
   }
 
   listTrackings() {
+    console.log("entroooooooo");
     this.service.listTrackings()
       .pipe(first())
       .subscribe(
@@ -404,6 +412,7 @@ console.log(listData[0]);
           if (response) {
             if (response.datos) {
               this.test = response.datos.trackingsService;
+              this.trackingExcel = response.datos.trackingsService;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
@@ -717,6 +726,34 @@ console.log(listData[0]);
         });
   }
 
+  retrieveTracking(id: any, content: any, action: any) {
+    this.service.retrieveTracking(id)
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.tracking = response.datos.trackingService;
+              console.log(this.tracking);
+              this.editDataGet(this.tracking, content, action);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
   viewDocument(id) {
     var documentResponse = this.test.filter(c => c.id === id)[0];
     const linkSource = 'data:image/jpeg;base64,' + documentResponse.photoInsurance;
@@ -735,4 +772,18 @@ console.log(listData[0]);
     downloadLink.download = fileName;
     downloadLink.click();
   };
+
+  exportexcel(): void {
+    /* pass here the table id */
+    const ws: XLSX.WorkSheet =XLSX.utils.json_to_sheet(this.trackingExcel);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
+
 }
