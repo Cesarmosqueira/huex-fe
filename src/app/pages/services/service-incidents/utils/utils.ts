@@ -1,5 +1,6 @@
 import { PipeTransform } from "@angular/core";
 import {ServiceIncidents} from "../models/service-incidents.model";
+import {Tracking} from "../../tracking/models/tracking.model";
 
 export type SortColumn = keyof ServiceIncidents | '';
 export type SortDirection = 'asc' | 'desc' | '';
@@ -18,10 +19,14 @@ export function sort(serviceIncidents: ServiceIncidents[], column: SortColumn, d
     }
 }
 
-export function matches(serviceIncidents: ServiceIncidents, term: string, pipe: PipeTransform) {
+export function matchesDate(serviceIncidents: ServiceIncidents, term: string, pipe: PipeTransform) {
+
+  return serviceIncidents.trackingService.dateService.toLowerCase().includes(term.toLowerCase());
+}
+
+export function matchesName(serviceIncidents: ServiceIncidents, term: string, pipe: PipeTransform) {
 
   return serviceIncidents.trackingService.truckFleet.tractPlate.toLowerCase().includes(term.toLowerCase())
-    || serviceIncidents.trackingService.dateService.toLowerCase().includes(term.toLowerCase())
     ||serviceIncidents.trackingService.rate.customer.socialReason.toLowerCase().includes(term.toLowerCase())
     || serviceIncidents.trackingService.rate.route.routeEnd.toLowerCase().includes(term.toLowerCase());
 

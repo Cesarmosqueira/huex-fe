@@ -73,6 +73,12 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.VEHICLES.LIST.TIRE',
         link: '/vehicles/maintenance-tire',
         parentId: 1
+      },
+      {
+        id: 6,
+        label: 'MENUITEMS.VEHICLES.LIST.FUELCONTROL',
+        link: '/vehicles/fuel_control',
+        parentId: 1
       }
     ]
   },

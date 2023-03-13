@@ -6,6 +6,7 @@ export class Rate {
   id:any;
   customer:Customer;
   route:Route;
+  routeDetail:string;
   leadTime:number;
   tonNumber:string;
   volume:number;

@@ -1,27 +1,26 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable, of, Subject} from "rxjs";
-import {State} from "../../service-incidents/interfaces/state.interface";
+import {State} from "../../fuel-control/interfaces/state.interface";
 import {HttpClient} from "@angular/common/http";
 import {DecimalPipe} from "@angular/common";
 import {ResponseModel} from "../../../../shared/utils/response-model";
 import {environment} from "../../../../../environments/environment";
 import {catchError, debounceTime, delay, map, switchMap, tap} from "rxjs/operators";
-import {matchesDate,matchesName, sort, SortColumn, SortDirection} from "../../service-incidents/utils/utils";
-import {SearchResult} from "../../service-incidents/interfaces/search-result.interface";
+import {matchesName,matchesDate, sort, SortColumn, SortDirection} from "../../fuel-control/utils/utils";
+import {SearchResult} from "../../fuel-control/interfaces/search-result.interface";
 import {BaseService} from "../../../../shared/utils/base-service";
-import {ServiceIncidents} from "../models/service-incidents.model";
+import {FuelControl} from "../models/fuel-control.model";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ServiceIncidentsService extends BaseService{
-
+export class FuelControlService extends BaseService{
 
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _serviceIncidents$ = new BehaviorSubject<ServiceIncidents[]>([]);
+  private _fuelControl$ = new BehaviorSubject<FuelControl[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
-  private serviceIncidents: any;
+  private fuelControl: any;
 
   content?: any;
   products?: any;
@@ -39,52 +38,47 @@ export class ServiceIncidentsService extends BaseService{
     payment: '',
     date: '',
     searchName: ''
-
   };
 
   constructor(protected httpClient: HttpClient, private pipe: DecimalPipe) {
     super(httpClient);
   }
 
+
+
+
   //consume APIS
 
-  public listServiceIncidents(): Observable<ResponseModel<any>> {
-    return this.httpClient.get(environment.server + environment.services.serviceIncidents.list)
+  public listFuelControl(): Observable<ResponseModel<any>> {
+    return this.httpClient.get(environment.server + environment.vehicles.fuelControl.list)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
-  public retrieveServiceIncidents(id: number): Observable<ResponseModel<ServiceIncidents>> {
-    return this.httpClient.get(environment.server + environment.services.serviceIncidents.retrieve + id)
-      .pipe(map((responseModel: ResponseModel<ServiceIncidents>) => {
+  public retrieveFuelControl(id: number): Observable<ResponseModel<FuelControl>> {
+    return this.httpClient.get(environment.server + environment.vehicles.fuelControl.retrieve + id)
+      .pipe(map((responseModel: ResponseModel<FuelControl>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
-  public registerServiceIncidents(serviceIncidents: ServiceIncidents): Observable<ResponseModel<any>> {
-    return this.httpClient.post(environment.server + environment.services.serviceIncidents.register, serviceIncidents)
+  public registerFuelControl(fuelControl: FuelControl): Observable<ResponseModel<any>> {
+    return this.httpClient.post(environment.server + environment.vehicles.fuelControl.register, fuelControl)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
-  public updateServiceIncidents(serviceIncidents: ServiceIncidents): Observable<ResponseModel<any>> {
-    return this.httpClient.put(environment.server + environment.services.serviceIncidents.update, serviceIncidents)
+  public updateFuelControl(fuelControl: FuelControl): Observable<ResponseModel<any>> {
+    return this.httpClient.put(environment.server + environment.vehicles.fuelControl.update, fuelControl)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
   }
 
-  public deleteServiceIncidents(id: number): Observable<ResponseModel<any>> {
-    return this.httpClient.delete(environment.server + environment.services.serviceIncidents.delete + id)
-      .pipe(map((responseModel: ResponseModel<any>) => {
-        return responseModel;
-      }), catchError(this.handleError));
-  }
-
-  public listServiceIncidentsByIdTracking(id: number): Observable<ResponseModel<any>> {
-    return this.httpClient.get(environment.server + environment.services.serviceIncidents.listByIdTracking + id)
+  public deleteFuelControl(id: number): Observable<ResponseModel<any>> {
+    return this.httpClient.delete(environment.server + environment.vehicles.fuelControl.delete + id)
       .pipe(map((responseModel: ResponseModel<any>) => {
         return responseModel;
       }), catchError(this.handleError));
@@ -92,8 +86,8 @@ export class ServiceIncidentsService extends BaseService{
 
   //Pagination
 
-  public paginationTable(serviceIncidents: ServiceIncidents[]) {
-    this.serviceIncidents = serviceIncidents;
+  public paginationTable(fuelControls: FuelControl[]) {
+    this.fuelControl = fuelControls;
     this._search$.pipe(
       tap(() => this._loading$.next(true)),
       debounceTime(200),
@@ -101,14 +95,14 @@ export class ServiceIncidentsService extends BaseService{
       delay(200),
       tap(() => this._loading$.next(false))
     ).subscribe(result => {
-      this._serviceIncidents$.next(result.serviceIncidents);
+      this._fuelControl$.next(result.fuelControl);
       this._total$.next(result.total);
     });
 
     this._search$.next();
   }
 
-  get countries$() { return this._serviceIncidents$.asObservable(); }
+  get countries$() { return this._fuelControl$.asObservable(); }
   get product() { return this.products; }
   get total$() { return this._total$.asObservable(); }
   get loading$() { return this._loading$.asObservable(); }
@@ -120,12 +114,12 @@ export class ServiceIncidentsService extends BaseService{
   get endIndex() { return this._state.endIndex; }
   get totalRecords() { return this._state.totalRecords; }
 
-  set page(page: number) { this._set({page}); }
-  set pageSize(pageSize: number) { this._set({pageSize}); }
-  set searchTerm(searchTerm: string) { this._set({searchTerm}); }
+  set page(page: number) { this._set({ page }); }
+  set pageSize(pageSize: number) { this._set({ pageSize }); }
+  set searchTerm(searchTerm: string) { this._set({ searchTerm }); }
   set searchName(searchName: string) { this._set({ searchName }); }
-  set sortColumn(sortColumn: SortColumn) { this._set({sortColumn}); }
-  set sortDirection(sortDirection: SortDirection) { this._set({sortDirection}); }
+  set sortColumn(sortColumn: SortColumn) { this._set({ sortColumn }); }
+  set sortDirection(sortDirection: SortDirection) { this._set({ sortDirection }); }
   set startIndex(startIndex: number) { this._set({ startIndex }); }
   set endIndex(endIndex: number) { this._set({ endIndex }); }
   set totalRecords(totalRecords: number) { this._set({ totalRecords }); }
@@ -136,25 +130,24 @@ export class ServiceIncidentsService extends BaseService{
   }
 
   private _search(): Observable<SearchResult> {
-    const {sortColumn, sortDirection, page, searchTerm,searchName} = this._state;
+    const { sortColumn, sortDirection, page, searchTerm,searchName } = this._state;
     // 1. sort
-    let serviceIncidents = sort(this.serviceIncidents, sortColumn, sortDirection);
+    let fuelControl = sort(this.fuelControl, sortColumn, sortDirection);
 
     // 2. filter
-    serviceIncidents = serviceIncidents.filter(country => matchesDate(country, searchTerm, this.pipe));
-    serviceIncidents = serviceIncidents.filter(country => matchesName(country, searchName, this.pipe));
+    fuelControl = fuelControl.filter(country => matchesDate(country, searchTerm, this.pipe));
+    fuelControl = fuelControl.filter(country => matchesName(country, searchName, this.pipe));
 
-    const total = serviceIncidents.length;
+    const total = fuelControl.length;
 
     // 3. paginate
-    this.totalRecords = serviceIncidents.length;
+    this.totalRecords = fuelControl.length;
     this._state.startIndex = (page - 1) * this.pageSize + 1;
     this._state.endIndex = (page - 1) * this.pageSize + this.pageSize;
     if (this.endIndex > this.totalRecords) {
       this.endIndex = this.totalRecords;
     }
-    serviceIncidents = serviceIncidents.slice(this._state.startIndex - 1, this._state.endIndex);
-    return of({serviceIncidents: serviceIncidents, total});
+    fuelControl = fuelControl.slice(this._state.startIndex - 1, this._state.endIndex);
+    return of({ fuelControl: fuelControl, total });
   }
-
 }

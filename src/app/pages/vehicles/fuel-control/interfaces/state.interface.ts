@@ -1,10 +1,10 @@
-import {ServiceIncidents} from "../models/service-incidents.model";
+import {FuelControl} from "../models/fuel-control.model";
 
 export interface State {
     page: number;
     pageSize: number;
     searchTerm: string;
-    sortColumn: keyof ServiceIncidents | '';
+    sortColumn: keyof FuelControl | '';
     sortDirection: 'asc' | 'desc' | '';
     startIndex: number;
     endIndex: number;

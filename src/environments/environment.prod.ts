@@ -200,6 +200,13 @@ export const environment = {
       update: '/api-huex/v1/vehicle/fuel',
       delete: '/api-huex/v1/vehicle/fuel/',
       listByIdTruckFleet: '/api-huex/v1/vehicle/fuel/truckFleet/',
+    },
+    fuelControl: {
+      list: '/api-huex/v1/fuel_control',
+      retrieve: '/api-huex/v1/fuel_control/',
+      register: '/api-huex/v1/fuel_control',
+      update: '/api-huex/v1/fuel_control',
+      delete: '/api-huex/v1/fuel_control/',
     }
   },
   providers: {

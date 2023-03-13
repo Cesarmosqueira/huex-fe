@@ -49,6 +49,8 @@ export class ServiceIncidentsComponent implements OnInit {
 
   status:string[]=['SEDE HUEX','EN TIENDA','EN ALMACEN CLIENTE']
 
+  chargeIncident:string[]=['BUEN ESTADO','MAL ESTADO'];
+
   tracking:Tracking[]=[];
   selectTracking=null;
 
@@ -86,6 +88,7 @@ export class ServiceIncidentsComponent implements OnInit {
       order: [''],
       status: [''],
       price: [''],
+      chargeIncident: [''],
 
 
       btnSave: []
@@ -193,6 +196,7 @@ export class ServiceIncidentsComponent implements OnInit {
       const order = this.serviceIncidentForm.get('order')?.value;
       const status = this.serviceIncidentForm.get('status')?.value;
       const price = this.serviceIncidentForm.get('price')?.value;
+      const chargeIncident = this.serviceIncidentForm.get('chargeIncident')?.value;
 
 
       let serviceIncident = new ServiceIncidents();
@@ -215,6 +219,7 @@ export class ServiceIncidentsComponent implements OnInit {
       serviceIncident.order=order;
       serviceIncident.status=status;
       serviceIncident.price=price;
+      serviceIncident.chargeIncident=chargeIncident;
 
 
 
@@ -275,6 +280,7 @@ export class ServiceIncidentsComponent implements OnInit {
     this.serviceIncidentForm.controls['order'].setValue(listData[0].order);
     this.serviceIncidentForm.controls['status'].setValue(listData[0].status);
     this.serviceIncidentForm.controls['price'].setValue(listData[0].price);
+    this.serviceIncidentForm.controls['chargeIncident'].setValue(listData[0].chargeIncident);
 
 
     let tracking = this.tracking.filter((data: { id: any; }) => data.id === listData[0].trackingService.id);
@@ -403,6 +409,7 @@ export class ServiceIncidentsComponent implements OnInit {
     this.serviceIncidentForm.controls['order'].setValue("");
     this.serviceIncidentForm.controls['status'].setValue("");
     this.serviceIncidentForm.controls['price'].setValue("");
+    this.serviceIncidentForm.controls['chargeIncident'].setValue("");
 
   }
 
@@ -425,6 +432,7 @@ export class ServiceIncidentsComponent implements OnInit {
     this.serviceIncidentForm.controls['order'].enable();
     this.serviceIncidentForm.controls['status'].enable();
     this.serviceIncidentForm.controls['price'].enable();
+    this.serviceIncidentForm.controls['chargeIncident'].enable();
 
   }
 

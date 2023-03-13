@@ -6,6 +6,7 @@ import { KardexFuelComponent } from './kardex-fuel/components/kardex-fuel.compon
 import { MaintenanceOilComponent } from './maintenance-oil/components/maintenance-oil.component';
 import { MaintenanceTireComponent } from './maintenance-tire/components/maintenance-tire.component';
 import { TruckFleetComponent } from './truck-fleet/components/truck-fleet.component';
+import {FuelControlComponent} from "./fuel-control/component/fuel-control.component";
 
 const routes: Routes = [
   {
@@ -31,7 +32,8 @@ const routes: Routes = [
   {
     path: "kardex-fuel",
     component: KardexFuelComponent
-  }
+  },
+  {path:"fuel_control",component:FuelControlComponent}
 ];
 
 @NgModule({
