@@ -44,7 +44,6 @@
                 <th class="align-middle">Placa</th>
                 <th class="align-middle">Cliente</th>
                 <th class="align-middle">Ruta</th>
-                <th class="align-middle">Producto</th>
                 <th class="align-middle">Fecha incidencia</th>
                 <th class="align-middle">Categoria</th>
                 <th class="align-middle">Motivo</th>
@@ -64,7 +63,6 @@
                 <td>{{data.trackingService.truckFleet.tractPlate}}</td>
                 <td>{{data.trackingService.rate.customer.socialReason}}</td>
                 <td>{{data.trackingService.rate.route.routeEnd}}</td>
-                <td>{{data.nameProduct}}</td>
                 <td>{{data.observationDate}}</td>
                 <td>{{data.damageType}}</td>
                 <td>{{data.motive}}</td>
@@ -146,17 +144,22 @@
 
       </div>
 
+
+
+
       <div class="row">
 
+        <div class="col-lg-8">
 
-
-        <div class="col-lg-4">
           <div class="mb-3">
-            <label for="customername-field" class="form-label">Producto</label>
-            <input type="text" id="customername-field" class="form-control"  formControlName="nameProduct"
-                   [ngClass]="{ 'is-invalid': submitted && form['nameProduct'].errors }" autocomplete="disabled" />
+            <label class="form-label">Productos</label>
+            <div>
+                <textarea formControlName="nameProduct" class="form-control" rows="5"
+                          [ngClass]="{'is-invalid': submitted && form['nameProduct'].errors}" autocomplete="disabled"></textarea>
+            </div>
           </div>
         </div>
+
 
         <div class="col-lg-4">
           <div class="mb-3">
@@ -168,6 +171,10 @@
           </div>
         </div>
 
+      </div>
+
+      <div class="row">
+
         <div class="col-lg-4">
           <div class="mb-3">
             <label for="customername-field" class="form-label">Categoria</label>
@@ -178,9 +185,6 @@
 
           </div>
         </div>
-      </div>
-
-      <div class="row">
 
         <div class="col-lg-4">
           <div class="mb-3">
@@ -199,6 +203,11 @@
         </div>
 
 
+
+      </div>
+
+      <div class="row">
+
         <div class="col-lg-4">
           <div class="mb-3">
             <label for="customername-field" class="form-label">Nombre completo</label>
@@ -206,9 +215,6 @@
                    [ngClass]="{ 'is-invalid': submitted && form['fullName'].errors }" autocomplete="disabled" />
           </div>
         </div>
-      </div>
-
-      <div class="row">
 
         <div class="col-lg-4">
           <div class="mb-3">
@@ -226,6 +232,12 @@
           </div>
         </div>
 
+
+
+      </div>
+
+      <div class="row">
+
         <div class="col-lg-4">
           <div class="mb-3">
             <label for="customername-field" class="form-label">Observaciones</label>
@@ -233,10 +245,6 @@
                    [ngClass]="{ 'is-invalid': submitted && form['observation'].errors }" autocomplete="disabled" />
           </div>
         </div>
-
-      </div>
-
-      <div class="row">
 
         <div class="col-lg-4">
           <div class="mb-3">
@@ -254,6 +262,11 @@
           </div>
         </div>
 
+
+      </div>
+
+      <div class="row">
+
         <div class="col-lg-4">
           <div class="mb-3">
             <label for="customername-field" class="form-label">Numero pedido</label>
@@ -261,10 +274,6 @@
                    [ngClass]="{ 'is-invalid': submitted && form['order'].errors }" autocomplete="disabled" />
           </div>
         </div>
-
-      </div>
-
-      <div class="row">
 
         <div class="col-lg-4">
           <div class="mb-3">
@@ -284,6 +293,10 @@
           </div>
         </div>
 
+      </div>
+
+      <div class="row">
+
         <div class="col-lg-4">
           <div class="mb-3">
             <label for="customername-field" class="form-label">Incidente carga</label>
@@ -293,7 +306,6 @@
             </ng-select>
           </div>
         </div>
-
 
       </div>
 

@@ -66,6 +66,7 @@ export class RateComponent implements OnInit {
       customer: ['', [Validators.required]],
       route: ['', [Validators.required]],
       leadTime: [''],
+      routeDetail: [''],
       tonNumber: [''],
       volume: [''],
       cost: ['', [Validators.required]],
@@ -138,7 +139,7 @@ export class RateComponent implements OnInit {
       backdrop: 'static',
       keyboard: false,
       centered: true,
-      size: 'md'
+      size: 'lg'
     };
     this.selectCustomer=null;
     this.selectRoute=null;
@@ -161,6 +162,7 @@ export class RateComponent implements OnInit {
       this.pipe = new DatePipe('en-US');
       const customerId =this.selectCustomer.id;
       const routeId = this.selectRoute.id;
+      const routeDetail = this.rateForm.get('routeDetail')?.value;
       const tonNumber = this.rateForm.get('tonNumber')?.value;
       const leadTime = this.rateForm.get('leadTime')?.value;
       const volume = this.rateForm.get('volume')?.value;
@@ -175,6 +177,7 @@ export class RateComponent implements OnInit {
 
       rate.customer = customers;
       rate.route = routes;
+      rate.routeDetail = routeDetail;
       rate.leadTime = leadTime;
       rate.tonNumber = tonNumber;
       rate.volume = volume;
@@ -206,13 +209,14 @@ export class RateComponent implements OnInit {
     this.pipe = new DatePipe('en-US');
     this.enableInputs();
 
-    this.modalService.open(content, { size: 'md', centered: true });
+    this.modalService.open(content, { size: 'lg', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
     modelTitle.innerHTML = 'Actualizar rutas';
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.rates.filter((data: { id: any; }) => data.id === id);
     this.rateForm.controls['id'].setValue(listData[0].id);
+    this.rateForm.controls['routeDetail'].setValue(listData[0].routeDetail);
     this.rateForm.controls['leadTime'].setValue(listData[0].leadTime);
     this.rateForm.controls['tonNumber'].setValue(listData[0].tonNumber);
     this.rateForm.controls['volume'].setValue(listData[0].volume);
@@ -331,6 +335,7 @@ export class RateComponent implements OnInit {
     this.rateForm.controls['id'].setValue("0");
     this.rateForm.controls['customer'].setValue(null);
     this.rateForm.controls['route'].setValue(null);
+    this.rateForm.controls['routeDetail'].setValue("");
     this.rateForm.controls['leadTime'].setValue("");
     this.rateForm.controls['tonNumber'].setValue("");
     this.rateForm.controls['volume'].setValue("");
@@ -342,6 +347,7 @@ export class RateComponent implements OnInit {
     this.rateForm.controls['id'].enable();
     this.rateForm.controls['customer'].enable();
     this.rateForm.controls['route'].enable();
+    this.rateForm.controls['routeDetail'].enable();
     this.rateForm.controls['leadTime'].enable();
     this.rateForm.controls['tonNumber'].enable();
     this.rateForm.controls['volume'].enable();
