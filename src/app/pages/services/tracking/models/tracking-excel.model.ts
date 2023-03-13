@@ -4,7 +4,7 @@ export class TrackingExcel {
     tractPlate: any;
     socialReason: any;
     routeStart: any;
-    routeEnd: any;
+    routeDetail: any;
     destinationDetail: any;
     numberPoints: any;
     serviceType: any;

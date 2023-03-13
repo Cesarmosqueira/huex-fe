@@ -29,6 +29,6 @@ export class Tracking {
 	socialReason: string;
 	tractPlate: string;
 	routeEnd: string;
-    tonNumber: string;;
-    volume: any;
+  tonNumber: string;
+  volume: any;
 }

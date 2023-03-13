@@ -83,7 +83,7 @@ export class TrackingComponent implements OnInit {
   trackingOutput: Tracking;
 
   trackingExcel: TrackingExcel[] = [];
-  
+
   fileName= 'TrackingService.xlsx';
 
   constructor(public service: TrackingService,
@@ -676,7 +676,7 @@ export class TrackingComponent implements OnInit {
               this.rates.forEach(element => {
                 let cus = new Customer();
                 cus = element.customer;
-                cus.name = element.customer.socialReason + "/" + element.route.routeEnd+"/M3 "
+                cus.name = element.customer.socialReason + "/" + element.routeDetail+"/M3 "
                   + element.volume+"/TN "+ element.tonNumber;
 
                 element.customer = cus;
@@ -776,14 +776,14 @@ export class TrackingComponent implements OnInit {
   exportexcel(): void {
     /* pass here the table id */
     const ws: XLSX.WorkSheet =XLSX.utils.json_to_sheet(this.trackingExcel);
- 
+
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
-    /* save to file */  
+
+    /* save to file */
     XLSX.writeFile(wb, this.fileName);
- 
+
   }
 
 }
