@@ -484,10 +484,10 @@ export class ServiceIncidentsComponent implements OnInit {
               this.tracking = response.datos.trackingsService;
               this.tracking.forEach(element => {
                 let tru = new TruckFleet();
-                tru = element.truckFleet;
-                tru.name = element.dateService+"/"+element.truckFleet.tractPlate+"/"+ element.rate.customer.socialReason+"/"+element.rate.route.routeEnd;
+                tru.tractPlate=element.tractPlate;
+                tru.id=element.id;
+                tru.name = element.dateService+"/"+element.tractPlate+"/"+ element.socialReason+"/"+element.routeEnd;
                 element.truckFleet = tru;
-
               });
             } else {
               Swal.fire({

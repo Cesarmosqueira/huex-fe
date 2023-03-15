@@ -1,4 +1,3 @@
-import {Employee} from "../../../employees/employee/models/employee.model";
 
 export class Tracking {
 	id: any;
@@ -14,9 +13,9 @@ export class Tracking {
 	preloadStatus: string;
 	scheduledAppointment: Date;
 	rate: any;
-	driver: Employee;
-	copilot: Employee;
-	stevedore: Employee;
+	driver: any;
+	copilot: any;
+	stevedore: any;
 	dateTimeCompletion: Date;
 	moneyDelivered: any;
 	detailMoney: string;
@@ -31,4 +30,5 @@ export class Tracking {
 	routeEnd: string;
   tonNumber: string;
   volume: any;
+  name:string;
 }

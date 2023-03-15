@@ -27,7 +27,7 @@ export class TrackingService extends BaseService {
 
   private _state: State = {
     page: 1,
-    pageSize: 8,
+    pageSize: 20,
     searchTerm: '',
     sortColumn: '',
     sortDirection: '',
@@ -141,7 +141,7 @@ export class TrackingService extends BaseService {
       trackings = trackings.filter(country => matchesDate(country, searchTerm, this.pipe));
       trackings = trackings.filter(country => matchesName(country, searchName, this.pipe));
 
-    
+
     const total = trackings.length;
 
     // 3. paginate

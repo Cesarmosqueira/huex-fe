@@ -137,10 +137,10 @@ export class TrackingComponent implements OnInit {
 
     this.idTrackingOuput = 0;
 
+    this.listTrackings();
     this.listRates();
     this.listEmployees();
     this.listTruckFleet();
-    this.listTrackings();
   }
 
   getImage(event) {

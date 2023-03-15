@@ -14,5 +14,5 @@ export class TruckFleet {
     highWideLong: string;
     fleetType: string;
     provider: Providers;
-    name:String;
+    name:string;
 }
