@@ -238,6 +238,15 @@ export const environment = {
       update: '/api-huex/v1/fuelSupply',
       delete: '/api-huex/v1/fuelSupply/'
     }
+  },
+  operationsCosts: {
+    tolls: {
+      list: '/api-huex/v1/tolls',
+      retrieve: '/api-huex/v1/tolls/',
+      register: '/api-huex/v1/tolls',
+      update: '/api-huex/v1/tolls',
+      delete: '/api-huex/v1/tolls/'
+    },
   }
 };
 

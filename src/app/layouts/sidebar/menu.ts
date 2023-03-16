@@ -169,6 +169,19 @@ export const MENU: MenuItem[] = [
         parentId: 1
       }
     ]
+  },
+  {
+    id: 1,
+    label: 'MENUITEMS.OPERATIONS-COSTS.TEXT',
+    icon: 'mdi-dolly',
+    subItems: [
+      {
+        id: 2,
+        label: 'MENUITEMS.OPERATIONS-COSTS.LIST.TOLL',
+        link: '/operationsCosts/tolls',
+        parentId: 1
+      }
+    ]
   }
 ];
 

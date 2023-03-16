@@ -23,6 +23,7 @@ import { EmployeeModule } from "./employees/employees.module";
 import { ProvidersModule } from "./providers/providers.module";
 import { DashboardsModule } from './dashboards/dashboards.module';
 import { AdministratorModule } from './administrator/administrator.module';
+import {OperationsCostsModule} from "./operationsCosts/operationsCosts.module";
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -30,7 +31,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
 ]);
 
 @NgModule({
-  declarations: [],
+  declarations: [
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -54,7 +56,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     EmployeeModule,
     ProvidersModule,
     DashboardsModule,
-    AdministratorModule
+    AdministratorModule,
+    OperationsCostsModule
   ],
 })
 export class PagesModule { }

@@ -44,6 +44,7 @@
       "CUSTOMERS":"Clientes",
       "SERVICES": "Servicios",
       "PROVIDERS": "Proveedores",
+      "OPERATIONS-COSTS": "Costo operaciones",
       "ECOMMERCE": "Comercio electrónico",
       "CALENDAR": "Calendario",
       "EMAIL": "Correo electrónico",
@@ -112,6 +113,12 @@
     "FILEMANAGER": {
       "TEXT": "Administradora de archivos",
       "BADGE": "Nueva"
+    },
+    "OPERATIONS-COSTS": {
+      "TEXT": "Costo operaciones",
+      "LIST": {
+        "TOLL": "Peaje"
+      }
     },
     "VEHICLES": {
       "TEXT": "Vehículos",
