@@ -6,12 +6,23 @@
         <div class="card-body">
           <div class="row mb-2">
             <div class="col-sm-4">
+
               <div class="search-box me-2 mb-2 d-inline-block">
                 <div class="position-relative">
-                  <input type="text" class="form-control" placeholder="Buscar por lugar..." [(ngModel)]="service.searchTerm">
+                  <input type="text" class="form-control" placeholder="Buscar por ruta..."
+                         [(ngModel)]="service.searchTerm">
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
+
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Buscar por configuracion..."
+                         [(ngModel)]="service.searchName">
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+
             </div>
             <div class="col-sm-8">
               <div class="text-sm-end">
@@ -28,21 +39,24 @@
               <thead class="table-light">
               <tr>
                 <th class="align-middle">ID</th>
-                <th class="align-middle">Lugar</th>
+                <th class="align-middle">Ruta</th>
+                <th class="align-middle">Peaje</th>
                 <th class="align-middle">Configuracion</th>
+                <th class="align-middle">Trayecto</th>
                 <th class="align-middle">Costo</th>
-
                 <th class="align-middle">Acciones</th>
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let data of tolls" id="o_{{data.id}}">
+              <tr *ngFor="let data of routeTolls" id="o_{{data.id}}">
                 <td>
                   <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                 </td>
-                <td>{{data.place}}</td>
-                <td>{{data.configuration}}</td>
-                <td>{{data.cost}}</td>
+                <td>{{data.route.routeEnd}}</td>
+                <td>{{data.toll.place}}</td>
+                <td>{{data.toll.configuration}}</td>
+                <td>{{data.journey}}</td>
+                <td>{{data.toll.cost}}</td>
                 <td>
                   <div class="d-flex gap-3">
                     <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
@@ -71,37 +85,50 @@
 <!-- Order Create Model -->
 <ng-template #content role="document" let-modal>
   <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Nuevo peaje</h5>
+    <h5 class="modal-title" id="exampleModalLabel">Nueva ruta peajes</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
             (click)="modal.dismiss('Cross click')"></button>
   </div>
-  <form (ngSubmit)="saveUser()" [formGroup]="tollForm">
+  <form (ngSubmit)="saveUser()" [formGroup]="routeTollForm">
     <div class="modal-body">
       <input type="text" hidden formControlName="id" value="0" />
 
+
+
           <div class="mb-3">
-            <label for="customername-field" class="form-label">Lugar</label>
-            <input type="text" id="customername-field" class="form-control"  formControlName="place"
-                   [ngClass]="{ 'is-invalid': submitted && form['place'].errors }" autocomplete="disabled" />
+            <input type="text" hidden formControlName="id" value="0" />
+            <label for="customername-field" class="form-label">Ruta</label>
+            <ng-select [items]="routes" bindLabel="routeEnd" placeholder="Seleccione Ruta"
+                       [(ngModel)]="selectRoute" id="customername-field" [clearable]="false" required
+                       formControlName="route" [ngClass]="{ 'is-invalid': submitted && form['route'].errors }">
+            </ng-select>
+            <div *ngIf="submitted && form['route'].errors" class="invalid-feedback" align="left">
+              <div *ngIf="form['route'].errors['required']">Ruta es requerido</div>
+            </div>
           </div>
 
 
+          <div class="mb-3">
+            <input type="text" hidden formControlName="id" value="0" />
+            <label for="customername-field" class="form-label">Peaje</label>
+            <ng-select [items]="tolls" bindLabel="name" placeholder="Seleccione Ruta"
+                       [(ngModel)]="selectToll" id="customername-field" [clearable]="false" required
+                       formControlName="toll" [ngClass]="{ 'is-invalid': submitted && form['toll'].errors }">
+            </ng-select>
+            <div *ngIf="submitted && form['toll'].errors" class="invalid-feedback" align="left">
+              <div *ngIf="form['toll'].errors['required']">Peaje es requerido</div>
+            </div>
+          </div>
+
 
           <div class="mb-3">
-            <label for="customername-field" class="form-label">Configuracion</label>
-            <ng-select [items]="configuration" id="customername-field"  formControlName="configuration"
-                       placeholder="Seleccione configuracion"
-                       [ngClass]="{ 'is-invalid': submitted && form['configuration'].errors }">
+            <label for="customername-field" class="form-label">Trayecto</label>
+            <ng-select [items]="journey" id="customername-field"  formControlName="journey"
+                       placeholder="Seleccione Estado"
+                       [ngClass]="{ 'is-invalid': submitted && form['journey'].errors }">
             </ng-select>
           </div>
 
-
-
-          <div class="mb-3">
-            <label for="customername-field" class="form-label">Costo</label>
-            <input type="text" id="customername-field" class="form-control"  formControlName="cost"
-                   [ngClass]="{ 'is-invalid': submitted && form['cost'].errors }" autocomplete="disabled" />
-          </div>
 
 
     </div>

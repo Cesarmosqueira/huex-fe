@@ -1,28 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
+import {Toll} from "../../toll/models/toll.model";
 import {Observable} from "rxjs";
+import {TollService} from "../../toll/services/toll.service";
 import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
 import {config} from "../../../../shared/shared.config";
-import {Toll} from "../models/toll.model";
-import {TollService} from "../services/toll.service";
+import {Route} from "../../../customers/route/models/route.model";
+import {RouteService} from "../../../customers/route/services/route.service";
+import {RouteToll} from "../models/route-toll.model";
+import {RouteTollService} from "../services/route-toll.service";
 
 @Component({
-  selector: 'app-toll',
-  templateUrl: './toll.component.html',
-  styleUrls: ['./toll.component.scss']
+  selector: 'app-route-toll',
+  templateUrl: './route-toll.component.html',
+  styleUrls: ['./route-toll.component.scss']
 })
-export class TollComponent implements OnInit {
+export class RouteTollComponent implements OnInit {
 
-  idTollOuput: number = 0;
+
+  idRouteTollOuput: number = 0;
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
   term: any;
 
-  tollForm!: UntypedFormGroup;
+  routeTollForm!: UntypedFormGroup;
   submitted = false;
   register = true;
 
@@ -30,43 +35,52 @@ export class TollComponent implements OnInit {
 
   // Table data
   content?: any;
-  tolls?: any;
-  test: Toll[] = [];
-  tollList!: Observable<Toll[]>;
+  routeTolls?: any;
+  test: RouteToll[] = [];
+  routeTollsList!: Observable<RouteToll[]>;
   total: Observable<number>;
   pipe: any;
 
-  configuration:string[]=['C3/3 EJES','T3S3/6 EJES','T3SE2/5 EJES'];
+  tolls:Toll[]=[];
+  selectToll=null;
 
-  constructor(public service: TollService,
+  routes:Route[]=[];
+  selectRoute=null;
+
+  journey:string[]=['IDA','VUELTA'];
+
+  constructor(public service: RouteTollService,
               private modalService: NgbModal,
+              private serviceRoute:RouteService,
+              private serviceToll:TollService,
               private formBuilder: UntypedFormBuilder) {
-    this.tollList = service.countries$;
+    this.routeTollsList = service.countries$;
     this.total = service.total$;
   }
 
   ngOnInit(): void {
-    this.breadCrumbItems = [{ label: 'Costo operaciones' }, { label: 'Peajes', active: true }];
+    this.breadCrumbItems = [{ label: 'Costo operaciones' }, { label: 'Peajes de ruta', active: true }];
 
     /**
      * Form Validation
      */
-    this.tollForm = this.formBuilder.group({
-      id: ['0'],
-      place: [''],
-      configuration: [''],
-      cost: [''],
+    this.routeTollForm = this.formBuilder.group({
+      id: ['0', [Validators.required]],
+      route: ['', [Validators.required]],
+      toll: ['', [Validators.required]],
+      journey: [''],
       btnSave: []
     });
 
-    this.tollList.subscribe(x => {
-      this.content = this.tolls;
-      this.tolls = Object.assign([], x);
+    this.routeTollsList.subscribe(x => {
+      this.content = this.routeTolls;
+      this.routeTolls = Object.assign([], x);
     });
-    this.idTollOuput = 0;
+    this.idRouteTollOuput = 0;
 
+    this.listRouteToll();
     this.listToll();
-
+    this.listRoutes()
   }
 
   /**
@@ -98,7 +112,7 @@ export class TollComponent implements OnInit {
       })
       .then(result => {
         if (result.value) {
-          this.deleteToll(id);
+          this.deleteRouteToll(id);
         } else if (
           /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel
@@ -125,6 +139,8 @@ export class TollComponent implements OnInit {
       centered: true,
       size: 'md'
     };
+    this.selectToll=null;
+    this.selectRoute=null;
     this.modalService.open(content, ngbModalOptions);
   }
 
@@ -132,7 +148,7 @@ export class TollComponent implements OnInit {
    * Form data get
    */
   get form() {
-    return this.tollForm.controls;
+    return this.routeTollForm.controls;
   }
 
   /**
@@ -140,30 +156,33 @@ export class TollComponent implements OnInit {
    */
   saveUser() {
     this.submitted = true
-    if (this.tollForm.valid) {
+    if (this.routeTollForm.valid) {
       this.pipe = new DatePipe('en-US');
-      const place = this.tollForm.get('place')?.value.toUpperCase();
-      const configuration = this.tollForm.get('configuration')?.value.toUpperCase();
-      const cost = this.tollForm.get('cost')?.value;
+      const tollId =this.selectToll.id;
+      const routeId = this.selectRoute.id;
+      const journey = this.routeTollForm.get('journey')?.value;
 
-      let toll = new Toll();
+      let routeToll = new RouteToll();
+      let toll=new Toll();
+      let routes=new Route();
+      toll.id=tollId;
+      routes.id=routeId;
+      routeToll.toll = toll;
+      routeToll.route = routes;
+      routeToll.journey = journey;
 
-      toll.place = place;
-      toll.configuration = configuration;
-      toll.cost = cost;
 
-
-      const id = this.tollForm.get('id')?.value;
+      const id = this.routeTollForm.get('id')?.value;
 
       if (id == '0') {
-        this.registerToll(toll);
+        this.registerRouteToll(routeToll);
       } else {
-        toll.id = id;
-        this.updateToll(toll);
+        routeToll.id = id;
+        this.updateRouteToll(routeToll);
       }
       this.modalService.dismissAll();
       setTimeout(() => {
-        this.tollForm.reset();
+        this.routeTollForm.reset();
       }, 2000);
 
     }
@@ -180,25 +199,25 @@ export class TollComponent implements OnInit {
 
     this.modalService.open(content, { size: 'md', centered: true });
     var modelTitle = document.querySelector('.modal-title') as HTMLAreaElement;
-    modelTitle.innerHTML = 'Actualizar peajes';
+    modelTitle.innerHTML = 'Actualizar rutas';
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
-    var listData = this.tolls.filter((data: { id: any; }) => data.id === id);
-    this.tollForm.controls['id'].setValue(listData[0].id);
-    this.tollForm.controls['place'].setValue(listData[0].place);
-    this.tollForm.controls['configuration'].setValue(listData[0].configuration);
-    this.tollForm.controls['cost'].setValue(listData[0].cost);
-    this.idTollOuput = id;
+    var listData = this.routeTolls.filter((data: { id: any; }) => data.id === id);
+    this.routeTollForm.controls['id'].setValue(listData[0].id);
+    this.routeTollForm.controls['journey'].setValue(listData[0].journey);
+    this.selectRoute=listData[0].route;
+    this.selectToll=listData[0].toll;
+    this.idRouteTollOuput = id;
   }
 
-  listToll() {
-    this.service.listTolls()
+  listRouteToll() {
+    this.service.listRouteTolls()
       .pipe(first())
       .subscribe(
         response => {
           if (response) {
             if (response.datos) {
-              this.test = response.datos.tollDto;
+              this.test = response.datos.routeToll;
               this.service.paginationTable(this.test);
             } else {
               Swal.fire({
@@ -218,8 +237,8 @@ export class TollComponent implements OnInit {
         });
   }
 
-  registerToll(toll) {
-    this.service.registerToll(toll)
+  registerRouteToll(routeToll) {
+    this.service.registerRouteToll(routeToll)
       .pipe(first())
       .subscribe(
         response => {
@@ -230,7 +249,7 @@ export class TollComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.listToll();
+              this.listRouteToll();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -255,8 +274,8 @@ export class TollComponent implements OnInit {
         });
   }
 
-  updateToll(toll) {
-    this.service.updateToll(toll)
+  updateRouteToll(routeToll) {
+    this.service.updateRouteToll(routeToll)
       .pipe(first())
       .subscribe(
         response => {
@@ -267,7 +286,7 @@ export class TollComponent implements OnInit {
                 response.meta.mensajes[0].mensaje,
                 'success'
               );
-              this.listToll();
+              this.listRouteToll();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -293,23 +312,22 @@ export class TollComponent implements OnInit {
   }
 
   clear() {
-    this.tollForm.controls['id'].setValue("0");
-    this.tollForm.controls['place'].setValue("");
-    this.tollForm.controls['configuration'].setValue("");
-    this.tollForm.controls['cost'].setValue("");
-
+    this.routeTollForm.controls['id'].setValue("0");
+    this.routeTollForm.controls['toll'].setValue(null);
+    this.routeTollForm.controls['route'].setValue(null);
+    this.routeTollForm.controls['journey'].setValue("");
 
   }
   enableInputs() {
-    this.tollForm.controls['id'].enable();
-    this.tollForm.controls['place'].enable();
-    this.tollForm.controls['configuration'].enable();
-    this.tollForm.controls['cost'].enable();
+    this.routeTollForm.controls['id'].enable();
+    this.routeTollForm.controls['toll'].enable();
+    this.routeTollForm.controls['route'].enable();
+    this.routeTollForm.controls['journey'].enable();
 
   }
 
-  deleteToll(id) {
-    this.service.deleteToll(id)
+  deleteRouteToll(id) {
+    this.service.deleteRouteToll(id)
       .pipe(first())
       .subscribe(
         response => {
@@ -320,7 +338,7 @@ export class TollComponent implements OnInit {
                 'Su archivo ha sido eliminado.',
                 'success'
               );
-              this.listToll();
+              this.listRouteToll();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -345,4 +363,62 @@ export class TollComponent implements OnInit {
         });
   }
 
+  listToll() {
+    this.serviceToll.listTolls()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.tolls = response.datos.tollDto;
+              this.tolls.forEach(element => {
+                let to = new Toll();
+                to.id = element.id;
+                to.name = element.place + "/" + element.configuration;
+                element.name = to.name;
+
+              });
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listRoutes() {
+    this.serviceRoute.listRoutes()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.routes = response.datos.routes;
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
 }

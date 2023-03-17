@@ -247,6 +247,13 @@ export const environment = {
       update: '/api-huex/v1/tolls',
       delete: '/api-huex/v1/tolls/'
     },
+    routeToll: {
+      list: '/api-huex/v1/route_tolls',
+      retrieve: '/api-huex/v1/route_tolls/',
+      register: '/api-huex/v1/route_tolls',
+      update: '/api-huex/v1/route_tolls',
+      delete: '/api-huex/v1/route_tolls/'
+    }
   }
 };
 

@@ -5,4 +5,5 @@ export class Toll {
   place:string;
   configuration:string;
   cost:number;
+  name:string;
 }

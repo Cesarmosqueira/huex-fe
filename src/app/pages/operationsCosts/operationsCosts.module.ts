@@ -8,10 +8,12 @@ import {UIModule} from "../../shared/ui/ui.module";
 import {Ng2SearchPipeModule} from "ng2-search-filter";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {OperationsCostsRouting} from "./operationsCosts-routing.module";
+import { RouteTollComponent } from './route-toll/component/route-toll.component';
 
 @NgModule({
   declarations: [
-    TollComponent
+    TollComponent,
+    RouteTollComponent
   ],
   imports: [
     CommonModule,
