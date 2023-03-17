@@ -151,7 +151,7 @@ export class ProviderDiscountComponent implements OnInit {
       this.pipe = new DatePipe('en-US');
       const providerId = this.selectProviders.id;
       const date = this.providerDiscountForm.get('date')?.value;
-      const fortmatdate = this.pipe.transform(date, 'yyyy-MM-dd');
+      const fortmatdate = this.pipe.transform(date, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       const observations = this.providerDiscountForm.get('observations')?.value;
       const status = this.providerDiscountForm.get('status')?.value;
       const charge = this.providerDiscountForm.get('charge')?.value;

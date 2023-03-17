@@ -168,13 +168,13 @@ export class MaintenanceOilComponent implements OnInit {
       maintenanceOil.truckFleet = truckFleet;
       maintenanceOil.changeType = changeType;
       maintenanceOil.place = place;
-      maintenanceOil.dateChange = this.pipe.transform(dateChange, 'yyyy-MM-dd');
+      maintenanceOil.dateChange = this.pipe.transform(dateChange, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       maintenanceOil.kmLast = kmLast;
       maintenanceOil.kmCurrent = kmCurrent;
       maintenanceOil.kmNext = kmNext;
       maintenanceOil.status = status;
       maintenanceOil.differences = differences;
-      maintenanceOil.dateCurrent = this.pipe.transform(myDate, 'yyyy-MM-dd');
+      maintenanceOil.dateCurrent = this.pipe.transform(myDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
 
       const id = this.maintenanceOilForm.get('id')?.value;
       if (id == '0') {

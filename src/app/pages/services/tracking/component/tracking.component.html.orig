@@ -1,0 +1,458 @@
+<div class="container-fluid">
+  <app-page-title title="Tracking" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+<<<<<<< HEAD
+            <div class="col-sm-6">
+=======
+            <div class="col-sm-4">
+
+>>>>>>> 4f21faa77fcc8d222ffee06185f46f7d18c4fa3b
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Buscar Por Fecha..."
+                    [(ngModel)]="service.searchTerm">
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Buscar cliente..."
+                    [(ngModel)]="service.searchName">
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+
+              <button type="button" (click)="exportexcel()" class="btn custom btn-sm mt-2 mr-2"><i class="fa fa-download"></i> Exportar  </button>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="text-sm-end">
+                <button type="button" class="btn btn-success btn-rounded mb-2 me-2" (click)="openModal(content)"><i
+                    class="mdi mdi-plus mr-1"></i>
+                  Nuevo</button>
+              </div>
+            </div><!-- end col-->
+          </div>
+
+          <!-- Table data -->
+          <div class="table-responsive mb-0">
+            <table class="table table-centered table-nowrap">
+              <thead class="table-light">
+                <tr>
+                  <th class="align-middle">ID</th>
+                  <th class="align-middle">Fecha servicio</th>
+                  <th class="align-middle">Placa Tracto</th>
+                  <th class="align-middle">Cliente</th>
+                  <th class="align-middle">Inicio</th>
+                  <th class="align-middle">Destino</th>
+                  <th class="align-middle">Detalle Destino</th>
+                  <th class="align-middle">Cantidad Puntos</th>
+                  <th class="align-middle">Chofer</th>
+                  <th class="align-middle">Costo adicional</th>
+                  <th class="align-middle">Volumen Solicitado</th>
+                  <th class="align-middle">Toneladas Solicitado</th>
+                  <th class="align-middle">Estado servicio</th>
+                  <th class="align-middle">Estado documentario</th>
+
+                  <!-- <th class="align-middle">Fotos serguro</th>-->
+                  <th class="align-middle">Acciones</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of trackings" id="o_{{data.id}}">
+                  <td>
+                    <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
+                  </td>
+                  <td>{{data.dateService}}</td>
+                  <td>{{data.tractPlate}}</td>
+                  <td>{{data.socialReason}}</td>
+                  <td>{{data.routeStart}}</td>
+                  <td>{{data.routeEnd}}</td>
+                  <td>{{data.destinationDetail}}</td>
+                  <td>{{data.numberPoints}}</td>
+                  <td>{{data.fullNameDriver}}</td>
+                  <td>{{data.additionalCost}}</td>
+                  <td>{{data.volume}}</td>
+                  <td>{{data.tonNumber}}</td>
+                  <td>{{data.preloadStatus}}</td>
+                  <td>{{data.documentaryStatus}}</td>
+                  <td>
+                    <div class="d-flex gap-3">
+                      <a href="javascript:void(0);" class="text-primary"
+                        (click)="retrieveTracking(data.id,content,true)"><i class="mdi mdi-eye font-size-18"></i></a>
+                      <a href="javascript:void(0);" class="text-success"
+                        (click)="retrieveTracking(data.id,content, false)"><i
+                          class="mdi mdi-pencil font-size-18"></i></a>
+                      <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
+                          class="mdi mdi-delete font-size-18"></i></a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+
+          </div>
+          <!-- end table -->
+          <ul class="pagination pagination-rounded justify-content-end mb-2">
+            <ngb-pagination [collectionSize]="(total | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+            </ngb-pagination>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Order Create Model -->
+<ng-template #content role="document" let-modal class="modal">
+
+  <div class="modal-header">
+    <h5 class="modal-title mt-0">Nuevo Servicio</h5>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-tabs">
+        <li [ngbNavItem]="1">
+          <a ngbNavLink>
+            <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
+            <span class="d-none d-sm-block">Datos Principales</span>
+          </a>
+          <ng-template ngbNavContent>
+            <ng-template [ngTemplateOutlet]="TabContent"></ng-template>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="3" *ngIf="newTruck">
+          <a ngbNavLink>
+            <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+            <span class="d-none d-sm-block">Monitoreo</span>
+          </a>
+          <ng-template ngbNavContent>
+            <ng-template [ngTemplateOutlet]="TabContent2"></ng-template>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="4" *ngIf="newTruck">
+          <a ngbNavLink>
+            <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+            <span class="d-none d-sm-block">Resumen Liquidación</span>
+          </a>
+          <ng-template ngbNavContent>
+            <ng-template [ngTemplateOutlet]="TabContent3"></ng-template>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav"></div>
+    </div><!-- End Default Tabs -->
+  </div>
+  <!--  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+  </div>
+-->
+
+
+</ng-template>
+<!--End Modal -->
+
+<!-- Tab Content -->
+<ng-template #TabContent>
+  <div class="col-lg-12">
+
+    <div class="card">
+      <div class="card-body">
+        <form (ngSubmit)="saveUser()" [formGroup]="trackingForm">
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label>Fecha servicio</label>
+                <div class="input-group clockpicker">
+                  <input class="form-control" type="date" id="example-date-input" formControlName="dateService"
+                    autocomplete="disabled">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <input type="text" hidden formControlName="id" value="0" />
+                <label for="customername-field" class="form-label">Camion</label>
+                <ng-select [items]="truckFleets" bindLabel="tractPlate" placeholder="Seleccione Camion"
+                  [(ngModel)]="selectTruckFleet" id="customername-field" [clearable]="false" required
+                  formControlName="truckFleet" [ngClass]="{ 'is-invalid': submitted && form['truckFleet'].errors }">
+                </ng-select>
+                <div *ngIf="submitted && form['truckFleet'].errors" class="invalid-feedback" align="left">
+                  <div *ngIf="form['truckFleet'].errors['required']">Camion es requerido</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Tarifa</label>
+                <ng-select [items]="rates" bindLabel="customer.name" placeholder="Seleccione Tarifa"
+                  [(ngModel)]="selectRates" id="customername-field" [clearable]="false" required formControlName="rate"
+                  [ngClass]="{ 'is-invalid': submitted && form['rate'].errors }">
+                </ng-select>
+                <div *ngIf="submitted && form['rate'].errors" class="invalid-feedback" align="left">
+                  <div *ngIf="form['rate'].errors['required']">Tarifa es requerido</div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+
+
+          <div class="row">
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Detalle Destino</label>
+                <input type="text" id="customername-field" class="form-control" formControlName="destinationDetail"
+                  [ngClass]="{ 'is-invalid': submitted && form['destinationDetail'].errors }" autocomplete="off" />
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Cantidad Puntos</label>
+                <input type="number" id="customername-field" class="form-control" formControlName="numberPoints"
+                  [ngClass]="{ 'is-invalid': submitted && form['numberPoints'].errors }" autocomplete="off" />
+
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Tipo Servicio</label>
+                <ng-select [items]="tipoServicio" id="customername-field" formControlName="serviceType"
+                  placeholder="Seleccione Tipo Servicio"
+                  [ngClass]="{ 'is-invalid': submitted && form['serviceType'].errors }"></ng-select>
+
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Costo adicional</label>
+                <input type="text" id="customername-field" class="form-control" formControlName="additionalCost"
+                  [ngClass]="{ 'is-invalid': submitted && form['additionalCost'].errors }" autocomplete="off" />
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Obsevaciones</label>
+                <input type="text" id="customername-field" class="form-control" formControlName="observations"
+                  [ngClass]="{ 'is-invalid': submitted && form['observations'].errors }" autocomplete="off" />
+
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Numero guia</label>
+                <input type="text" id="customername-field" class="form-control" formControlName="guideNumber"
+                  [ngClass]="{ 'is-invalid': submitted && form['guideNumber'].errors }" autocomplete="off" />
+
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label>Fecha precarga</label>
+                <div class="input-group clockpicker">
+                  <input class="form-control" type="datetime-local" id="example-date-input"
+                    formControlName="datePrecharge" autocomplete="disabled">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Estado</label>
+                <ng-select [items]="estado" id="customername-field" formControlName="preloadStatus"
+                  placeholder="Seleccione Estado"
+                  [ngClass]="{ 'is-invalid': submitted && form['preloadStatus'].errors }"></ng-select>
+
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label>Cita programada</label>
+                <div class="input-group clockpicker">
+                  <input class="form-control" type="datetime-local" id="example-date-input"
+                    formControlName="scheduledAppointment" autocomplete="disabled">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <input type="text" hidden formControlName="id" value="0" />
+                <label for="customername-field" class="form-label">Chofer</label>
+                <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Chofer"
+                  [(ngModel)]="selectDriver" id="customername-field" [clearable]="false" formControlName="driver"
+                  [ngClass]="{ 'is-invalid': submitted && form['driver'].errors }">
+                </ng-select>
+                <div *ngIf="submitted && form['driver'].errors" class="invalid-feedback" align="left">
+                  <div *ngIf="form['driver'].errors['required']">Chofer es requerido</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <input type="text" hidden formControlName="id" value="0" />
+                <label for="customername-field" class="form-label">Copiloto</label>
+                <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Chofer"
+                  [(ngModel)]="selectCopilot" id="customername-field" [clearable]="false" formControlName="copilot"
+                  [ngClass]="{ 'is-invalid': submitted && form['copilot'].errors }">
+                </ng-select>
+
+              </div>
+            </div>
+
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <input type="text" hidden formControlName="id" value="0" />
+                <label for="customername-field" class="form-label">Estibador</label>
+                <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Chofer"
+                  [(ngModel)]="selectStevedore" id="customername-field" [clearable]="false" formControlName="stevedore"
+                  [ngClass]="{ 'is-invalid': submitted && form['stevedore'].errors }">
+                </ng-select>
+
+              </div>
+            </div>
+
+
+
+          </div>
+
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label>Fecha hora Culminacion</label>
+                <div class="input-group clockpicker">
+                  <input class="form-control" type="datetime-local" id="example-date-input"
+                    formControlName="dateTimeCompletion" autocomplete="disabled">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Fotos serguro</label>
+                <input type="file" id="customername-field" accept=".jpg" class="form-control"
+                  (change)="getDocument($event)" autocomplete="off" />
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Dinero entregado</label>
+                <input type="text" id="customername-field" class="form-control" formControlName="moneyDelivered"
+                  [ngClass]="{ 'is-invalid': submitted && form['moneyDelivered'].errors }" autocomplete="off" />
+
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Detalle Dinero</label>
+                <input type="text" id="customername-field" class="form-control" formControlName="detailMoney"
+                  [ngClass]="{ 'is-invalid': submitted && form['detailMoney'].errors }" autocomplete="off" />
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Operación</label>
+                <input type="text" id="customername-field" class="form-control" formControlName="operation"
+                  [ngClass]="{ 'is-invalid': submitted && form['operation'].errors }" autocomplete="off" />
+
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Estado Facturacion</label>
+                <ng-select [items]="invoiced" id="customername-field" formControlName="invoiced"
+                  placeholder="Seleccione Estado"
+                  [ngClass]="{ 'is-invalid': submitted && form['invoiced'].errors }"></ng-select>
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Estado cobrado</label>
+                <ng-select [items]="charge" id="customername-field" formControlName="charge"
+                  placeholder="Seleccione Estado"
+                  [ngClass]="{ 'is-invalid': submitted && form['charge'].errors }"></ng-select>
+
+              </div>
+            </div>
+
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Estado documentario</label>
+                <ng-select [items]="documentaryStatus" id="customername-field" formControlName="documentaryStatus"
+                  placeholder="Seleccione Estado"
+                  [ngClass]="{ 'is-invalid': submitted && form['documentaryStatus'].errors }"></ng-select>
+
+              </div>
+            </div>
+
+
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-2">
+              <div>
+                <label for="customername-field" class="form-label"></label>
+                <div class="hstack gap-2 justify-content-end">
+                  <button type="submit" class="btn btn-success" id="add-btn" *ngIf="action===1">Registrar</button>
+                  <button type="submit" class="btn btn-success" id="add-btn" *ngIf="action===2">Actualizar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #TabContent2>
+  <app-service-monitoring [idTracking]="idTrackingOuput"></app-service-monitoring>
+</ng-template>
+
+<ng-template #TabContent3>
+  <app-settlement-summary [tracking]="trackingOutput"></app-settlement-summary>
+</ng-template>

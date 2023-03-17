@@ -1,0 +1,50 @@
+.dp-hidden {
+    width: 0;
+    margin: 0;
+    border: none;
+    padding: 0;
+}
+.custom-day {
+    text-align: center;
+    padding: 0.185rem 0.25rem;
+    display: inline-block;
+    height: 2rem;
+    width: 2rem;
+}
+.custom-day.focused {
+    background-color: #e6e6e6;
+}
+.custom-day.range,
+.custom-day:hover {
+    background-color: rgb(2, 117, 216);
+    color: white;
+}
+.custom-day.faded {
+    background-color: rgba(2, 117, 216, 0.5);
+}
+
+.diplay-flex{
+    display: flex;
+}
+
+.custom {
+    color: #FFFFFF;
+    background-color: #283046;
+    border-color: #0c102a;
+    margin: 0px !important;
+    margin-left: 0.5rem!important;
+  }
+  
+  .btn.btn-sm {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.65rem;
+  }
+
+  .search-box .form-control{
+    border-radius: 0px!important;
+  }
+
+  .pagination  {
+    margin-bottom: 2.5rem !important;
+}
+

@@ -160,7 +160,7 @@ export class ProviderComponent implements OnInit {
       const phoneNumber = this.providerForm.get('phoneNumber')?.value;
       const address = this.providerForm.get('address')?.value;
       const admissionDate = this.providerForm.get('admissionDate')?.value;
-      const fortmatadmissionDate = this.pipe.transform(admissionDate, 'yyyy-MM-dd');
+      const fortmatadmissionDate = this.pipe.transform(admissionDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       const bankName = this.providerForm.get('bankName')?.value;
       const bankAccount = this.providerForm.get('bankAccount')?.value;
       const interbankAccount = this.providerForm.get('interbankAccount')?.value;

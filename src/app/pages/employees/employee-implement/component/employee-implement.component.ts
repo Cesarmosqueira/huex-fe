@@ -160,7 +160,7 @@ export class EmployeeImplementComponent implements OnInit {
       const employeeId = this.selectEmployee.id;
       const implementId = this.selectImplement.id;
       const deliveryDate = this.employeeImplementForm.get('deliveryDate')?.value;
-      const fortmatdeliveryDate = this.pipe.transform(deliveryDate, 'yyyy-MM-dd');
+      const fortmatdeliveryDate = this.pipe.transform(deliveryDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       const observations = this.employeeImplementForm.get('observations')?.value;
 
       let employeeImplement = new EmployeeImplement();

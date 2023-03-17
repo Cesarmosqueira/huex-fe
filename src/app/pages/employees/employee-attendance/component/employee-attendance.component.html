@@ -6,18 +6,48 @@
       <div class="card">
         <div class="card-body">
           <div class="row mb-2">
-            <div class="col-sm-4">
-              <div class="search-box me-2 mb-2 d-inline-block">
-                <div class="position-relative">
-                  <input type="text" class="form-control" placeholder="Buscar por trabajador..." [(ngModel)]="service.searchTerm">
-                  <i class="bx bx-search-alt search-icon"></i>
+            <div class="col-sm-8 diplay-flex">
+              <div class="col-sm-4">
+                <div class="dp-hidden position-absolute">
+                  <div class="input-group">
+                    <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker"
+                      [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2"
+                      [dayTemplate]="t" outsideDays="hidden" [startDate]="fromDate!" tabindex="-1" />
+                    <ng-template #t let-date let-focused="focused">
+                      <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                        [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                        (mouseleave)="hoveredDate = null">
+                        {{ date.day }}
+                      </span>
+                    </ng-template>
+                  </div>
+
+                </div>
+                <div class="input-group">
+                  <input #dpFromDate class="form-control" placeholder="dd-mm-yyyy" name="dpFromDate" [value]="date"
+                    (input)="fromDate = validateInput(fromDate, dpFromDate.value)" />
+                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()"
+                    type="button"></button>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <button type="button" (click)="searchEmployeeAttendance()" class="btn custom btn-sm mt-2 mr-2"><i
+                    class="bx bx-search-alt search-icon"></i> Buscar </button>
+              </div>
+              <div class="col-sm-5">
+                <div class="search-box me-2 mb-2 d-inline-block">
+                  <div class="position-relative">
+                    <input type="text" class="form-control" placeholder="Buscar por trabajador..."
+                      [(ngModel)]="service.searchTerm">
+                    <i class="bx bx-search-alt search-icon"></i>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="col-sm-8">
+            <div class="col-sm-4">
               <div class="text-sm-end">
                 <button type="button" class="btn btn-success btn-rounded mb-2 me-2" (click)="openModal(content)"><i
-                  class="mdi mdi-plus mr-1"></i>
+                    class="mdi mdi-plus mr-1"></i>
                   Nuevo</button>
               </div>
             </div><!-- end col-->
@@ -27,32 +57,32 @@
           <div class="table-responsive mb-0">
             <table class="table table-centered table-nowrap">
               <thead class="table-light">
-              <tr>
-                <th class="align-middle">ID</th>
-                <th class="align-middle">Trabajador</th>
-                <th class="align-middle">Fecha</th>
-                <th class="align-middle">Estado</th>
-                <th class="align-middle">Acciones</th>
+                <tr>
+                  <th class="align-middle">ID</th>
+                  <th class="align-middle">Trabajador</th>
+                  <th class="align-middle">Fecha</th>
+                  <th class="align-middle">Estado</th>
+                  <th class="align-middle">Acciones</th>
 
-              </tr>
+                </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let data of employeeAttendance" id="o_{{data.id}}">
-                <td>
-                  <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
-                </td>
-                <td>{{data.employee.fullName}}</td>
-                <td>{{data.attendanceDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
-                <td>{{data.status}}</td>
-                <td>
-                  <div class="d-flex gap-3">
-                    <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
-                      class="mdi mdi-pencil font-size-18"></i></a>
-                    <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
-                      class="mdi mdi-delete font-size-18"></i></a>
-                  </div>
-                </td>
-              </tr>
+                <tr *ngFor="let data of employeeAttendance" id="o_{{data.id}}">
+                  <td>
+                    <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
+                  </td>
+                  <td>{{data.employee.fullName}}</td>
+                  <td>{{data.attendanceDate.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                  <td>{{data.status}}</td>
+                  <td>
+                    <div class="d-flex gap-3">
+                      <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
+                          class="mdi mdi-pencil font-size-18"></i></a>
+                      <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
+                          class="mdi mdi-delete font-size-18"></i></a>
+                    </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
 
@@ -74,7 +104,7 @@
   <div class="modal-header">
     <h5 class="modal-title" id="exampleModalLabel">Nueva asistencia</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
-            (click)="modal.dismiss('Cross click')"></button>
+      (click)="modal.dismiss('Cross click')"></button>
   </div>
   <form (ngSubmit)="saveUser()" [formGroup]="employeeAttendanceForm">
     <div class="modal-body">
@@ -85,8 +115,8 @@
         <input type="text" hidden formControlName="id" value="0" />
         <label for="customername-field" class="form-label">Trabajador</label>
         <ng-select [items]="employees" bindLabel="fullName" placeholder="Seleccione Trabajador"
-                   [(ngModel)]="selectEmployee" id="customername-field" [clearable]="false" required
-                   formControlName="employee" [ngClass]="{ 'is-invalid': submitted && form['employee'].errors }">
+          [(ngModel)]="selectEmployee" id="customername-field" [clearable]="false" required formControlName="employee"
+          [ngClass]="{ 'is-invalid': submitted && form['employee'].errors }">
         </ng-select>
         <div *ngIf="submitted && form['employee'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['employee'].errors['required']">Trabajador es requerido</div>
@@ -96,14 +126,15 @@
       <div class="mb-3">
         <label>Fecha</label>
         <div class="input-group clockpicker">
-          <input class="form-control" type="date" id="example-date-input" formControlName="attendanceDate" autocomplete="disabled">
+          <input class="form-control" type="date" id="example-date-input" formControlName="attendanceDate"
+            autocomplete="disabled">
         </div>
       </div>
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Estado</label>
         <input type="text" id="customername-field" class="form-control" required formControlName="status"
-               [ngClass]="{ 'is-invalid': submitted && form['status'].errors }" autocomplete="disabled" />
+          [ngClass]="{ 'is-invalid': submitted && form['status'].errors }" autocomplete="disabled" />
         <div *ngIf="submitted && form['status'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['status'].errors['required']">Estado es requerido</div>
         </div>
@@ -114,7 +145,7 @@
     <div class="modal-footer">
       <div class="hstack gap-2 justify-content-end">
         <button type="button" class="btn btn-light" data-bs-dismiss="modal"
-                (click)="modal.close('Close click')">Cancelar</button>
+          (click)="modal.close('Close click')">Cancelar</button>
         <button type="submit" class="btn btn-success" id="add-btn">Registrar</button>
       </div>
     </div>

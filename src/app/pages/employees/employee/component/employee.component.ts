@@ -178,14 +178,14 @@ export class EmployeeComponent implements OnInit {
       const currentState = this.employeeForm.get('currentState')?.value;
       const placeOfBirth = this.employeeForm.get('placeOfBirth')?.value;
       const birthDate = this.employeeForm.get('birthDate')?.value;
-      const fortmatbirthDate = this.pipe.transform(birthDate, 'yyyy-MM-dd');
+      const fortmatbirthDate = this.pipe.transform(birthDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       const address = this.employeeForm.get('address')?.value;
       const phoneNumber = this.employeeForm.get('phoneNumber')?.value;
       const email = this.employeeForm.get('email')?.value;
       const joinDate = this.employeeForm.get('joinDate')?.value;
-      const fortmatjoinDate = this.pipe.transform(joinDate, 'yyyy-MM-dd');
+      const fortmatjoinDate = this.pipe.transform(joinDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       const ceaseDate = this.employeeForm.get('ceaseDate')?.value;
-      const fortmatceaseDate = this.pipe.transform(ceaseDate, 'yyyy-MM-dd');
+      const fortmatceaseDate = this.pipe.transform(ceaseDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       const bankAccount = this.employeeForm.get('bankAccount')?.value;
       const contractType = this.employeeForm.get('contractType')?.value;
       const maritalStatus = this.employeeForm.get('maritalStatus')?.value;
@@ -200,9 +200,9 @@ export class EmployeeComponent implements OnInit {
       const role = this.employeeForm.get('role')?.value;
       const licenseCategory = this.employeeForm.get('licenseCategory')?.value;
       const licenseExpirationDate = this.employeeForm.get('licenseExpirationDate')?.value;
-      const fortmatlicenseExpirationDate = this.pipe.transform(licenseExpirationDate, 'yyyy-MM-dd');
+      const fortmatlicenseExpirationDate = this.pipe.transform(licenseExpirationDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       const dniExpirationDate = this.employeeForm.get('dniExpirationDate')?.value;
-      const fortmatdniExpirationDate = this.pipe.transform(dniExpirationDate, 'yyyy-MM-dd');
+      const fortmatdniExpirationDate = this.pipe.transform(dniExpirationDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       const photoUrl = this.imageUrl.replace("data:image/jpeg;base64,", "");
 
       let employee = new Employee();

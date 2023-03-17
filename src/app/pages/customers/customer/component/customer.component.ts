@@ -146,7 +146,7 @@ export class CustomerComponent implements OnInit {
       const socialReason = this.customerForm.get('socialReason')?.value;
       const bankAccount = this.customerForm.get('bankAccount')?.value;
       const registerDate = this.customerForm.get('registerDate')?.value;
-      const fortmatregisterDate = this.pipe.transform(registerDate, 'yyyy-MM-dd');
+      const fortmatregisterDate = this.pipe.transform(registerDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
 
       let customer = new Customer();
       customer.ruc = ruc;

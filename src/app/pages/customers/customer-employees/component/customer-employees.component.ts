@@ -162,7 +162,7 @@ export class CustomerEmployeesComponent implements OnInit {
       const idEmployee = this.selectEmployee.id;
       const status = this.customerEmployeesForm.get('status')?.value;
       const registerDate = this.customerEmployeesForm.get('registerDate')?.value;
-      const fortmatregisterDate = this.pipe.transform(registerDate, 'yyyy-MM-dd');
+      const fortmatregisterDate = this.pipe.transform(registerDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       const observations = this.customerEmployeesForm.get('observations')?.value;
 
       let customerEmployees = new CustomerEmployees();

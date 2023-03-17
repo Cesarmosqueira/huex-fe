@@ -150,8 +150,8 @@ export class MaintenanceTireComponent implements OnInit {
 
       truckFleet.id=truckFleetId;
       maintenanceTire.truckFleet = truckFleet;
-      maintenanceTire.dateRenewal = this.pipe.transform(dateRenewal, 'yyyy-MM-dd');
-      maintenanceTire.dateReview = this.pipe.transform(dateReview, 'yyyy-MM-dd');
+      maintenanceTire.dateRenewal = this.pipe.transform(dateRenewal, 'yyyy-MM-ddTHH:mm:ss.sssZ');
+      maintenanceTire.dateReview = this.pipe.transform(dateReview, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       maintenanceTire.statusTire = statusTire;
 
       if (id == '0') {
