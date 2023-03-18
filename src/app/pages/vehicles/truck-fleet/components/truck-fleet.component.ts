@@ -152,7 +152,7 @@ export class TruckFleetComponent implements OnInit {
       const brand = this.truckFleetForm.get('brand')?.value;
       const volume = this.truckFleetForm.get('volume')?.value;
       const fabricationDate = this.truckFleetForm.get('fabricationDate')?.value;
-      const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-dd');
+      const fortmatFabricationDate = this.pipe.transform(fabricationDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       const tonNumber = this.truckFleetForm.get('tonNumber')?.value;
       const axes = this.truckFleetForm.get('axes')?.value;
       const model = this.truckFleetForm.get('model')?.value;

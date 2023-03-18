@@ -149,7 +149,7 @@ export class FuelSupplyComponent implements OnInit {
       this.pipe = new DatePipe('en-US');
       const providerId = this.selectProvider.id;
       const dateFuel = this.fuelSupplyForm.get('dateFuel')?.value;
-      const fortmatdateFuel = this.pipe.transform(dateFuel, 'yyyy-MM-dd');
+      const fortmatdateFuel = this.pipe.transform(dateFuel, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       const fuelQuantity = this.fuelSupplyForm.get('fuelQuantity')?.value;
       const gallonPrice = this.fuelSupplyForm.get('gallonPrice')?.value;
       const observation = this.fuelSupplyForm.get('observation')?.value;

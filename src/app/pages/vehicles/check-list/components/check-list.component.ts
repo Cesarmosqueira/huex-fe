@@ -124,7 +124,7 @@ export class CheckListComponent implements OnInit {
       const id = this.checkListForm.get('id')?.value;
       const idTruckFleet = this.idTruckFleet;
       const date = this.checkListForm.get('documentDate')?.value;
-      const dateFormat = this.pipe.transform(date, 'yyyy-MM-dd');
+      const dateFormat = this.pipe.transform(date, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       let checkList = new CheckList();
       let truckFleet = new TruckFleet();
       truckFleet.id = this.idTruckFleet;

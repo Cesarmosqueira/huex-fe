@@ -126,7 +126,7 @@ export class KardexFuelComponent implements OnInit {
 
       let kardexFuel = new KardexFuel();
       kardexFuel.idTruckFleet = idTruckFleet;
-      kardexFuel.date = this.pipe.transform(date, 'yyyy-MM-dd');
+      kardexFuel.date = this.pipe.transform(date, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       kardexFuel.amountFuel = amountFuel;
       kardexFuel.mileage = mileage;
       kardexFuel.dutyManager = dutyManager;

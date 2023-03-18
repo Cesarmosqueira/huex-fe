@@ -84,6 +84,13 @@ export class EmployeeAttendanceService extends BaseService{
       }), catchError(this.handleError));
   }
 
+  public listEmployeeAttendanceByDate(startDate, endDate): Observable<ResponseModel<any>> {
+    return this.httpClient.get(environment.server + environment.employees.employeeAttendance.listByDate + startDate + "/" + endDate)
+      .pipe(map((responseModel: ResponseModel<any>) => {
+        return responseModel;
+      }), catchError(this.handleError));
+  }
+
   //Pagination
 
   public paginationTable(employeeAttendances: EmployeeAttendance[]) {

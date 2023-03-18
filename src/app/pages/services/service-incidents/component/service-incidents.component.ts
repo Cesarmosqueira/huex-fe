@@ -183,7 +183,7 @@ export class ServiceIncidentsComponent implements OnInit {
       const sku = this.serviceIncidentForm.get('sku')?.value;
       const nameProduct = this.serviceIncidentForm.get('nameProduct')?.value;
       const observationDate = this.serviceIncidentForm.get('observationDate')?.value;
-      const fortmatObservationDate = this.pipe.transform(observationDate, 'yyyy-MM-dd');
+      const fortmatObservationDate = this.pipe.transform(observationDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       const damageType = this.serviceIncidentForm.get('damageType')?.value;
       const motive = this.serviceIncidentForm.get('motive')?.value;
       const responsible = this.serviceIncidentForm.get('responsible')?.value;

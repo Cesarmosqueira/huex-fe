@@ -136,7 +136,7 @@ export class SettlementSummaryComponent implements OnInit {
       this.pipe = new DatePipe('en-US');
       const expenseTypeId = this.settlementSummaryForm.get('expenseTypeId')?.value;
       const settlementDate = this.settlementSummaryForm.get('settlementDate')?.value;
-      const fortmatSettlementDate = this.pipe.transform(settlementDate, 'yyyy-MM-dd');
+      const fortmatSettlementDate = this.pipe.transform(settlementDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       const detail = this.settlementSummaryForm.get('detail')?.value;
       const totalExpense = this.settlementSummaryForm.get('totalExpense')?.value;
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
-import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
+import {NgbCalendar, NgbDate, NgbDateParserFormatter, NgbDatepickerI18n, NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
 import {DatePipe} from "@angular/common";
 import {first} from "rxjs/operators";
@@ -10,11 +10,16 @@ import {EmployeeAttendance} from "../models/employee-attendance.model";
 import {EmployeeAttendanceService} from "../services/employee-attendance.service";
 import {Employee} from "../../employee/models/employee.model";
 import {EmployeeService} from "../../employee/services/employee.service";
+import { CustomDatepickerI18n, I18n } from '../services/date-picker-format.service';
 
 @Component({
   selector: 'app-employee-attendance',
   templateUrl: './employee-attendance.component.html',
-  styleUrls: ['./employee-attendance.component.scss']
+  styleUrls: ['./employee-attendance.component.scss'],
+  providers: [
+    I18n,
+    { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n },
+  ],
 })
 export class EmployeeAttendanceComponent implements OnInit {
 
@@ -41,12 +46,23 @@ export class EmployeeAttendanceComponent implements OnInit {
   employees:Employee[]=[];
   selectEmployee:any;
 
+  //startDate
+  hoveredDate: NgbDate | null = null;
+  fromDate: NgbDate | null;
+  toDate: NgbDate | null;
+  date: string;
+
   constructor(public service: EmployeeAttendanceService,
               private modalService: NgbModal,
               private serviceEmployee:EmployeeService,
-              private formBuilder: UntypedFormBuilder) {
+              private formBuilder: UntypedFormBuilder,
+              private calendar: NgbCalendar,
+              public formatter: NgbDateParserFormatter) {
     this.employeeAttendanceList = service.countries$;
     this.total = service.total$;
+    this.fromDate = calendar.getToday();
+    this.toDate = calendar.getToday();
+    this.date = this.formatter.format(this.fromDate) + " / " + this.formatter.format(this.toDate);
   }
 
   ngOnInit(): void {
@@ -69,7 +85,7 @@ export class EmployeeAttendanceComponent implements OnInit {
     this.idEmployeeAttendanceOuput = 0;
 
     this.listEmployees();
-    this.listEmployeeAttendance();
+    
   }
 
   /**
@@ -149,7 +165,7 @@ export class EmployeeAttendanceComponent implements OnInit {
       this.pipe = new DatePipe('en-US');
       const employeeId = this.selectEmployee.id;
       const attendanceDate = this.employeeAttendanceForm.get('attendanceDate')?.value;
-      const fortmatattendanceDate = this.pipe.transform(attendanceDate, 'yyyy-MM-dd');
+      const fortmatattendanceDate = this.pipe.transform(attendanceDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       const status = this.employeeAttendanceForm.get('status')?.value;
 
       let employeeAttendance = new EmployeeAttendance();
@@ -211,6 +227,34 @@ export class EmployeeAttendanceComponent implements OnInit {
               this.test = response.datos.attendances;
               this.service.paginationTable(this.test);
             } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listEmployeeAttendanceByDate(startDate, endDate) {
+    this.service.listEmployeeAttendanceByDate(startDate, endDate)
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.test = response.datos.attendances;
+              this.service.paginationTable(this.test);
+            } else {
+              this.test = [];
               Swal.fire({
                 icon: config.WARNING,
                 title: response.meta.mensajes[0].mensaje,
@@ -378,4 +422,59 @@ export class EmployeeAttendanceComponent implements OnInit {
           });
         });
   }
+
+  searchEmployeeAttendance(){
+    let startDate = this.fromDate.year + "-" + this.fromDate.month + "-" + this.fromDate.day;
+    let endDate = this.toDate.year + "-" + this.toDate.month + "-" + this.toDate.day
+    this.listEmployeeAttendanceByDate(startDate, endDate);
+  }
+
+  //rangeDate
+  onDateSelection(date: NgbDate) {
+    if (!this.fromDate && !this.toDate) {
+      this.fromDate = date;
+    } else if (
+      this.fromDate &&
+      !this.toDate &&
+      date &&
+      date.after(this.fromDate)
+    ) {
+      this.toDate = date;
+    } else {
+      this.toDate = null;
+      this.fromDate = date;
+    }
+    this.date = this.formatter.format(this.fromDate) + " - " + this.formatter.format(this.toDate);
+  }
+
+  isHovered(date: NgbDate) {
+    return (
+      this.fromDate &&
+      !this.toDate &&
+      this.hoveredDate &&
+      date.after(this.fromDate) &&
+      date.before(this.hoveredDate)
+    );
+  }
+
+  isInside(date: NgbDate) {
+    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
+  }
+
+  isRange(date: NgbDate) {
+    return (
+      date.equals(this.fromDate) ||
+      (this.toDate && date.equals(this.toDate)) ||
+      this.isInside(date) ||
+      this.isHovered(date)
+    );
+  }
+
+  validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
+    const parsed = this.formatter.parse(input);
+    return parsed && this.calendar.isValid(NgbDate.from(parsed))
+      ? NgbDate.from(parsed)
+      : currentValue;
+  }
+
 }

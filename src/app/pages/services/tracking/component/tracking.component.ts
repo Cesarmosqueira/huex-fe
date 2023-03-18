@@ -225,7 +225,7 @@ export class TrackingComponent implements OnInit {
     if (this.trackingForm.valid) {
       this.pipe = new DatePipe('en-US');
       const dateService = this.trackingForm.get('dateService')?.value;
-      const fortmatDateService = this.pipe.transform(dateService, 'yyyy-MM-dd');
+      const fortmatDateService = this.pipe.transform(dateService, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       const idTruckFleet = this.trackingForm.get('truckFleet')?.value;
       const destinationDetail = this.trackingForm.get('destinationDetail')?.value;
       const numberPoints = this.trackingForm.get('numberPoints')?.value;
@@ -350,14 +350,14 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['guideNumber'].setValue(tracking.guideNumber);
     if (tracking.datePrecharge != null || tracking.datePrecharge != undefined) {
       const datePrecharge = tracking.datePrecharge.substring(0, 10);
-      const fortmatDatePrecharge = this.pipe.transform(tracking.datePrecharge, 'yyyy-MM-ddTHH:mm:ss');
+      const fortmatDatePrecharge = this.pipe.transform(tracking.datePrecharge, 'yyyy-MM-dd');
       this.trackingForm.controls['datePrecharge'].setValue(fortmatDatePrecharge);
     }
 
     this.trackingForm.controls['preloadStatus'].setValue(tracking.preloadStatus);
     if (tracking.scheduledAppointment != null || tracking.scheduledAppointment != undefined) {
       const scheduledAppointment = tracking.scheduledAppointment.substring(0, 10);
-      const fortmatScheduledAppointment = this.pipe.transform(tracking.scheduledAppointment, 'yyyy-MM-ddTHH:mm:ss');
+      const fortmatScheduledAppointment = this.pipe.transform(tracking.scheduledAppointment, 'yyyy-MM-dd');
       this.trackingForm.controls['scheduledAppointment'].setValue(fortmatScheduledAppointment);
     }
 
@@ -370,7 +370,7 @@ export class TrackingComponent implements OnInit {
 
     if (tracking.dateTimeCompletion != null || tracking.dateTimeCompletion != undefined) {
       const dateTimeCompletion = tracking.dateTimeCompletion.substring(0, 10);
-      const fortmatDateTimeCompletion = this.pipe.transform(tracking.dateTimeCompletion, 'yyyy-MM-ddTHH:mm:ss');
+      const fortmatDateTimeCompletion = this.pipe.transform(tracking.dateTimeCompletion, 'yyyy-MM-dd');
       this.trackingForm.controls['dateTimeCompletion'].setValue(fortmatDateTimeCompletion);
     }
 
