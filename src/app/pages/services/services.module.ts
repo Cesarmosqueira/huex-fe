@@ -11,6 +11,7 @@ import { ServiceIncidentsComponent } from './service-incidents/component/service
 import { SettlementSummaryComponent } from './settlement-summary/component/settlement-summary.component';
 import { ServiceMonitoringComponent } from './service-monitoring/component/service-monitoring.component';
 import { TrackingComponent } from './tracking/component/tracking.component';
+import { AdditionalServicesComponent } from './additional-services/component/additional-services.component';
 
 
 
@@ -20,7 +21,8 @@ import { TrackingComponent } from './tracking/component/tracking.component';
     ExpenseTypeComponent,
     ServiceIncidentsComponent,
     SettlementSummaryComponent,
-    ServiceMonitoringComponent
+    ServiceMonitoringComponent,
+    AdditionalServicesComponent
   ],
   imports: [
     CommonModule,

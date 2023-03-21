@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  server: 'http://localhost:80',
+  server: 'http://localhost:8080',
   //server: 'http://localhost:8084',
   production: false,
   defaultauth: 'fackbackend',
@@ -130,6 +130,13 @@ export const environment = {
       update: '/api-huex/v1/serviceMonitoring',
       delete: '/api-huex/v1/serviceMonitoring/',
       listByIdTracking: '/api-huex/v1/serviceMonitoring/tracking/'
+    },
+    additionalServices: {
+      list: '/api-huex/v1/additional_services',
+      retrieve: '/api-huex/v1/additional_services/',
+      register: '/api-huex/v1/additional_services',
+      update: '/api-huex/v1/additional_services',
+      delete: '/api-huex/v1/additional_services/',
     }
   },
 

@@ -4,12 +4,14 @@ import { ExpenseTypeComponent } from "./expense-type/component/expense-type.comp
 import { ServiceIncidentsComponent } from "./service-incidents/component/service-incidents.component";
 import { SettlementSummaryComponent } from "./settlement-summary/component/settlement-summary.component";
 import { TrackingComponent } from './tracking/component/tracking.component';
+import {AdditionalServicesComponent} from "./additional-services/component/additional-services.component";
 
 const routes: Routes = [
   { path: "tracking", component: TrackingComponent },
   { path: "expenseType", component: ExpenseTypeComponent },
   { path: "serviceIncidents", component: ServiceIncidentsComponent },
-  { path: "settlementSummary", component: SettlementSummaryComponent }
+  { path: "settlementSummary", component: SettlementSummaryComponent },
+  { path: "servicesAdditional", component: AdditionalServicesComponent }
 ];
 
 
