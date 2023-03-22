@@ -284,7 +284,6 @@ export class TrackingComponent implements OnInit {
         tracking.photoInsurance = this.imageUrl.replace("data:image/jpeg;base64,", "");
       }
 
-
       const id = this.trackingForm.get('id')?.value;
       if (id == '0') {
         this.registerTracking(tracking);
@@ -350,14 +349,14 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['guideNumber'].setValue(tracking.guideNumber);
     if (tracking.datePrecharge != null || tracking.datePrecharge != undefined) {
       const datePrecharge = tracking.datePrecharge.substring(0, 10);
-      const fortmatDatePrecharge = this.pipe.transform(tracking.datePrecharge, 'yyyy-MM-dd');
+      const fortmatDatePrecharge = this.pipe.transform(tracking.datePrecharge, 'yyyy-MM-ddTHH:mm:ss');
       this.trackingForm.controls['datePrecharge'].setValue(fortmatDatePrecharge);
     }
 
     this.trackingForm.controls['preloadStatus'].setValue(tracking.preloadStatus);
     if (tracking.scheduledAppointment != null || tracking.scheduledAppointment != undefined) {
       const scheduledAppointment = tracking.scheduledAppointment.substring(0, 10);
-      const fortmatScheduledAppointment = this.pipe.transform(tracking.scheduledAppointment, 'yyyy-MM-dd');
+      const fortmatScheduledAppointment = this.pipe.transform(tracking.scheduledAppointment, 'yyyy-MM-ddTHH:mm:ss');
       this.trackingForm.controls['scheduledAppointment'].setValue(fortmatScheduledAppointment);
     }
 
@@ -370,7 +369,7 @@ export class TrackingComponent implements OnInit {
 
     if (tracking.dateTimeCompletion != null || tracking.dateTimeCompletion != undefined) {
       const dateTimeCompletion = tracking.dateTimeCompletion.substring(0, 10);
-      const fortmatDateTimeCompletion = this.pipe.transform(tracking.dateTimeCompletion, 'yyyy-MM-dd');
+      const fortmatDateTimeCompletion = this.pipe.transform(tracking.dateTimeCompletion, 'yyyy-MM-ddTHH:mm:ss');
       this.trackingForm.controls['dateTimeCompletion'].setValue(fortmatDateTimeCompletion);
     }
 
@@ -404,7 +403,6 @@ export class TrackingComponent implements OnInit {
   }
 
   listTrackings() {
-    console.log("entroooooooo");
     this.service.listTrackings()
       .pipe(first())
       .subscribe(
@@ -734,7 +732,6 @@ export class TrackingComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.tracking = response.datos.trackingService;
-              console.log(this.tracking);
               this.editDataGet(this.tracking, content, action);
             } else {
               Swal.fire({
