@@ -6,7 +6,7 @@ import {DecimalPipe} from "@angular/common";
 import {ResponseModel} from "../../../../shared/utils/response-model";
 import {environment} from "../../../../../environments/environment";
 import {catchError, debounceTime, delay, map, switchMap, tap} from "rxjs/operators";
-import {matches, sort, SortColumn, SortDirection} from "../../additional-services/utils/utils";
+import {matches, matchesName, sort, SortColumn, SortDirection} from "../../additional-services/utils/utils";
 import {SearchResult} from "../../additional-services/interfaces/search-result.interface";
 import {BaseService} from "../../../../shared/utils/base-service";
 import {AdditionalServices} from "../models/additional-services.model";
@@ -28,7 +28,7 @@ export class AdditionalServicesService extends BaseService{
 
   private _state: State = {
     page: 1,
-    pageSize: 8,
+    pageSize: 12,
     searchTerm: '',
     sortColumn: '',
     sortDirection: '',
@@ -38,6 +38,7 @@ export class AdditionalServicesService extends BaseService{
     status: '',
     payment: '',
     date: '',
+    searchName: ''
   };
 
   constructor(protected httpClient: HttpClient, private pipe: DecimalPipe) {
@@ -109,6 +110,7 @@ export class AdditionalServicesService extends BaseService{
   get page() { return this._state.page; }
   get pageSize() { return this._state.pageSize; }
   get searchTerm() { return this._state.searchTerm; }
+  get searchName() { return this._state.searchName; }
   get startIndex() { return this._state.startIndex; }
   get endIndex() { return this._state.endIndex; }
   get totalRecords() { return this._state.totalRecords; }
@@ -116,6 +118,7 @@ export class AdditionalServicesService extends BaseService{
   set page(page: number) { this._set({page}); }
   set pageSize(pageSize: number) { this._set({pageSize}); }
   set searchTerm(searchTerm: string) { this._set({searchTerm}); }
+  set searchName(searchName: string) { this._set({ searchName }); }
   set sortColumn(sortColumn: SortColumn) { this._set({sortColumn}); }
   set sortDirection(sortDirection: SortDirection) { this._set({sortDirection}); }
   set startIndex(startIndex: number) { this._set({ startIndex }); }
@@ -128,12 +131,14 @@ export class AdditionalServicesService extends BaseService{
   }
 
   private _search(): Observable<SearchResult> {
-    const {sortColumn, sortDirection, page, searchTerm} = this._state;
+    const {sortColumn, sortDirection, page, searchTerm,searchName} = this._state;
     // 1. sort
     let additionalServices = sort(this.additionalServices, sortColumn, sortDirection);
 
     // 2. filter
     additionalServices = additionalServices.filter(country => matches(country, searchTerm, this.pipe));
+    additionalServices = additionalServices.filter(country => matchesName(country, searchName, this.pipe));
+
     const total = additionalServices.length;
 
     // 3. paginate

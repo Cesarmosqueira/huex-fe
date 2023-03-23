@@ -782,5 +782,9 @@ export class TrackingComponent implements OnInit {
     XLSX.writeFile(wb, this.fileName);
 
   }
+  closedForm(){
+    this.clear();
+    this.modalService.dismissAll();
+  }
 
 }
