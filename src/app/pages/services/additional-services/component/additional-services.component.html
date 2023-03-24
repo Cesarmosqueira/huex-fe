@@ -189,23 +189,28 @@
 
         <div class="col-md-6">
 
-        <div class="mb-3">
-        <label for="customername-field" class="form-label">Observacion</label>
-        <input type="text" id="customername-field" class="form-control"  formControlName="observation"
-               [ngClass]="{ 'is-invalid': submitted && form['observation'].errors }" autocomplete="disabled" />
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Persona que solicita</label>
+            <input type="text" id="customername-field" class="form-control"  formControlName="personRequest"
+                   [ngClass]="{ 'is-invalid': submitted && form['personRequest'].errors }" autocomplete="disabled" />
+          </div>
         </div>
-        </div>
+
 
       </div>
 
       <div class="row">
-        <div class="col-md-6">
 
-        <div class="mb-3">
-        <label for="customername-field" class="form-label">Persona que solicita</label>
-        <input type="text" id="customername-field" class="form-control"  formControlName="personRequest"
-               [ngClass]="{ 'is-invalid': submitted && form['personRequest'].errors }" autocomplete="disabled" />
-      </div>
+
+        <div class="col-md-12">
+
+          <div class="mb-3">
+            <label class="form-label">observacion</label>
+            <div>
+                <textarea formControlName="observation" class="form-control" rows="5"
+                          [ngClass]="{'is-invalid': submitted && form['observation'].errors}" autocomplete="disabled"></textarea>
+            </div>
+          </div>
         </div>
 
       </div>

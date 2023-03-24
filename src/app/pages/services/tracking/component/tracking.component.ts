@@ -54,11 +54,11 @@ export class TrackingComponent implements OnInit {
   selectRates = null;
 
   employees: Employee[] = [];
-  tipoServicio: string[] = ['Local', 'Provincia'];
-  estado: string[] = ['En cochera', 'En ruta','Esperando descarga', 'Retornando', 'Cargando', 'Descargando', 'Finalizo'];
-  invoiced: string[] = ['Facturado', 'Pendiente'];
-  charge: string[] = ['Cobrado', 'Pendiente'];
-  documentaryStatus: string[] = ['Pendiente', 'Recepcionado','Enviado'];
+  tipoServicio: string[] = ['LOCAL', 'PROVINCIA'];
+  estado: string[] = ['EN COCHERA', 'EN RUTA','ESPERANDO DESCARGA', 'RETORNANDO', 'CARGANDO', 'DESCARGANDO', 'FINALIZO'];
+  invoiced: string[] = ['FACTURADO', 'PENDIENTE'];
+  charge: string[] = ['COBRADO', 'PENDIENTE'];
+  documentaryStatus: string[] = ['PENDIENTE', 'RECEPCIONADO HUACHIPA','ENVIADO','RECEPCIONADO ATE'];
   volumen:string[]=['60','70','80','90','100','110','120'];
   weightLoad:string[]=['10','15','20','25','30','35'];
 
@@ -126,8 +126,8 @@ export class TrackingComponent implements OnInit {
       invoiced: [''],
       charge: [''],
       photoInsurance: [''],
-      documentaryStatus: ['']
-
+      documentaryStatus: [''],
+      expenseStatus:['']
     });
 
     this.trackingsList.subscribe(x => {
@@ -250,6 +250,8 @@ export class TrackingComponent implements OnInit {
       const invoiced = this.trackingForm.get('invoiced')?.value;
       const charge = this.trackingForm.get('charge')?.value;
       const documentaryStatus = this.trackingForm.get('documentaryStatus')?.value;
+      const expenseStatus = this.trackingForm.get('expenseStatus')?.value;
+
 
 
       //const condition = this.trackingForm.get('condition')?.value;
@@ -277,6 +279,8 @@ export class TrackingComponent implements OnInit {
       tracking.charge = charge;
       tracking.invoiced = invoiced;
       tracking.documentaryStatus = documentaryStatus;
+      tracking.expenseStatus = expenseStatus;
+
 
 
       //tracking.condition = condition;
@@ -379,6 +383,7 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['invoiced'].setValue(tracking.invoiced);
     this.trackingForm.controls['charge'].setValue(tracking.charge);
     this.trackingForm.controls['documentaryStatus'].setValue(tracking.documentaryStatus);
+    this.trackingForm.controls['expenseStatus'].setValue(tracking.expenseStatus);
 
     if (tracking.photoInsurance != null || tracking.photoInsurance != undefined) {
       this.imageUrl = 'data:image/jpeg;base64,' + tracking.photoInsurance;
@@ -533,6 +538,8 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['invoiced'].setValue("");
     this.trackingForm.controls['charge'].setValue("");
     this.trackingForm.controls['documentaryStatus'].setValue("");
+    this.trackingForm.controls['expenseStatus'].setValue("");
+
     this.selectRates = null;
     this.selectDriver = null;
     this.selectCopilot = null;
@@ -566,6 +573,7 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['invoiced'].disable();
     this.trackingForm.controls['charge'].disable();
     this.trackingForm.controls['documentaryStatus'].disable();
+    this.trackingForm.controls['expenseStatus'].disable();
 
     //this.trackingForm.controls['condition'].disable();
     this.trackingForm.controls['photoInsurance'].disable();
@@ -595,6 +603,7 @@ export class TrackingComponent implements OnInit {
     this.trackingForm.controls['invoiced'].enable();
     this.trackingForm.controls['charge'].enable();
     this.trackingForm.controls['documentaryStatus'].enable();
+    this.trackingForm.controls['expenseStatus'].enable();
 
     //this.trackingForm.controls['condition'].enable();
     this.trackingForm.controls['photoInsurance'].enable();
