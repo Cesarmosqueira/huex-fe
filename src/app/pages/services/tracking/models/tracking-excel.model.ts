@@ -27,4 +27,5 @@ export class TrackingExcel {
     documentaryStatus: any;
     tonNumber: any;
     volume: any;
+    expenseStatus:any;
 }

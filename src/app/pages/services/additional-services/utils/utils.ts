@@ -17,7 +17,11 @@ export function sort(additionalServices: AdditionalServices[], column: SortColum
         });
     }
 }
+export function matchesName(additionalServices: AdditionalServices, term: string, pipe: PipeTransform) {
+  return additionalServices.customer.socialReason.toLowerCase().includes(term.toLowerCase())
+    || additionalServices.truckFleet.tractPlate.toLowerCase().includes(term.toLowerCase());}
 
 export function matches(additionalServices: AdditionalServices, term: string, pipe: PipeTransform) {
-    return additionalServices.customer.socialReason.toLowerCase().includes(term.toLowerCase());
+
+  return additionalServices.dateService.toLowerCase().includes(term.toLowerCase());
 }

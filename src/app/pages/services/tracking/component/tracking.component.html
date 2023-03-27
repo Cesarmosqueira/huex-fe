@@ -124,7 +124,7 @@
 
   <div class="modal-header">
     <h5 class="modal-title mt-0">Nuevo Servicio</h5>
-    <button type="button" class="btn-close" aria-hidden="true" (click)="modal.dismiss('Cross click')"></button>
+    <button type="button" class="btn-close" aria-hidden="true" (click)="closedForm()"></button>
   </div>
   <div class="modal-body">
     <div class="card">
@@ -435,6 +435,19 @@
               </div>
             </div>
 
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label for="customername-field" class="form-label">Estado gastos</label>
+                <ng-select [items]="documentaryStatus" id="customername-field" formControlName="expenseStatus"
+                           placeholder="Seleccione Estado"
+                           [ngClass]="{ 'is-invalid': submitted && form['expenseStatus'].errors }"></ng-select>
+              </div>
+            </div>
 
           </div>
 

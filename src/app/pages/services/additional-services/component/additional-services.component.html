@@ -7,10 +7,19 @@
           <div class="row mb-2">
             <div class="col-sm-4">
               <div class="search-box me-2 mb-2 d-inline-block">
+
                 <div class="position-relative">
-                  <input type="text" class="form-control" placeholder="Buscar por cliente..." [(ngModel)]="service.searchTerm">
+                  <input type="text" class="form-control" placeholder="Buscar por fecha..."
+                         [(ngModel)]="service.searchTerm">
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
+
+                <div class="position-relative">
+                  <input type="text" class="form-control" placeholder="Buscar registro..."
+                         [(ngModel)]="service.searchName">
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+
               </div>
             </div>
             <div class="col-sm-8">
@@ -28,15 +37,14 @@
               <thead class="table-light">
               <tr>
                 <th class="align-middle">ID</th>
+                <th class="align-middle">Estado</th>
                 <th class="align-middle">Fecha servicio</th>
                 <th class="align-middle">Cliente</th>
                 <th class="align-middle">Placa</th>
                 <th class="align-middle">Recurso</th>
                 <th class="align-middle">Costo</th>
                 <th class="align-middle">Detalle facturar</th>
-                <th class="align-middle">Estado</th>
                 <th class="align-middle">Observaciones</th>
-
                 <th class="align-middle">Acción</th>
               </tr>
               </thead>
@@ -45,13 +53,13 @@
                 <td>
                   <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                 </td>
+                <td>{{data.status}}</td>
                 <td>{{data.dateService.substring(0,10) | date:'YYYY-MM-dd'}}</td>
                 <td>{{data.customer.socialReason}}</td>
                 <td>{{data.truckFleet.tractPlate}}</td>
                 <td>{{data.resources}}</td>
                 <td>{{data.cost}}</td>
                 <td>{{data.invoiceDetail}}</td>
-                <td>{{data.status}}</td>
                 <td>{{data.observation}}</td>
                 <td>
                   <div class="d-flex gap-3">
@@ -151,7 +159,7 @@
         <div class="col-md-6">
 
         <div class="mb-3">
-          <label for="customername-field" class="form-label">Recurso</label>
+          <label for="customername-field" class="form-label">Costo</label>
           <input type="number" id="customername-field" class="form-control"  formControlName="cost"
                  [ngClass]="{ 'is-invalid': submitted && form['cost'].errors }" autocomplete="disabled" />
         </div>
@@ -181,23 +189,28 @@
 
         <div class="col-md-6">
 
-        <div class="mb-3">
-        <label for="customername-field" class="form-label">Observacion</label>
-        <input type="text" id="customername-field" class="form-control"  formControlName="observation"
-               [ngClass]="{ 'is-invalid': submitted && form['observation'].errors }" autocomplete="disabled" />
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Persona que solicita</label>
+            <input type="text" id="customername-field" class="form-control"  formControlName="personRequest"
+                   [ngClass]="{ 'is-invalid': submitted && form['personRequest'].errors }" autocomplete="disabled" />
+          </div>
         </div>
-        </div>
+
 
       </div>
 
       <div class="row">
-        <div class="col-md-6">
 
-        <div class="mb-3">
-        <label for="customername-field" class="form-label">Persona que solicita</label>
-        <input type="text" id="customername-field" class="form-control"  formControlName="personRequest"
-               [ngClass]="{ 'is-invalid': submitted && form['personRequest'].errors }" autocomplete="disabled" />
-      </div>
+
+        <div class="col-md-12">
+
+          <div class="mb-3">
+            <label class="form-label">observacion</label>
+            <div>
+                <textarea formControlName="observation" class="form-control" rows="5"
+                          [ngClass]="{'is-invalid': submitted && form['observation'].errors}" autocomplete="disabled"></textarea>
+            </div>
+          </div>
         </div>
 
       </div>

@@ -30,5 +30,6 @@ export class Tracking {
 	routeEnd: string;
   tonNumber: string;
   volume: any;
+  expenseStatus:string;
   name:string;
 }

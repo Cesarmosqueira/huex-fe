@@ -44,7 +44,8 @@ export const environment = {
       retrieve: '/api-huex/v1/attendances/',
       register: '/api-huex/v1/attendances',
       update: '/api-huex/v1/attendances',
-      delete: '/api-huex/v1/attendances/'
+      delete: '/api-huex/v1/attendances/',
+      listByDate: '/api-huex/v1/attendances/',
     },
     employeeDiscount: {
       list: '/api-huex/v1/discounts',
@@ -129,6 +130,13 @@ export const environment = {
       update: '/api-huex/v1/serviceMonitoring',
       delete: '/api-huex/v1/serviceMonitoring/',
       listByIdTracking: '/api-huex/v1/serviceMonitoring/tracking/'
+    },
+    additionalServices: {
+      list: '/api-huex/v1/additional_services',
+      retrieve: '/api-huex/v1/additional_services/',
+      register: '/api-huex/v1/additional_services',
+      update: '/api-huex/v1/additional_services',
+      delete: '/api-huex/v1/additional_services/',
     }
   },
 
@@ -253,13 +261,6 @@ export const environment = {
       register: '/api-huex/v1/route_tolls',
       update: '/api-huex/v1/route_tolls',
       delete: '/api-huex/v1/route_tolls/'
-    },
-    additionalServices: {
-      list: '/api-huex/v1/additional_services',
-      retrieve: '/api-huex/v1/additional_services/',
-      register: '/api-huex/v1/additional_services',
-      update: '/api-huex/v1/additional_services',
-      delete: '/api-huex/v1/additional_services/',
     }
   }
 };
