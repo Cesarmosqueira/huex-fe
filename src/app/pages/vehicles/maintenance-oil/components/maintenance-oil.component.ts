@@ -10,6 +10,10 @@ import { MaintenanceOil } from '../models/maintenance-oil.model';
 import { MaintenanceOilService } from '../services/maintenance-oil.service';
 import {TruckFleet} from "../../truck-fleet/models/truck-fleet.model";
 import {TruckFleetService} from "../../truck-fleet/services/truck-fleet.service";
+import {Employee} from "../../../employees/employee/models/employee.model";
+import {Providers} from "../../../providers/provider/models/providers.model";
+import {ProviderService} from "../../../providers/provider/services/provider.service";
+import {EmployeeService} from "../../../employees/employee/services/employee.service";
 
 @Component({
   selector: 'app-maintenance-oil',
@@ -40,6 +44,12 @@ export class MaintenanceOilComponent implements OnInit {
   truckFleets:TruckFleet[]=[];
   selectTruckFleets=null;
 
+  employees:Employee[]=[];
+  selectEmployees=null;
+
+  providers:Providers[]=[];
+  selectProviders=null;
+
 
 
   image: any;
@@ -49,7 +59,9 @@ export class MaintenanceOilComponent implements OnInit {
 
   constructor(public service: MaintenanceOilService,
     private serviceTruckFleet:TruckFleetService,
-    private formBuilder: UntypedFormBuilder,
+              private serviceProvider:ProviderService,
+              private serviceEmployee:EmployeeService,
+              private formBuilder: UntypedFormBuilder,
     private modalService: NgbModal) {
     this.maintenanceOilsList = service.countries$;
     this.total = service.total$;
@@ -61,6 +73,8 @@ export class MaintenanceOilComponent implements OnInit {
 
     this.maintenanceOilForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
+      provider: ['', [Validators.required]],
+      employee: ['', [Validators.required]],
       truckFleet: ['', [Validators.required]],
       changeType: ['', [Validators.required]],
       place: ['', [Validators.required]],
@@ -69,7 +83,8 @@ export class MaintenanceOilComponent implements OnInit {
       kmCurrent: ['', [Validators.required]],
       kmNext: [''],
       status: [''],
-      differences: ['']
+      differences: [''],
+      changeKm: ['',[Validators.required]]
     });
 
     this.maintenanceOilsList.subscribe(x => {
@@ -79,6 +94,8 @@ export class MaintenanceOilComponent implements OnInit {
     this.idTruckFleetOuput = 0;
     this.listMaintenanceOils();
     this.listTruckFleet();
+    this.listEmployee();
+    this.listProvider();
   }
 //prueba
   openViewModal(content: any) {
@@ -147,12 +164,16 @@ export class MaintenanceOilComponent implements OnInit {
     if (this.maintenanceOilForm.valid) {
       this.pipe = new DatePipe('en-US');
       const truckFleetId = this.selectTruckFleets.id;
+      const employeeId = this.selectEmployees.id;
+      const providerId = this.selectProviders.id;
       const changeType = this.maintenanceOilForm.get('changeType')?.value;
       const place = this.maintenanceOilForm.get('place')?.value;
       const dateChange = this.maintenanceOilForm.get('dateChange')?.value;
       const kmLast = this.maintenanceOilForm.get('kmLast')?.value;
       const kmCurrent = this.maintenanceOilForm.get('kmCurrent')?.value;
-      const kmNext = kmLast+7000;
+      const changeKm = this.maintenanceOilForm.get('changeKm')?.value;
+
+      const kmNext = kmLast+changeKm;
       let status;
       const differences = kmNext-kmCurrent;
       if(differences>0){
@@ -163,8 +184,14 @@ export class MaintenanceOilComponent implements OnInit {
 
       const myDate = new Date();
       let maintenanceOil = new MaintenanceOil();
+      let provider=new Providers();
+      let employee=new Employee();
       let truckFleet=new TruckFleet();
+      employee.id=employeeId;
+      provider.id=providerId;
       truckFleet.id=truckFleetId;
+      maintenanceOil.employee = employee;
+      maintenanceOil.provider = provider;
       maintenanceOil.truckFleet = truckFleet;
       maintenanceOil.changeType = changeType;
       maintenanceOil.place = place;
@@ -174,6 +201,7 @@ export class MaintenanceOilComponent implements OnInit {
       maintenanceOil.kmNext = kmNext;
       maintenanceOil.status = status;
       maintenanceOil.differences = differences;
+      maintenanceOil.changeKm = changeKm;
       maintenanceOil.dateCurrent = this.pipe.transform(myDate, 'yyyy-MM-ddTHH:mm:ss.sssZ');
 
       const id = this.maintenanceOilForm.get('id')?.value;
@@ -193,13 +221,15 @@ export class MaintenanceOilComponent implements OnInit {
   }
 
   clearControl() {
+    this.maintenanceOilForm.controls['provider'].setValue("");
+    this.maintenanceOilForm.controls['employee'].setValue("");
     this.maintenanceOilForm.controls['truckFleet'].setValue("");
     this.maintenanceOilForm.controls['changeType'].setValue("");
     this.maintenanceOilForm.controls['place'].setValue("");
     this.maintenanceOilForm.controls['dateChange'].setValue("");
     this.maintenanceOilForm.controls['kmLast'].setValue("");
     this.maintenanceOilForm.controls['kmCurrent'].setValue("");
-
+    this.maintenanceOilForm.controls['changeKm'].setValue("");
     this.maintenanceOilForm.controls['id'].setValue("0");
   }
 
@@ -225,10 +255,12 @@ export class MaintenanceOilComponent implements OnInit {
     this.maintenanceOilForm.controls['dateChange'].setValue(this.pipe.transform(listData[0].dateChange, 'yyyy-MM-dd'));
     this.maintenanceOilForm.controls['kmLast'].setValue(listData[0].kmLast);
     this.maintenanceOilForm.controls['kmCurrent'].setValue(listData[0].kmCurrent);
-    //this.maintenanceOilForm.controls['kmNext'].setValue(listData[0].kmNext);
+    this.maintenanceOilForm.controls['changeKm'].setValue(listData[0].changeKm);
    // this.maintenanceOilForm.controls['status'].setValue(listData[0].status);
     //this.maintenanceOilForm.controls['differences'].setValue(listData[0].differences);
     this.selectTruckFleets=listData[0].truckFleet;
+    this.selectEmployees=listData[0].employee;
+    this.selectProviders=listData[0].provider;
     this.idTruckFleetOuput=id;
 
   }
@@ -403,5 +435,56 @@ export class MaintenanceOilComponent implements OnInit {
         });
   }
 
+  listEmployee() {
+    this.serviceEmployee.listEmployees()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.employees = response.datos.employees;
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listProvider() {
+    this.serviceProvider.listProviders()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.providers = response.datos.providers;
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
 
 }
