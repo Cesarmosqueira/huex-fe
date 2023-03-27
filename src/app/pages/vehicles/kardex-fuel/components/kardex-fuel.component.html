@@ -1,62 +1,8 @@
 <div class="container-fluid">
+    <app-page-title title="Kardex" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
     <div class="card">
         <div class="card-body">
-            <div class="row mb-2">
-                <form (ngSubmit)="saveKardexFuel()" [formGroup]="kardexFuelForm" *ngIf="new">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="mt-3">
-                                <label for="example-date-input" class="col-md-12 col-form-label">Fecha</label>
-                                <div class="col-md-12">
-                                    <input class="form-control" type="date" formControlName="date"
-                                        id="example-date-input">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mt-3">
-                                <label for="example-date-input" class="col-md-12 col-form-label">Cantidad Combustible</label>
-                                <div class="col-md-12">
-                                    <input class="form-control" type="number" formControlName="amountFuel"
-                                        id="example-date-input">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mt-3">
-                                <label for="example-date-input" class="col-md-12 col-form-label">Kilometraje</label>
-                                <div class="col-md-12">
-                                    <input class="form-control" type="number" formControlName="mileage"
-                                        id="example-date-input">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mt-3">
-                                <label for="example-date-input" class="col-md-12 col-form-label">Encargado</label>
-                                <div class="col-md-12">
-                                    <input class="form-control" type="text" formControlName="dutyManager"
-                                        id="example-date-input">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                        </div>
-                        <div class="col-md-5">
-                        </div>
-                        <div class="col-md-2">
-                            <div class="mt-3">
-                                <div class="hstack gap-2 justify-content-end">
-                                    <button type="submit" class="btn btn-success" id="add-btn">{{textButton}}</button>
-                                    <button type="button" class="btn btn-light" (click)="cancel()">Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
             <div class="row md-2">
                 <div class="row mb-2">
                     <div class="col-sm-4">
@@ -64,7 +10,7 @@
                     <div class="col-sm-8">
                         <div class="text-sm-end">
                             <button type="button" class="btn btn-success btn-rounded mb-2 me-2" *ngIf="!new"
-                                (click)="openModal(true) "><i class="mdi mdi-plus mr-1"></i>
+                                (click)="openModal(content)"><i class="mdi mdi-plus mr-1"></i>
                                 Nuevo</button>
                         </div>
                     </div><!-- end col-->
@@ -72,15 +18,33 @@
             </div>
             <div class="row mb-2">
                 <div class="table-responsive mb-0">
-                    <table class="table table-centered table-nowrap">
+                    <table class="table table-bordered table-nowrap">
                         <thead class="table-light">
                             <tr>
-                                <th class="align-middle">ID</th>
-                                <th class="align-middle">Fecha</th>
-                                <th class="align-middle">Cantidad Combustible</th>
-                                <th class="align-middle">Kilometraje</th>
-                                <th class="align-middle">Encargado</th>
-                                <th class="align-middle">Acción</th>
+                                <th class="align-middle-border" colspan="4"></th>
+                                <th class="align-middle-border" colspan="3">Entradas</th>
+                                <th class="align-middle-border" colspan="3">Salidas</th>
+                                <th class="align-middle-border" colspan="3">Saldos</th>
+                                <th class="align-middle-border" colspan="1"></th>
+                                <!-- <th class="align-middle-border" colspan="2"></th>-->    
+                            </tr>
+                            <tr>
+                                <th class="align-middle center">ID</th>
+                                <th class="align-middle center">Fecha</th>
+                                <th class="align-middle center">Kilometraje</th>
+                                <th class="align-middle center">Placa</th>
+                                <th class="align-middle center">Cant.</th>
+                                <th class="align-middle center">P.U.</th>
+                                <th class="align-middle center">P.T.</th>
+                                <th class="align-middle center">Cant.</th>
+                                <th class="align-middle center">P.U.</th>
+                                <th class="align-middle center">P.T.</th>
+                                <th class="align-middle center">Cant.</th>
+                                <th class="align-middle center">P.U.</th>
+                                <th class="align-middle center">P.T.</th>
+                                <th class="align-middle center">Encargado</th>
+                                 <!-- <th class="align-middle">Acción</th>-->    
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -89,10 +53,33 @@
                                     <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
                                 </td>
                                 <td>{{data.date.substring(0,10) | date:'dd/MM/YYYY'}}</td>
-                                <td>{{data.amountFuel}}</td>
                                 <td>{{data.mileage}}</td>
+                                <td>{{data.tractPlate}}</td>
+                                <ng-container *ngIf="data.operation === 'I'; else elseBlock">
+                                    <td>{{data.amountFuel}}</td>
+                                    <td class="right">{{data.unitPrice}}</td>
+                                    <td class="right">{{data.amountFuel * data.unitPrice | number: '1.2-2'}}</td>
+                                </ng-container>
+                                <ng-template #elseBlock>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </ng-template>
+                                <ng-container *ngIf="data.operation === 'S'; else elseBlock2">
+                                    <td>{{data.amountFuel}}</td>
+                                    <td class="right">{{data.unitPrice}}</td>
+                                    <td class="right">{{data.amountFuel * data.unitPrice | number: '1.2-2'}}</td>
+                                </ng-container>
+                                <ng-template #elseBlock2>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </ng-template>
+                                <td>{{data.balances}}</td>
+                                <td class="right">{{data.unitPrice}}</td>
+                                <td class="right">{{data.balances * data.unitPrice | number: '1.2-2'}}</td>
                                 <td>{{data.dutyManager}}</td>
-                                <td>
+                                <!--   <td>
                                     <div class="d-flex gap-3">
                                         <a href="javascript:void(0);" class="text-success"
                                             (click)="editDataGet(data.id)"><i
@@ -100,7 +87,9 @@
                                         <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
                                                 class="mdi mdi-delete font-size-18"></i></a>
                                     </div>
+                                    
                                 </td>
+                                --> 
                             </tr>
                         </tbody>
                     </table>
@@ -115,3 +104,69 @@
         </div>
     </div>
 </div>
+
+<!-- Order Create Model -->
+<ng-template #content role="document" let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Salida Combustible</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+            (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <form (ngSubmit)="saveKardexFuel()" [formGroup]="kardexFuelForm">
+        <div class="modal-body">
+            <input type="text" hidden formControlName="id" value="0" />
+            <div class="mt-3">
+                <label for="customername-field" class="form-label">Placa</label>
+                <ng-select [items]="truckFleets" bindLabel="tractPlate" placeholder="Seleccione Vehiculo"
+                    [(ngModel)]="selectTruckFleets" id="customername-field" [clearable]="false" required
+                    formControlName="truckFleet" [ngClass]="{ 'is-invalid': submitted && form['truckFleet'].errors }">
+                </ng-select>
+                <div *ngIf="submitted && form['truckFleet'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['truckFleet'].errors['required']">Placa es requerido</div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <label for="customername-field" class="form-label">Tanque Disponible</label>
+                <ng-select [items]="fuelSupplys" bindLabel="name" placeholder="Seleccione Tanque"
+                    [(ngModel)]="selectFuelSupplys" id="customername-field" [clearable]="false" required
+                    formControlName="fuelSupply" [ngClass]="{ 'is-invalid': submitted && form['fuelSupply'].errors }">
+                </ng-select>
+                <div *ngIf="submitted && form['fuelSupply'].errors" class="invalid-feedback" align="left">
+                    <div *ngIf="form['fuelSupply'].errors['required']">Tanque Disponible es requerido</div>
+                </div>
+            </div>
+            <div class="mb-2">
+                <label for="example-date-input" class="col-form-label">Fecha</label>
+                <div class="col-md-12">
+                    <input class="form-control" type="date" formControlName="date" id="example-date-input">
+                </div>
+            </div>
+            <div class="mb-2">
+                <label for="example-date-input" class="col-form-label">Cantidad Combustible</label>
+                <div class="col-md-12">
+                    <input class="form-control" type="number" formControlName="amountFuel" id="example-date-input">
+                </div>
+            </div>
+            <div class="mb-2">
+                <label for="example-date-input" class="col-form-label">Kilometraje</label>
+                <div class="col-md-12">
+                    <input class="form-control" type="number" formControlName="mileage" id="example-date-input">
+                </div>
+            </div>
+            <div class="mb-2">
+                <label for="example-date-input" class="col-form-label">Encargado</label>
+                <div class="col-md-12">
+                    <input class="form-control" type="text" formControlName="dutyManager" id="example-date-input">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="hstack gap-2 justify-content-end">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                    (click)="modal.close('Close click')">Cancelar</button>
+                <button type="submit" class="btn btn-success" id="add-btn">Registrar</button>
+            </div>
+        </div>
+    </form>
+</ng-template>
+<!--End Modal -->

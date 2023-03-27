@@ -85,6 +85,13 @@ export class FuelSupplyService extends BaseService{
       }), catchError(this.handleError));
   }
 
+  public lisFuelSupplyAvailable(): Observable<ResponseModel<any>> {
+    return this.httpClient.get(environment.server + environment.providers.fuelSupply.available)
+      .pipe(map((responseModel: ResponseModel<any>) => {
+        return responseModel;
+      }), catchError(this.handleError));
+  }
+
   //Pagination
 
   public paginationTable(fuelSupply: FuelSupply[]) {

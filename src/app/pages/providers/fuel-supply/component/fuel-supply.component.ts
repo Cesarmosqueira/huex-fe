@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
-import {Observable} from "rxjs";
-import {NgbModal, NgbModalOptions} from "@ng-bootstrap/ng-bootstrap";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { Observable } from "rxjs";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
-import {DatePipe} from "@angular/common";
-import {first} from "rxjs/operators";
-import {config} from "../../../../shared/shared.config";
-import {FuelSupply} from "../models/fuel-supply.model";
-import {FuelSupplyService} from "../services/fuel-supply.service";
-import {Providers} from "../../provider/models/providers.model";
-import {ProviderService} from "../../provider/services/provider.service";
+import { DatePipe } from "@angular/common";
+import { first } from "rxjs/operators";
+import { config } from "../../../../shared/shared.config";
+import { FuelSupply } from "../models/fuel-supply.model";
+import { FuelSupplyService } from "../services/fuel-supply.service";
+import { Providers } from "../../provider/models/providers.model";
+import { ProviderService } from "../../provider/services/provider.service";
 
 @Component({
   selector: 'app-fuel-supply',
@@ -19,6 +19,7 @@ import {ProviderService} from "../../provider/services/provider.service";
 export class FuelSupplyComponent implements OnInit {
 
   idFuelSupplyOuput: number = 0;
+  minimiunFuel: number = 100;
 
   // bread crumb items
   breadCrumbItems: Array<{}>;
@@ -38,13 +39,13 @@ export class FuelSupplyComponent implements OnInit {
   total: Observable<number>;
   pipe: any;
 
-  providers:Providers[]=[];
-  selectProvider=null;
+  providers: Providers[] = [];
+  selectProvider = null;
 
   constructor(public service: FuelSupplyService,
-              private modalService: NgbModal,
-              private serviceProvider:ProviderService,
-              private formBuilder: UntypedFormBuilder) {
+    private modalService: NgbModal,
+    private serviceProvider: ProviderService,
+    private formBuilder: UntypedFormBuilder) {
     this.fuelSuplyList = service.countries$;
     this.total = service.total$;
   }
@@ -61,7 +62,9 @@ export class FuelSupplyComponent implements OnInit {
       dateFuel: ['', [Validators.required]],
       fuelQuantity: ['', [Validators.required]],
       gallonPrice: ['', [Validators.required]],
+      mileage: ['', [Validators.required]],
       observation: [''],
+      status: ['D'],
     });
 
     this.fuelSuplyList.subscribe(x => {
@@ -129,7 +132,7 @@ export class FuelSupplyComponent implements OnInit {
       centered: true,
       size: 'md'
     };
-    this.selectProvider=null;
+    this.selectProvider = null;
     this.modalService.open(content, ngbModalOptions);
   }
 
@@ -153,18 +156,25 @@ export class FuelSupplyComponent implements OnInit {
       const fuelQuantity = this.fuelSupplyForm.get('fuelQuantity')?.value;
       const gallonPrice = this.fuelSupplyForm.get('gallonPrice')?.value;
       const observation = this.fuelSupplyForm.get('observation')?.value;
+      const status = this.fuelSupplyForm.get('status')?.value;
+      const mileage = this.fuelSupplyForm.get('mileage')?.value;
 
       let fuelSupply = new FuelSupply();
-      let providers=new Providers();
-      providers.id=providerId;
+      let providers = new Providers();
+      providers.id = providerId;
       fuelSupply.provider = providers;
       fuelSupply.dateFuel = fortmatdateFuel;
       fuelSupply.fuelQuantity = fuelQuantity;
       fuelSupply.gallonPrice = gallonPrice;
       fuelSupply.observation = observation;
-
+      fuelSupply.status = status;
+      var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      fuelSupply.dutyManager = currentUser.user.userName;
+      fuelSupply.mileage = mileage;
 
       const id = this.fuelSupplyForm.get('id')?.value;
+
+      console.log(fuelSupply);
       if (id == '0') {
         this.registerFuelSupply(fuelSupply);
       } else {
@@ -193,6 +203,7 @@ export class FuelSupplyComponent implements OnInit {
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Actualizar";
     var listData = this.fuelSupply.filter((data: { id: any; }) => data.id === id);
+    console.log(listData);
     const dateFuel = listData[0].dateFuel.substring(0, 10);
     const fortmatdateFuel = this.pipe.transform(dateFuel, 'yyyy-MM-dd');
     this.fuelSupplyForm.controls['id'].setValue(listData[0].id);
@@ -200,11 +211,14 @@ export class FuelSupplyComponent implements OnInit {
     this.fuelSupplyForm.controls['fuelQuantity'].setValue(listData[0].fuelQuantity);
     this.fuelSupplyForm.controls['gallonPrice'].setValue(listData[0].gallonPrice);
     this.fuelSupplyForm.controls['observation'].setValue(listData[0].observation);
-    this.selectProvider=listData[0].provider;
+    this.fuelSupplyForm.controls['status'].setValue(listData[0].status);
+    this.fuelSupplyForm.controls['mileage'].setValue(listData[0].mileage);
+    this.selectProvider = listData[0].provider;
     this.idFuelSupplyOuput = id;
   }
 
   listFuelSupply() {
+    this.test = [];
     this.service.listFuelSupply()
       .pipe(first())
       .subscribe(
@@ -244,11 +258,13 @@ export class FuelSupplyComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              Swal.fire(
-                '¡Registrado!',
-                response.meta.mensajes[0].mensaje,
-                'success'
-              );
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+                timer: 2000
+              });
               this.listFuelSupply();
             } else {
               Swal.fire({
@@ -281,11 +297,13 @@ export class FuelSupplyComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              Swal.fire(
-                '¡Actualizado!',
-                response.meta.mensajes[0].mensaje,
-                'success'
-              );
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+                timer: 2000
+              });
               this.listFuelSupply();
             } else {
               Swal.fire({
@@ -338,11 +356,13 @@ export class FuelSupplyComponent implements OnInit {
         response => {
           if (response) {
             if (response.meta.mensajes[0].codigo == '0') {
-              Swal.fire(
-                '¡Eliminado!',
-                'Su archivo ha sido eliminado.',
-                'success'
-              );
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'El registro ha sido eliminado.',
+                showConfirmButton: false,
+                timer: 2000
+              });
               this.listFuelSupply();
             } else {
               Swal.fire({
