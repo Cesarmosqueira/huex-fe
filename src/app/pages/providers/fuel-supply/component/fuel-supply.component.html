@@ -9,7 +9,8 @@
             <div class="col-sm-4">
               <div class="search-box me-2 mb-2 d-inline-block">
                 <div class="position-relative">
-                  <input type="text" class="form-control" placeholder="Buscar por proveedor..." [(ngModel)]="service.searchTerm">
+                  <input type="text" class="form-control" placeholder="Buscar por proveedor..."
+                    [(ngModel)]="service.searchTerm">
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
@@ -17,7 +18,7 @@
             <div class="col-sm-8">
               <div class="text-sm-end">
                 <button type="button" class="btn btn-success btn-rounded mb-2 me-2" (click)="openModal(content)"><i
-                  class="mdi mdi-plus mr-1"></i>
+                    class="mdi mdi-plus mr-1"></i>
                   Nuevo</button>
               </div>
             </div><!-- end col-->
@@ -27,38 +28,40 @@
           <div class="table-responsive mb-0">
             <table class="table table-centered table-nowrap">
               <thead class="table-light">
-              <tr>
-                <th class="align-middle">ID</th>
-                <th class="align-middle">Proveedor</th>
-                <th class="align-middle">Fecha abastecimiento</th>
-                <th class="align-middle">Cantidad combustible</th>
-                <th class="align-middle">Precio galon</th>
-                <th class="align-middle">Costo total</th>
-                <th class="align-middle">Observaciones</th>
-                <th class="align-middle">Acciones</th>
+                <tr>
+                  <th class="align-middle">ID</th>
+                  <th class="align-middle">Proveedor</th>
+                  <th class="align-middle">Fecha abastecimiento</th>
+                  <th class="align-middle">Cantidad combustible</th>
+                  <th class="align-middle">Precio galon</th>
+                  <th class="align-middle">Costo total</th>
+                  <th class="align-middle">Saldo</th>
+                  <th class="align-middle">Observaciones</th>
+                  <th class="align-middle">Acciones</th>
 
-              </tr>
+                </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let data of fuelSupply" id="o_{{data.id}}">
-                <td>
-                  <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
-                </td>
-                <td>{{data.provider.businessName}}</td>
-                <td>{{data.dateFuel.substring(0,10) | date:'dd/MM/YYYY'}}</td>
-                <td>{{data.fuelQuantity}}</td>
-                <td>{{data.gallonPrice}}</td>
-                <td>{{data.fuelQuantity*data.gallonPrice}}</td>
-                <td>{{data.observation}}</td>
-                <td>
-                  <div class="d-flex gap-3">
-                    <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
-                      class="mdi mdi-pencil font-size-18"></i></a>
-                    <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
-                      class="mdi mdi-delete font-size-18"></i></a>
-                  </div>
-                </td>
-              </tr>
+                <tr *ngFor="let data of fuelSupply" id="o_{{data.id}}">
+                  <td>
+                    <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
+                  </td>
+                  <td>{{data.provider.businessName}}</td>
+                  <td>{{data.dateFuel.substring(0,10) | date:'dd/MM/YYYY'}}</td>
+                  <td>{{data.fuelQuantity}}</td>
+                  <td>{{data.gallonPrice}}</td>
+                  <td>{{data.fuelQuantity*data.gallonPrice}}</td>
+                  <td [ngClass]="data.fuelQuantity > minimiunFuel ? 'fuel-green' : data.fuelQuantity == 0 ? 'fuel-red' : 'fuel-gold' ">{{data.fuelQuantity}}</td>
+                  <td>{{data.observation}}</td>
+                  <td>
+                    <div class="d-flex gap-3">
+                      <a href="javascript:void(0);" class="text-success" (click)="editDataGet(data.id,content)"><i
+                          class="mdi mdi-pencil font-size-18"></i></a>
+                      <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
+                          class="mdi mdi-delete font-size-18"></i></a>
+                    </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
 
@@ -78,20 +81,21 @@
 <!-- Order Create Model -->
 <ng-template #content role="document" let-modal>
   <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Nuevo proveedor</h5>
+    <h5 class="modal-title" id="exampleModalLabel">Nuevo Ingreso Combustible</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
-            (click)="modal.dismiss('Cross click')"></button>
+      (click)="modal.dismiss('Cross click')"></button>
   </div>
   <form (ngSubmit)="saveUser()" [formGroup]="fuelSupplyForm">
     <div class="modal-body">
       <input type="text" hidden formControlName="id" value="0" />
+      <input type="text" hidden formControlName="status" value="D" />
 
       <div class="mb-3">
         <input type="text" hidden formControlName="id" value="0" />
         <label for="customername-field" class="form-label">Proveedor</label>
         <ng-select [items]="providers" bindLabel="businessName" placeholder="Seleccione Proveedor"
-                   [(ngModel)]="selectProvider" id="customername-field" [clearable]="false" required
-                   formControlName="provider" [ngClass]="{ 'is-invalid': submitted && form['provider'].errors }">
+          [(ngModel)]="selectProvider" id="customername-field" [clearable]="false" required formControlName="provider"
+          [ngClass]="{ 'is-invalid': submitted && form['provider'].errors }">
         </ng-select>
         <div *ngIf="submitted && form['provider'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['provider'].errors['required']">Proveedor es requerido</div>
@@ -101,15 +105,15 @@
       <div class="mb-3">
         <label>Fecha abastecimiento</label>
         <div class="input-group clockpicker">
-          <input class="form-control" type="date" id="example-date-input" formControlName="dateFuel" autocomplete="disabled">
+          <input class="form-control" type="date" id="example-date-input" formControlName="dateFuel" autocomplete="off">
         </div>
       </div>
 
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Cantidad combustible</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="fuelQuantity"
-               [ngClass]="{ 'is-invalid': submitted && form['fuelQuantity'].errors }" autocomplete="disabled" />
+        <input type="number" id="customername-field" class="form-control" required formControlName="fuelQuantity"
+          [ngClass]="{ 'is-invalid': submitted && form['fuelQuantity'].errors }" autocomplete="off" />
         <div *ngIf="submitted && form['fuelQuantity'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['fuelQuantity'].errors['required']">Cantidad combustible es requerido</div>
         </div>
@@ -117,19 +121,26 @@
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Galon precio</label>
-        <input type="text" id="customername-field" class="form-control" required formControlName="gallonPrice"
-               [ngClass]="{ 'is-invalid': submitted && form['gallonPrice'].errors }" autocomplete="disabled" />
+        <input type="number" id="customername-field" class="form-control" required formControlName="gallonPrice"
+          [ngClass]="{ 'is-invalid': submitted && form['gallonPrice'].errors }" autocomplete="off" />
         <div *ngIf="submitted && form['gallonPrice'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['gallonPrice'].errors['required']">Galon precio es requerido</div>
         </div>
       </div>
 
-
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Kilometraje</label>
+        <input type="number" id="customername-field" class="form-control" required formControlName="mileage"
+          [ngClass]="{ 'is-invalid': submitted && form['mileage'].errors }" autocomplete="off" />
+        <div *ngIf="submitted && form['mileage'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="form['mileage'].errors['required']">Kilometraje es requerido</div>
+        </div>
+      </div>
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Observaciones</label>
-        <input type="text" id="customername-field" class="form-control"  formControlName="observation"
-               [ngClass]="{ 'is-invalid': submitted && form['observation'].errors }" autocomplete="disabled" />
+        <input type="text" id="customername-field" class="form-control" formControlName="observation"
+          [ngClass]="{ 'is-invalid': submitted && form['observation'].errors }" autocomplete="off" />
       </div>
 
 
@@ -137,7 +148,7 @@
     <div class="modal-footer">
       <div class="hstack gap-2 justify-content-end">
         <button type="button" class="btn btn-light" data-bs-dismiss="modal"
-                (click)="modal.close('Close click')">Cancelar</button>
+          (click)="modal.close('Close click')">Cancelar</button>
         <button type="submit" class="btn btn-success" id="add-btn">Registrar</button>
       </div>
     </div>

@@ -1,10 +1,15 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { FuelSupply } from 'src/app/pages/providers/fuel-supply/models/fuel-supply.model';
+import { FuelSupplyService } from 'src/app/pages/providers/fuel-supply/services/fuel-supply.service';
 import { config } from 'src/app/shared/shared.config';
 import Swal from 'sweetalert2';
+import { TruckFleet } from '../../truck-fleet/models/truck-fleet.model';
+import { TruckFleetService } from '../../truck-fleet/services/truck-fleet.service';
 import { KardexFuel } from '../models/kardex-fuel';
 import { KardexFuelService } from '../services/kardex-fuel.service';
 
@@ -15,8 +20,8 @@ import { KardexFuelService } from '../services/kardex-fuel.service';
 })
 export class KardexFuelComponent implements OnInit {
 
-  @Input () idTruckFleet: number;
-  
+  @Input() idTruckFleet: number;
+
   // bread crumb items
   breadCrumbItems: Array<{}>;
   term: any;
@@ -24,6 +29,11 @@ export class KardexFuelComponent implements OnInit {
   kardexFuelForm!: UntypedFormGroup;
   submitted = false;
   register = true;
+
+  truckFleets: TruckFleet[] = [];
+  selectTruckFleets = null;
+  selectFuelSupplys = null;
+  fuelSupplys: FuelSupply[] = [];
 
   transactions;
 
@@ -42,26 +52,34 @@ export class KardexFuelComponent implements OnInit {
   textButton = "Registrar";
 
   constructor(public service: KardexFuelService,
-    private formBuilder: UntypedFormBuilder) {
+    private modalService: NgbModal,
+    private serviceTruckFleet: TruckFleetService,
+    private formBuilder: UntypedFormBuilder,
+    private fuelSupplyService: FuelSupplyService) {
     this.kardexFuelsList = service.countries$;
     this.total = service.total$;
   }
 
   ngOnInit(): void {
+    this.breadCrumbItems = [{ label: 'Vehiculos' }, { label: 'Kardex Combustible', active: true }];
+
 
     this.kardexFuelForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
       date: ['', [Validators.required]],
       amountFuel: ['', [Validators.required]],
       mileage: ['', [Validators.required]],
-      dutyManager: ['', [Validators.required]]
+      dutyManager: ['', [Validators.required]],
+      truckFleet: ['', [Validators.required]],
+      fuelSupply: ['', [Validators.required]]
     });
 
     this.kardexFuelsList.subscribe(x => {
       this.content = this.kardexFuels;
       this.kardexFuels = Object.assign([], x);
     });
-
+    this.listFuelSupply();
+    this.listTruckFleet();
     this.listKardexFuels();
   }
 
@@ -105,8 +123,19 @@ export class KardexFuelComponent implements OnInit {
     this.textButton = "Registrar";
   }
 
-  openModal(value) {
-    this.new = value;
+  openModal(content: any) {
+    this.clearControl();
+    this.submitted = false;
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true,
+      size: 'md'
+    };
+    this.selectTruckFleets = null;
+    this.selectFuelSupplys = null;
+
+    this.modalService.open(content, ngbModalOptions);
   }
 
   get form() {
@@ -118,18 +147,23 @@ export class KardexFuelComponent implements OnInit {
     if (this.kardexFuelForm.valid) {
       this.pipe = new DatePipe('en-US');
       const id = this.kardexFuelForm.get('id')?.value;
-      const idTruckFleet = this.idTruckFleet;
       const date = this.kardexFuelForm.get('date')?.value;
       const amountFuel = this.kardexFuelForm.get('amountFuel')?.value;
       const mileage = this.kardexFuelForm.get('mileage')?.value;
       const dutyManager = this.kardexFuelForm.get('dutyManager')?.value;
 
       let kardexFuel = new KardexFuel();
-      kardexFuel.idTruckFleet = idTruckFleet;
+      let fuelSupply = new FuelSupply();
+
+      fuelSupply.id = this.selectFuelSupplys.id;
+      kardexFuel.tractPlate = this.selectTruckFleets.tractPlate;
+      kardexFuel.fuelSupply = fuelSupply;
       kardexFuel.date = this.pipe.transform(date, 'yyyy-MM-ddTHH:mm:ss.sssZ');
       kardexFuel.amountFuel = amountFuel;
       kardexFuel.mileage = mileage;
       kardexFuel.dutyManager = dutyManager;
+      kardexFuel.operation = "S";
+      kardexFuel.unitPrice = this.selectFuelSupplys.gallonPrice;
 
       if (id == '0') {
         this.registerKardexFuel(kardexFuel);
@@ -138,8 +172,11 @@ export class KardexFuelComponent implements OnInit {
         this.updateKardexFuel(kardexFuel);
       }
 
-      this.new = false;
-      this.textButton = "Registrar";
+      this.modalService.dismissAll();
+      setTimeout(() => {
+        this.kardexFuelForm.reset();
+      }, 2000);
+
       this.clearControl();
     }
   }
@@ -165,6 +202,7 @@ export class KardexFuelComponent implements OnInit {
     this.kardexFuelForm.controls['amountFuel'].setValue(listData[0].amountFuel);
     this.kardexFuelForm.controls['mileage'].setValue(listData[0].mileage);
     this.kardexFuelForm.controls['dutyManager'].setValue(listData[0].dutyManager);
+    //this.selectTruckFleets = listData[0].truckFleet;
     this.textButton = "Actualizar";
   }
 
@@ -176,6 +214,7 @@ export class KardexFuelComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.kardexFuelsResponse = response.datos.kardexFuels;
+              console.log(this.kardexFuelsResponse);
               this.service.paginationTable(this.kardexFuelsResponse);
             } else {
               Swal.fire({
@@ -202,34 +241,7 @@ export class KardexFuelComponent implements OnInit {
         });
   }
 
-  listKardexFuelsByIdTruckFleet(id) {
-    this.service.listByIdTruckFleet(id)
-      .pipe(first())
-      .subscribe(
-        response => {
-          if (response) {
-            if (response.datos) {
-              this.kardexFuelsResponse = response.datos.kardexFuels;
-              this.service.paginationTable(this.kardexFuelsResponse);
-            } else {
-              this.service.paginationTable([]);
-            }
-          } else {
-            Swal.fire({
-              icon: config.ERROR,
-              title: "Ocurrio un error",
-              showConfirmButton: false,
-            });
-          }
-        },
-        error => {
-          Swal.fire({
-            icon: config.ERROR,
-            title: error,
-            showConfirmButton: false,
-          });
-        });
-  }
+  
 
   registerKardexFuel(kardexFuel) {
     this.service.registerKardexFuel(kardexFuel)
@@ -238,12 +250,15 @@ export class KardexFuelComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              Swal.fire(
-                '¡Registrado!',
-                response.meta.mensajes[0].mensaje,
-                'success'
-              );
-              this.listKardexFuelsByIdTruckFleet(this.idTruckFleet);
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+                timer: 2000
+              });
+              this.listKardexFuels();
+              this.listFuelSupply();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -275,7 +290,7 @@ export class KardexFuelComponent implements OnInit {
         response => {
           if (response) {
             if (response.datos) {
-              this.listKardexFuelsByIdTruckFleet(this.idTruckFleet);
+              this.listTruckFleet();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -313,7 +328,7 @@ export class KardexFuelComponent implements OnInit {
                 'success'
               );
 
-              this.listKardexFuelsByIdTruckFleet(this.idTruckFleet);
+              this.listKardexFuels();
             } else {
               Swal.fire({
                 icon: config.WARNING,
@@ -338,4 +353,62 @@ export class KardexFuelComponent implements OnInit {
         });
   }
 
+  listTruckFleet() {
+    this.serviceTruckFleet.listTruckFleets()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.truckFleets = response.datos.truckFleets;
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listFuelSupply() {
+    this.fuelSupplyService.lisFuelSupplyAvailable()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.fuelSupplys = response.datos.fuelsSupply;
+              console.log(this.fuelSupplys);
+            } else {
+              Swal.fire({
+                icon: config.WARNING,
+                title: response.meta.mensajes[0].mensaje,
+                showConfirmButton: false,
+              });
+            }
+          } else {
+            Swal.fire({
+              icon: config.ERROR,
+              title: "Ocurrio un error",
+              showConfirmButton: false,
+            });
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
 }
