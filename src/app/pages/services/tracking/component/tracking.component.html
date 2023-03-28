@@ -75,7 +75,7 @@
                   <td>{{data.volume}}</td>
                   <td>{{data.tonNumber}}</td>
                   <td>{{data.preloadStatus}}</td>
-                  <td>{{data.documentaryStatus}}</td>
+                  <td [ngClass]="data.documentaryStatus==='FINALIZO'? 'badge bg-success':''" >{{data.documentaryStatus}}</td>
                   <td>
                     <div class="d-flex gap-3">
                       <a href="javascript:void(0);" class="text-primary"
