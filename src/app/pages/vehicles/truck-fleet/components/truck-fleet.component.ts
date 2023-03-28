@@ -8,6 +8,8 @@ import { Providers } from 'src/app/pages/providers/provider/models/providers.mod
 import { ProviderService } from 'src/app/pages/providers/provider/services/provider.service';
 import { config } from 'src/app/shared/shared.config';
 import Swal from 'sweetalert2';
+import { DocumentUnit } from '../../document-unit/models/document-unit.model';
+import { DocumentUnitService } from '../../document-unit/services/document-unit.service';
 import { TruckFleet } from '../models/truck-fleet.model';
 import { TruckFleetService } from '../services/truck-fleet.service';
 
@@ -42,10 +44,14 @@ export class TruckFleetComponent implements OnInit {
   providers: Providers[] = [];
   selectProvider = null;
 
+  size: number = 0;
+  documentUnitsResponse: DocumentUnit[] = [];
+
   constructor(public service: TruckFleetService,
     private modalService: NgbModal,
     private formBuilder: UntypedFormBuilder,
-    private serviceProvider: ProviderService) {
+    private serviceProvider: ProviderService,
+    private serviceDocumentUnit: DocumentUnitService) {
     this.truckFleetsList = service.countries$;
     this.total = service.total$;
   }
@@ -77,6 +83,7 @@ export class TruckFleetComponent implements OnInit {
       this.truckFleets = Object.assign([], x);
     });
     this.idTruckFleetOuput = 0;
+    this.listDocumentsExpiration();
     this.listProviders();
     this.listTruckFleets();
   }
@@ -228,6 +235,27 @@ export class TruckFleetComponent implements OnInit {
             if (response.datos) {
               this.test = response.datos.truckFleets;
               this.service.paginationTable(this.test);
+            }
+          }
+        },
+        error => {
+          Swal.fire({
+            icon: config.ERROR,
+            title: error,
+            showConfirmButton: false,
+          });
+        });
+  }
+
+  listDocumentsExpiration() {
+    this.serviceDocumentUnit.listDocumentUnitsExpiration()
+      .pipe(first())
+      .subscribe(
+        response => {
+          if (response) {
+            if (response.datos) {
+              this.documentUnitsResponse = response.datos.documentsUnit;
+              this.size = this.documentUnitsResponse.length;
             }
           }
         },
@@ -431,5 +459,9 @@ export class TruckFleetComponent implements OnInit {
             showConfirmButton: false,
           });
         });
+  }
+
+  scrollModal(scrollDataModal: any) {
+    this.modalService.open(scrollDataModal, { scrollable: true });
   }
 }

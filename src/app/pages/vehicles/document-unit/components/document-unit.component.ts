@@ -306,6 +306,7 @@ export class DocumentUnitComponent implements OnInit {
   }
 
   listDocumentUnitsByIdTruckFleet(id) {
+    this.documentUnitsResponse = [];
     this.service.listByIdTruckFleet(id)
       .pipe(first())
       .subscribe(

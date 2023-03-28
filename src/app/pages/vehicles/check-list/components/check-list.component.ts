@@ -165,6 +165,7 @@ export class CheckListComponent implements OnInit {
   }
 
   listCheckLists() {
+    this.checkListsResponse = [];
     this.service.listCheckLists()
       .pipe(first())
       .subscribe(

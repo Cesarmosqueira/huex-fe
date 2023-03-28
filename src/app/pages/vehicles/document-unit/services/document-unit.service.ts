@@ -51,6 +51,13 @@ export class DocumentUnitService extends BaseService {
       }), catchError(this.handleError));
   }
 
+  public listDocumentUnitsExpiration(): Observable<ResponseModel<any>> {
+    return this.httpClient.get(environment.server + environment.vehicles.documentUnit.listExpiration)
+      .pipe(map((responseModel: ResponseModel<any>) => {
+        return responseModel;
+      }), catchError(this.handleError));
+  }
+
   public retrieveDocumentUnit(id: number): Observable<ResponseModel<any>> {
     return this.httpClient.get(environment.server + environment.vehicles.documentUnit.retrieve + id)
       .pipe(map((responseModel: ResponseModel<any>) => {

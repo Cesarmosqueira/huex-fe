@@ -200,6 +200,7 @@ export const environment = {
       update: '/api-huex/v1/vehicle/documentUnit',
       delete: '/api-huex/v1/vehicle/documentUnit/',
       listByIdTruckFleet: '/api-huex/v1/vehicle/documentUnit/truckFleet/',
+      listExpiration: '/api-huex/v1/vehicle/documentUnit/expiration',
     },
     fuel: {
       list: '/api-huex/v1/vehicle/fuel',

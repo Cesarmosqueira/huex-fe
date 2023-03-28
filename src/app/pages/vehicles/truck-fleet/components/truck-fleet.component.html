@@ -14,6 +14,80 @@
                   <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
+              <div class="dropdown d-inline-block">
+                <button *ngIf="size!=0" type="button" class="btn header-item noti-icon" data-bs-toggle="modal"
+                  data-bs-target="#exampleModalScrollable" (click)="scrollModal(scrollDataModal)">
+                  <i class="bx bx-bell bx-tada"></i>
+                  <span class="badge bg-danger rounded-pill">{{size}}</span>
+                </button>
+
+                <!-- Scrollable modal -->
+                <ng-template #scrollDataModal role="document" let-modal>
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalScrollableTitle">Documento Por Vencer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                      (click)="modal.dismiss('Cross click')"></button>
+                  </div>
+                  <div class="modal-body">
+
+                    <div class="table-responsive">
+                      <table class="table table-centered mb-0 table-nowrap align-middle">
+                        <thead class="table-light">
+                          <tr>
+                            <th>Placa</th>
+                            <th>Detalle</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let document of documentUnitsResponse">
+                            <td>
+                              <h4 class="card-title mt-0">{{document.truckFleet.tractPlate}}</h4>
+                            </td>
+                            <td>
+                              <div *ngIf="document.soatExpiration" class="mb-2">
+                                <h4 class="font-size-14 mb-0 mt-0">Soat</h4>
+                                <p class="mb-0">Vence : <span class="badge bg-danger">{{ document.soatExpiration | date: 'dd/MM/yyyy'}}</span></p>
+                              </div>
+
+                              <div *ngIf="document.expirationPolicy" class="mb-2">
+                                <h4 class="font-size-14 mb-0 mt-0">Póliza</h4>
+                                <p class="mb-0">Vence : <span class="badge bg-danger">{{ document.expirationPolicy | date: 'dd/MM/yyyy'}}</span></p>
+                              </div>
+                              <div *ngIf="document.mtcExpiration" class="mb-2">
+                                
+                                <h4 class="font-size-14 mb-0 mt-0">MTC</h4>
+                                <p class="mb-0">Vence : <span class="badge bg-danger">{{ document.mtcExpiration | date: 'dd/MM/yyyy'}}</span></p>
+                             
+                              </div>
+                              <div *ngIf="document.technicalReviewExpiration" class="mb-2">
+                                <h4 class="font-size-14 mb-0 mt-0">Revisión Técnica</h4>
+                                <p class="mb-0">Vence : <span class="badge bg-danger">{{ document.technicalReviewExpiration | date: 'dd/MM/yyyy'}}</span></p>
+                             
+                              </div>
+                              <div *ngIf="document.fireExtinguisherExpiration" class="mb-2">
+                                <h4 class="font-size-14 mb-0 mt-0">Extintor</h4>
+                                <p class="mb-0">Vence : <span class="badge bg-danger">{{ document.fireExtinguisherExpiration | date: 'dd/MM/yyyy'}}</span></p>
+                             
+                              </div>
+                              <div *ngIf="document.firstAidKitExpiration" class="mb-2">
+                                <h4 class="font-size-14 mb-0 mt-0">Botiquin</h4>
+                                <p class="mb-0">Vence : <span class="badge bg-danger">{{ document.firstAidKitExpiration | date: 'dd/MM/yyyy'}}</span></p>
+                             
+                              </div>
+                            </td>
+                            <hr>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                      (click)="modal.close('Close click')">Close</button>
+                  </div>
+                </ng-template><!-- /.modal -->
+              </div>
             </div>
             <div class="col-sm-8">
               <div class="text-sm-end">
@@ -174,14 +248,14 @@
             <div class="col-md-6">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Placa Furgon</label>
-                <input type="text" id="customername-field" class="form-control"  formControlName="vanPlate"
+                <input type="text" id="customername-field" class="form-control" formControlName="vanPlate"
                   [ngClass]="{ 'is-invalid': submitted && form['vanPlate'].errors }" autocomplete="disabled" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Marca</label>
-                <input type="text" id="customername-field" class="form-control"  formControlName="brand"
+                <input type="text" id="customername-field" class="form-control" formControlName="brand"
                   [ngClass]="{ 'is-invalid': submitted && form['brand'].errors }" autocomplete="disabled" />
 
               </div>
@@ -202,7 +276,7 @@
             <div class="col-md-6">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Nro Toneladas</label>
-                <input type="number" id="customername-field" class="form-control"  formControlName="tonNumber"
+                <input type="number" id="customername-field" class="form-control" formControlName="tonNumber"
                   [ngClass]="{ 'is-invalid': submitted && form['tonNumber'].errors }" autocomplete="disabled" />
 
               </div>
@@ -213,7 +287,7 @@
             <div class="col-md-6">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Ejes</label>
-                <input type="number" id="customername-field" class="form-control"  formControlName="axes"
+                <input type="number" id="customername-field" class="form-control" formControlName="axes"
                   [ngClass]="{ 'is-invalid': submitted && form['axes'].errors }" autocomplete="disabled" />
 
               </div>
@@ -221,7 +295,7 @@
             <div class="col-md-6">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Modelo</label>
-                <input type="text" id="customername-field" class="form-control"  formControlName="model"
+                <input type="text" id="customername-field" class="form-control" formControlName="model"
                   [ngClass]="{ 'is-invalid': submitted && form['model'].errors }" autocomplete="disabled" />
 
               </div>
@@ -232,7 +306,7 @@
             <div class="col-md-6">
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Medidas(Alto-Ancho-Largo)</label>
-                <input type="text" id="customername-field" class="form-control"  formControlName="highWideLong"
+                <input type="text" id="customername-field" class="form-control" formControlName="highWideLong"
                   [ngClass]="{ 'is-invalid': submitted && form['highWideLong'].errors }" autocomplete="disabled" />
 
               </div>
@@ -253,7 +327,7 @@
               <div class="mb-3">
                 <label for="customername-field" class="form-label">Tipo Flota</label>
                 <ng-select [items]="['Frio','Seco']" id="customername-field" required formControlName="fleetType"
-                           [ngClass]="{ 'is-invalid': submitted && form['fleetType'].errors }"></ng-select>
+                  [ngClass]="{ 'is-invalid': submitted && form['fleetType'].errors }"></ng-select>
                 <div *ngIf="submitted && form['fleetType'].errors" class="invalid-feedback" align="left">
                   <div *ngIf="form['fleetType'].errors['required']">Tipo flota es requerido</div>
                 </div>
