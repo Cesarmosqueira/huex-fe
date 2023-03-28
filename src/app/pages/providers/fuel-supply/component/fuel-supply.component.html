@@ -51,7 +51,7 @@
                   <td>{{data.fuelQuantity}}</td>
                   <td>{{data.gallonPrice}}</td>
                   <td>{{data.fuelQuantity*data.gallonPrice}}</td>
-                  <td [ngClass]="data.fuelQuantity > minimiunFuel ? 'fuel-green' : data.fuelQuantity == 0 ? 'fuel-red' : 'fuel-gold' ">{{data.fuelQuantity}}</td>
+                  <td [ngClass]="data.fuelQuantity > minimiunFuel ? 'badge bg-success' : data.fuelQuantity == 0 ? 'badge bg-danger' : 'badge bg-warning' ">{{data.fuelQuantity}}</td>
                   <td>{{data.observation}}</td>
                   <td>
                     <div class="d-flex gap-3">
@@ -128,14 +128,14 @@
         </div>
       </div>
 
-      <div class="mb-3">
+      <!-- <div class="mb-3">
         <label for="customername-field" class="form-label">Kilometraje</label>
         <input type="number" id="customername-field" class="form-control" required formControlName="mileage"
           [ngClass]="{ 'is-invalid': submitted && form['mileage'].errors }" autocomplete="off" />
         <div *ngIf="submitted && form['mileage'].errors" class="invalid-feedback" align="left">
           <div *ngIf="form['mileage'].errors['required']">Kilometraje es requerido</div>
         </div>
-      </div>
+      </div>--> 
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Observaciones</label>

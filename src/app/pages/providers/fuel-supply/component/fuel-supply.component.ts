@@ -62,7 +62,6 @@ export class FuelSupplyComponent implements OnInit {
       dateFuel: ['', [Validators.required]],
       fuelQuantity: ['', [Validators.required]],
       gallonPrice: ['', [Validators.required]],
-      mileage: ['', [Validators.required]],
       observation: [''],
       status: ['D'],
     });
@@ -157,7 +156,7 @@ export class FuelSupplyComponent implements OnInit {
       const gallonPrice = this.fuelSupplyForm.get('gallonPrice')?.value;
       const observation = this.fuelSupplyForm.get('observation')?.value;
       const status = this.fuelSupplyForm.get('status')?.value;
-      const mileage = this.fuelSupplyForm.get('mileage')?.value;
+      const mileage = 0;
 
       let fuelSupply = new FuelSupply();
       let providers = new Providers();
@@ -212,13 +211,11 @@ export class FuelSupplyComponent implements OnInit {
     this.fuelSupplyForm.controls['gallonPrice'].setValue(listData[0].gallonPrice);
     this.fuelSupplyForm.controls['observation'].setValue(listData[0].observation);
     this.fuelSupplyForm.controls['status'].setValue(listData[0].status);
-    this.fuelSupplyForm.controls['mileage'].setValue(listData[0].mileage);
     this.selectProvider = listData[0].provider;
     this.idFuelSupplyOuput = id;
   }
 
   listFuelSupply() {
-    this.test = [];
     this.service.listFuelSupply()
       .pipe(first())
       .subscribe(
@@ -228,6 +225,8 @@ export class FuelSupplyComponent implements OnInit {
               this.test = response.datos.fuelsSupply;
               this.service.paginationTable(this.test);
             } else {
+              this.test = [];
+              this.service.paginationTable(this.test);
               Swal.fire({
                 icon: config.WARNING,
                 title: response.meta.mensajes[0].mensaje,

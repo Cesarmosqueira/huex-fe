@@ -78,8 +78,6 @@ export class KardexFuelComponent implements OnInit {
       this.content = this.kardexFuels;
       this.kardexFuels = Object.assign([], x);
     });
-    this.listFuelSupply();
-    this.listTruckFleet();
     this.listKardexFuels();
   }
 
@@ -125,6 +123,8 @@ export class KardexFuelComponent implements OnInit {
 
   openModal(content: any) {
     this.clearControl();
+    this.listFuelSupply();
+    this.listTruckFleet();
     this.submitted = false;
     let ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
@@ -361,12 +361,6 @@ export class KardexFuelComponent implements OnInit {
           if (response) {
             if (response.datos) {
               this.truckFleets = response.datos.truckFleets;
-            } else {
-              Swal.fire({
-                icon: config.WARNING,
-                title: response.meta.mensajes[0].mensaje,
-                showConfirmButton: false,
-              });
             }
           }
         },
@@ -388,12 +382,6 @@ export class KardexFuelComponent implements OnInit {
             if (response.datos) {
               this.fuelSupplys = response.datos.fuelsSupply;
               console.log(this.fuelSupplys);
-            } else {
-              Swal.fire({
-                icon: config.WARNING,
-                title: response.meta.mensajes[0].mensaje,
-                showConfirmButton: false,
-              });
             }
           } else {
             Swal.fire({

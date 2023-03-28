@@ -418,6 +418,9 @@ export class TrackingComponent implements OnInit {
               this.trackingExcel = response.datos.trackingsService;
               this.service.paginationTable(this.test);
             } else {
+              this.test = [];
+              this.trackingExcel = [];
+              this.service.paginationTable(this.test);
               Swal.fire({
                 icon: config.WARNING,
                 title: response.meta.mensajes[0].mensaje,

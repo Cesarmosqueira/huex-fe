@@ -25,7 +25,7 @@
                                 <th class="align-middle-border" colspan="3">Entradas</th>
                                 <th class="align-middle-border" colspan="3">Salidas</th>
                                 <th class="align-middle-border" colspan="3">Saldos</th>
-                                <th class="align-middle-border" colspan="1"></th>
+                                <th class="align-middle-border" colspan="2"></th>
                                 <!-- <th class="align-middle-border" colspan="2"></th>-->    
                             </tr>
                             <tr>
@@ -43,7 +43,7 @@
                                 <th class="align-middle center">P.U.</th>
                                 <th class="align-middle center">P.T.</th>
                                 <th class="align-middle center">Encargado</th>
-                                 <!-- <th class="align-middle">Acción</th>-->    
+                                <th class="align-middle">Acción</th>
                                 
                             </tr>
                         </thead>
@@ -79,17 +79,14 @@
                                 <td class="right">{{data.unitPrice}}</td>
                                 <td class="right">{{data.balances * data.unitPrice | number: '1.2-2'}}</td>
                                 <td>{{data.dutyManager}}</td>
-                                <!--   <td>
+                                <td>
                                     <div class="d-flex gap-3">
-                                        <a href="javascript:void(0);" class="text-success"
-                                            (click)="editDataGet(data.id)"><i
-                                                class="mdi mdi-pencil font-size-18"></i></a>
                                         <a href="javascript:void(0);" class="text-danger" (click)="delete(data.id)"><i
                                                 class="mdi mdi-delete font-size-18"></i></a>
                                     </div>
                                     
                                 </td>
-                                --> 
+                                
                             </tr>
                         </tbody>
                     </table>

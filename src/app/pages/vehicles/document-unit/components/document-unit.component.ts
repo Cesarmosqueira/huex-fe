@@ -281,6 +281,8 @@ export class DocumentUnitComponent implements OnInit {
               this.documentUnitsResponse = response.datos.documentUnitDtoList;
               this.service.paginationTable(this.documentUnitsResponse);
             } else {
+              this.documentUnitsResponse = [];
+              this.service.paginationTable(this.documentUnitsResponse);
               Swal.fire({
                 icon: config.WARNING,
                 title: response.meta.mensajes[0].mensaje,
