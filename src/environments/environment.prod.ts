@@ -5,7 +5,7 @@
 export const environment = {
   server: 'http://localhost:8080',
   //server: 'http://89.117.33.137:8084',
-  production: false,
+  production: true,
   defaultauth: 'fackbackend',
   firebaseConfig: {
     apiKey: '',
@@ -200,6 +200,8 @@ export const environment = {
       update: '/api-huex/v1/vehicle/documentUnit',
       delete: '/api-huex/v1/vehicle/documentUnit/',
       listByIdTruckFleet: '/api-huex/v1/vehicle/documentUnit/truckFleet/',
+      listExpiration: '/api-huex/v1/vehicle/documentUnit/expiration',
+
     },
     fuel: {
       list: '/api-huex/v1/vehicle/fuel',
@@ -244,7 +246,8 @@ export const environment = {
       retrieve: '/api-huex/v1/fuelSupply/',
       register: '/api-huex/v1/fuelSupply',
       update: '/api-huex/v1/fuelSupply',
-      delete: '/api-huex/v1/fuelSupply/'
+      delete: '/api-huex/v1/fuelSupply/',
+      available: '/api-huex/v1/fuelSupply/available',
     }
   },
   operationsCosts: {
